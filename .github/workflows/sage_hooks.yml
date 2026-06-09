@@ -2,7 +2,7 @@ name: SAGE hooks build
 
 on:
   push:
-    branches: ["sage-hooks"]
+    branches: ["MIRAGE", "sage-hooks"]
   workflow_dispatch:
 
 env:
