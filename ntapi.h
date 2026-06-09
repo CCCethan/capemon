@@ -780,7 +780,7 @@ typedef struct _DBGUI_WAIT_STATE_CHANGE
 	} StateInfo;
 } DBGUI_WAIT_STATE_CHANGE, *PDBGUI_WAIT_STATE_CHANGE;
 
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(_WINBASE_)
 typedef struct _STARTUPINFOEXA {
 	STARTUPINFOA StartupInfo;
 	LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList;

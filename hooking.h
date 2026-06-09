@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "ntapi.h"
 #include "lookup.h"
 #include "config.h"
-#include <Windows.h>
+#include <windows.h>
 
 extern DWORD GetTimeStamp(LPVOID Address);
 
