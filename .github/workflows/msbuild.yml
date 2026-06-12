@@ -1,18 +1,15 @@
 name: MSBuild
-
 on:
   push:
     branches: [ "capemon" ]
   pull_request:
     branches: [ "capemon" ]
-
-env:  
+env:
   BUILD_CONFIGURATION: Release
   SOLUTION_FILE_PATH: capemon.sln
-
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: windows-2022
     strategy:
       fail-fast: false
       matrix:
@@ -21,32 +18,31 @@ jobs:
             platform: Win32
           - arch: x64
             platform: x64
-
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
 
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
-      with: 
-       msbuild-architecture: ${{ matrix.arch }}
+      uses: microsoft/setup-msbuild@v2
+      with:
+        msbuild-architecture: ${{ matrix.arch }}
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v2
 
     - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+      run: nuget restore ${{ env.SOLUTION_FILE_PATH }}
 
     - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=${{ matrix.platform }} ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform=${{ matrix.platform }} ${{ env.SOLUTION_FILE_PATH }}
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: capemon_release_${{ matrix.arch }}
-        path: D:\a\capemon\capemon\Release\capemon.dll
-        if-no-files-found: ignore
-    - uses: actions/upload-artifact@v3
-      with:
-        name: capemon_release_${{ matrix.arch }}
-        path: D:\a\capemon\capemon\x64\Release\capemon_x64.dll
+        path: |
+          Release/capemon.dll
+          x64/Release/capemon_x64.dll
         if-no-files-found: ignore
 
   publish:
@@ -56,17 +52,16 @@ jobs:
     steps:
     - run: |
         echo "
-        The rolling release triggered on \`${{ github.ref_name }}\`. [View run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
-        " > ${{ github.workspace }}-release-body.md
+        The rolling release triggered on \`${{ github.ref_name }}\`. [View run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})." > ${{ github.workspace }}-release-body.md
 
-    - uses: actions/download-artifact@v4.1.7
+    - uses: actions/download-artifact@v4
 
     - uses: softprops/action-gh-release@v1
       with:
         tag_name: rolling
         files: |
-         capemon_release_x86/capemon.dll
-         capemon_release_x64/capemon_x64.dll
+          capemon_release_x86/capemon.dll
+          capemon_release_x64/capemon_x64.dll
         body_path: ${{ github.workspace }}-release-body.md
 
     - run: |
