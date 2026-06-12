@@ -49,6 +49,8 @@ jobs:
     if: github.event_name == 'push'
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - run: |
         echo "
@@ -60,14 +62,14 @@ jobs:
       with:
         tag_name: rolling
         files: |
-          capemon_release_x86/capemon.dll
-          capemon_release_x64/capemon_x64.dll
+          capemon_release_x86/Release/capemon.dll
+          capemon_release_x64/x64/Release/capemon_x64.dll
         body_path: ${{ github.workspace }}-release-body.md
 
     - run: |
         mkdir temp
-        mv capemon_release_x86/capemon.dll temp/capemon.dll
-        mv capemon_release_x64/capemon_x64.dll temp/capemon_x64.dll
+        mv capemon_release_x86/Release/capemon.dll temp/capemon.dll
+        mv capemon_release_x64/x64/Release/capemon_x64.dll temp/capemon_x64.dll
 
     - name: Push to CAPEv2 repository
       uses: cpina/github-action-push-to-another-repository@v1.7.3
