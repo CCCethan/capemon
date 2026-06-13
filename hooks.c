@@ -583,6 +583,9 @@ hook_t full_hooks[] = {
 	HOOK(sechost, StartServiceW),
 	HOOK(sechost, ControlService),
 	HOOK(sechost, DeleteService),
+	HOOK(advapi32, EnumServicesStatusExW),
+	HOOK(sechost, EnumServicesStatusExW),
+	HOOK(advapi32, EnumServicesStatusExA),
 
 	// Sleep Hooks
 	HOOK(ntdll, NtQueryPerformanceCounter),
