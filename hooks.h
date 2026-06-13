@@ -2770,7 +2770,7 @@ HOOKDEF(BOOL, WINAPI, EnumServicesStatusExW,
 );
 
 
-HOOK(BOOL, WINAPI, EnumServicesStatusExA,
+HOOKDEF(BOOL, WINAPI, EnumServicesStatusExA,
 	__in SC_HANDLE hSCManager,
 	__in SC_ENUM_TYPE InfoLevel,
 	__in DWORD dwServiceType,
