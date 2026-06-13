@@ -264,8 +264,7 @@ HOOKDEF(BOOL, WINAPI, EnumServicesStatusExW,
 	__in_opt  LPCWSTR pszGroupName
 ) {
 	BOOL ret = Old_EnumServicesStatusExW(hSCManager, InfoLevel, dwServiceType, dwServiceState, lpServices, cbBufSize, pcbBytesNeeded, lpServicesReturned, lpResumeHandle, pszGroupName);
-	LOQ_void("services", "EnumServicesStatusExW");
-	LOQ_bool("services", "puhhhu", "ServiceControlManager", hSCManager, "InfoLevel", InfoLevel, "ServiceType", dwServiceType,
+	LOQ_bool("services", "phhhu", "ServiceControlManager", hSCManager, "InfoLevel", InfoLevel, "ServiceType", dwServiceType,
 		"ServiceState", dwServiceState, "GroupName", pszGroupName);
 	return ret;
 }
@@ -283,8 +282,7 @@ HOOKDEF(BOOL, WINAPI, EnumServicesStatusExA,
 	__in_opt LPCSTR pszGroupName
 ) {
 	BOOL ret = Old_EnumServicesStatusExA(hSCManager, InfoLevel, dwServiceType, dwServiceState, lpServices, cbBufSize, pcbBytesNeeded, lpServicesReturned, lpResumeHandle, pszGroupName);
-	LOQ_void("services", "EnumServicesStatusExA");
-	LOQ_bool("services", "puhhhu", "ServiceControlManager", hSCManager, "InfoLevel", InfoLevel, "ServiceType", dwServiceType,
+	LOQ_bool("services", "phhhs", "ServiceControlManager", hSCManager, "InfoLevel", InfoLevel, "ServiceType", dwServiceType,
 		"ServiceState", dwServiceState, "GroupName", pszGroupName);
 	return ret;
 }
