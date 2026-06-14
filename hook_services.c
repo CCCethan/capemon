@@ -264,8 +264,31 @@ HOOKDEF(BOOL, WINAPI, EnumServicesStatusExW,
 	__in_opt  LPCWSTR pszGroupName
 ) {
 	BOOL ret = Old_EnumServicesStatusExW(hSCManager, InfoLevel, dwServiceType, dwServiceState, lpServices, cbBufSize, pcbBytesNeeded, lpServicesReturned, lpResumeHandle, pszGroupName);
-	LOQ_bool("services", "phiiu", "ServiceControlManager", hSCManager, "InfoLevel", InfoLevel, "ServiceType", dwServiceType,
-		"ServiceState", dwServiceState, "GroupName", pszGroupName);
+
+	WCHAR *serviceList = NULL;
+	if (ret && lpServices && lpServicesReturned && *lpServicesReturned > 0) {
+		LPENUM_SERVICE_STATUS_PROCESSW services = (LPENUM_SERVICE_STATUS_PROCESSW)lpServices;
+		DWORD count = *lpServicesReturned;
+		SIZE_T totalLen = 1;
+		for (DWORD i = 0; i < count; i++) {
+			if (services[i].lpServiceName)
+				totalLen += wcslen(services[i].lpServiceName) + 1;
+		}
+		serviceList = calloc(totalLen, sizeof(WCHAR));
+		if (serviceList) {
+			for (DWORD i = 0; i < count; i++) {
+				if (services[i].lpServiceName) {
+					if (serviceList[0] != L'\0') wcscat(serviceList, L",");
+					wcscat(serviceList, services[i].lpServiceName);
+				}
+			}
+		}
+	}
+
+	LOQ_bool("services", "phiiuu", "ServiceControlManager", hSCManager, "InfoLevel", InfoLevel,
+		"ServiceType", dwServiceType, "ServiceState", dwServiceState, "GroupName", pszGroupName,
+		"Services", serviceList);
+	free(serviceList);
 	return ret;
 }
 
@@ -282,7 +305,30 @@ HOOKDEF(BOOL, WINAPI, EnumServicesStatusExA,
 	__in_opt LPCSTR pszGroupName
 ) {
 	BOOL ret = Old_EnumServicesStatusExA(hSCManager, InfoLevel, dwServiceType, dwServiceState, lpServices, cbBufSize, pcbBytesNeeded, lpServicesReturned, lpResumeHandle, pszGroupName);
-	LOQ_bool("services", "phiis", "ServiceControlManager", hSCManager, "InfoLevel", InfoLevel, "ServiceType", dwServiceType,
-		"ServiceState", dwServiceState, "GroupName", pszGroupName);
+
+	char *serviceList = NULL;
+	if (ret && lpServices && lpServicesReturned && *lpServicesReturned > 0) {
+		LPENUM_SERVICE_STATUS_PROCESSA services = (LPENUM_SERVICE_STATUS_PROCESSA)lpServices;
+		DWORD count = *lpServicesReturned;
+		SIZE_T totalLen = 1;
+		for (DWORD i = 0; i < count; i++) {
+			if (services[i].lpServiceName)
+				totalLen += strlen(services[i].lpServiceName) + 1;
+		}
+		serviceList = calloc(totalLen, sizeof(char));
+		if (serviceList) {
+			for (DWORD i = 0; i < count; i++) {
+				if (services[i].lpServiceName) {
+					if (serviceList[0] != '\0') strcat(serviceList, ",");
+					strcat(serviceList, services[i].lpServiceName);
+				}
+			}
+		}
+	}
+
+	LOQ_bool("services", "phiiss", "ServiceControlManager", hSCManager, "InfoLevel", InfoLevel,
+		"ServiceType", dwServiceType, "ServiceState", dwServiceState, "GroupName", pszGroupName,
+		"Services", serviceList);
+	free(serviceList);
 	return ret;
 }
