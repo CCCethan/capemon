@@ -1,0 +1,202 @@
+{
+  "unhooked_count": 36,
+  "unhooked_apis": [
+    {
+      "api": "CloseHandle",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "CloseServiceHandle",
+      "dll": "advapi32.dll"
+    },
+    {
+      "api": "CoInitializeEx",
+      "dll": "ole32.dll"
+    },
+    {
+      "api": "CoInitializeSecurity",
+      "dll": "ole32.dll"
+    },
+    {
+      "api": "CoSetProxyBlanket",
+      "dll": "ole32.dll"
+    },
+    {
+      "api": "CoUninitialize",
+      "dll": "ole32.dll"
+    },
+    {
+      "api": "CreateFileW",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "CreatePipe",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "DuplicateHandle",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "FindClose",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "FreeLibrary",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "GetCurrentProcess",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "GetCurrentProcessId",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "GetCurrentThreadId",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "GetExitCodeProcess",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "GetFileAttributesExW",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "GetFileSizeEx",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "GetModuleHandleW",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "GetProcAddress",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "GetTimeZoneInformation",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "IsProcessorFeaturePresent",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "LocalFree",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "QueryPerformanceCounter",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "QueryPerformanceFrequency",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "ReadFile",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "SetEnvironmentVariableW",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "SetFilePointerEx",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "SetHandleInformation",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "Sleep",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "SysAllocString",
+      "dll": "oleaut32.dll"
+    },
+    {
+      "api": "VariantClear",
+      "dll": "oleaut32.dll"
+    },
+    {
+      "api": "VirtualProtect",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "WaitForSingleObject",
+      "dll": "kernel32.dll"
+    },
+    {
+      "api": "WinHttpCloseHandle",
+      "dll": "winhttp.dll"
+    },
+    {
+      "api": "WinHttpCrackUrl",
+      "dll": "winhttp.dll"
+    },
+    {
+      "api": "WriteFile",
+      "dll": "kernel32.dll"
+    }
+  ],
+  "poc_api_count": 61,
+  "hooked_api_count": 25,
+  "capemon_hook_total": 487,
+  "poc_files": 9,
+  "coverage_rate": 0.4098,
+  "by_dll": {
+    "kernel32.dll": [
+      "CloseHandle",
+      "CreateFileW",
+      "CreatePipe",
+      "DuplicateHandle",
+      "FindClose",
+      "FreeLibrary",
+      "GetCurrentProcess",
+      "GetCurrentProcessId",
+      "GetCurrentThreadId",
+      "GetExitCodeProcess",
+      "GetFileAttributesExW",
+      "GetFileSizeEx",
+      "GetModuleHandleW",
+      "GetProcAddress",
+      "GetTimeZoneInformation",
+      "IsProcessorFeaturePresent",
+      "LocalFree",
+      "QueryPerformanceCounter",
+      "QueryPerformanceFrequency",
+      "ReadFile",
+      "SetEnvironmentVariableW",
+      "SetFilePointerEx",
+      "SetHandleInformation",
+      "Sleep",
+      "VirtualProtect",
+      "WaitForSingleObject",
+      "WriteFile"
+    ],
+    "advapi32.dll": [
+      "CloseServiceHandle"
+    ],
+    "ole32.dll": [
+      "CoInitializeEx",
+      "CoInitializeSecurity",
+      "CoSetProxyBlanket",
+      "CoUninitialize"
+    ],
+    "oleaut32.dll": [
+      "SysAllocString",
+      "VariantClear"
+    ],
+    "winhttp.dll": [
+      "WinHttpCloseHandle",
+      "WinHttpCrackUrl"
+    ]
+  }
+}
