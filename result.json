@@ -1,0 +1,2520 @@
+{
+  "source_files_found": 1151,
+  "source_files_parsed": 1151,
+  "source_files_failed": 0,
+  "sdk_function_names": 8105,
+  "api_count": 418,
+  "direct_call_count": 9197,
+  "dynamic_call_count": 38,
+  "total_call_count": 9235,
+  "apis": [
+    {
+      "api": "CoUninitialize",
+      "total_count": 1367,
+      "direct_count": 1367,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetLastError",
+      "total_count": 1051,
+      "direct_count": 1051,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CloseHandle",
+      "total_count": 794,
+      "direct_count": 794,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegCloseKey",
+      "total_count": 425,
+      "direct_count": 425,
+      "dynamic_count": 0
+    },
+    {
+      "api": "VariantClear",
+      "total_count": 328,
+      "direct_count": 328,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CoInitializeEx",
+      "total_count": 263,
+      "direct_count": 263,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CoCreateInstance",
+      "total_count": 226,
+      "direct_count": 226,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CoInitializeSecurity",
+      "total_count": 212,
+      "direct_count": 212,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CoTaskMemFree",
+      "total_count": 212,
+      "direct_count": 212,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CoSetProxyBlanket",
+      "total_count": 211,
+      "direct_count": 211,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WideCharToMultiByte",
+      "total_count": 207,
+      "direct_count": 207,
+      "dynamic_count": 0
+    },
+    {
+      "api": "VariantInit",
+      "total_count": 195,
+      "direct_count": 195,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FindClose",
+      "total_count": 126,
+      "direct_count": 126,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CloseServiceHandle",
+      "total_count": 110,
+      "direct_count": 110,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegOpenKeyExA",
+      "total_count": 101,
+      "direct_count": 101,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WaitForSingleObject",
+      "total_count": 93,
+      "direct_count": 93,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHGetKnownFolderPath",
+      "total_count": 85,
+      "direct_count": 85,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegOpenKeyExW",
+      "total_count": 84,
+      "direct_count": 84,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetTickCount64",
+      "total_count": 83,
+      "direct_count": 83,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FindNextFileW",
+      "total_count": 70,
+      "direct_count": 70,
+      "dynamic_count": 0
+    },
+    {
+      "api": "QueryPerformanceCounter",
+      "total_count": 69,
+      "direct_count": 69,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreatePipe",
+      "total_count": 64,
+      "direct_count": 64,
+      "dynamic_count": 0
+    },
+    {
+      "api": "ReadFile",
+      "total_count": 61,
+      "direct_count": 61,
+      "dynamic_count": 0
+    },
+    {
+      "api": "__cpuid",
+      "total_count": 57,
+      "direct_count": 57,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetHandleInformation",
+      "total_count": 56,
+      "direct_count": 56,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetSystemTimeAsFileTime",
+      "total_count": 50,
+      "direct_count": 50,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegQueryValueExA",
+      "total_count": 50,
+      "direct_count": 50,
+      "dynamic_count": 0
+    },
+    {
+      "api": "Sleep",
+      "total_count": 49,
+      "direct_count": 49,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetProcAddress",
+      "total_count": 48,
+      "direct_count": 48,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SysFreeString",
+      "total_count": 48,
+      "direct_count": 48,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegQueryValueExW",
+      "total_count": 46,
+      "direct_count": 46,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetCurrentProcess",
+      "total_count": 43,
+      "direct_count": 43,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetModuleHandleA",
+      "total_count": 40,
+      "direct_count": 40,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetupDiDestroyDeviceInfoList",
+      "total_count": 39,
+      "direct_count": 39,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SysAllocString",
+      "total_count": 39,
+      "direct_count": 39,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetEnvironmentVariableA",
+      "total_count": 37,
+      "direct_count": 37,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegEnumKeyExA",
+      "total_count": 37,
+      "direct_count": 37,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetupDiGetDeviceRegistryPropertyA",
+      "total_count": 36,
+      "direct_count": 36,
+      "dynamic_count": 0
+    },
+    {
+      "api": "QueryPerformanceFrequency",
+      "total_count": 34,
+      "direct_count": 34,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetSystemFirmwareTable",
+      "total_count": 33,
+      "direct_count": 33,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetEnvironmentVariableW",
+      "total_count": 32,
+      "direct_count": 32,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegEnumKeyExW",
+      "total_count": 32,
+      "direct_count": 32,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FindNextFileA",
+      "total_count": 31,
+      "direct_count": 31,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegSetValueExW",
+      "total_count": 30,
+      "direct_count": 30,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetupDiEnumDeviceInfo",
+      "total_count": 30,
+      "direct_count": 30,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetupDiGetClassDevsA",
+      "total_count": 30,
+      "direct_count": 30,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegQueryInfoKeyW",
+      "total_count": 29,
+      "direct_count": 29,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CloseEventLog",
+      "total_count": 28,
+      "direct_count": 28,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FileTimeToSystemTime",
+      "total_count": 27,
+      "direct_count": 27,
+      "dynamic_count": 0
+    },
+    {
+      "api": "freeaddrinfo",
+      "total_count": 27,
+      "direct_count": 27,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FindFirstFileW",
+      "total_count": 26,
+      "direct_count": 26,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHGetFolderPathW",
+      "total_count": 26,
+      "direct_count": 26,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateProcessA",
+      "total_count": 25,
+      "direct_count": 25,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FindWindowW",
+      "total_count": 24,
+      "direct_count": 24,
+      "dynamic_count": 0
+    },
+    {
+      "api": "OpenProcess",
+      "total_count": 24,
+      "direct_count": 24,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegCreateKeyExW",
+      "total_count": 22,
+      "direct_count": 22,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateFileA",
+      "total_count": 21,
+      "direct_count": 20,
+      "dynamic_count": 1
+    },
+    {
+      "api": "GetSystemInfo",
+      "total_count": 21,
+      "direct_count": 21,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PdhCloseQuery",
+      "total_count": 21,
+      "direct_count": 21,
+      "dynamic_count": 0
+    },
+    {
+      "api": "closesocket",
+      "total_count": 21,
+      "direct_count": 21,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateToolhelp32Snapshot",
+      "total_count": 20,
+      "direct_count": 20,
+      "dynamic_count": 0
+    },
+    {
+      "api": "DeviceIoControl",
+      "total_count": 20,
+      "direct_count": 20,
+      "dynamic_count": 0
+    },
+    {
+      "api": "OpenSCManagerA",
+      "total_count": 20,
+      "direct_count": 20,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EvtClose",
+      "total_count": 19,
+      "direct_count": 19,
+      "dynamic_count": 0
+    },
+    {
+      "api": "InternetCloseHandle",
+      "total_count": 19,
+      "direct_count": 19,
+      "dynamic_count": 0
+    },
+    {
+      "api": "Process32FirstW",
+      "total_count": 19,
+      "direct_count": 19,
+      "dynamic_count": 0
+    },
+    {
+      "api": "Process32NextW",
+      "total_count": 19,
+      "direct_count": 19,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetProcessTimes",
+      "total_count": 18,
+      "direct_count": 18,
+      "dynamic_count": 0
+    },
+    {
+      "api": "memcpy",
+      "total_count": 18,
+      "direct_count": 18,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetAdaptersInfo",
+      "total_count": 16,
+      "direct_count": 16,
+      "dynamic_count": 0
+    },
+    {
+      "api": "NtQuerySystemInformation",
+      "total_count": 16,
+      "direct_count": 0,
+      "dynamic_count": 16
+    },
+    {
+      "api": "SHGetFolderPathA",
+      "total_count": 15,
+      "direct_count": 15,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetLogicalProcessorInformation",
+      "total_count": 14,
+      "direct_count": 14,
+      "dynamic_count": 0
+    },
+    {
+      "api": "LocalFree",
+      "total_count": 14,
+      "direct_count": 14,
+      "dynamic_count": 0
+    },
+    {
+      "api": "OpenProcessToken",
+      "total_count": 14,
+      "direct_count": 14,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetLogicalDrives",
+      "total_count": 13,
+      "direct_count": 13,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetWindowsDirectoryA",
+      "total_count": 13,
+      "direct_count": 13,
+      "dynamic_count": 0
+    },
+    {
+      "api": "IsWow64Process",
+      "total_count": 13,
+      "direct_count": 6,
+      "dynamic_count": 7
+    },
+    {
+      "api": "RegEnumValueW",
+      "total_count": 13,
+      "direct_count": 13,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHGetDesktopFolder",
+      "total_count": 13,
+      "direct_count": 13,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetEvent",
+      "total_count": 13,
+      "direct_count": 13,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SysStringLen",
+      "total_count": 13,
+      "direct_count": 13,
+      "dynamic_count": 0
+    },
+    {
+      "api": "timeEndPeriod",
+      "total_count": 13,
+      "direct_count": 13,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EnumDisplayDevicesA",
+      "total_count": 12,
+      "direct_count": 12,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetActiveProcessorCount",
+      "total_count": 12,
+      "direct_count": 12,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetIfTable",
+      "total_count": 12,
+      "direct_count": 12,
+      "dynamic_count": 0
+    },
+    {
+      "api": "K32EnumProcesses",
+      "total_count": 12,
+      "direct_count": 12,
+      "dynamic_count": 0
+    },
+    {
+      "api": "NetApiBufferFree",
+      "total_count": 12,
+      "direct_count": 12,
+      "dynamic_count": 0
+    },
+    {
+      "api": "OpenSCManagerW",
+      "total_count": 12,
+      "direct_count": 12,
+      "dynamic_count": 0
+    },
+    {
+      "api": "OpenServiceA",
+      "total_count": 12,
+      "direct_count": 12,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegSetValueExA",
+      "total_count": 12,
+      "direct_count": 12,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WSAGetLastError",
+      "total_count": 12,
+      "direct_count": 12,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetCurrentThread",
+      "total_count": 11,
+      "direct_count": 11,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegGetValueA",
+      "total_count": 11,
+      "direct_count": 11,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegGetValueW",
+      "total_count": 11,
+      "direct_count": 11,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SafeArrayGetLBound",
+      "total_count": 11,
+      "direct_count": 11,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SafeArrayGetUBound",
+      "total_count": 11,
+      "direct_count": 11,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SystemTimeToFileTime",
+      "total_count": 11,
+      "direct_count": 11,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CryptMsgGetParam",
+      "total_count": 10,
+      "direct_count": 10,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetModuleHandleW",
+      "total_count": 10,
+      "direct_count": 10,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetProcessAffinityMask",
+      "total_count": 10,
+      "direct_count": 10,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetStdHandle",
+      "total_count": 10,
+      "direct_count": 10,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetUserProfileDirectoryW",
+      "total_count": 10,
+      "direct_count": 10,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MultiByteToWideChar",
+      "total_count": 10,
+      "direct_count": 10,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetThreadAffinityMask",
+      "total_count": 10,
+      "direct_count": 10,
+      "dynamic_count": 0
+    },
+    {
+      "api": "timeGetTime",
+      "total_count": 10,
+      "direct_count": 10,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CompareFileTime",
+      "total_count": 9,
+      "direct_count": 9,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateEventA",
+      "total_count": 9,
+      "direct_count": 9,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateThread",
+      "total_count": 9,
+      "direct_count": 9,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetDriveTypeA",
+      "total_count": 9,
+      "direct_count": 9,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetSystemTimePreciseAsFileTime",
+      "total_count": 9,
+      "direct_count": 4,
+      "dynamic_count": 5
+    },
+    {
+      "api": "GetTempPathA",
+      "total_count": 9,
+      "direct_count": 9,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetTickCount",
+      "total_count": 9,
+      "direct_count": 9,
+      "dynamic_count": 0
+    },
+    {
+      "api": "Netbios",
+      "total_count": 9,
+      "direct_count": 9,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegQueryInfoKeyA",
+      "total_count": 9,
+      "direct_count": 9,
+      "dynamic_count": 0
+    },
+    {
+      "api": "timeBeginPeriod",
+      "total_count": 9,
+      "direct_count": 9,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CloseThreadpoolTimer",
+      "total_count": 8,
+      "direct_count": 8,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FileTimeToLocalFileTime",
+      "total_count": 8,
+      "direct_count": 8,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetExitCodeProcess",
+      "total_count": 8,
+      "direct_count": 8,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetSystemDirectoryA",
+      "total_count": 8,
+      "direct_count": 8,
+      "dynamic_count": 0
+    },
+    {
+      "api": "LocalAlloc",
+      "total_count": 8,
+      "direct_count": 8,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PdhCollectQueryData",
+      "total_count": 8,
+      "direct_count": 8,
+      "dynamic_count": 0
+    },
+    {
+      "api": "QueryServiceConfigA",
+      "total_count": 8,
+      "direct_count": 8,
+      "dynamic_count": 0
+    },
+    {
+      "api": "QueryThreadCycleTime",
+      "total_count": 8,
+      "direct_count": 8,
+      "dynamic_count": 0
+    },
+    {
+      "api": "QueryUnbiasedInterruptTime",
+      "total_count": 8,
+      "direct_count": 8,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetThreadpoolTimer",
+      "total_count": 8,
+      "direct_count": 8,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WTSGetActiveConsoleSessionId",
+      "total_count": 8,
+      "direct_count": 8,
+      "dynamic_count": 0
+    },
+    {
+      "api": "sprintf_s",
+      "total_count": 8,
+      "direct_count": 8,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EnumServicesStatusExA",
+      "total_count": 7,
+      "direct_count": 7,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetFileAttributesW",
+      "total_count": 7,
+      "direct_count": 7,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetLogicalDriveStringsA",
+      "total_count": 7,
+      "direct_count": 7,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetLogicalProcessorInformationEx",
+      "total_count": 7,
+      "direct_count": 7,
+      "dynamic_count": 0
+    },
+    {
+      "api": "QueryServiceStatusEx",
+      "total_count": 7,
+      "direct_count": 7,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHGetKnownFolderIDList",
+      "total_count": 7,
+      "direct_count": 7,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WriteFile",
+      "total_count": 7,
+      "direct_count": 7,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateFileW",
+      "total_count": 6,
+      "direct_count": 6,
+      "dynamic_count": 0
+    },
+    {
+      "api": "ExpandEnvironmentStringsA",
+      "total_count": 6,
+      "direct_count": 6,
+      "dynamic_count": 0
+    },
+    {
+      "api": "ExpandEnvironmentStringsW",
+      "total_count": 6,
+      "direct_count": 6,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FindFirstFileExW",
+      "total_count": 6,
+      "direct_count": 6,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetFileInformationByHandleEx",
+      "total_count": 6,
+      "direct_count": 6,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetFileSizeEx",
+      "total_count": 6,
+      "direct_count": 6,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetNativeSystemInfo",
+      "total_count": 6,
+      "direct_count": 6,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetProcessHeap",
+      "total_count": 6,
+      "direct_count": 6,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetThreadTimes",
+      "total_count": 6,
+      "direct_count": 6,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GlobalMemoryStatusEx",
+      "total_count": 6,
+      "direct_count": 6,
+      "dynamic_count": 0
+    },
+    {
+      "api": "ILFree",
+      "total_count": 6,
+      "direct_count": 6,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegCreateKeyExA",
+      "total_count": 6,
+      "direct_count": 6,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SafeArrayGetElement",
+      "total_count": 6,
+      "direct_count": 6,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CancelWaitableTimer",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CertCloseStore",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CertFindCertificateInStore",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CertFreeCertificateContext",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CertGetNameStringW",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CryptMsgClose",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "DeleteFileA",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EnumPrintersA",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EnumPrintersW",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EnumSystemFirmwareTables",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FindVolumeClose",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetTokenInformation",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "K32GetPerformanceInfo",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "OpenEventLogA",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "OpenEventLogW",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHGetPathFromIDListW",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHGetSpecialFolderPathA",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetWaitableTimer",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetupDiEnumDeviceInterfaces",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetupDiGetClassDevsW",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetupDiGetDeviceInterfaceDetailA",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "socket",
+      "total_count": 5,
+      "direct_count": 5,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateProcessW",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EvtNext",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetAdaptersAddresses",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetCurrentProcessId",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetDeviceCaps",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetDiskFreeSpaceExA",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetFileAttributesExW",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetIpNetTable",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetLastInputInfo",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetLogicalDriveStringsW",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetNumberOfEventLogRecords",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetPhysicallyInstalledSystemMemory",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "NtQueryInformationProcess",
+      "total_count": 4,
+      "direct_count": 0,
+      "dynamic_count": 4
+    },
+    {
+      "api": "OutputDebugStringW",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PathFindExtensionW",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PdhGetFormattedCounterValue",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PdhOpenQueryW",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PostQuitMessage",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PostThreadMessageW",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "QueryFullProcessImageNameA",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegEnumValueA",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "ReleaseSemaphore",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHQueryRecycleBinW",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SafeArrayDestroy",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetConsoleCtrlHandler",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetupDiGetDeviceInterfaceDetailW",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "StrRetToBufW",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WSACleanup",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WSAStartup",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WTSFreeMemory",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "lstrlenW",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "sendto",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "setsockopt",
+      "total_count": 4,
+      "direct_count": 4,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateSemaphoreA",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateThreadpoolTimer",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateWaitableTimerA",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EnumDisplaySettingsA",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EnumServicesStatusExW",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EvtQuery",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FindFirstFileA",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FindFirstVolumeW",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FindNextVolumeW",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FormatMessageA",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FreeEnvironmentStringsW",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetDriveTypeW",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetEnvironmentStringsW",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetSystemTime",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "HeapFree",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "K32EnumDeviceDrivers",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "K32EnumProcessModules",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "K32GetModuleBaseNameA",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MFShutdown",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "OpenServiceW",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PathCombineA",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PdhAddEnglishCounterW",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PostQueuedCompletionStatus",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "ProcessIdToSessionId",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PropVariantClear",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PropVariantInit",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "QueryDosDeviceA",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "QueryInterruptTimePrecise",
+      "total_count": 3,
+      "direct_count": 0,
+      "dynamic_count": 3
+    },
+    {
+      "api": "RemoveVectoredExceptionHandler",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHBindToObject",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHGetSpecialFolderLocation",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WNetCloseEnum",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WNetOpenEnumW",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WTSEnumerateProcessesW",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "recvfrom",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "timeKillEvent",
+      "total_count": 3,
+      "direct_count": 3,
+      "dynamic_count": 0
+    },
+    {
+      "api": "AddVectoredExceptionHandler",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CallNtPowerInformation",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "ConvertSidToStringSidW",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateEventW",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateIoCompletionPort",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateWaitableTimerW",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "DeleteTimerQueueTimer",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EnumDisplaySettingsW",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EnumServicesStatusA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EnumWindows",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FindFirstVolumeA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FindNextVolumeA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FreeLibrary",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FreeMibTable",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetActiveProcessorGroupCount",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetDC",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetDesktopWindow",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetDiskFreeSpaceA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetFileAttributesA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetFileTime",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetIfTable2",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetNumaHighestNodeNumber",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetNumaNodeProcessorMaskEx",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetOldestEventLogRecord",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetQueuedCompletionStatus",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetSidSubAuthority",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetSidSubAuthorityCount",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetSystemMetrics",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetSystemPowerStatus",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetTempFileNameA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetThreadId",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetUserNameW",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetVolumePathNamesForVolumeNameW",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetWindowTextA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GlobalMemoryStatus",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "HeapAlloc",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "HttpQueryInfoA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "IsProcessorFeaturePresent",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "IsValidSid",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "K32GetDeviceDriverBaseNameA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "LoadLibraryA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MapViewOfFile",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MsiEnumProductsA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MsiEnumProductsW",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MsiGetProductInfoA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "NetWkstaUserGetInfo",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "NtQuerySystemTime",
+      "total_count": 2,
+      "direct_count": 0,
+      "dynamic_count": 2
+    },
+    {
+      "api": "PathFileExistsA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PathFindFileNameW",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PeekMessageW",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "QueryServiceStatus",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "ReleaseDC",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHCreateItemFromIDList",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHCreateItemFromParsingName",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHGetFolderLocation",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetFilePointerEx",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "StringFromGUID2",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "UnmapViewOfFile",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "UnregisterClassA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WNetEnumResourceW",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WNetGetConnectionA",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "__popcnt",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "ntohl",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "recv",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "strcat_s",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "strlen",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "timeGetDevCaps",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "timeSetEvent",
+      "total_count": 2,
+      "direct_count": 2,
+      "dynamic_count": 0
+    },
+    {
+      "api": "AllocConsole",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "AttachConsole",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CM_Get_DevNode_PropertyW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CM_Get_DevNode_Status",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CM_Get_Device_ID_List_SizeA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CM_Get_Device_ID_List_SizeW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CM_Locate_DevNodeA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CM_Locate_DevNodeW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CheckRemoteDebuggerPresent",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CoInitialize",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateBindCtx",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateFileMappingA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateFileMappingW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateTimerQueueTimer",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CreateWindowExA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CredEnumerateW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "CredFree",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "D3D11CreateDevice",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "DefWindowProcA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "DestroyWindow",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "DispatchMessageA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EnumPrinterDriversA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EvtOpenPublisherEnum",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "EvtRender",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "FindFirstFileExA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GenerateConsoleCtrlEvent",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetClassNameW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetCompressedFileSizeW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetComputerNameExA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetComputerNameW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetCurrentThreadId",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetDiskFreeSpaceExW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetFileAttributesExA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetFileVersionInfoSizeW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetLocalTime",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetMessageA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetMessageW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetModuleFileNameA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetMonitorInfoW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetPwrCapabilities",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetSystemDirectoryW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetSystemWindowsDirectoryW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetTimeZoneInformation",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetVolumeInformationW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetVolumePathNamesForVolumeNameA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetWindowRect",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetWindowTextW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "GetWindowsDirectoryW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "HttpOpenRequestA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "HttpSendRequestA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "ILCombine",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "InternetOpenA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "InternetOpenUrlW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "InternetOpenW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "K32GetDeviceDriverFileNameW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "K32GetProcessImageFileNameA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "LoadLibraryW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MFCreateAttributes",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MFEnumDeviceSources",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MFStartup",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MiniDumpWriteDump",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MonitorFromWindow",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MsgWaitForMultipleObjects",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MsiEnumProductsExW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "MsiGetProductInfoW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "NetUseEnum",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "NetUserGetInfo",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "NetWkstaGetInfo",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "NetWkstaUserEnum",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PathFileExistsW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PathFindExtensionA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PathFindFileNameA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PathMatchSpecW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PdhAddEnglishCounterA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "PostMessageA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "QueryFullProcessImageNameW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RaiseException",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "ReadEventLogW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegOpenCurrentUser",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegisterClassExA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RegisterWaitForSingleObject",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "RtlNtStatusToDosError",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHCreateItemWithParent",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHGetNameFromIDList",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHGetPathFromIDListA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHParseDisplayName",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHQueryRecycleBinA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SHRegGetValueW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetWindowLongPtrA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetupDiGetDeviceInstanceIdA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SetupDiGetDeviceRegistryPropertyW",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SleepEx",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SystemParametersInfoA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "SystemTimeToTzSpecificLocalTime",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "TerminateProcess",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "TranslateMessage",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "TzSpecificLocalTimeToSystemTime",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "UnregisterWaitEx",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "VirtualAlloc",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "VirtualFree",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WTSEnumerateProcessesA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "WaitForThreadpoolTimerCallbacks",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "__popcnt64",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "capGetDriverDescriptionA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "connect",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "getaddrinfo",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "lstrlenA",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "memcmp",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "memset",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "strncpy_s",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    },
+    {
+      "api": "towupper",
+      "total_count": 1,
+      "direct_count": 1,
+      "dynamic_count": 0
+    }
+  ]
+}
