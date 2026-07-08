@@ -208,6 +208,16 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(ole32, CoSetProxyBlanket),
 	HOOK_SPECIAL(ole32, CoTaskMemFree),
 	HOOK_SPECIAL(ole32, CoUninitialize),
+	// On Windows 8+ these ole32 exports are forwarders to combase.dll, where the
+	// real code (and the actual call target) lives. ole32-only hooks miss them
+	// (only CoInitialize has a real ole32 stub), so also hook them on combase,
+	// mirroring the CoCreateInstance/CoGetObject registrations above.
+	HOOK_SPECIAL(combase, CoInitialize),
+	HOOK_SPECIAL(combase, CoInitializeEx),
+	HOOK_SPECIAL(combase, CoInitializeSecurity),
+	HOOK_SPECIAL(combase, CoSetProxyBlanket),
+	HOOK_SPECIAL(combase, CoTaskMemFree),
+	HOOK_SPECIAL(combase, CoUninitialize),
 
 	// WMI Hooks
 #ifdef _WIN64
