@@ -93,7 +93,7 @@ HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
 	if (ret == S_OK) {
 		set_com_hooks(NULL, NULL, NULL);
 	}
-	LOQ_hresult("com", "pu", "Reserved", pvReserved, "CoInit", dwCoInit);
+	LOQ_hresult("com", "ph", "Reserved", pvReserved, "CoInit", dwCoInit);
 	return ret;
 }
 
@@ -113,7 +113,7 @@ HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity,
 	if (ret == S_OK) {
 		set_com_hooks(NULL, NULL, NULL);
 	}
-	LOQ_hresult("com", "pLLLLLL", "SecDesc", pSecDesc, "AuthSvc", cAuthSvc, "AuthSvc", asAuthSvc, "Reserved1", pReserved1, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthList", pAuthList, "Capabilities", dwCapabilities, "Reserved3", pReserved3);
+	LOQ_hresult("com", "pipphhphp", "SecDesc", pSecDesc, "cAuthSvc", cAuthSvc, "asAuthSvc", asAuthSvc, "Reserved1", pReserved1, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthList", pAuthList, "Capabilities", dwCapabilities, "Reserved3", pReserved3);
 	return ret;
 }
 
@@ -132,30 +132,27 @@ HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
 	if (ret == S_OK) {
 		set_com_hooks(NULL, NULL, NULL);
 	}
-	LOQ_hresult("com", "LLLLLLLL", "Proxy", pProxy, "AuthnSvc", dwAuthnSvc, "AuthzSvc", dwAuthzSvc, "ServerPrincName", pServerPrincName, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthInfo", pAuthInfo, "Capabilities", dwCapabilities);
+	LOQ_hresult("com", "phhuhhph", "Proxy", pProxy, "AuthnSvc", dwAuthnSvc, "AuthzSvc", dwAuthzSvc, "ServerPrincName", pServerPrincName, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthInfo", pAuthInfo, "Capabilities", dwCapabilities);
 	return ret;
 }
 
-HOOKDEF(HRESULT, WINAPI, CoTaskMemFree,
-	_In_ LPVOID pv
+HOOKDEF(void, WINAPI, CoTaskMemFree,
+	_In_opt_ LPVOID pv
 ) {
-	HRESULT ret;
-	ret = Old_CoTaskMemFree(pv);
-	if (ret == S_OK) {
-		set_com_hooks(NULL, NULL, NULL);
-	}
-	LOQ_hresult("com", "p", "Mem", pv);
-	return ret;
+	int ret = 0;
+	Old_CoTaskMemFree(pv);
+	// CoTaskMemFree returns void and does not create a COM object,
+	// so no set_com_hooks() here. Log the freed pointer only.
+	LOQ_void("com", "p", "Mem", pv);
+	return;
 }
 
-HOOKDEF(HRESULT, WINAPI, CoUninitialize,
+HOOKDEF(void, WINAPI, CoUninitialize,
 	void
 ) {
-	HRESULT ret;
-	ret = Old_CoUninitialize();
-	if (ret == S_OK) {
-		set_com_hooks(NULL, NULL, NULL);
-	}
-	LOQ_hresult("com", "v", "Uninit", NULL);
-	return ret;
+	int ret = 0;
+	Old_CoUninitialize();
+	// void return; COM is being torn down, so no set_com_hooks() here.
+	LOQ_void("com", "");
+	return;
 }

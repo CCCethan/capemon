@@ -1295,7 +1295,7 @@ HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
 	_In_	 DWORD  dwCoInit
 );
 
-HOOKDEF(HRESULT, WINAPI, CoUninitialize,
+HOOKDEF(void, WINAPI, CoUninitialize,
 	void
 );
 
@@ -1322,8 +1322,8 @@ HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
 	_In_	 DWORD	  dwCapabilities
 );
 
-HOOKDEF(HRESULT, WINAPI, CoTaskMemFree,
-	_In_ LPVOID pv
+HOOKDEF(void, WINAPI, CoTaskMemFree,
+	_In_opt_ LPVOID pv
 );
 
 // WMI Hooks
