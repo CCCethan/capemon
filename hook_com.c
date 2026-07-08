@@ -71,3 +71,85 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	LOQ_hresult("com", "uu", "NetworkResource", strNetworkResource, "User", strUser);
 	return ret;
 }
+
+HOOKDEF(HRESULT, WINAPI, CoInitialize,
+	_In_opt_ LPVOID pvReserved
+) {
+	HRESULT ret;
+	ret = Old_CoInitialize(pvReserved);
+	if (ret == S_OK) {
+		set_com_hooks(NULL, NULL, NULL);
+	}
+	return ret;
+}
+
+HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
+	_In_opt_ LPVOID pvReserved,
+	_In_ DWORD dwCoInit
+) {
+	HRESULT ret;
+	ret = Old_CoInitializeEx(pvReserved, dwCoInit);
+	if (ret == S_OK) {
+		set_com_hooks(NULL, NULL, NULL);
+	}
+	return ret;
+}
+
+HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity,
+	_In_opt_ PSECURITY_DESCRIPTOR pSecDesc,
+	_In_ LONG cAuthSvc,
+	_In_opt_ SOLE_AUTHENTICATION_SERVICE *asAuthSvc,
+	_In_opt_ void *pReserved1,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ void *pAuthList,
+	_In_ DWORD dwCapabilities,
+	_In_opt_ void *pReserved3
+) {
+	HRESULT ret;
+	ret = Old_CoInitializeSecurity(pSecDesc, cAuthSvc, asAuthSvc, pReserved1, dwAuthnLevel, dwImpLevel, pAuthList, dwCapabilities, pReserved3);
+	if (ret == S_OK) {
+		set_com_hooks(NULL, NULL, NULL);
+	}
+	return ret;
+}
+
+HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
+	_In_ IUnknown *pProxy,
+	_In_ DWORD dwAuthnSvc,
+	_In_ DWORD dwAuthzSvc,
+	_In_opt_ OLECHAR *pServerPrincName,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ RPC_AUTH_IDENTITY_HANDLE pAuthInfo,
+	_In_ DWORD dwCapabilities
+) {
+	HRESULT ret;
+	ret = Old_CoSetProxyBlanket(pProxy, dwAuthnSvc, dwAuthzSvc, pServerPrincName, dwAuthnLevel, dwImpLevel, pAuthInfo, dwCapabilities);
+	if (ret == S_OK) {
+		set_com_hooks(NULL, NULL, NULL);
+	}
+	return ret;
+}
+
+HOOKDEF(HRESULT, WINAPI, CoTaskMemFree,
+	_In_ LPVOID pv
+) {
+	HRESULT ret;
+	ret = Old_CoTaskMemFree(pv);
+	if (ret == S_OK) {
+		set_com_hooks(NULL, NULL, NULL);
+	}
+	return ret;
+}
+
+HOOKDEF(HRESULT, WINAPI, CoUninitialize,
+	void
+) {
+	HRESULT ret;
+	ret = Old_CoUninitialize();
+	if (ret == S_OK) {
+		set_com_hooks(NULL, NULL, NULL);
+	}
+	return ret;
+}

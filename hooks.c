@@ -202,6 +202,12 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(combase, CoCreateInstanceEx),
 	HOOK_SPECIAL(combase, CoGetClassObject),
 	HOOK_SPECIAL(combase, CoGetObject),
+	HOOK_SPECIAL(ole32, CoInitialize),
+	HOOK_SPECIAL(ole32, CoInitializeEx),
+	HOOK_SPECIAL(ole32, CoInitializeSecurity),
+	HOOK_SPECIAL(ole32, CoSetProxyBlanket),
+	HOOK_SPECIAL(ole32, CoTaskMemFree),
+	HOOK_SPECIAL(ole32, CoUninitialize),
 
 	// WMI Hooks
 #ifdef _WIN64
