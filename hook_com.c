@@ -80,6 +80,7 @@ HOOKDEF(HRESULT, WINAPI, CoInitialize,
 	if (ret == S_OK) {
 		set_com_hooks(NULL, NULL, NULL);
 	}
+	LOQ_hresult("com", "p", "Reserved", pvReserved);
 	return ret;
 }
 
@@ -92,6 +93,7 @@ HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
 	if (ret == S_OK) {
 		set_com_hooks(NULL, NULL, NULL);
 	}
+	LOQ_hresult("com", "pu", "Reserved", pvReserved, "CoInit", dwCoInit);
 	return ret;
 }
 
@@ -111,6 +113,7 @@ HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity,
 	if (ret == S_OK) {
 		set_com_hooks(NULL, NULL, NULL);
 	}
+	LOQ_hresult("com", "pLLLLLL", "SecDesc", pSecDesc, "AuthSvc", cAuthSvc, "AuthSvc", asAuthSvc, "Reserved1", pReserved1, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthList", pAuthList, "Capabilities", dwCapabilities, "Reserved3", pReserved3);
 	return ret;
 }
 
@@ -129,6 +132,7 @@ HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
 	if (ret == S_OK) {
 		set_com_hooks(NULL, NULL, NULL);
 	}
+	LOQ_hresult("com", "LLLLLLLL", "Proxy", pProxy, "AuthnSvc", dwAuthnSvc, "AuthzSvc", dwAuthzSvc, "ServerPrincName", pServerPrincName, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthInfo", pAuthInfo, "Capabilities", dwCapabilities);
 	return ret;
 }
 
@@ -140,6 +144,7 @@ HOOKDEF(HRESULT, WINAPI, CoTaskMemFree,
 	if (ret == S_OK) {
 		set_com_hooks(NULL, NULL, NULL);
 	}
+	LOQ_hresult("com", "p", "Mem", pv);
 	return ret;
 }
 
@@ -151,5 +156,6 @@ HOOKDEF(HRESULT, WINAPI, CoUninitialize,
 	if (ret == S_OK) {
 		set_com_hooks(NULL, NULL, NULL);
 	}
+	LOQ_hresult("com", "v", "Uninit", NULL);
 	return ret;
 }
