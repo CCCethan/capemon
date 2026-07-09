@@ -1539,3 +1539,149 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	LOQ_zero("process", "lL", "Attribute", Attribute, "Value", lpValue);
 	return ret;
 }
+
+
+// ---- priority-high spec hooks (auto-generated from hook_spec_priority_high.jsonl) ----
+
+HOOKDEF(PVOID, WINAPI, AddVectoredExceptionHandler,
+	ULONG First,
+	PVOID Handler
+) {
+	PVOID ret;
+	ret = Old_AddVectoredExceptionHandler(First, Handler);
+	LOQ_nonnull("process", "hp", "First", First, "Handler", Handler);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, CheckRemoteDebuggerPresent,
+	HANDLE hProcess,
+	PVOID pbDebuggerPresent
+) {
+	BOOL ret;
+	ret = Old_CheckRemoteDebuggerPresent(hProcess, pbDebuggerPresent);
+	LOQ_bool("process", "pp", "hProcess", hProcess, "pbDebuggerPresent", pbDebuggerPresent);
+	return ret;
+}
+
+HOOKDEF(LPVOID, WINAPI, HeapAlloc,
+	HANDLE hHeap,
+	DWORD dwFlags,
+	SIZE_T dwBytes
+) {
+	LPVOID ret;
+	ret = Old_HeapAlloc(hHeap, dwFlags, dwBytes);
+	LOQ_nonnull("process", "phh", "hHeap", hHeap, "dwFlags", dwFlags, "dwBytes", dwBytes);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, HeapFree,
+	HANDLE hHeap,
+	DWORD dwFlags,
+	PVOID lpMem
+) {
+	BOOL ret;
+	ret = Old_HeapFree(hHeap, dwFlags, lpMem);
+	LOQ_bool("process", "php", "hHeap", hHeap, "dwFlags", dwFlags, "lpMem", lpMem);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, IsWow64Process,
+	HANDLE hProcess,
+	PVOID Wow64Process
+) {
+	BOOL ret;
+	ret = Old_IsWow64Process(hProcess, Wow64Process);
+	LOQ_bool("process", "pp", "hProcess", hProcess, "Wow64Process", Wow64Process);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, OpenProcess,
+	DWORD dwDesiredAccess,
+	BOOL bInheritHandle,
+	DWORD dwProcessId
+) {
+	HANDLE ret;
+	ret = Old_OpenProcess(dwDesiredAccess, bInheritHandle, dwProcessId);
+	LOQ_handle("process", "hih", "dwDesiredAccess", dwDesiredAccess, "bInheritHandle", bInheritHandle, "dwProcessId", dwProcessId);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, OpenProcessToken,
+	HANDLE ProcessHandle,
+	DWORD DesiredAccess,
+	PVOID TokenHandle
+) {
+	BOOL ret;
+	ret = Old_OpenProcessToken(ProcessHandle, DesiredAccess, TokenHandle);
+	LOQ_bool("process", "php", "ProcessHandle", ProcessHandle, "DesiredAccess", DesiredAccess, "TokenHandle", TokenHandle);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, QueryFullProcessImageNameA,
+	HANDLE hProcess,
+	DWORD dwFlags,
+	LPCSTR lpExeName,
+	PVOID lpdwSize
+) {
+	BOOL ret;
+	ret = Old_QueryFullProcessImageNameA(hProcess, dwFlags, lpExeName, lpdwSize);
+	LOQ_bool("process", "phsp", "hProcess", hProcess, "dwFlags", dwFlags, "lpExeName", lpExeName, "lpdwSize", lpdwSize);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, QueryFullProcessImageNameW,
+	HANDLE hProcess,
+	DWORD dwFlags,
+	LPCWSTR lpExeName,
+	PVOID lpdwSize
+) {
+	BOOL ret;
+	ret = Old_QueryFullProcessImageNameW(hProcess, dwFlags, lpExeName, lpdwSize);
+	LOQ_bool("process", "phup", "hProcess", hProcess, "dwFlags", dwFlags, "lpExeName", lpExeName, "lpdwSize", lpdwSize);
+	return ret;
+}
+
+HOOKDEF(void, WINAPI, RaiseException,
+	DWORD dwExceptionCode,
+	DWORD dwExceptionFlags,
+	DWORD nNumberOfArguments,
+	PVOID lpArguments
+) {
+	int ret = 0;
+	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
+	LOQ_void("process", "hhhp", "dwExceptionCode", dwExceptionCode, "dwExceptionFlags", dwExceptionFlags, "nNumberOfArguments", nNumberOfArguments, "lpArguments", lpArguments);
+	return;
+}
+
+HOOKDEF(BOOL, WINAPI, TerminateProcess,
+	HANDLE hProcess,
+	UINT uExitCode
+) {
+	BOOL ret;
+	ret = Old_TerminateProcess(hProcess, uExitCode);
+	LOQ_bool("process", "ph", "hProcess", hProcess, "uExitCode", uExitCode);
+	return ret;
+}
+
+HOOKDEF(LPVOID, WINAPI, VirtualAlloc,
+	PVOID lpAddress,
+	SIZE_T dwSize,
+	DWORD flAllocationType,
+	DWORD flProtect
+) {
+	LPVOID ret;
+	ret = Old_VirtualAlloc(lpAddress, dwSize, flAllocationType, flProtect);
+	LOQ_nonnull("process", "phhh", "lpAddress", lpAddress, "dwSize", dwSize, "flAllocationType", flAllocationType, "flProtect", flProtect);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, VirtualFree,
+	PVOID lpAddress,
+	SIZE_T dwSize,
+	DWORD dwFreeType
+) {
+	BOOL ret;
+	ret = Old_VirtualFree(lpAddress, dwSize, dwFreeType);
+	LOQ_bool("process", "phh", "lpAddress", lpAddress, "dwSize", dwSize, "dwFreeType", dwFreeType);
+	return ret;
+}

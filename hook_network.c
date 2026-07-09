@@ -1080,3 +1080,22 @@ HOOKDEF(HRESULT, WINAPI, MkParseDisplayNameEx,
 	LOQ_hresult("network", "u", "Name", szName);
 	return ret;
 }
+
+
+// ---- priority-high spec hooks (auto-generated from hook_spec_priority_high.jsonl) ----
+
+HOOKDEF(DWORD, WINAPI, IcmpSendEcho,
+	HANDLE IcmpHandle,
+	DWORD DestinationAddress,
+	PVOID RequestData,
+	WORD RequestSize,
+	PVOID RequestOptions,
+	PVOID ReplyBuffer,
+	DWORD ReplySize,
+	DWORD Timeout
+) {
+	DWORD ret;
+	ret = Old_IcmpSendEcho(IcmpHandle, DestinationAddress, RequestData, RequestSize, RequestOptions, ReplyBuffer, ReplySize, Timeout);
+	LOQ_nonzero("network", "phphpphh", "IcmpHandle", IcmpHandle, "DestinationAddress", DestinationAddress, "RequestData", RequestData, "RequestSize", RequestSize, "RequestOptions", RequestOptions, "ReplyBuffer", ReplyBuffer, "ReplySize", ReplySize, "Timeout", Timeout);
+	return ret;
+}

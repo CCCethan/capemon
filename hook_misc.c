@@ -2024,3 +2024,237 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 		"OutputBuffer", OutputBufferLength, OutputBuffer);
 	return ret;
 }
+
+
+// ---- priority-high spec hooks (auto-generated from hook_spec_priority_high.jsonl) ----
+
+HOOKDEF(DWORD, WINAPI, CM_Get_DevNode_PropertyW,
+	DWORD dnDevInst,
+	PVOID PropertyKey,
+	PVOID PropertyType,
+	PVOID PropertyBuffer,
+	PVOID PropertyBufferSize,
+	ULONG ulFlags
+) {
+	DWORD ret;
+	ret = Old_CM_Get_DevNode_PropertyW(dnDevInst, PropertyKey, PropertyType, PropertyBuffer, PropertyBufferSize, ulFlags);
+	LOQ_zero("misc", "hpppph", "dnDevInst", dnDevInst, "PropertyKey", PropertyKey, "PropertyType", PropertyType, "PropertyBuffer", PropertyBuffer, "PropertyBufferSize", PropertyBufferSize, "ulFlags", ulFlags);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, CM_Get_DevNode_Status,
+	PVOID pulStatus,
+	PVOID pulProblemNumber,
+	DWORD dnDevInst,
+	ULONG ulFlags
+) {
+	DWORD ret;
+	ret = Old_CM_Get_DevNode_Status(pulStatus, pulProblemNumber, dnDevInst, ulFlags);
+	LOQ_zero("misc", "pphh", "pulStatus", pulStatus, "pulProblemNumber", pulProblemNumber, "dnDevInst", dnDevInst, "ulFlags", ulFlags);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, CM_Get_Device_ID_List_SizeA,
+	PVOID pulLen,
+	LPCSTR pszFilter,
+	ULONG ulFlags
+) {
+	DWORD ret;
+	ret = Old_CM_Get_Device_ID_List_SizeA(pulLen, pszFilter, ulFlags);
+	LOQ_zero("misc", "psh", "pulLen", pulLen, "pszFilter", pszFilter, "ulFlags", ulFlags);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, CM_Get_Device_ID_List_SizeW,
+	PVOID pulLen,
+	LPCWSTR pszFilter,
+	ULONG ulFlags
+) {
+	DWORD ret;
+	ret = Old_CM_Get_Device_ID_List_SizeW(pulLen, pszFilter, ulFlags);
+	LOQ_zero("misc", "puh", "pulLen", pulLen, "pszFilter", pszFilter, "ulFlags", ulFlags);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, CM_Locate_DevNodeA,
+	PVOID pdnDevInst,
+	LPCSTR pDeviceID,
+	ULONG ulFlags
+) {
+	DWORD ret;
+	ret = Old_CM_Locate_DevNodeA(pdnDevInst, pDeviceID, ulFlags);
+	LOQ_zero("misc", "psh", "pdnDevInst", pdnDevInst, "pDeviceID", pDeviceID, "ulFlags", ulFlags);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, CM_Locate_DevNodeW,
+	PVOID pdnDevInst,
+	LPCWSTR pDeviceID,
+	ULONG ulFlags
+) {
+	DWORD ret;
+	ret = Old_CM_Locate_DevNodeW(pdnDevInst, pDeviceID, ulFlags);
+	LOQ_zero("misc", "puh", "pdnDevInst", pdnDevInst, "pDeviceID", pDeviceID, "ulFlags", ulFlags);
+	return ret;
+}
+
+HOOKDEF(NTSTATUS, WINAPI, CallNtPowerInformation,
+	DWORD InformationLevel,
+	PVOID lpInputBuffer,
+	ULONG nInputBufferSize,
+	PVOID lpOutputBuffer,
+	ULONG nOutputBufferSize
+) {
+	NTSTATUS ret;
+	ret = Old_CallNtPowerInformation(InformationLevel, lpInputBuffer, nInputBufferSize, lpOutputBuffer, nOutputBufferSize);
+	LOQ_ntstatus("misc", "hphph", "InformationLevel", InformationLevel, "lpInputBuffer", lpInputBuffer, "nInputBufferSize", nInputBufferSize, "lpOutputBuffer", lpOutputBuffer, "nOutputBufferSize", nOutputBufferSize);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GetSystemPowerStatus,
+	PVOID lpSystemPowerStatus
+) {
+	BOOL ret;
+	ret = Old_GetSystemPowerStatus(lpSystemPowerStatus);
+	LOQ_bool("misc", "p", "lpSystemPowerStatus", lpSystemPowerStatus);
+	return ret;
+}
+
+HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables,
+	DWORD FirmwareTableProviderSignature,
+	PVOID pFirmwareTableEnumBuffer,
+	DWORD BufferSize
+) {
+	UINT ret;
+	ret = Old_EnumSystemFirmwareTables(FirmwareTableProviderSignature, pFirmwareTableEnumBuffer, BufferSize);
+	LOQ_nonzero("misc", "hph", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "pFirmwareTableEnumBuffer", pFirmwareTableEnumBuffer, "BufferSize", BufferSize);
+	return ret;
+}
+
+HOOKDEF(void, WINAPI, GetNativeSystemInfo,
+	PVOID lpSystemInfo
+) {
+	int ret = 0;
+	Old_GetNativeSystemInfo(lpSystemInfo);
+	LOQ_void("misc", "p", "lpSystemInfo", lpSystemInfo);
+	return;
+}
+
+HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
+	DWORD FirmwareTableProviderSignature,
+	DWORD FirmwareTableID,
+	PVOID pFirmwareTableBuffer,
+	DWORD BufferSize
+) {
+	UINT ret;
+	ret = Old_GetSystemFirmwareTable(FirmwareTableProviderSignature, FirmwareTableID, pFirmwareTableBuffer, BufferSize);
+	LOQ_nonzero("misc", "hhph", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableID", FirmwareTableID, "pFirmwareTableBuffer", pFirmwareTableBuffer, "BufferSize", BufferSize);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
+	PVOID lpPerformanceCount
+) {
+	BOOL ret;
+	ret = Old_QueryPerformanceCounter(lpPerformanceCount);
+	LOQ_bool("misc", "p", "lpPerformanceCount", lpPerformanceCount);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, MiniDumpWriteDump,
+	HANDLE hProcess,
+	DWORD ProcessId,
+	HANDLE hFile,
+	DWORD DumpType,
+	PVOID ExceptionParam,
+	PVOID UserStreamParam,
+	PVOID CallbackParam
+) {
+	BOOL ret;
+	ret = Old_MiniDumpWriteDump(hProcess, ProcessId, hFile, DumpType, ExceptionParam, UserStreamParam, CallbackParam);
+	LOQ_bool("misc", "phphppp", "hProcess", hProcess, "ProcessId", ProcessId, "hFile", hFile, "DumpType", DumpType, "ExceptionParam", ExceptionParam, "UserStreamParam", UserStreamParam, "CallbackParam", CallbackParam);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, SetupDiDestroyDeviceInfoList,
+	PVOID DeviceInfoSet
+) {
+	BOOL ret;
+	ret = Old_SetupDiDestroyDeviceInfoList(DeviceInfoSet);
+	LOQ_bool("misc", "p", "DeviceInfoSet", DeviceInfoSet);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, SetupDiEnumDeviceInfo,
+	PVOID DeviceInfoSet,
+	DWORD MemberIndex,
+	PVOID DeviceInfoData
+) {
+	BOOL ret;
+	ret = Old_SetupDiEnumDeviceInfo(DeviceInfoSet, MemberIndex, DeviceInfoData);
+	LOQ_bool("misc", "php", "DeviceInfoSet", DeviceInfoSet, "MemberIndex", MemberIndex, "DeviceInfoData", DeviceInfoData);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, SetupDiEnumDeviceInterfaces,
+	PVOID DeviceInfoSet,
+	PVOID DeviceInfoData,
+	PVOID InterfaceClassGuid,
+	DWORD MemberIndex,
+	PVOID DeviceInterfaceData
+) {
+	BOOL ret;
+	ret = Old_SetupDiEnumDeviceInterfaces(DeviceInfoSet, DeviceInfoData, InterfaceClassGuid, MemberIndex, DeviceInterfaceData);
+	LOQ_bool("misc", "ppphp", "DeviceInfoSet", DeviceInfoSet, "DeviceInfoData", DeviceInfoData, "InterfaceClassGuid", InterfaceClassGuid, "MemberIndex", MemberIndex, "DeviceInterfaceData", DeviceInterfaceData);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInstanceIdA,
+	PVOID DeviceInfoSet,
+	PVOID DeviceInfoData,
+	LPCSTR DeviceInstanceId,
+	DWORD DeviceInstanceIdSize,
+	PVOID RequiredSize
+) {
+	BOOL ret;
+	ret = Old_SetupDiGetDeviceInstanceIdA(DeviceInfoSet, DeviceInfoData, DeviceInstanceId, DeviceInstanceIdSize, RequiredSize);
+	LOQ_bool("misc", "ppshp", "DeviceInfoSet", DeviceInfoSet, "DeviceInfoData", DeviceInfoData, "DeviceInstanceId", DeviceInstanceId, "DeviceInstanceIdSize", DeviceInstanceIdSize, "RequiredSize", RequiredSize);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInterfaceDetail,
+	PVOID DeviceInfoSet,
+	PVOID DeviceInterfaceData,
+	PVOID DeviceInterfaceDetailData,
+	DWORD DeviceInterfaceDetailDataSize,
+	PVOID RequiredSize,
+	PVOID DeviceInfoData
+) {
+	BOOL ret;
+	ret = Old_SetupDiGetDeviceInterfaceDetail(DeviceInfoSet, DeviceInterfaceData, DeviceInterfaceDetailData, DeviceInterfaceDetailDataSize, RequiredSize, DeviceInfoData);
+	LOQ_bool("misc", "ppphpp", "DeviceInfoSet", DeviceInfoSet, "DeviceInterfaceData", DeviceInterfaceData, "DeviceInterfaceDetailData", DeviceInterfaceDetailData, "DeviceInterfaceDetailDataSize", DeviceInterfaceDetailDataSize, "RequiredSize", RequiredSize, "DeviceInfoData", DeviceInfoData);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInterfaceDetailA,
+	PVOID DeviceInfoSet,
+	PVOID DeviceInterfaceData,
+	PVOID DeviceInterfaceDetailData,
+	DWORD DeviceInterfaceDetailDataSize,
+	PVOID RequiredSize,
+	PVOID DeviceInfoData
+) {
+	BOOL ret;
+	ret = Old_SetupDiGetDeviceInterfaceDetailA(DeviceInfoSet, DeviceInterfaceData, DeviceInterfaceDetailData, DeviceInterfaceDetailDataSize, RequiredSize, DeviceInfoData);
+	LOQ_bool("misc", "ppphpp", "DeviceInfoSet", DeviceInfoSet, "DeviceInterfaceData", DeviceInterfaceData, "DeviceInterfaceDetailData", DeviceInterfaceDetailData, "DeviceInterfaceDetailDataSize", DeviceInterfaceDetailDataSize, "RequiredSize", RequiredSize, "DeviceInfoData", DeviceInfoData);
+	return ret;
+}
+
+HOOKDEF(ULONG, NTAPI, RtlNtStatusToDosError,
+	NTSTATUS Status
+) {
+	ULONG ret;
+	ret = Old_RtlNtStatusToDosError(Status);
+	LOQ_nonzero("system", "i", "Status", Status);
+	return ret;
+}

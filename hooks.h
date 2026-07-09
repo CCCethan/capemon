@@ -1326,6 +1326,410 @@ HOOKDEF(void, WINAPI, CoTaskMemFree,
 	_In_opt_ LPVOID pv
 );
 
+// ---- priority-high spec hooks (auto-generated from hook_spec_priority_high.jsonl) ----
+HOOKDEF(HRESULT, WINAPI, CreateBindCtx,
+	DWORD reserved,
+	PVOID ppbc
+);
+HOOKDEF(HRESULT, WINAPI, OleInitialize,
+	PVOID pvReserved
+);
+HOOKDEF(void, WINAPI, OleUninitialize,
+	void
+);
+HOOKDEF(HRESULT, WINAPI, PropVariantClear,
+	PVOID pvar
+);
+/*
+HOOKDEF(void, WINAPI, PropVariantInit,
+	PVOID pvar
+);
+*/
+HOOKDEF(int, WINAPI, StringFromGUID2,
+	PVOID rguid,
+	LPCWSTR lpsz,
+	int cchMax
+);
+HOOKDEF(PVOID, WINAPI, ILCombine,
+	PVOID pidl1,
+	PVOID pidl2
+);
+HOOKDEF(void, WINAPI, ILFree,
+	PVOID pidl
+);
+HOOKDEF(HRESULT, WINAPI, SHBindToObject,
+	PVOID psf,
+	PVOID pidl,
+	PVOID pbc,
+	PVOID riid,
+	PVOID ppv
+);
+HOOKDEF(HRESULT, WINAPI, SHCreateItemFromIDList,
+	PVOID pidl,
+	PVOID riid,
+	PVOID ppv
+);
+HOOKDEF(HRESULT, WINAPI, SHCreateItemFromParsingName,
+	LPCWSTR pszPath,
+	PVOID pbc,
+	PVOID riid,
+	PVOID ppv
+);
+HOOKDEF(HRESULT, WINAPI, SHCreateItemWithParent,
+	PVOID pidlParent,
+	PVOID psfParent,
+	PVOID pidl,
+	PVOID riid,
+	PVOID ppvItem
+);
+HOOKDEF(HRESULT, WINAPI, SHGetDesktopFolder,
+	PVOID ppshf
+);
+HOOKDEF(HRESULT, WINAPI, SHGetFolderLocation,
+	HWND hwnd,
+	int csidl,
+	HANDLE hToken,
+	DWORD dwFlags,
+	PVOID ppidl
+);
+HOOKDEF(HRESULT, WINAPI, SHGetFolderPathA,
+	HWND hwnd,
+	int csidl,
+	HANDLE hToken,
+	DWORD dwFlags,
+	LPCSTR pszPath
+);
+HOOKDEF(HRESULT, WINAPI, SHGetKnownFolderIDList,
+	PVOID rfid,
+	DWORD dwFlags,
+	HANDLE hToken,
+	PVOID ppidl
+);
+HOOKDEF(BOOL, WINAPI, SHGetPathFromIDListA,
+	PVOID pidl,
+	LPCSTR pszPath
+);
+HOOKDEF(BOOL, WINAPI, SHGetPathFromIDListW,
+	PVOID pidl,
+	LPCWSTR pszPath
+);
+HOOKDEF(HRESULT, WINAPI, SHGetSpecialFolderLocation,
+	HWND hwnd,
+	int csidl,
+	PVOID ppidl
+);
+HOOKDEF(BOOL, WINAPI, SHGetSpecialFolderPathA,
+	HWND hwnd,
+	LPCSTR pszPath,
+	int csidl,
+	BOOL fCreate
+);
+HOOKDEF(HRESULT, WINAPI, SHParseDisplayName,
+	LPCWSTR pszName,
+	PVOID pbc,
+	PVOID ppidl,
+	DWORD sfgaoIn,
+	PVOID psfgaoOut
+);
+HOOKDEF(HRESULT, WINAPI, SHQueryRecycleBin,
+	LPCWSTR pszRootPath,
+	PVOID pSHQueryRBInfo
+);
+HOOKDEF(HRESULT, WINAPI, SHQueryRecycleBinA,
+	LPCSTR pszRootPath,
+	PVOID pSHQueryRBInfo
+);
+HOOKDEF(HRESULT, WINAPI, SHQueryRecycleBinW,
+	LPCWSTR pszRootPath,
+	PVOID pSHQueryRBInfo
+);
+HOOKDEF(HRESULT, WINAPI, StrRetToBufW,
+	PVOID pstr,
+	PVOID pidl,
+	LPCWSTR pszBuf,
+	UINT cchBuf
+);
+HOOKDEF(HRESULT, WINAPI, SafeArrayDestroy,
+	PVOID psa
+);
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetElement,
+	PVOID psa,
+	PVOID rgIndices,
+	PVOID pv
+);
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetLBound,
+	PVOID psa,
+	UINT nDim,
+	PVOID plLbound
+);
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetUBound,
+	PVOID psa,
+	UINT nDim,
+	PVOID plUbound
+);
+HOOKDEF(PVOID, WINAPI, SysAllocString,
+	LPCWSTR psz
+);
+HOOKDEF(UINT, WINAPI, SysStringLen,
+	LPCWSTR bstr
+);
+HOOKDEF(HRESULT, WINAPI, VariantClear,
+	PVOID pvarg
+);
+HOOKDEF(void, WINAPI, VariantInit,
+	PVOID pvarg
+);
+HOOKDEF(HANDLE, WINAPI, CreateFileMappingA,
+	HANDLE hFile,
+	PVOID lpFileMappingAttributes,
+	DWORD flProtect,
+	DWORD dwMaximumSizeHigh,
+	DWORD dwMaximumSizeLow,
+	LPCSTR lpName
+);
+HOOKDEF(HANDLE, WINAPI, CreateFileMappingW,
+	HANDLE hFile,
+	PVOID lpFileMappingAttributes,
+	DWORD flProtect,
+	DWORD dwMaximumSizeHigh,
+	DWORD dwMaximumSizeLow,
+	LPCWSTR lpName
+);
+HOOKDEF(LPVOID, WINAPI, MapViewOfFile,
+	HANDLE hFileMappingObject,
+	DWORD dwDesiredAccess,
+	DWORD dwFileOffsetHigh,
+	DWORD dwFileOffsetLow,
+	SIZE_T dwNumberOfBytesToMap
+);
+HOOKDEF(DWORD, WINAPI, QueryDosDeviceA,
+	LPCSTR lpDeviceName,
+	LPCSTR lpTargetPath,
+	DWORD ucchMax
+);
+HOOKDEF(DWORD, WINAPI, CM_Get_DevNode_PropertyW,
+	DWORD dnDevInst,
+	PVOID PropertyKey,
+	PVOID PropertyType,
+	PVOID PropertyBuffer,
+	PVOID PropertyBufferSize,
+	ULONG ulFlags
+);
+HOOKDEF(DWORD, WINAPI, CM_Get_DevNode_Status,
+	PVOID pulStatus,
+	PVOID pulProblemNumber,
+	DWORD dnDevInst,
+	ULONG ulFlags
+);
+HOOKDEF(DWORD, WINAPI, CM_Get_Device_ID_List_SizeA,
+	PVOID pulLen,
+	LPCSTR pszFilter,
+	ULONG ulFlags
+);
+HOOKDEF(DWORD, WINAPI, CM_Get_Device_ID_List_SizeW,
+	PVOID pulLen,
+	LPCWSTR pszFilter,
+	ULONG ulFlags
+);
+HOOKDEF(DWORD, WINAPI, CM_Locate_DevNodeA,
+	PVOID pdnDevInst,
+	LPCSTR pDeviceID,
+	ULONG ulFlags
+);
+HOOKDEF(DWORD, WINAPI, CM_Locate_DevNodeW,
+	PVOID pdnDevInst,
+	LPCWSTR pDeviceID,
+	ULONG ulFlags
+);
+HOOKDEF(NTSTATUS, WINAPI, CallNtPowerInformation,
+	DWORD InformationLevel,
+	PVOID lpInputBuffer,
+	ULONG nInputBufferSize,
+	PVOID lpOutputBuffer,
+	ULONG nOutputBufferSize
+);
+HOOKDEF(BOOL, WINAPI, GetSystemPowerStatus,
+	PVOID lpSystemPowerStatus
+);
+HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables,
+	DWORD FirmwareTableProviderSignature,
+	PVOID pFirmwareTableEnumBuffer,
+	DWORD BufferSize
+);
+HOOKDEF(void, WINAPI, GetNativeSystemInfo,
+	PVOID lpSystemInfo
+);
+HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
+	DWORD FirmwareTableProviderSignature,
+	DWORD FirmwareTableID,
+	PVOID pFirmwareTableBuffer,
+	DWORD BufferSize
+);
+HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
+	PVOID lpPerformanceCount
+);
+HOOKDEF(BOOL, WINAPI, MiniDumpWriteDump,
+	HANDLE hProcess,
+	DWORD ProcessId,
+	HANDLE hFile,
+	DWORD DumpType,
+	PVOID ExceptionParam,
+	PVOID UserStreamParam,
+	PVOID CallbackParam
+);
+HOOKDEF(BOOL, WINAPI, SetupDiDestroyDeviceInfoList,
+	PVOID DeviceInfoSet
+);
+HOOKDEF(BOOL, WINAPI, SetupDiEnumDeviceInfo,
+	PVOID DeviceInfoSet,
+	DWORD MemberIndex,
+	PVOID DeviceInfoData
+);
+HOOKDEF(BOOL, WINAPI, SetupDiEnumDeviceInterfaces,
+	PVOID DeviceInfoSet,
+	PVOID DeviceInfoData,
+	PVOID InterfaceClassGuid,
+	DWORD MemberIndex,
+	PVOID DeviceInterfaceData
+);
+HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInstanceIdA,
+	PVOID DeviceInfoSet,
+	PVOID DeviceInfoData,
+	LPCSTR DeviceInstanceId,
+	DWORD DeviceInstanceIdSize,
+	PVOID RequiredSize
+);
+HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInterfaceDetail,
+	PVOID DeviceInfoSet,
+	PVOID DeviceInterfaceData,
+	PVOID DeviceInterfaceDetailData,
+	DWORD DeviceInterfaceDetailDataSize,
+	PVOID RequiredSize,
+	PVOID DeviceInfoData
+);
+HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInterfaceDetailA,
+	PVOID DeviceInfoSet,
+	PVOID DeviceInterfaceData,
+	PVOID DeviceInterfaceDetailData,
+	DWORD DeviceInterfaceDetailDataSize,
+	PVOID RequiredSize,
+	PVOID DeviceInfoData
+);
+HOOKDEF(ULONG, NTAPI, RtlNtStatusToDosError,
+	NTSTATUS Status
+);
+HOOKDEF(DWORD, WINAPI, IcmpSendEcho,
+	HANDLE IcmpHandle,
+	DWORD DestinationAddress,
+	PVOID RequestData,
+	WORD RequestSize,
+	PVOID RequestOptions,
+	PVOID ReplyBuffer,
+	DWORD ReplySize,
+	DWORD Timeout
+);
+HOOKDEF(PVOID, WINAPI, AddVectoredExceptionHandler,
+	ULONG First,
+	PVOID Handler
+);
+HOOKDEF(BOOL, WINAPI, CheckRemoteDebuggerPresent,
+	HANDLE hProcess,
+	PVOID pbDebuggerPresent
+);
+HOOKDEF(LPVOID, WINAPI, HeapAlloc,
+	HANDLE hHeap,
+	DWORD dwFlags,
+	SIZE_T dwBytes
+);
+HOOKDEF(BOOL, WINAPI, HeapFree,
+	HANDLE hHeap,
+	DWORD dwFlags,
+	PVOID lpMem
+);
+HOOKDEF(BOOL, WINAPI, IsWow64Process,
+	HANDLE hProcess,
+	PVOID Wow64Process
+);
+HOOKDEF(HANDLE, WINAPI, OpenProcess,
+	DWORD dwDesiredAccess,
+	BOOL bInheritHandle,
+	DWORD dwProcessId
+);
+HOOKDEF(BOOL, WINAPI, OpenProcessToken,
+	HANDLE ProcessHandle,
+	DWORD DesiredAccess,
+	PVOID TokenHandle
+);
+HOOKDEF(BOOL, WINAPI, QueryFullProcessImageNameA,
+	HANDLE hProcess,
+	DWORD dwFlags,
+	LPCSTR lpExeName,
+	PVOID lpdwSize
+);
+HOOKDEF(BOOL, WINAPI, QueryFullProcessImageNameW,
+	HANDLE hProcess,
+	DWORD dwFlags,
+	LPCWSTR lpExeName,
+	PVOID lpdwSize
+);
+HOOKDEF(void, WINAPI, RaiseException,
+	DWORD dwExceptionCode,
+	DWORD dwExceptionFlags,
+	DWORD nNumberOfArguments,
+	PVOID lpArguments
+);
+HOOKDEF(BOOL, WINAPI, TerminateProcess,
+	HANDLE hProcess,
+	UINT uExitCode
+);
+HOOKDEF(LPVOID, WINAPI, VirtualAlloc,
+	PVOID lpAddress,
+	SIZE_T dwSize,
+	DWORD flAllocationType,
+	DWORD flProtect
+);
+HOOKDEF(BOOL, WINAPI, VirtualFree,
+	PVOID lpAddress,
+	SIZE_T dwSize,
+	DWORD dwFreeType
+);
+HOOKDEF(BOOL, WINAPI, Thread32First,
+	HANDLE hSnapshot,
+	PVOID lpte
+);
+HOOKDEF(BOOL, WINAPI, Thread32Next,
+	HANDLE hSnapshot,
+	PVOID lpte
+);
+HOOKDEF(HWND, WINAPI, CreateWindowExA,
+	DWORD dwExStyle,
+	LPCSTR lpClassName,
+	LPCSTR lpWindowName,
+	DWORD dwStyle,
+	int X,
+	int Y,
+	int nWidth,
+	int nHeight,
+	HWND hWndParent,
+	HMENU hMenu,
+	HINSTANCE hInstance,
+	PVOID lpParam
+);
+HOOKDEF(HWND, WINAPI, CreateWindowExW,
+	DWORD dwExStyle,
+	LPCWSTR lpClassName,
+	LPCWSTR lpWindowName,
+	DWORD dwStyle,
+	int X,
+	int Y,
+	int nWidth,
+	int nHeight,
+	HWND hWndParent,
+	HMENU hMenu,
+	HINSTANCE hInstance,
+	PVOID lpParam
+);
+
 // WMI Hooks
 HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	_In_	PVOID			_this,

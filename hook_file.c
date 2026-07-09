@@ -1926,3 +1926,57 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 
 	return ret;
 }
+
+// ---- priority-high spec hooks (auto-generated from hook_spec_priority_high.jsonl) ----
+
+HOOKDEF(HANDLE, WINAPI, CreateFileMappingA,
+	HANDLE hFile,
+	PVOID lpFileMappingAttributes,
+	DWORD flProtect,
+	DWORD dwMaximumSizeHigh,
+	DWORD dwMaximumSizeLow,
+	LPCSTR lpName
+) {
+	HANDLE ret;
+	ret = Old_CreateFileMappingA(hFile, lpFileMappingAttributes, flProtect, dwMaximumSizeHigh, dwMaximumSizeLow, lpName);
+	LOQ_handle("filesystem", "pphhhs", "hFile", hFile, "lpFileMappingAttributes", lpFileMappingAttributes, "flProtect", flProtect, "dwMaximumSizeHigh", dwMaximumSizeHigh, "dwMaximumSizeLow", dwMaximumSizeLow, "lpName", lpName);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, CreateFileMappingW,
+	HANDLE hFile,
+	PVOID lpFileMappingAttributes,
+	DWORD flProtect,
+	DWORD dwMaximumSizeHigh,
+	DWORD dwMaximumSizeLow,
+	LPCWSTR lpName
+) {
+	HANDLE ret;
+	ret = Old_CreateFileMappingW(hFile, lpFileMappingAttributes, flProtect, dwMaximumSizeHigh, dwMaximumSizeLow, lpName);
+	LOQ_handle("filesystem", "pphhhu", "hFile", hFile, "lpFileMappingAttributes", lpFileMappingAttributes, "flProtect", flProtect, "dwMaximumSizeHigh", dwMaximumSizeHigh, "dwMaximumSizeLow", dwMaximumSizeLow, "lpName", lpName);
+	return ret;
+}
+
+HOOKDEF(LPVOID, WINAPI, MapViewOfFile,
+	HANDLE hFileMappingObject,
+	DWORD dwDesiredAccess,
+	DWORD dwFileOffsetHigh,
+	DWORD dwFileOffsetLow,
+	SIZE_T dwNumberOfBytesToMap
+) {
+	LPVOID ret;
+	ret = Old_MapViewOfFile(hFileMappingObject, dwDesiredAccess, dwFileOffsetHigh, dwFileOffsetLow, dwNumberOfBytesToMap);
+	LOQ_nonnull("filesystem", "phhhh", "hFileMappingObject", hFileMappingObject, "dwDesiredAccess", dwDesiredAccess, "dwFileOffsetHigh", dwFileOffsetHigh, "dwFileOffsetLow", dwFileOffsetLow, "dwNumberOfBytesToMap", dwNumberOfBytesToMap);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, QueryDosDeviceA,
+	LPCSTR lpDeviceName,
+	LPCSTR lpTargetPath,
+	DWORD ucchMax
+) {
+	DWORD ret;
+	ret = Old_QueryDosDeviceA(lpDeviceName, lpTargetPath, ucchMax);
+	LOQ_nonzero("filesystem", "ssh", "lpDeviceName", lpDeviceName, "lpTargetPath", lpTargetPath, "ucchMax", ucchMax);
+	return ret;
+}

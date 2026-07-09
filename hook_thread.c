@@ -1039,3 +1039,25 @@ HOOKDEF(NTSTATUS, WINAPI, SetThreadDescription,
 	LOQ_ntstatus("threading", "pu", "ThreadHandle", hThread, "ThreadDescription", lpThreadDescription);
 	return ret;
 }
+
+// ---- priority-high spec hooks (auto-generated from hook_spec_priority_high.jsonl) ----
+
+HOOKDEF(BOOL, WINAPI, Thread32First,
+	HANDLE hSnapshot,
+	PVOID lpte
+) {
+	BOOL ret;
+	ret = Old_Thread32First(hSnapshot, lpte);
+	LOQ_bool("threading", "pp", "hSnapshot", hSnapshot, "lpte", lpte);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, Thread32Next,
+	HANDLE hSnapshot,
+	PVOID lpte
+) {
+	BOOL ret;
+	ret = Old_Thread32Next(hSnapshot, lpte);
+	LOQ_bool("threading", "pp", "hSnapshot", hSnapshot, "lpte", lpte);
+	return ret;
+}
