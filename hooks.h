@@ -1701,34 +1701,6 @@ HOOKDEF(BOOL, WINAPI, Thread32Next,
 	HANDLE hSnapshot,
 	PVOID lpte
 );
-HOOKDEF(HWND, WINAPI, CreateWindowExA,
-	DWORD dwExStyle,
-	LPCSTR lpClassName,
-	LPCSTR lpWindowName,
-	DWORD dwStyle,
-	int X,
-	int Y,
-	int nWidth,
-	int nHeight,
-	HWND hWndParent,
-	HMENU hMenu,
-	HINSTANCE hInstance,
-	PVOID lpParam
-);
-HOOKDEF(HWND, WINAPI, CreateWindowExW,
-	DWORD dwExStyle,
-	LPCWSTR lpClassName,
-	LPCWSTR lpWindowName,
-	DWORD dwStyle,
-	int X,
-	int Y,
-	int nWidth,
-	int nHeight,
-	HWND hWndParent,
-	HMENU hMenu,
-	HINSTANCE hInstance,
-	PVOID lpParam
-);
 
 // WMI Hooks
 HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,

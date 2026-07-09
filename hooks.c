@@ -298,8 +298,6 @@ hook_t full_hooks[] = {
 	HOOK(kernel32, VirtualFree),
 	HOOK(kernel32, Thread32First),
 	HOOK(kernel32, Thread32Next),
-	HOOK(user32, CreateWindowExA),
-	HOOK(user32, CreateWindowExW),
 
 	// WMI Hooks
 #ifdef _WIN64
