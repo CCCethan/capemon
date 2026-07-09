@@ -1556,17 +1556,11 @@ HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables,
 	PVOID pFirmwareTableEnumBuffer,
 	DWORD BufferSize
 );
-HOOKDEF(void, WINAPI, GetNativeSystemInfo,
-	PVOID lpSystemInfo
-);
 HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
 	DWORD FirmwareTableProviderSignature,
 	DWORD FirmwareTableID,
 	PVOID pFirmwareTableBuffer,
 	DWORD BufferSize
-);
-HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
-	PVOID lpPerformanceCount
 );
 HOOKDEF(BOOL, WINAPI, MiniDumpWriteDump,
 	HANDLE hProcess,
@@ -1615,9 +1609,6 @@ HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInterfaceDetailA,
 	PVOID RequiredSize,
 	PVOID DeviceInfoData
 );
-HOOKDEF(ULONG, NTAPI, RtlNtStatusToDosError,
-	NTSTATUS Status
-);
 HOOKDEF(DWORD, WINAPI, IcmpSendEcho,
 	HANDLE IcmpHandle,
 	DWORD DestinationAddress,
@@ -1635,16 +1626,6 @@ HOOKDEF(PVOID, WINAPI, AddVectoredExceptionHandler,
 HOOKDEF(BOOL, WINAPI, CheckRemoteDebuggerPresent,
 	HANDLE hProcess,
 	PVOID pbDebuggerPresent
-);
-HOOKDEF(LPVOID, WINAPI, HeapAlloc,
-	HANDLE hHeap,
-	DWORD dwFlags,
-	SIZE_T dwBytes
-);
-HOOKDEF(BOOL, WINAPI, HeapFree,
-	HANDLE hHeap,
-	DWORD dwFlags,
-	PVOID lpMem
 );
 HOOKDEF(BOOL, WINAPI, IsWow64Process,
 	HANDLE hProcess,
@@ -1681,17 +1662,6 @@ HOOKDEF(void, WINAPI, RaiseException,
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	HANDLE hProcess,
 	UINT uExitCode
-);
-HOOKDEF(LPVOID, WINAPI, VirtualAlloc,
-	PVOID lpAddress,
-	SIZE_T dwSize,
-	DWORD flAllocationType,
-	DWORD flProtect
-);
-HOOKDEF(BOOL, WINAPI, VirtualFree,
-	PVOID lpAddress,
-	SIZE_T dwSize,
-	DWORD dwFreeType
 );
 HOOKDEF(BOOL, WINAPI, Thread32First,
 	HANDLE hSnapshot,

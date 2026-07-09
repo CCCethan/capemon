@@ -1563,27 +1563,7 @@ HOOKDEF(BOOL, WINAPI, CheckRemoteDebuggerPresent,
 	return ret;
 }
 
-HOOKDEF(LPVOID, WINAPI, HeapAlloc,
-	HANDLE hHeap,
-	DWORD dwFlags,
-	SIZE_T dwBytes
-) {
-	LPVOID ret;
-	ret = Old_HeapAlloc(hHeap, dwFlags, dwBytes);
-	LOQ_nonnull("process", "phh", "hHeap", hHeap, "dwFlags", dwFlags, "dwBytes", dwBytes);
-	return ret;
-}
 
-HOOKDEF(BOOL, WINAPI, HeapFree,
-	HANDLE hHeap,
-	DWORD dwFlags,
-	PVOID lpMem
-) {
-	BOOL ret;
-	ret = Old_HeapFree(hHeap, dwFlags, lpMem);
-	LOQ_bool("process", "php", "hHeap", hHeap, "dwFlags", dwFlags, "lpMem", lpMem);
-	return ret;
-}
 
 HOOKDEF(BOOL, WINAPI, IsWow64Process,
 	HANDLE hProcess,
@@ -1663,25 +1643,4 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	return ret;
 }
 
-HOOKDEF(LPVOID, WINAPI, VirtualAlloc,
-	PVOID lpAddress,
-	SIZE_T dwSize,
-	DWORD flAllocationType,
-	DWORD flProtect
-) {
-	LPVOID ret;
-	ret = Old_VirtualAlloc(lpAddress, dwSize, flAllocationType, flProtect);
-	LOQ_nonnull("process", "phhh", "lpAddress", lpAddress, "dwSize", dwSize, "flAllocationType", flAllocationType, "flProtect", flProtect);
-	return ret;
-}
 
-HOOKDEF(BOOL, WINAPI, VirtualFree,
-	PVOID lpAddress,
-	SIZE_T dwSize,
-	DWORD dwFreeType
-) {
-	BOOL ret;
-	ret = Old_VirtualFree(lpAddress, dwSize, dwFreeType);
-	LOQ_bool("process", "phh", "lpAddress", lpAddress, "dwSize", dwSize, "dwFreeType", dwFreeType);
-	return ret;
-}

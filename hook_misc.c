@@ -2131,14 +2131,6 @@ HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables,
 	return ret;
 }
 
-HOOKDEF(void, WINAPI, GetNativeSystemInfo,
-	PVOID lpSystemInfo
-) {
-	int ret = 0;
-	Old_GetNativeSystemInfo(lpSystemInfo);
-	LOQ_void("misc", "p", "lpSystemInfo", lpSystemInfo);
-	return;
-}
 
 HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
 	DWORD FirmwareTableProviderSignature,
@@ -2152,14 +2144,6 @@ HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
 	return ret;
 }
 
-HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
-	PVOID lpPerformanceCount
-) {
-	BOOL ret;
-	ret = Old_QueryPerformanceCounter(lpPerformanceCount);
-	LOQ_bool("misc", "p", "lpPerformanceCount", lpPerformanceCount);
-	return ret;
-}
 
 HOOKDEF(BOOL, WINAPI, MiniDumpWriteDump,
 	HANDLE hProcess,
@@ -2250,11 +2234,3 @@ HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInterfaceDetailA,
 	return ret;
 }
 
-HOOKDEF(ULONG, NTAPI, RtlNtStatusToDosError,
-	NTSTATUS Status
-) {
-	ULONG ret;
-	ret = Old_RtlNtStatusToDosError(Status);
-	LOQ_nonzero("system", "i", "Status", Status);
-	return ret;
-}
