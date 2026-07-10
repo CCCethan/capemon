@@ -2020,16 +2020,6 @@ HOOKDEF(BOOL, WINAPI, FindClose,
 	return ret;
 }
 
-HOOKDEF(HANDLE, WINAPI, FindFirstFileA,
-	LPCSTR lpFileName,
-	PVOID lpFindFileData
-) {
-	HANDLE ret;
-	ret = Old_FindFirstFileA(lpFileName, lpFindFileData);
-	LOQ_handle("filesystem", "sp", "lpFileName", lpFileName, "lpFindFileData", lpFindFileData);
-	return ret;
-}
-
 HOOKDEF(HANDLE, WINAPI, FindFirstFileW,
 	LPCWSTR lpFileName,
 	PVOID lpFindFileData
@@ -2287,15 +2277,6 @@ HOOKDEF(LPSTR, WINAPI, PathCombineA,
 	LPSTR ret;
 	ret = Old_PathCombineA(pszDest, pszDir, pszFile);
 	LOQ_nonzero("filesystem", "pss", "pszDest", pszDest, "pszDir", pszDir, "pszFile", pszFile);
-	return ret;
-}
-
-HOOKDEF(BOOL, WINAPI, PathFileExistsA,
-	LPCSTR pszPath
-) {
-	BOOL ret;
-	ret = Old_PathFileExistsA(pszPath);
-	LOQ_bool("filesystem", "s", "pszPath", pszPath);
 	return ret;
 }
 

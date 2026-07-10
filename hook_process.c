@@ -1766,16 +1766,6 @@ HOOKDEF(BOOL, WINAPI, IsValidSid,
 	return ret;
 }
 
-HOOKDEF(HLOCAL, WINAPI, LocalAlloc,
-	UINT uFlags,
-	SIZE_T uBytes
-) {
-	HLOCAL ret;
-	ret = Old_LocalAlloc(uFlags, uBytes);
-	LOQ_nonzero("process", "hh", "uFlags", uFlags, "uBytes", uBytes);
-	return ret;
-}
-
 HOOKDEF(BOOL, WINAPI, ProcessIdToSessionId,
 	DWORD dwProcessId,
 	PVOID pSessionId

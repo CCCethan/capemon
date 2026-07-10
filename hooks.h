@@ -1673,6 +1673,7 @@ HOOKDEF(BOOL, WINAPI, Thread32Next,
 );
 
 
+
 // ---- all unhooked-classified hooks (auto-generated, sanitized types) ----
 HOOKDEF(BOOL, WINAPI, AddClipboardFormatListener,
 	HWND hwnd
@@ -1929,15 +1930,6 @@ HOOKDEF(BOOL, WINAPI, EnumPrinters,
 	LPDWORD pcbNeeded,
 	LPDWORD pcReturned
 );
-HOOKDEF(BOOL, WINAPI, EnumPrintersA,
-	DWORD Flags,
-	LPSTR Name,
-	DWORD Level,
-	LPBYTE pPrinterEnum,
-	DWORD cbBuf,
-	LPDWORD pcbNeeded,
-	LPDWORD pcReturned
-);
 HOOKDEF(BOOL, WINAPI, EnumPrintersW,
 	DWORD Flags,
 	LPWSTR Name,
@@ -2007,10 +1999,6 @@ HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime,
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	HANDLE hFindFile
-);
-HOOKDEF(HANDLE, WINAPI, FindFirstFileA,
-	LPCSTR lpFileName,
-	PVOID lpFindFileData
 );
 HOOKDEF(HANDLE, WINAPI, FindFirstFileW,
 	LPCWSTR lpFileName,
@@ -2456,10 +2444,6 @@ HOOKDEF(HICON, WINAPI, LoadIconW,
 HOOKDEF(HMODULE, WINAPI, LoadLibraryA,
 	LPCSTR lpLibFileName
 );
-HOOKDEF(HLOCAL, WINAPI, LocalAlloc,
-	UINT uFlags,
-	SIZE_T uBytes
-);
 HOOKDEF(HRESULT, WINAPI, MFCreateAttributes,
 	PVOID ppMFAttributes,
 	UINT32 cInitialSize
@@ -2570,9 +2554,6 @@ HOOKDEF(LPSTR, WINAPI, PathCombineA,
 	LPSTR pszDest,
 	LPCSTR pszDir,
 	LPCSTR pszFile
-);
-HOOKDEF(BOOL, WINAPI, PathFileExistsA,
-	LPCSTR pszPath
 );
 HOOKDEF(BOOL, WINAPI, PathFileExistsW,
 	LPCWSTR pszPath

@@ -2336,21 +2336,6 @@ HOOKDEF(BOOL, WINAPI, EnumPrinters,
 	return ret;
 }
 
-HOOKDEF(BOOL, WINAPI, EnumPrintersA,
-	DWORD Flags,
-	LPSTR Name,
-	DWORD Level,
-	LPBYTE pPrinterEnum,
-	DWORD cbBuf,
-	LPDWORD pcbNeeded,
-	LPDWORD pcReturned
-) {
-	BOOL ret;
-	ret = Old_EnumPrintersA(Flags, Name, Level, pPrinterEnum, cbBuf, pcbNeeded, pcReturned);
-	LOQ_bool("misc", "hphhhhh", "Flags", Flags, "Name", Name, "Level", Level, "pPrinterEnum", pPrinterEnum, "cbBuf", cbBuf, "pcbNeeded", pcbNeeded, "pcReturned", pcReturned);
-	return ret;
-}
-
 HOOKDEF(BOOL, WINAPI, EnumPrintersW,
 	DWORD Flags,
 	LPWSTR Name,
