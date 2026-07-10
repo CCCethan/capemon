@@ -1980,3 +1980,410 @@ HOOKDEF(DWORD, WINAPI, QueryDosDeviceA,
 	LOQ_nonzero("filesystem", "ssh", "lpDeviceName", lpDeviceName, "lpTargetPath", lpTargetPath, "ucchMax", ucchMax);
 	return ret;
 }
+
+
+// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+
+HOOKDEF(HANDLE, WINAPI, CreateFileW,
+	LPCWSTR lpFileName,
+	DWORD dwDesiredAccess,
+	DWORD dwShareMode,
+	LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+	DWORD dwCreationDisposition,
+	DWORD dwFlagsAndAttributes,
+	HANDLE hTemplateFile
+) {
+	HANDLE ret;
+	ret = Old_CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+	LOQ_handle("filesystem", "uhhphhp", "lpFileName", lpFileName, "dwDesiredAccess", dwDesiredAccess, "dwShareMode", dwShareMode, "lpSecurityAttributes", lpSecurityAttributes, "dwCreationDisposition", dwCreationDisposition, "dwFlagsAndAttributes", dwFlagsAndAttributes, "hTemplateFile", hTemplateFile);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, CreatePipe,
+	PHANDLE hReadPipe,
+	PHANDLE hWritePipe,
+	LPSECURITY_ATTRIBUTES lpPipeAttributes,
+	DWORD nSize
+) {
+	BOOL ret;
+	ret = Old_CreatePipe(hReadPipe, hWritePipe, lpPipeAttributes, nSize);
+	LOQ_bool("filesystem", "ppph", "hReadPipe", hReadPipe, "hWritePipe", hWritePipe, "lpPipeAttributes", lpPipeAttributes, "nSize", nSize);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, FindClose,
+	HANDLE hFindFile
+) {
+	BOOL ret;
+	ret = Old_FindClose(hFindFile);
+	LOQ_bool("filesystem", "p", "hFindFile", hFindFile);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, FindFirstFileA,
+	LPCSTR lpFileName,
+	LPWIN32_FIND_DATAA lpFindFileData
+) {
+	HANDLE ret;
+	ret = Old_FindFirstFileA(lpFileName, lpFindFileData);
+	LOQ_handle("filesystem", "sp", "lpFileName", lpFileName, "lpFindFileData", lpFindFileData);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, FindFirstFileW,
+	LPCWSTR lpFileName,
+	LPWIN32_FIND_DATAW lpFindFileData
+) {
+	HANDLE ret;
+	ret = Old_FindFirstFileW(lpFileName, lpFindFileData);
+	LOQ_handle("filesystem", "up", "lpFileName", lpFileName, "lpFindFileData", lpFindFileData);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, FindFirstVolumeA,
+	LPSTR lpszVolumeName,
+	DWORD cchBufferLength
+) {
+	HANDLE ret;
+	ret = Old_FindFirstVolumeA(lpszVolumeName, cchBufferLength);
+	LOQ_handle("filesystem", "ph", "lpszVolumeName", lpszVolumeName, "cchBufferLength", cchBufferLength);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, FindFirstVolumeW,
+	LPWSTR lpszVolumeName,
+	DWORD cchBufferLength
+) {
+	HANDLE ret;
+	ret = Old_FindFirstVolumeW(lpszVolumeName, cchBufferLength);
+	LOQ_handle("filesystem", "ph", "lpszVolumeName", lpszVolumeName, "cchBufferLength", cchBufferLength);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, FindNextFileA,
+	HANDLE hFindFile,
+	LPWIN32_FIND_DATAA lpFindFileData
+) {
+	BOOL ret;
+	ret = Old_FindNextFileA(hFindFile, lpFindFileData);
+	LOQ_bool("filesystem", "pp", "hFindFile", hFindFile, "lpFindFileData", lpFindFileData);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, FindNextVolumeA,
+	HANDLE hFindVolume,
+	LPSTR lpszVolumeName,
+	DWORD cchBufferLength
+) {
+	BOOL ret;
+	ret = Old_FindNextVolumeA(hFindVolume, lpszVolumeName, cchBufferLength);
+	LOQ_bool("filesystem", "pph", "hFindVolume", hFindVolume, "lpszVolumeName", lpszVolumeName, "cchBufferLength", cchBufferLength);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, FindNextVolumeW,
+	HANDLE hFindVolume,
+	LPWSTR lpszVolumeName,
+	DWORD cchBufferLength
+) {
+	BOOL ret;
+	ret = Old_FindNextVolumeW(hFindVolume, lpszVolumeName, cchBufferLength);
+	LOQ_bool("filesystem", "pph", "hFindVolume", hFindVolume, "lpszVolumeName", lpszVolumeName, "cchBufferLength", cchBufferLength);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, FindVolumeClose,
+	HANDLE hFindVolume
+) {
+	BOOL ret;
+	ret = Old_FindVolumeClose(hFindVolume);
+	LOQ_bool("filesystem", "p", "hFindVolume", hFindVolume);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, GetCompressedFileSizeW,
+	LPCWSTR lpFileName,
+	LPDWORD lpFileSizeHigh
+) {
+	DWORD ret;
+	ret = Old_GetCompressedFileSizeW(lpFileName, lpFileSizeHigh);
+	LOQ_nonzero("filesystem", "up", "lpFileName", lpFileName, "lpFileSizeHigh", lpFileSizeHigh);
+	return ret;
+}
+
+HOOKDEF(UINT, WINAPI, GetDriveTypeA,
+	LPCSTR lpRootPathName
+) {
+	UINT ret;
+	ret = Old_GetDriveTypeA(lpRootPathName);
+	LOQ_nonzero("filesystem", "s", "lpRootPathName", lpRootPathName);
+	return ret;
+}
+
+HOOKDEF(UINT, WINAPI, GetDriveTypeW,
+	LPCWSTR lpRootPathName
+) {
+	UINT ret;
+	ret = Old_GetDriveTypeW(lpRootPathName);
+	LOQ_nonzero("filesystem", "u", "lpRootPathName", lpRootPathName);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, GetFileAttributesA,
+	LPCSTR lpFileName
+) {
+	DWORD ret;
+	ret = Old_GetFileAttributesA(lpFileName);
+	LOQ_nonzero("filesystem", "s", "lpFileName", lpFileName);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GetFileAttributesExA,
+	LPCSTR lpFileName,
+	GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	LPVOID lpFileInformation
+) {
+	BOOL ret;
+	ret = Old_GetFileAttributesExA(lpFileName, fInfoLevelId, lpFileInformation);
+	LOQ_bool("filesystem", "shp", "lpFileName", lpFileName, "fInfoLevelId", fInfoLevelId, "lpFileInformation", lpFileInformation);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GetFileAttributesExW,
+	LPCWSTR lpFileName,
+	GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	LPVOID lpFileInformation
+) {
+	BOOL ret;
+	ret = Old_GetFileAttributesExW(lpFileName, fInfoLevelId, lpFileInformation);
+	LOQ_bool("filesystem", "uhp", "lpFileName", lpFileName, "fInfoLevelId", fInfoLevelId, "lpFileInformation", lpFileInformation);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, GetFileAttributesW,
+	LPCWSTR lpFileName
+) {
+	DWORD ret;
+	ret = Old_GetFileAttributesW(lpFileName);
+	LOQ_nonzero("filesystem", "u", "lpFileName", lpFileName);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GetFileInformationByHandleEx,
+	HANDLE hFile,
+	FILE_INFO_BY_HANDLE_CLASS FileInformationClass,
+	LPVOID lpFileInformation,
+	DWORD dwBufferSize
+) {
+	BOOL ret;
+	ret = Old_GetFileInformationByHandleEx(hFile, FileInformationClass, lpFileInformation, dwBufferSize);
+	LOQ_bool("filesystem", "phph", "hFile", hFile, "FileInformationClass", FileInformationClass, "lpFileInformation", lpFileInformation, "dwBufferSize", dwBufferSize);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
+	HANDLE hFile,
+	PLARGE_INTEGER lpFileSize
+) {
+	BOOL ret;
+	ret = Old_GetFileSizeEx(hFile, lpFileSize);
+	LOQ_bool("filesystem", "pp", "hFile", hFile, "lpFileSize", lpFileSize);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GetFileTime,
+	HANDLE hFile,
+	LPFILETIME lpCreationTime,
+	LPFILETIME lpLastAccessTime,
+	LPFILETIME lpLastWriteTime
+) {
+	BOOL ret;
+	ret = Old_GetFileTime(hFile, lpCreationTime, lpLastAccessTime, lpLastWriteTime);
+	LOQ_bool("filesystem", "pppp", "hFile", hFile, "lpCreationTime", lpCreationTime, "lpLastAccessTime", lpLastAccessTime, "lpLastWriteTime", lpLastWriteTime);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, GetLogicalDriveStringsA,
+	DWORD nBufferLength,
+	LPSTR lpBuffer
+) {
+	DWORD ret;
+	ret = Old_GetLogicalDriveStringsA(nBufferLength, lpBuffer);
+	LOQ_nonzero("filesystem", "hp", "nBufferLength", nBufferLength, "lpBuffer", lpBuffer);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, GetLogicalDriveStringsW,
+	DWORD nBufferLength,
+	LPWSTR lpBuffer
+) {
+	DWORD ret;
+	ret = Old_GetLogicalDriveStringsW(nBufferLength, lpBuffer);
+	LOQ_nonzero("filesystem", "hp", "nBufferLength", nBufferLength, "lpBuffer", lpBuffer);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, GetLogicalDrives,
+	void
+) {
+	DWORD ret;
+	ret = Old_GetLogicalDrives();
+	LOQ_nonzero("filesystem", "");
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, GetModuleFileNameA,
+	HMODULE hModule,
+	LPSTR lpFilename,
+	DWORD nSize
+) {
+	DWORD ret;
+	ret = Old_GetModuleFileNameA(hModule, lpFilename, nSize);
+	LOQ_nonzero("filesystem", "pph", "hModule", hModule, "lpFilename", lpFilename, "nSize", nSize);
+	return ret;
+}
+
+HOOKDEF(UINT, WINAPI, GetTempFileNameA,
+	LPCSTR lpPathName,
+	LPCSTR lpPrefixString,
+	UINT uUnique,
+	LPSTR lpTempFileName
+) {
+	UINT ret;
+	ret = Old_GetTempFileNameA(lpPathName, lpPrefixString, uUnique, lpTempFileName);
+	LOQ_nonzero("filesystem", "sshp", "lpPathName", lpPathName, "lpPrefixString", lpPrefixString, "uUnique", uUnique, "lpTempFileName", lpTempFileName);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GetVolumePathNamesForVolumeNameA,
+	LPCSTR lpszVolumeName,
+	LPCH lpszVolumePathNames,
+	DWORD cchBufferLength,
+	PDWORD lpcchReturnLength
+) {
+	BOOL ret;
+	ret = Old_GetVolumePathNamesForVolumeNameA(lpszVolumeName, lpszVolumePathNames, cchBufferLength, lpcchReturnLength);
+	LOQ_bool("filesystem", "sphp", "lpszVolumeName", lpszVolumeName, "lpszVolumePathNames", lpszVolumePathNames, "cchBufferLength", cchBufferLength, "lpcchReturnLength", lpcchReturnLength);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GetVolumePathNamesForVolumeNameW,
+	LPCWSTR lpszVolumeName,
+	LPWCH lpszVolumePathNames,
+	DWORD cchBufferLength,
+	PDWORD lpcchReturnLength
+) {
+	BOOL ret;
+	ret = Old_GetVolumePathNamesForVolumeNameW(lpszVolumeName, lpszVolumePathNames, cchBufferLength, lpcchReturnLength);
+	LOQ_bool("filesystem", "uphp", "lpszVolumeName", lpszVolumeName, "lpszVolumePathNames", lpszVolumePathNames, "cchBufferLength", cchBufferLength, "lpcchReturnLength", lpcchReturnLength);
+	return ret;
+}
+
+HOOKDEF(LPSTR, WINAPI, PathCombineA,
+	LPSTR pszDest,
+	LPCSTR pszDir,
+	LPCSTR pszFile
+) {
+	LPSTR ret;
+	ret = Old_PathCombineA(pszDest, pszDir, pszFile);
+	LOQ_nonnull("filesystem", "pss", "pszDest", pszDest, "pszDir", pszDir, "pszFile", pszFile);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, PathFileExistsA,
+	LPCSTR pszPath
+) {
+	BOOL ret;
+	ret = Old_PathFileExistsA(pszPath);
+	LOQ_bool("filesystem", "s", "pszPath", pszPath);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, PathFileExistsW,
+	LPCWSTR pszPath
+) {
+	BOOL ret;
+	ret = Old_PathFileExistsW(pszPath);
+	LOQ_bool("filesystem", "u", "pszPath", pszPath);
+	return ret;
+}
+
+HOOKDEF(LPSTR, WINAPI, PathFindExtensionA,
+	LPCSTR pszPath
+) {
+	LPSTR ret;
+	ret = Old_PathFindExtensionA(pszPath);
+	LOQ_nonnull("filesystem", "s", "pszPath", pszPath);
+	return ret;
+}
+
+HOOKDEF(LPWSTR, WINAPI, PathFindExtensionW,
+	LPCWSTR pszPath
+) {
+	LPWSTR ret;
+	ret = Old_PathFindExtensionW(pszPath);
+	LOQ_nonnull("filesystem", "u", "pszPath", pszPath);
+	return ret;
+}
+
+HOOKDEF(LPSTR, WINAPI, PathFindFileNameA,
+	LPCSTR pszPath
+) {
+	LPSTR ret;
+	ret = Old_PathFindFileNameA(pszPath);
+	LOQ_nonnull("filesystem", "s", "pszPath", pszPath);
+	return ret;
+}
+
+HOOKDEF(LPWSTR, WINAPI, PathFindFileNameW,
+	LPCWSTR pszPath
+) {
+	LPWSTR ret;
+	ret = Old_PathFindFileNameW(pszPath);
+	LOQ_nonnull("filesystem", "u", "pszPath", pszPath);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, PathMatchSpecW,
+	LPCWSTR pszFile,
+	LPCWSTR pszSpec
+) {
+	BOOL ret;
+	ret = Old_PathMatchSpecW(pszFile, pszSpec);
+	LOQ_bool("filesystem", "uu", "pszFile", pszFile, "pszSpec", pszSpec);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, ReadFile,
+	HANDLE hFile,
+	LPVOID lpBuffer,
+	DWORD nNumberOfBytesToRead,
+	LPDWORD lpNumberOfBytesRead,
+	LPOVERLAPPED lpOverlapped
+) {
+	BOOL ret;
+	ret = Old_ReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
+	LOQ_bool("filesystem", "pphpp", "hFile", hFile, "lpBuffer", lpBuffer, "nNumberOfBytesToRead", nNumberOfBytesToRead, "lpNumberOfBytesRead", lpNumberOfBytesRead, "lpOverlapped", lpOverlapped);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, SetFilePointerEx,
+	HANDLE hFile,
+	LARGE_INTEGER liDistanceToMove,
+	PLARGE_INTEGER lpNewFilePointer,
+	DWORD dwMoveMethod
+) {
+	BOOL ret;
+	ret = Old_SetFilePointerEx(hFile, liDistanceToMove, lpNewFilePointer, dwMoveMethod);
+	LOQ_bool("filesystem", "ppph", "hFile", hFile, "liDistanceToMove", liDistanceToMove, "lpNewFilePointer", lpNewFilePointer, "dwMoveMethod", dwMoveMethod);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, UnmapViewOfFile,
+	LPCVOID lpBaseAddress
+) {
+	BOOL ret;
+	ret = Old_UnmapViewOfFile(lpBaseAddress);
+	LOQ_bool("filesystem", "p", "lpBaseAddress", lpBaseAddress);
+	return ret;
+}

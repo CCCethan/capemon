@@ -177,3 +177,459 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	
 	return ret;
 }
+
+
+// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+
+HOOKDEF(BOOL, WINAPI, CancelWaitableTimer,
+	HANDLE hTimer
+) {
+	BOOL ret;
+	ret = Old_CancelWaitableTimer(hTimer);
+	LOQ_bool("synchronisation", "p", "hTimer", hTimer);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, CloseEventLog,
+	HANDLE hEventLog
+) {
+	BOOL ret;
+	ret = Old_CloseEventLog(hEventLog);
+	LOQ_bool("synchronisation", "p", "hEventLog", hEventLog);
+	return ret;
+}
+
+HOOKDEF(void, WINAPI, CloseThreadpoolTimer,
+	PTP_TIMER pti
+) {
+	int ret = 0;
+	Old_CloseThreadpoolTimer(pti);
+	LOQ_void("synchronisation", "p", "pti", pti);
+	return;
+}
+
+HOOKDEF(void, WINAPI, CloseThreadpoolWait,
+	PTP_WAIT pwa
+) {
+	int ret = 0;
+	Old_CloseThreadpoolWait(pwa);
+	LOQ_void("synchronisation", "p", "pwa", pwa);
+	return;
+}
+
+HOOKDEF(HANDLE, WINAPI, CreateEventA,
+	LPSECURITY_ATTRIBUTES lpEventAttributes,
+	BOOL bManualReset,
+	BOOL bInitialState,
+	LPCSTR lpName
+) {
+	HANDLE ret;
+	ret = Old_CreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName);
+	LOQ_handle("synchronisation", "piis", "lpEventAttributes", lpEventAttributes, "bManualReset", bManualReset, "bInitialState", bInitialState, "lpName", lpName);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, CreateIoCompletionPort,
+	HANDLE FileHandle,
+	HANDLE ExistingCompletionPort,
+	ULONG_PTR CompletionKey,
+	DWORD NumberOfConcurrentThreads
+) {
+	HANDLE ret;
+	ret = Old_CreateIoCompletionPort(FileHandle, ExistingCompletionPort, CompletionKey, NumberOfConcurrentThreads);
+	LOQ_handle("synchronisation", "pphh", "FileHandle", FileHandle, "ExistingCompletionPort", ExistingCompletionPort, "CompletionKey", CompletionKey, "NumberOfConcurrentThreads", NumberOfConcurrentThreads);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, CreateSemaphoreA,
+	LPSECURITY_ATTRIBUTES lpSemaphoreAttributes,
+	LONG lInitialCount,
+	LONG lMaximumCount,
+	LPCSTR lpName
+) {
+	HANDLE ret;
+	ret = Old_CreateSemaphoreA(lpSemaphoreAttributes, lInitialCount, lMaximumCount, lpName);
+	LOQ_handle("synchronisation", "piis", "lpSemaphoreAttributes", lpSemaphoreAttributes, "lInitialCount", lInitialCount, "lMaximumCount", lMaximumCount, "lpName", lpName);
+	return ret;
+}
+
+HOOKDEF(PTP_TIMER, WINAPI, CreateThreadpoolTimer,
+	PTP_TIMER_CALLBACK pfnti,
+	PVOID pv,
+	PTP_CALLBACK_ENVIRON pcbe
+) {
+	PTP_TIMER ret;
+	ret = Old_CreateThreadpoolTimer(pfnti, pv, pcbe);
+	LOQ_nonzero("synchronisation", "ppp", "pfnti", pfnti, "pv", pv, "pcbe", pcbe);
+	return ret;
+}
+
+HOOKDEF(PTP_WAIT, WINAPI, CreateThreadpoolWait,
+	PTP_WAIT_CALLBACK pfnwa,
+	PVOID pv,
+	PTP_CALLBACK_ENVIRON pcbe
+) {
+	PTP_WAIT ret;
+	ret = Old_CreateThreadpoolWait(pfnwa, pv, pcbe);
+	LOQ_nonzero("synchronisation", "ppp", "pfnwa", pfnwa, "pv", pv, "pcbe", pcbe);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, CreateTimerQueue,
+	void
+) {
+	HANDLE ret;
+	ret = Old_CreateTimerQueue();
+	LOQ_handle("synchronisation", "");
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, CreateWaitableTimer,
+	LPSECURITY_ATTRIBUTES lpTimerAttributes,
+	BOOL bManualReset,
+	LPCTSTR lpTimerName
+) {
+	HANDLE ret;
+	ret = Old_CreateWaitableTimer(lpTimerAttributes, bManualReset, lpTimerName);
+	LOQ_handle("synchronisation", "pis", "lpTimerAttributes", lpTimerAttributes, "bManualReset", bManualReset, "lpTimerName", lpTimerName);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, CreateWaitableTimerA,
+	LPSECURITY_ATTRIBUTES lpTimerAttributes,
+	BOOL bManualReset,
+	LPCSTR lpTimerName
+) {
+	HANDLE ret;
+	ret = Old_CreateWaitableTimerA(lpTimerAttributes, bManualReset, lpTimerName);
+	LOQ_handle("synchronisation", "pis", "lpTimerAttributes", lpTimerAttributes, "bManualReset", bManualReset, "lpTimerName", lpTimerName);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, CreateWaitableTimerExW,
+	LPSECURITY_ATTRIBUTES lpTimerAttributes,
+	LPCWSTR lpTimerName,
+	DWORD dwFlags,
+	DWORD dwDesiredAccess
+) {
+	HANDLE ret;
+	ret = Old_CreateWaitableTimerExW(lpTimerAttributes, lpTimerName, dwFlags, dwDesiredAccess);
+	LOQ_handle("synchronisation", "puhh", "lpTimerAttributes", lpTimerAttributes, "lpTimerName", lpTimerName, "dwFlags", dwFlags, "dwDesiredAccess", dwDesiredAccess);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, CreateWaitableTimerW,
+	LPSECURITY_ATTRIBUTES lpTimerAttributes,
+	BOOL bManualReset,
+	LPCWSTR lpTimerName
+) {
+	HANDLE ret;
+	ret = Old_CreateWaitableTimerW(lpTimerAttributes, bManualReset, lpTimerName);
+	LOQ_handle("synchronisation", "piu", "lpTimerAttributes", lpTimerAttributes, "bManualReset", bManualReset, "lpTimerName", lpTimerName);
+	return ret;
+}
+
+HOOKDEF(void, WINAPI, DeleteCriticalSection,
+	LPCRITICAL_SECTION lpCriticalSection
+) {
+	int ret = 0;
+	Old_DeleteCriticalSection(lpCriticalSection);
+	LOQ_void("synchronisation", "p", "lpCriticalSection", lpCriticalSection);
+	return;
+}
+
+HOOKDEF(BOOL, WINAPI, DeleteTimerQueue,
+	HANDLE TimerQueue
+) {
+	BOOL ret;
+	ret = Old_DeleteTimerQueue(TimerQueue);
+	LOQ_bool("synchronisation", "p", "TimerQueue", TimerQueue);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, DeleteTimerQueueEx,
+	HANDLE TimerQueue,
+	HANDLE CompletionEvent
+) {
+	BOOL ret;
+	ret = Old_DeleteTimerQueueEx(TimerQueue, CompletionEvent);
+	LOQ_bool("synchronisation", "pp", "TimerQueue", TimerQueue, "CompletionEvent", CompletionEvent);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, DeleteTimerQueueTimer,
+	HANDLE TimerQueue,
+	HANDLE Timer,
+	HANDLE CompletionEvent
+) {
+	BOOL ret;
+	ret = Old_DeleteTimerQueueTimer(TimerQueue, Timer, CompletionEvent);
+	LOQ_bool("synchronisation", "ppp", "TimerQueue", TimerQueue, "Timer", Timer, "CompletionEvent", CompletionEvent);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GenerateConsoleCtrlEvent,
+	DWORD dwCtrlEvent,
+	DWORD dwProcessGroupId
+) {
+	BOOL ret;
+	ret = Old_GenerateConsoleCtrlEvent(dwCtrlEvent, dwProcessGroupId);
+	LOQ_bool("synchronisation", "hh", "dwCtrlEvent", dwCtrlEvent, "dwProcessGroupId", dwProcessGroupId);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GetNumberOfConsoleInputEvents,
+	HANDLE hConsoleInput,
+	LPDWORD lpNumberOfEvents
+) {
+	BOOL ret;
+	ret = Old_GetNumberOfConsoleInputEvents(hConsoleInput, lpNumberOfEvents);
+	LOQ_bool("synchronisation", "pp", "hConsoleInput", hConsoleInput, "lpNumberOfEvents", lpNumberOfEvents);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GetNumberOfEventLogRecords,
+	HANDLE hEventLog,
+	PDWORD NumberOfRecords
+) {
+	BOOL ret;
+	ret = Old_GetNumberOfEventLogRecords(hEventLog, NumberOfRecords);
+	LOQ_bool("synchronisation", "pp", "hEventLog", hEventLog, "NumberOfRecords", NumberOfRecords);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GetOldestEventLogRecord,
+	HANDLE hEventLog,
+	PDWORD OldestRecord
+) {
+	BOOL ret;
+	ret = Old_GetOldestEventLogRecord(hEventLog, OldestRecord);
+	LOQ_bool("synchronisation", "pp", "hEventLog", hEventLog, "OldestRecord", OldestRecord);
+	return ret;
+}
+
+HOOKDEF(void, WINAPI, InitializeConditionVariable,
+	PCONDITION_VARIABLE ConditionVariable
+) {
+	int ret = 0;
+	Old_InitializeConditionVariable(ConditionVariable);
+	LOQ_void("synchronisation", "p", "ConditionVariable", ConditionVariable);
+	return;
+}
+
+HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects,
+	DWORD nCount,
+	const HANDLE* pHandles,
+	BOOL fWaitAll,
+	DWORD dwMilliseconds,
+	DWORD dwWakeMask
+) {
+	DWORD ret;
+	ret = Old_MsgWaitForMultipleObjects(nCount, pHandles, fWaitAll, dwMilliseconds, dwWakeMask);
+	LOQ_nonzero("synchronisation", "hpihh", "nCount", nCount, "pHandles", pHandles, "fWaitAll", fWaitAll, "dwMilliseconds", dwMilliseconds, "dwWakeMask", dwWakeMask);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, OpenEventLog,
+	LPCTSTR lpUNCServerName,
+	LPCTSTR lpSourceName
+) {
+	HANDLE ret;
+	ret = Old_OpenEventLog(lpUNCServerName, lpSourceName);
+	LOQ_handle("synchronisation", "ss", "lpUNCServerName", lpUNCServerName, "lpSourceName", lpSourceName);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, OpenEventLogA,
+	LPCSTR lpUNCServerName,
+	LPCSTR lpSourceName
+) {
+	HANDLE ret;
+	ret = Old_OpenEventLogA(lpUNCServerName, lpSourceName);
+	LOQ_handle("synchronisation", "ss", "lpUNCServerName", lpUNCServerName, "lpSourceName", lpSourceName);
+	return ret;
+}
+
+HOOKDEF(HANDLE, WINAPI, OpenEventLogW,
+	LPCWSTR lpUNCServerName,
+	LPCWSTR lpSourceName
+) {
+	HANDLE ret;
+	ret = Old_OpenEventLogW(lpUNCServerName, lpSourceName);
+	LOQ_handle("synchronisation", "uu", "lpUNCServerName", lpUNCServerName, "lpSourceName", lpSourceName);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, QueueUserWorkItem,
+	LPTHREAD_START_ROUTINE Function,
+	PVOID Context,
+	ULONG Flags
+) {
+	BOOL ret;
+	ret = Old_QueueUserWorkItem(Function, Context, Flags);
+	LOQ_bool("synchronisation", "pph", "Function", Function, "Context", Context, "Flags", Flags);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, ReadEventLog,
+	HANDLE hEventLog,
+	DWORD dwReadFlags,
+	DWORD dwRecordOffset,
+	LPVOID lpBuffer,
+	DWORD nNumberOfBytesToRead,
+	DWORD* pnBytesRead,
+	DWORD* pnMinNumberOfBytesNeeded
+) {
+	BOOL ret;
+	ret = Old_ReadEventLog(hEventLog, dwReadFlags, dwRecordOffset, lpBuffer, nNumberOfBytesToRead, pnBytesRead, pnMinNumberOfBytesNeeded);
+	LOQ_bool("synchronisation", "phhphpp", "hEventLog", hEventLog, "dwReadFlags", dwReadFlags, "dwRecordOffset", dwRecordOffset, "lpBuffer", lpBuffer, "nNumberOfBytesToRead", nNumberOfBytesToRead, "pnBytesRead", pnBytesRead, "pnMinNumberOfBytesNeeded", pnMinNumberOfBytesNeeded);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, RegisterWaitForSingleObject,
+	PHANDLE phNewWaitObject,
+	HANDLE hObject,
+	WAITORTIMERCALLBACK Callback,
+	PVOID Context,
+	ULONG dwMilliseconds,
+	ULONG dwFlags
+) {
+	BOOL ret;
+	ret = Old_RegisterWaitForSingleObject(phNewWaitObject, hObject, Callback, Context, dwMilliseconds, dwFlags);
+	LOQ_bool("synchronisation", "pppphh", "phNewWaitObject", phNewWaitObject, "hObject", hObject, "Callback", Callback, "Context", Context, "dwMilliseconds", dwMilliseconds, "dwFlags", dwFlags);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, ReleaseSemaphore,
+	HANDLE hSemaphore,
+	LONG lReleaseCount,
+	LPLONG lpPreviousCount
+) {
+	BOOL ret;
+	ret = Old_ReleaseSemaphore(hSemaphore, lReleaseCount, lpPreviousCount);
+	LOQ_bool("synchronisation", "pip", "hSemaphore", hSemaphore, "lReleaseCount", lReleaseCount, "lpPreviousCount", lpPreviousCount);
+	return ret;
+}
+
+HOOKDEF(void, WINAPI, SetThreadpoolTimer,
+	PTP_TIMER pti,
+	PFILETIME pftDueTime,
+	DWORD msPeriod,
+	DWORD msWindowLength
+) {
+	int ret = 0;
+	Old_SetThreadpoolTimer(pti, pftDueTime, msPeriod, msWindowLength);
+	LOQ_void("synchronisation", "pphh", "pti", pti, "pftDueTime", pftDueTime, "msPeriod", msPeriod, "msWindowLength", msWindowLength);
+	return;
+}
+
+HOOKDEF(void, WINAPI, SetThreadpoolWait,
+	PTP_WAIT pwa,
+	HANDLE h,
+	PFILETIME pftTimeout
+) {
+	int ret = 0;
+	Old_SetThreadpoolWait(pwa, h, pftTimeout);
+	LOQ_void("synchronisation", "ppp", "pwa", pwa, "h", h, "pftTimeout", pftTimeout);
+	return;
+}
+
+HOOKDEF(BOOL, WINAPI, SetWaitableTimer,
+	HANDLE hTimer,
+	const LARGE_INTEGER* lpDueTime,
+	LONG lPeriod,
+	PTIMERAPCROUTINE pfnCompletionRoutine,
+	LPVOID lpArgToCompletionRoutine,
+	BOOL fResume
+) {
+	BOOL ret;
+	ret = Old_SetWaitableTimer(hTimer, lpDueTime, lPeriod, pfnCompletionRoutine, lpArgToCompletionRoutine, fResume);
+	LOQ_bool("synchronisation", "ppippi", "hTimer", hTimer, "lpDueTime", lpDueTime, "lPeriod", lPeriod, "pfnCompletionRoutine", pfnCompletionRoutine, "lpArgToCompletionRoutine", lpArgToCompletionRoutine, "fResume", fResume);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, SleepConditionVariableCS,
+	PCONDITION_VARIABLE ConditionVariable,
+	PCRITICAL_SECTION CriticalSection,
+	DWORD dwMilliseconds
+) {
+	BOOL ret;
+	ret = Old_SleepConditionVariableCS(ConditionVariable, CriticalSection, dwMilliseconds);
+	LOQ_bool("synchronisation", "pph", "ConditionVariable", ConditionVariable, "CriticalSection", CriticalSection, "dwMilliseconds", dwMilliseconds);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, UnregisterWait,
+	HANDLE WaitHandle
+) {
+	BOOL ret;
+	ret = Old_UnregisterWait(WaitHandle);
+	LOQ_bool("synchronisation", "p", "WaitHandle", WaitHandle);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, UnregisterWaitEx,
+	HANDLE WaitHandle,
+	HANDLE CompletionEvent
+) {
+	BOOL ret;
+	ret = Old_UnregisterWaitEx(WaitHandle, CompletionEvent);
+	LOQ_bool("synchronisation", "pp", "WaitHandle", WaitHandle, "CompletionEvent", CompletionEvent);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, WaitForMultipleObjects,
+	DWORD nCount,
+	const HANDLE* lpHandles,
+	BOOL bWaitAll,
+	DWORD dwMilliseconds
+) {
+	DWORD ret;
+	ret = Old_WaitForMultipleObjects(nCount, lpHandles, bWaitAll, dwMilliseconds);
+	LOQ_nonzero("synchronisation", "hpih", "nCount", nCount, "lpHandles", lpHandles, "bWaitAll", bWaitAll, "dwMilliseconds", dwMilliseconds);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, WaitForMultipleObjectsEx,
+	DWORD nCount,
+	const HANDLE* lpHandles,
+	BOOL bWaitAll,
+	DWORD dwMilliseconds,
+	BOOL bAlertable
+) {
+	DWORD ret;
+	ret = Old_WaitForMultipleObjectsEx(nCount, lpHandles, bWaitAll, dwMilliseconds, bAlertable);
+	LOQ_nonzero("synchronisation", "hpihi", "nCount", nCount, "lpHandles", lpHandles, "bWaitAll", bWaitAll, "dwMilliseconds", dwMilliseconds, "bAlertable", bAlertable);
+	return ret;
+}
+
+HOOKDEF(void, WINAPI, WaitForThreadpoolTimerCallbacks,
+	PTP_TIMER pti,
+	BOOL fCancelPendingCallbacks
+) {
+	int ret = 0;
+	Old_WaitForThreadpoolTimerCallbacks(pti, fCancelPendingCallbacks);
+	LOQ_void("synchronisation", "pi", "pti", pti, "fCancelPendingCallbacks", fCancelPendingCallbacks);
+	return;
+}
+
+HOOKDEF(BOOL, WINAPI, WaitOnAddress,
+	volatile VOID* Address,
+	PVOID CompareAddress,
+	SIZE_T AddressSize,
+	DWORD dwMilliseconds
+) {
+	BOOL ret;
+	ret = Old_WaitOnAddress(Address, CompareAddress, AddressSize, dwMilliseconds);
+	LOQ_bool("synchronisation", "pphh", "Address", Address, "CompareAddress", CompareAddress, "AddressSize", AddressSize, "dwMilliseconds", dwMilliseconds);
+	return ret;
+}
+
+HOOKDEF(MMRESULT, WINAPI, timeKillEvent,
+	UINT uTimerID
+) {
+	MMRESULT ret;
+	ret = Old_timeKillEvent(uTimerID);
+	LOQ_zero("synchronisation", "h", "uTimerID", uTimerID);
+	return ret;
+}

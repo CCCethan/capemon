@@ -332,3 +332,66 @@ HOOKDEF(BOOL, WINAPI, EnumServicesStatusExA,
 	free(serviceList);
 	return ret;
 }
+
+
+// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+
+HOOKDEF(BOOL, WINAPI, CloseServiceHandle,
+	SC_HANDLE hSCObject
+) {
+	BOOL ret;
+	ret = Old_CloseServiceHandle(hSCObject);
+	LOQ_bool("services", "p", "hSCObject", hSCObject);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, EnumServicesStatusA,
+	SC_HANDLE hSCManager,
+	DWORD dwServiceType,
+	DWORD dwServiceState,
+	LPENUM_SERVICE_STATUSA lpServices,
+	DWORD cbBufSize,
+	LPDWORD pcbBytesNeeded,
+	LPDWORD lpServicesReturned,
+	LPDWORD lpResumeHandle
+) {
+	BOOL ret;
+	ret = Old_EnumServicesStatusA(hSCManager, dwServiceType, dwServiceState, lpServices, cbBufSize, pcbBytesNeeded, lpServicesReturned, lpResumeHandle);
+	LOQ_bool("services", "phhphppp", "hSCManager", hSCManager, "dwServiceType", dwServiceType, "dwServiceState", dwServiceState, "lpServices", lpServices, "cbBufSize", cbBufSize, "pcbBytesNeeded", pcbBytesNeeded, "lpServicesReturned", lpServicesReturned, "lpResumeHandle", lpResumeHandle);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, QueryServiceConfigA,
+	SC_HANDLE hService,
+	LPQUERY_SERVICE_CONFIGA lpServiceConfig,
+	DWORD cbBufSize,
+	LPDWORD pcbBytesNeeded
+) {
+	BOOL ret;
+	ret = Old_QueryServiceConfigA(hService, lpServiceConfig, cbBufSize, pcbBytesNeeded);
+	LOQ_bool("services", "pphp", "hService", hService, "lpServiceConfig", lpServiceConfig, "cbBufSize", cbBufSize, "pcbBytesNeeded", pcbBytesNeeded);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, QueryServiceStatus,
+	SC_HANDLE hService,
+	LPSERVICE_STATUS lpServiceStatus
+) {
+	BOOL ret;
+	ret = Old_QueryServiceStatus(hService, lpServiceStatus);
+	LOQ_bool("services", "pp", "hService", hService, "lpServiceStatus", lpServiceStatus);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, QueryServiceStatusEx,
+	SC_HANDLE hService,
+	SC_STATUS_TYPE InfoLevel,
+	LPBYTE lpBuffer,
+	DWORD cbBufSize,
+	LPDWORD pcbBytesNeeded
+) {
+	BOOL ret;
+	ret = Old_QueryServiceStatusEx(hService, InfoLevel, lpBuffer, cbBufSize, pcbBytesNeeded);
+	LOQ_bool("services", "phphp", "hService", hService, "InfoLevel", InfoLevel, "lpBuffer", lpBuffer, "cbBufSize", cbBufSize, "pcbBytesNeeded", pcbBytesNeeded);
+	return ret;
+}

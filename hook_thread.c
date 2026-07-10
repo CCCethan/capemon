@@ -1061,3 +1061,67 @@ HOOKDEF(BOOL, WINAPI, Thread32Next,
 	LOQ_bool("threading", "pp", "hSnapshot", hSnapshot, "lpte", lpte);
 	return ret;
 }
+
+
+// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+
+HOOKDEF(HANDLE, WINAPI, GetCurrentThread,
+	void
+) {
+	HANDLE ret;
+	ret = Old_GetCurrentThread();
+	LOQ_handle("threading", "");
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GetExitCodeThread,
+	HANDLE hThread,
+	LPDWORD lpExitCode
+) {
+	BOOL ret;
+	ret = Old_GetExitCodeThread(hThread, lpExitCode);
+	LOQ_bool("threading", "pp", "hThread", hThread, "lpExitCode", lpExitCode);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, GetThreadId,
+	HANDLE Thread
+) {
+	DWORD ret;
+	ret = Old_GetThreadId(Thread);
+	LOQ_nonzero("threading", "p", "Thread", Thread);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, GetThreadTimes,
+	HANDLE hThread,
+	LPFILETIME lpCreationTime,
+	LPFILETIME lpExitTime,
+	LPFILETIME lpKernelTime,
+	LPFILETIME lpUserTime
+) {
+	BOOL ret;
+	ret = Old_GetThreadTimes(hThread, lpCreationTime, lpExitTime, lpKernelTime, lpUserTime);
+	LOQ_bool("threading", "ppppp", "hThread", hThread, "lpCreationTime", lpCreationTime, "lpExitTime", lpExitTime, "lpKernelTime", lpKernelTime, "lpUserTime", lpUserTime);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, QueryThreadCycleTime,
+	HANDLE ThreadHandle,
+	PULONG64 CycleTime
+) {
+	BOOL ret;
+	ret = Old_QueryThreadCycleTime(ThreadHandle, CycleTime);
+	LOQ_bool("threading", "pp", "ThreadHandle", ThreadHandle, "CycleTime", CycleTime);
+	return ret;
+}
+
+HOOKDEF(DWORD_PTR, WINAPI, SetThreadAffinityMask,
+	HANDLE hThread,
+	DWORD_PTR dwThreadAffinityMask
+) {
+	DWORD_PTR ret;
+	ret = Old_SetThreadAffinityMask(hThread, dwThreadAffinityMask);
+	LOQ_nonzero("threading", "ph", "hThread", hThread, "dwThreadAffinityMask", dwThreadAffinityMask);
+	return ret;
+}
