@@ -1065,47 +1065,6 @@ HOOKDEF(BOOL, WINAPI, Thread32Next,
 
 // ---- all unhooked-classified hooks (auto-generated, sanitized types) ----
 
-HOOKDEF(HANDLE, WINAPI, GetCurrentThread,
-	void
-) {
-	HANDLE ret;
-	ret = Old_GetCurrentThread();
-	LOQ_handle("threading", "");
-	return ret;
-}
-
-HOOKDEF(BOOL, WINAPI, GetExitCodeThread,
-	HANDLE hThread,
-	LPDWORD lpExitCode
-) {
-	BOOL ret;
-	ret = Old_GetExitCodeThread(hThread, lpExitCode);
-	LOQ_bool("threading", "ph", "hThread", hThread, "lpExitCode", lpExitCode);
-	return ret;
-}
-
-HOOKDEF(DWORD, WINAPI, GetThreadId,
-	HANDLE Thread
-) {
-	DWORD ret;
-	ret = Old_GetThreadId(Thread);
-	LOQ_nonzero("threading", "p", "Thread", Thread);
-	return ret;
-}
-
-HOOKDEF(BOOL, WINAPI, GetThreadTimes,
-	HANDLE hThread,
-	LPFILETIME lpCreationTime,
-	LPFILETIME lpExitTime,
-	LPFILETIME lpKernelTime,
-	LPFILETIME lpUserTime
-) {
-	BOOL ret;
-	ret = Old_GetThreadTimes(hThread, lpCreationTime, lpExitTime, lpKernelTime, lpUserTime);
-	LOQ_bool("threading", "phhhh", "hThread", hThread, "lpCreationTime", lpCreationTime, "lpExitTime", lpExitTime, "lpKernelTime", lpKernelTime, "lpUserTime", lpUserTime);
-	return ret;
-}
-
 HOOKDEF(BOOL, WINAPI, QueryThreadCycleTime,
 	HANDLE ThreadHandle,
 	PULONG64 CycleTime

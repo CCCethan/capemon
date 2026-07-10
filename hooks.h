@@ -1674,6 +1674,7 @@ HOOKDEF(BOOL, WINAPI, Thread32Next,
 
 
 
+
 // ---- all unhooked-classified hooks (auto-generated, sanitized types) ----
 HOOKDEF(BOOL, WINAPI, AddClipboardFormatListener,
 	HWND hwnd
@@ -1747,21 +1748,6 @@ HOOKDEF(void, WINAPI, CloseThreadpoolWait,
 HOOKDEF(LONG, WINAPI, CompareFileTime,
 	PVOID lpFileTime1,
 	PVOID lpFileTime2
-);
-HOOKDEF(HANDLE, WINAPI, CreateEventA,
-	PVOID lpEventAttributes,
-	BOOL bManualReset,
-	BOOL bInitialState,
-	LPCSTR lpName
-);
-HOOKDEF(HANDLE, WINAPI, CreateFileW,
-	LPCWSTR lpFileName,
-	DWORD dwDesiredAccess,
-	DWORD dwShareMode,
-	PVOID lpSecurityAttributes,
-	DWORD dwCreationDisposition,
-	DWORD dwFlagsAndAttributes,
-	HANDLE hTemplateFile
 );
 HOOKDEF(HANDLE, WINAPI, CreateIoCompletionPort,
 	HANDLE FileHandle,
@@ -1997,13 +1983,6 @@ HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime,
 	PVOID lpFileTime,
 	LPSYSTEMTIME lpSystemTime
 );
-HOOKDEF(BOOL, WINAPI, FindClose,
-	HANDLE hFindFile
-);
-HOOKDEF(HANDLE, WINAPI, FindFirstFileW,
-	LPCWSTR lpFileName,
-	PVOID lpFindFileData
-);
 HOOKDEF(HANDLE, WINAPI, FindFirstVolumeA,
 	LPSTR lpszVolumeName,
 	DWORD cchBufferLength
@@ -2011,10 +1990,6 @@ HOOKDEF(HANDLE, WINAPI, FindFirstVolumeA,
 HOOKDEF(HANDLE, WINAPI, FindFirstVolumeW,
 	LPWSTR lpszVolumeName,
 	DWORD cchBufferLength
-);
-HOOKDEF(BOOL, WINAPI, FindNextFileA,
-	HANDLE hFindFile,
-	PVOID lpFindFileData
 );
 HOOKDEF(BOOL, WINAPI, FindNextVolumeA,
 	HANDLE hFindVolume,
@@ -2043,9 +2018,6 @@ HOOKDEF(DWORD, WINAPI, FormatMessageA,
 );
 HOOKDEF(BOOL, WINAPI, FreeEnvironmentStringsW,
 	LPWCH penv
-);
-HOOKDEF(BOOL, WINAPI, FreeLibrary,
-	HMODULE hLibModule
 );
 HOOKDEF(void, WINAPI, FreeMibTable,
 	PVOID Memory
@@ -2096,9 +2068,6 @@ HOOKDEF(BOOL, WINAPI, GetConsoleMode,
 HOOKDEF(HWND, WINAPI, GetConsoleWindow,
 	void
 );
-HOOKDEF(HANDLE, WINAPI, GetCurrentThread,
-	void
-);
 HOOKDEF(BOOL, WINAPI, GetCursorInfo,
 	PVOID pci
 );
@@ -2134,17 +2103,6 @@ HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableW,
 	LPWSTR lpBuffer,
 	DWORD nSize
 );
-HOOKDEF(BOOL, WINAPI, GetExitCodeProcess,
-	HANDLE hProcess,
-	LPDWORD lpExitCode
-);
-HOOKDEF(BOOL, WINAPI, GetExitCodeThread,
-	HANDLE hThread,
-	LPDWORD lpExitCode
-);
-HOOKDEF(DWORD, WINAPI, GetFileAttributesA,
-	LPCSTR lpFileName
-);
 HOOKDEF(BOOL, WINAPI, GetFileAttributesExA,
 	LPCSTR lpFileName,
 	int fInfoLevelId,
@@ -2154,25 +2112,6 @@ HOOKDEF(BOOL, WINAPI, GetFileAttributesExW,
 	LPCWSTR lpFileName,
 	int fInfoLevelId,
 	LPVOID lpFileInformation
-);
-HOOKDEF(DWORD, WINAPI, GetFileAttributesW,
-	LPCWSTR lpFileName
-);
-HOOKDEF(BOOL, WINAPI, GetFileInformationByHandleEx,
-	HANDLE hFile,
-	int FileInformationClass,
-	LPVOID lpFileInformation,
-	DWORD dwBufferSize
-);
-HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
-	HANDLE hFile,
-	PLARGE_INTEGER lpFileSize
-);
-HOOKDEF(BOOL, WINAPI, GetFileTime,
-	HANDLE hFile,
-	LPFILETIME lpCreationTime,
-	LPFILETIME lpLastAccessTime,
-	LPFILETIME lpLastWriteTime
 );
 HOOKDEF(HWND, WINAPI, GetForegroundWindow,
 	void
@@ -2202,14 +2141,6 @@ HOOKDEF(BOOL, WINAPI, GetKeyboardLayoutNameA,
 );
 HOOKDEF(BOOL, WINAPI, GetKeyboardState,
 	PBYTE lpKeyState
-);
-HOOKDEF(DWORD, WINAPI, GetLogicalDriveStringsA,
-	DWORD nBufferLength,
-	LPSTR lpBuffer
-);
-HOOKDEF(DWORD, WINAPI, GetLogicalDriveStringsW,
-	DWORD nBufferLength,
-	LPWSTR lpBuffer
 );
 HOOKDEF(DWORD, WINAPI, GetLogicalDrives,
 	void
@@ -2241,11 +2172,6 @@ HOOKDEF(BOOL, WINAPI, GetMessageW,
 	UINT wMsgFilterMin,
 	UINT wMsgFilterMax
 );
-HOOKDEF(DWORD, WINAPI, GetModuleFileNameA,
-	HMODULE hModule,
-	LPSTR lpFilename,
-	DWORD nSize
-);
 HOOKDEF(BOOL, WINAPI, GetMonitorInfo,
 	HMONITOR hMonitor,
 	PVOID lpmi
@@ -2271,21 +2197,6 @@ HOOKDEF(BOOL, WINAPI, GetNumberOfEventLogRecords,
 HOOKDEF(BOOL, WINAPI, GetOldestEventLogRecord,
 	HANDLE hEventLog,
 	PDWORD OldestRecord
-);
-HOOKDEF(BOOL, WINAPI, GetProcessAffinityMask,
-	HANDLE hProcess,
-	PVOID lpProcessAffinityMask,
-	PVOID lpSystemAffinityMask
-);
-HOOKDEF(HANDLE, WINAPI, GetProcessHeap,
-	void
-);
-HOOKDEF(BOOL, WINAPI, GetProcessTimes,
-	HANDLE hProcess,
-	LPFILETIME lpCreationTime,
-	LPFILETIME lpExitTime,
-	LPFILETIME lpKernelTime,
-	LPFILETIME lpUserTime
 );
 HOOKDEF(BOOL, WINAPI, GetQueuedCompletionStatus,
 	HANDLE CompletionPort,
@@ -2316,14 +2227,6 @@ HOOKDEF(PUCHAR, WINAPI, GetSidSubAuthorityCount,
 HOOKDEF(HANDLE, WINAPI, GetStdHandle,
 	DWORD nStdHandle
 );
-HOOKDEF(UINT, WINAPI, GetSystemDirectoryA,
-	LPSTR lpBuffer,
-	UINT uSize
-);
-HOOKDEF(UINT, WINAPI, GetSystemDirectoryW,
-	LPWSTR lpBuffer,
-	UINT uSize
-);
 HOOKDEF(void, WINAPI, GetSystemTimePreciseAsFileTime,
 	LPFILETIME lpSystemTimeAsFileTime
 );
@@ -2332,25 +2235,11 @@ HOOKDEF(BOOL, WINAPI, GetSystemTimes,
 	PFILETIME lpKernelTime,
 	PFILETIME lpUserTime
 );
-HOOKDEF(UINT, WINAPI, GetSystemWindowsDirectoryW,
-	LPWSTR lpBuffer,
-	UINT uSize
-);
 HOOKDEF(UINT, WINAPI, GetTempFileNameA,
 	LPCSTR lpPathName,
 	LPCSTR lpPrefixString,
 	UINT uUnique,
 	LPSTR lpTempFileName
-);
-HOOKDEF(DWORD, WINAPI, GetThreadId,
-	HANDLE Thread
-);
-HOOKDEF(BOOL, WINAPI, GetThreadTimes,
-	HANDLE hThread,
-	LPFILETIME lpCreationTime,
-	LPFILETIME lpExitTime,
-	LPFILETIME lpKernelTime,
-	LPFILETIME lpUserTime
 );
 HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation,
 	PVOID lpTimeZoneInformation
@@ -2401,14 +2290,6 @@ HOOKDEF(int, WINAPI, GetWindowTextA,
 	HWND hWnd,
 	LPSTR lpString,
 	int nMaxCount
-);
-HOOKDEF(DWORD, WINAPI, GetWindowThreadProcessId,
-	HWND hWnd,
-	LPDWORD lpdwProcessId
-);
-HOOKDEF(UINT, WINAPI, GetWindowsDirectoryW,
-	LPWSTR lpBuffer,
-	UINT uSize
 );
 HOOKDEF(BOOL, WINAPI, IcmpCloseHandle,
 	HANDLE IcmpHandle
@@ -2739,13 +2620,6 @@ HOOKDEF(BOOL, WINAPI, ReadEventLog,
 	PVOID pnBytesRead,
 	PVOID pnMinNumberOfBytesNeeded
 );
-HOOKDEF(BOOL, WINAPI, ReadFile,
-	HANDLE hFile,
-	LPVOID lpBuffer,
-	DWORD nNumberOfBytesToRead,
-	LPDWORD lpNumberOfBytesRead,
-	LPOVERLAPPED lpOverlapped
-);
 HOOKDEF(LSTATUS, WINAPI, RegGetValueA,
 	HKEY hkey,
 	LPCSTR lpSubKey,
@@ -2837,12 +2711,6 @@ HOOKDEF(BOOL, WINAPI, SetConsoleMode,
 	HANDLE hConsoleHandle,
 	DWORD dwMode
 );
-HOOKDEF(BOOL, WINAPI, SetFilePointerEx,
-	HANDLE hFile,
-	LARGE_INTEGER liDistanceToMove,
-	PLARGE_INTEGER lpNewFilePointer,
-	DWORD dwMoveMethod
-);
 HOOKDEF(BOOL, WINAPI, SetHandleInformation,
 	HANDLE hObject,
 	DWORD dwMask,
@@ -2920,9 +2788,6 @@ HOOKDEF(BOOL, WINAPI, TzSpecificLocalTimeToSystemTime,
 HOOKDEF(BOOL, WINAPI, UnhookWinEvent,
 	HWINEVENTHOOK hWinEventHook
 );
-HOOKDEF(BOOL, WINAPI, UnmapViewOfFile,
-	LPCVOID lpBaseAddress
-);
 HOOKDEF(BOOL, WINAPI, UnregisterClassA,
 	LPCSTR lpClassName,
 	HINSTANCE hInstance
@@ -2946,11 +2811,6 @@ HOOKDEF(LPVOID, WINAPI, VirtualAlloc,
 	SIZE_T dwSize,
 	DWORD flAllocationType,
 	DWORD flProtect
-);
-HOOKDEF(BOOL, WINAPI, VirtualFree,
-	LPVOID lpAddress,
-	SIZE_T dwSize,
-	DWORD dwFreeType
 );
 HOOKDEF(DWORD, WINAPI, WNetCloseEnum,
 	HANDLE hEnum

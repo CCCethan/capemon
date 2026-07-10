@@ -1664,16 +1664,6 @@ HOOKDEF(WORD, WINAPI, GetActiveProcessorGroupCount,
 	return ret;
 }
 
-HOOKDEF(BOOL, WINAPI, GetExitCodeProcess,
-	HANDLE hProcess,
-	LPDWORD lpExitCode
-) {
-	BOOL ret;
-	ret = Old_GetExitCodeProcess(hProcess, lpExitCode);
-	LOQ_bool("process", "ph", "hProcess", hProcess, "lpExitCode", lpExitCode);
-	return ret;
-}
-
 HOOKDEF(BOOL, WINAPI, GetLogicalProcessorInformation,
 	PVOID Buffer,
 	PDWORD ReturnedLength
@@ -1702,39 +1692,6 @@ HOOKDEF(BOOL, WINAPI, GetNumaNodeProcessorMaskEx,
 	BOOL ret;
 	ret = Old_GetNumaNodeProcessorMaskEx(Node, ProcessorMask);
 	LOQ_bool("process", "hp", "Node", Node, "ProcessorMask", ProcessorMask);
-	return ret;
-}
-
-HOOKDEF(BOOL, WINAPI, GetProcessAffinityMask,
-	HANDLE hProcess,
-	PVOID lpProcessAffinityMask,
-	PVOID lpSystemAffinityMask
-) {
-	BOOL ret;
-	ret = Old_GetProcessAffinityMask(hProcess, lpProcessAffinityMask, lpSystemAffinityMask);
-	LOQ_bool("process", "ppp", "hProcess", hProcess, "lpProcessAffinityMask", lpProcessAffinityMask, "lpSystemAffinityMask", lpSystemAffinityMask);
-	return ret;
-}
-
-HOOKDEF(HANDLE, WINAPI, GetProcessHeap,
-	void
-) {
-	HANDLE ret;
-	ret = Old_GetProcessHeap();
-	LOQ_handle("process", "");
-	return ret;
-}
-
-HOOKDEF(BOOL, WINAPI, GetProcessTimes,
-	HANDLE hProcess,
-	LPFILETIME lpCreationTime,
-	LPFILETIME lpExitTime,
-	LPFILETIME lpKernelTime,
-	LPFILETIME lpUserTime
-) {
-	BOOL ret;
-	ret = Old_GetProcessTimes(hProcess, lpCreationTime, lpExitTime, lpKernelTime, lpUserTime);
-	LOQ_bool("process", "phhhh", "hProcess", hProcess, "lpCreationTime", lpCreationTime, "lpExitTime", lpExitTime, "lpKernelTime", lpKernelTime, "lpUserTime", lpUserTime);
 	return ret;
 }
 
@@ -1794,16 +1751,5 @@ HOOKDEF(LPVOID, WINAPI, VirtualAlloc,
 	LPVOID ret;
 	ret = Old_VirtualAlloc(lpAddress, dwSize, flAllocationType, flProtect);
 	LOQ_nonzero("process", "phhh", "lpAddress", lpAddress, "dwSize", dwSize, "flAllocationType", flAllocationType, "flProtect", flProtect);
-	return ret;
-}
-
-HOOKDEF(BOOL, WINAPI, VirtualFree,
-	LPVOID lpAddress,
-	SIZE_T dwSize,
-	DWORD dwFreeType
-) {
-	BOOL ret;
-	ret = Old_VirtualFree(lpAddress, dwSize, dwFreeType);
-	LOQ_bool("process", "phh", "lpAddress", lpAddress, "dwSize", dwSize, "dwFreeType", dwFreeType);
 	return ret;
 }

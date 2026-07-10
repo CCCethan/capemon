@@ -217,18 +217,6 @@ HOOKDEF(void, WINAPI, CloseThreadpoolWait,
 	return;
 }
 
-HOOKDEF(HANDLE, WINAPI, CreateEventA,
-	PVOID lpEventAttributes,
-	BOOL bManualReset,
-	BOOL bInitialState,
-	LPCSTR lpName
-) {
-	HANDLE ret;
-	ret = Old_CreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName);
-	LOQ_handle("synchronisation", "piis", "lpEventAttributes", lpEventAttributes, "bManualReset", bManualReset, "bInitialState", bInitialState, "lpName", lpName);
-	return ret;
-}
-
 HOOKDEF(HANDLE, WINAPI, CreateIoCompletionPort,
 	HANDLE FileHandle,
 	HANDLE ExistingCompletionPort,

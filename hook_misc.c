@@ -2471,15 +2471,6 @@ HOOKDEF(BOOL, WINAPI, FreeEnvironmentStringsW,
 	return ret;
 }
 
-HOOKDEF(BOOL, WINAPI, FreeLibrary,
-	HMODULE hLibModule
-) {
-	BOOL ret;
-	ret = Old_FreeLibrary(hLibModule);
-	LOQ_bool("misc", "p", "hLibModule", hLibModule);
-	return ret;
-}
-
 HOOKDEF(BOOL, WINAPI, GetComputerNameExA,
 	int NameType,
 	LPSTR lpBuffer,
@@ -2579,26 +2570,6 @@ HOOKDEF(HANDLE, WINAPI, GetStdHandle,
 	HANDLE ret;
 	ret = Old_GetStdHandle(nStdHandle);
 	LOQ_handle("misc", "h", "nStdHandle", nStdHandle);
-	return ret;
-}
-
-HOOKDEF(UINT, WINAPI, GetSystemDirectoryA,
-	LPSTR lpBuffer,
-	UINT uSize
-) {
-	UINT ret;
-	ret = Old_GetSystemDirectoryA(lpBuffer, uSize);
-	LOQ_nonzero("misc", "ph", "lpBuffer", lpBuffer, "uSize", uSize);
-	return ret;
-}
-
-HOOKDEF(UINT, WINAPI, GetSystemDirectoryW,
-	LPWSTR lpBuffer,
-	UINT uSize
-) {
-	UINT ret;
-	ret = Old_GetSystemDirectoryW(lpBuffer, uSize);
-	LOQ_nonzero("misc", "ph", "lpBuffer", lpBuffer, "uSize", uSize);
 	return ret;
 }
 

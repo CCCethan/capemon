@@ -910,16 +910,6 @@ HOOKDEF(UINT, WINAPI, GetRawInputData,
 	return ret;
 }
 
-HOOKDEF(UINT, WINAPI, GetSystemWindowsDirectoryW,
-	LPWSTR lpBuffer,
-	UINT uSize
-) {
-	UINT ret;
-	ret = Old_GetSystemWindowsDirectoryW(lpBuffer, uSize);
-	LOQ_nonzero("misc", "ph", "lpBuffer", lpBuffer, "uSize", uSize);
-	return ret;
-}
-
 HOOKDEF(HWND, WINAPI, GetWindow,
 	HWND hWnd,
 	UINT uCmd
@@ -989,26 +979,6 @@ HOOKDEF(int, WINAPI, GetWindowTextA,
 	int ret;
 	ret = Old_GetWindowTextA(hWnd, lpString, nMaxCount);
 	LOQ_nonzero("misc", "ppi", "hWnd", hWnd, "lpString", lpString, "nMaxCount", nMaxCount);
-	return ret;
-}
-
-HOOKDEF(DWORD, WINAPI, GetWindowThreadProcessId,
-	HWND hWnd,
-	LPDWORD lpdwProcessId
-) {
-	DWORD ret;
-	ret = Old_GetWindowThreadProcessId(hWnd, lpdwProcessId);
-	LOQ_nonzero("misc", "ph", "hWnd", hWnd, "lpdwProcessId", lpdwProcessId);
-	return ret;
-}
-
-HOOKDEF(UINT, WINAPI, GetWindowsDirectoryW,
-	LPWSTR lpBuffer,
-	UINT uSize
-) {
-	UINT ret;
-	ret = Old_GetWindowsDirectoryW(lpBuffer, uSize);
-	LOQ_nonzero("misc", "ph", "lpBuffer", lpBuffer, "uSize", uSize);
 	return ret;
 }
 
