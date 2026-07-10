@@ -1101,7 +1101,7 @@ HOOKDEF(DWORD, WINAPI, IcmpSendEcho,
 }
 
 
-// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+// ---- all unhooked-classified hooks (auto-generated, sanitized types) ----
 
 HOOKDEF(void, WINAPI, FreeMibTable,
 	PVOID Memory
@@ -1113,33 +1113,33 @@ HOOKDEF(void, WINAPI, FreeMibTable,
 }
 
 HOOKDEF(DWORD, WINAPI, GetIfTable,
-	PMIB_IFTABLE pIfTable,
+	PVOID pIfTable,
 	PULONG pdwSize,
 	BOOL bOrder
 ) {
 	DWORD ret;
 	ret = Old_GetIfTable(pIfTable, pdwSize, bOrder);
-	LOQ_nonzero("network", "ppi", "pIfTable", pIfTable, "pdwSize", pdwSize, "bOrder", bOrder);
+	LOQ_nonzero("network", "phi", "pIfTable", pIfTable, "pdwSize", pdwSize, "bOrder", bOrder);
 	return ret;
 }
 
-HOOKDEF(NETIO_STATUS, WINAPI, GetIfTable2,
-	PMIB_IF_TABLE2* Table
+HOOKDEF(ULONG, WINAPI, GetIfTable2,
+	PVOID Table
 ) {
-	NETIO_STATUS ret;
+	ULONG ret;
 	ret = Old_GetIfTable2(Table);
-	LOQ_zero("network", "p", "Table", Table);
+	LOQ_nonzero("network", "p", "Table", Table);
 	return ret;
 }
 
 HOOKDEF(DWORD, WINAPI, GetIpNetTable,
-	PMIB_IPNETTABLE IpNetTable,
+	PVOID IpNetTable,
 	PULONG SizePointer,
 	BOOL Order
 ) {
 	DWORD ret;
 	ret = Old_GetIpNetTable(IpNetTable, SizePointer, Order);
-	LOQ_nonzero("network", "ppi", "IpNetTable", IpNetTable, "SizePointer", SizePointer, "Order", Order);
+	LOQ_nonzero("network", "phi", "IpNetTable", IpNetTable, "SizePointer", SizePointer, "Order", Order);
 	return ret;
 }
 
@@ -1161,69 +1161,69 @@ HOOKDEF(HANDLE, WINAPI, IcmpCreateFile,
 	return ret;
 }
 
-HOOKDEF(NET_API_STATUS, WINAPI, NetApiBufferFree,
+HOOKDEF(ULONG, WINAPI, NetApiBufferFree,
 	LPVOID Buffer
 ) {
-	NET_API_STATUS ret;
+	ULONG ret;
 	ret = Old_NetApiBufferFree(Buffer);
-	LOQ_zero("network", "p", "Buffer", Buffer);
+	LOQ_nonzero("network", "p", "Buffer", Buffer);
 	return ret;
 }
 
-HOOKDEF(NET_API_STATUS, WINAPI, NetUseEnum,
-	LMSTR UncServerName,
+HOOKDEF(ULONG, WINAPI, NetUseEnum,
+	PVOID UncServerName,
 	DWORD Level,
-	LPBYTE* BufPtr,
+	PVOID BufPtr,
 	DWORD PreferedMaximumLength,
 	LPDWORD EntriesRead,
 	LPDWORD TotalEntries,
 	LPDWORD ResumeHandle
 ) {
-	NET_API_STATUS ret;
+	ULONG ret;
 	ret = Old_NetUseEnum(UncServerName, Level, BufPtr, PreferedMaximumLength, EntriesRead, TotalEntries, ResumeHandle);
-	LOQ_zero("network", "phphppp", "UncServerName", UncServerName, "Level", Level, "BufPtr", BufPtr, "PreferedMaximumLength", PreferedMaximumLength, "EntriesRead", EntriesRead, "TotalEntries", TotalEntries, "ResumeHandle", ResumeHandle);
+	LOQ_nonzero("network", "phphhhh", "UncServerName", UncServerName, "Level", Level, "BufPtr", BufPtr, "PreferedMaximumLength", PreferedMaximumLength, "EntriesRead", EntriesRead, "TotalEntries", TotalEntries, "ResumeHandle", ResumeHandle);
 	return ret;
 }
 
-HOOKDEF(NET_API_STATUS, WINAPI, NetWkstaGetInfo,
-	LMSTR servername,
+HOOKDEF(ULONG, WINAPI, NetWkstaGetInfo,
+	PVOID servername,
 	DWORD level,
-	LPBYTE* bufptr
+	PVOID bufptr
 ) {
-	NET_API_STATUS ret;
+	ULONG ret;
 	ret = Old_NetWkstaGetInfo(servername, level, bufptr);
-	LOQ_zero("network", "php", "servername", servername, "level", level, "bufptr", bufptr);
+	LOQ_nonzero("network", "php", "servername", servername, "level", level, "bufptr", bufptr);
 	return ret;
 }
 
-HOOKDEF(NET_API_STATUS, WINAPI, NetWkstaUserEnum,
-	LMSTR servername,
+HOOKDEF(ULONG, WINAPI, NetWkstaUserEnum,
+	PVOID servername,
 	DWORD level,
-	LPBYTE* bufptr,
+	PVOID bufptr,
 	DWORD prefmaxlen,
 	LPDWORD entriesread,
 	LPDWORD totalentries,
 	LPDWORD resumehandle
 ) {
-	NET_API_STATUS ret;
+	ULONG ret;
 	ret = Old_NetWkstaUserEnum(servername, level, bufptr, prefmaxlen, entriesread, totalentries, resumehandle);
-	LOQ_zero("network", "phphppp", "servername", servername, "level", level, "bufptr", bufptr, "prefmaxlen", prefmaxlen, "entriesread", entriesread, "totalentries", totalentries, "resumehandle", resumehandle);
+	LOQ_nonzero("network", "phphhhh", "servername", servername, "level", level, "bufptr", bufptr, "prefmaxlen", prefmaxlen, "entriesread", entriesread, "totalentries", totalentries, "resumehandle", resumehandle);
 	return ret;
 }
 
-HOOKDEF(NET_API_STATUS, WINAPI, NetWkstaUserGetInfo,
-	LMSTR reserved,
+HOOKDEF(ULONG, WINAPI, NetWkstaUserGetInfo,
+	PVOID reserved,
 	DWORD level,
-	LPBYTE* bufptr
+	PVOID bufptr
 ) {
-	NET_API_STATUS ret;
+	ULONG ret;
 	ret = Old_NetWkstaUserGetInfo(reserved, level, bufptr);
-	LOQ_zero("network", "php", "reserved", reserved, "level", level, "bufptr", bufptr);
+	LOQ_nonzero("network", "php", "reserved", reserved, "level", level, "bufptr", bufptr);
 	return ret;
 }
 
 HOOKDEF(UCHAR, WINAPI, Netbios,
-	PNCB pNCB
+	PVOID pNCB
 ) {
 	UCHAR ret;
 	ret = Old_Netbios(pNCB);
@@ -1248,7 +1248,7 @@ HOOKDEF(DWORD, WINAPI, WNetEnumResource,
 ) {
 	DWORD ret;
 	ret = Old_WNetEnumResource(hEnum, lpcCount, lpBuffer, lpBufferSize);
-	LOQ_nonzero("network", "pppp", "hEnum", hEnum, "lpcCount", lpcCount, "lpBuffer", lpBuffer, "lpBufferSize", lpBufferSize);
+	LOQ_nonzero("network", "phph", "hEnum", hEnum, "lpcCount", lpcCount, "lpBuffer", lpBuffer, "lpBufferSize", lpBufferSize);
 	return ret;
 }
 
@@ -1259,7 +1259,7 @@ HOOKDEF(DWORD, WINAPI, WNetGetConnectionA,
 ) {
 	DWORD ret;
 	ret = Old_WNetGetConnectionA(lpLocalName, lpRemoteName, lpnLength);
-	LOQ_nonzero("network", "spp", "lpLocalName", lpLocalName, "lpRemoteName", lpRemoteName, "lpnLength", lpnLength);
+	LOQ_nonzero("network", "sph", "lpLocalName", lpLocalName, "lpRemoteName", lpRemoteName, "lpnLength", lpnLength);
 	return ret;
 }
 
@@ -1267,12 +1267,12 @@ HOOKDEF(DWORD, WINAPI, WNetOpenEnum,
 	DWORD dwScope,
 	DWORD dwType,
 	DWORD dwUsage,
-	LPNETRESOURCE lpNetResource,
+	PVOID lpNetResource,
 	LPHANDLE lphEnum
 ) {
 	DWORD ret;
 	ret = Old_WNetOpenEnum(dwScope, dwType, dwUsage, lpNetResource, lphEnum);
-	LOQ_nonzero("network", "hhhpp", "dwScope", dwScope, "dwType", dwType, "dwUsage", dwUsage, "lpNetResource", lpNetResource, "lphEnum", lphEnum);
+	LOQ_nonzero("network", "hhhph", "dwScope", dwScope, "dwType", dwType, "dwUsage", dwUsage, "lpNetResource", lpNetResource, "lphEnum", lphEnum);
 	return ret;
 }
 
@@ -1280,8 +1280,8 @@ HOOKDEF(BOOL, WINAPI, WTSEnumerateProcessesA,
 	HANDLE hServer,
 	DWORD Reserved,
 	DWORD Version,
-	PWTS_PROCESS_INFOA* ppProcessInfo,
-	DWORD* pCount
+	PVOID ppProcessInfo,
+	PVOID pCount
 ) {
 	BOOL ret;
 	ret = Old_WTSEnumerateProcessesA(hServer, Reserved, Version, ppProcessInfo, pCount);
@@ -1308,7 +1308,7 @@ HOOKDEF(DWORD, WINAPI, WTSGetActiveConsoleSessionId,
 }
 
 HOOKDEF(BOOL, WINAPI, WinHttpCloseHandle,
-	HINTERNET hInternet
+	PVOID hInternet
 ) {
 	BOOL ret;
 	ret = Old_WinHttpCloseHandle(hInternet);

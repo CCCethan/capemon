@@ -1982,13 +1982,13 @@ HOOKDEF(DWORD, WINAPI, QueryDosDeviceA,
 }
 
 
-// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+// ---- all unhooked-classified hooks (auto-generated, sanitized types) ----
 
 HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	LPCWSTR lpFileName,
 	DWORD dwDesiredAccess,
 	DWORD dwShareMode,
-	LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+	PVOID lpSecurityAttributes,
 	DWORD dwCreationDisposition,
 	DWORD dwFlagsAndAttributes,
 	HANDLE hTemplateFile
@@ -2002,12 +2002,12 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 HOOKDEF(BOOL, WINAPI, CreatePipe,
 	PHANDLE hReadPipe,
 	PHANDLE hWritePipe,
-	LPSECURITY_ATTRIBUTES lpPipeAttributes,
+	PVOID lpPipeAttributes,
 	DWORD nSize
 ) {
 	BOOL ret;
 	ret = Old_CreatePipe(hReadPipe, hWritePipe, lpPipeAttributes, nSize);
-	LOQ_bool("filesystem", "ppph", "hReadPipe", hReadPipe, "hWritePipe", hWritePipe, "lpPipeAttributes", lpPipeAttributes, "nSize", nSize);
+	LOQ_bool("filesystem", "hhph", "hReadPipe", hReadPipe, "hWritePipe", hWritePipe, "lpPipeAttributes", lpPipeAttributes, "nSize", nSize);
 	return ret;
 }
 
@@ -2022,7 +2022,7 @@ HOOKDEF(BOOL, WINAPI, FindClose,
 
 HOOKDEF(HANDLE, WINAPI, FindFirstFileA,
 	LPCSTR lpFileName,
-	LPWIN32_FIND_DATAA lpFindFileData
+	PVOID lpFindFileData
 ) {
 	HANDLE ret;
 	ret = Old_FindFirstFileA(lpFileName, lpFindFileData);
@@ -2032,7 +2032,7 @@ HOOKDEF(HANDLE, WINAPI, FindFirstFileA,
 
 HOOKDEF(HANDLE, WINAPI, FindFirstFileW,
 	LPCWSTR lpFileName,
-	LPWIN32_FIND_DATAW lpFindFileData
+	PVOID lpFindFileData
 ) {
 	HANDLE ret;
 	ret = Old_FindFirstFileW(lpFileName, lpFindFileData);
@@ -2062,7 +2062,7 @@ HOOKDEF(HANDLE, WINAPI, FindFirstVolumeW,
 
 HOOKDEF(BOOL, WINAPI, FindNextFileA,
 	HANDLE hFindFile,
-	LPWIN32_FIND_DATAA lpFindFileData
+	PVOID lpFindFileData
 ) {
 	BOOL ret;
 	ret = Old_FindNextFileA(hFindFile, lpFindFileData);
@@ -2107,7 +2107,7 @@ HOOKDEF(DWORD, WINAPI, GetCompressedFileSizeW,
 ) {
 	DWORD ret;
 	ret = Old_GetCompressedFileSizeW(lpFileName, lpFileSizeHigh);
-	LOQ_nonzero("filesystem", "up", "lpFileName", lpFileName, "lpFileSizeHigh", lpFileSizeHigh);
+	LOQ_nonzero("filesystem", "uh", "lpFileName", lpFileName, "lpFileSizeHigh", lpFileSizeHigh);
 	return ret;
 }
 
@@ -2140,23 +2140,23 @@ HOOKDEF(DWORD, WINAPI, GetFileAttributesA,
 
 HOOKDEF(BOOL, WINAPI, GetFileAttributesExA,
 	LPCSTR lpFileName,
-	GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	int fInfoLevelId,
 	LPVOID lpFileInformation
 ) {
 	BOOL ret;
 	ret = Old_GetFileAttributesExA(lpFileName, fInfoLevelId, lpFileInformation);
-	LOQ_bool("filesystem", "shp", "lpFileName", lpFileName, "fInfoLevelId", fInfoLevelId, "lpFileInformation", lpFileInformation);
+	LOQ_bool("filesystem", "sip", "lpFileName", lpFileName, "fInfoLevelId", fInfoLevelId, "lpFileInformation", lpFileInformation);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, GetFileAttributesExW,
 	LPCWSTR lpFileName,
-	GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	int fInfoLevelId,
 	LPVOID lpFileInformation
 ) {
 	BOOL ret;
 	ret = Old_GetFileAttributesExW(lpFileName, fInfoLevelId, lpFileInformation);
-	LOQ_bool("filesystem", "uhp", "lpFileName", lpFileName, "fInfoLevelId", fInfoLevelId, "lpFileInformation", lpFileInformation);
+	LOQ_bool("filesystem", "uip", "lpFileName", lpFileName, "fInfoLevelId", fInfoLevelId, "lpFileInformation", lpFileInformation);
 	return ret;
 }
 
@@ -2171,13 +2171,13 @@ HOOKDEF(DWORD, WINAPI, GetFileAttributesW,
 
 HOOKDEF(BOOL, WINAPI, GetFileInformationByHandleEx,
 	HANDLE hFile,
-	FILE_INFO_BY_HANDLE_CLASS FileInformationClass,
+	int FileInformationClass,
 	LPVOID lpFileInformation,
 	DWORD dwBufferSize
 ) {
 	BOOL ret;
 	ret = Old_GetFileInformationByHandleEx(hFile, FileInformationClass, lpFileInformation, dwBufferSize);
-	LOQ_bool("filesystem", "phph", "hFile", hFile, "FileInformationClass", FileInformationClass, "lpFileInformation", lpFileInformation, "dwBufferSize", dwBufferSize);
+	LOQ_bool("filesystem", "piph", "hFile", hFile, "FileInformationClass", FileInformationClass, "lpFileInformation", lpFileInformation, "dwBufferSize", dwBufferSize);
 	return ret;
 }
 
@@ -2187,7 +2187,7 @@ HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 ) {
 	BOOL ret;
 	ret = Old_GetFileSizeEx(hFile, lpFileSize);
-	LOQ_bool("filesystem", "pp", "hFile", hFile, "lpFileSize", lpFileSize);
+	LOQ_bool("filesystem", "ph", "hFile", hFile, "lpFileSize", lpFileSize);
 	return ret;
 }
 
@@ -2199,7 +2199,7 @@ HOOKDEF(BOOL, WINAPI, GetFileTime,
 ) {
 	BOOL ret;
 	ret = Old_GetFileTime(hFile, lpCreationTime, lpLastAccessTime, lpLastWriteTime);
-	LOQ_bool("filesystem", "pppp", "hFile", hFile, "lpCreationTime", lpCreationTime, "lpLastAccessTime", lpLastAccessTime, "lpLastWriteTime", lpLastWriteTime);
+	LOQ_bool("filesystem", "phhh", "hFile", hFile, "lpCreationTime", lpCreationTime, "lpLastAccessTime", lpLastAccessTime, "lpLastWriteTime", lpLastWriteTime);
 	return ret;
 }
 
@@ -2263,7 +2263,7 @@ HOOKDEF(BOOL, WINAPI, GetVolumePathNamesForVolumeNameA,
 ) {
 	BOOL ret;
 	ret = Old_GetVolumePathNamesForVolumeNameA(lpszVolumeName, lpszVolumePathNames, cchBufferLength, lpcchReturnLength);
-	LOQ_bool("filesystem", "sphp", "lpszVolumeName", lpszVolumeName, "lpszVolumePathNames", lpszVolumePathNames, "cchBufferLength", cchBufferLength, "lpcchReturnLength", lpcchReturnLength);
+	LOQ_bool("filesystem", "shhh", "lpszVolumeName", lpszVolumeName, "lpszVolumePathNames", lpszVolumePathNames, "cchBufferLength", cchBufferLength, "lpcchReturnLength", lpcchReturnLength);
 	return ret;
 }
 
@@ -2275,7 +2275,7 @@ HOOKDEF(BOOL, WINAPI, GetVolumePathNamesForVolumeNameW,
 ) {
 	BOOL ret;
 	ret = Old_GetVolumePathNamesForVolumeNameW(lpszVolumeName, lpszVolumePathNames, cchBufferLength, lpcchReturnLength);
-	LOQ_bool("filesystem", "uphp", "lpszVolumeName", lpszVolumeName, "lpszVolumePathNames", lpszVolumePathNames, "cchBufferLength", cchBufferLength, "lpcchReturnLength", lpcchReturnLength);
+	LOQ_bool("filesystem", "uhhh", "lpszVolumeName", lpszVolumeName, "lpszVolumePathNames", lpszVolumePathNames, "cchBufferLength", cchBufferLength, "lpcchReturnLength", lpcchReturnLength);
 	return ret;
 }
 
@@ -2286,7 +2286,7 @@ HOOKDEF(LPSTR, WINAPI, PathCombineA,
 ) {
 	LPSTR ret;
 	ret = Old_PathCombineA(pszDest, pszDir, pszFile);
-	LOQ_nonnull("filesystem", "pss", "pszDest", pszDest, "pszDir", pszDir, "pszFile", pszFile);
+	LOQ_nonzero("filesystem", "pss", "pszDest", pszDest, "pszDir", pszDir, "pszFile", pszFile);
 	return ret;
 }
 
@@ -2313,7 +2313,7 @@ HOOKDEF(LPSTR, WINAPI, PathFindExtensionA,
 ) {
 	LPSTR ret;
 	ret = Old_PathFindExtensionA(pszPath);
-	LOQ_nonnull("filesystem", "s", "pszPath", pszPath);
+	LOQ_nonzero("filesystem", "s", "pszPath", pszPath);
 	return ret;
 }
 
@@ -2322,7 +2322,7 @@ HOOKDEF(LPWSTR, WINAPI, PathFindExtensionW,
 ) {
 	LPWSTR ret;
 	ret = Old_PathFindExtensionW(pszPath);
-	LOQ_nonnull("filesystem", "u", "pszPath", pszPath);
+	LOQ_nonzero("filesystem", "u", "pszPath", pszPath);
 	return ret;
 }
 
@@ -2331,7 +2331,7 @@ HOOKDEF(LPSTR, WINAPI, PathFindFileNameA,
 ) {
 	LPSTR ret;
 	ret = Old_PathFindFileNameA(pszPath);
-	LOQ_nonnull("filesystem", "s", "pszPath", pszPath);
+	LOQ_nonzero("filesystem", "s", "pszPath", pszPath);
 	return ret;
 }
 
@@ -2340,7 +2340,7 @@ HOOKDEF(LPWSTR, WINAPI, PathFindFileNameW,
 ) {
 	LPWSTR ret;
 	ret = Old_PathFindFileNameW(pszPath);
-	LOQ_nonnull("filesystem", "u", "pszPath", pszPath);
+	LOQ_nonzero("filesystem", "u", "pszPath", pszPath);
 	return ret;
 }
 
@@ -2363,7 +2363,7 @@ HOOKDEF(BOOL, WINAPI, ReadFile,
 ) {
 	BOOL ret;
 	ret = Old_ReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
-	LOQ_bool("filesystem", "pphpp", "hFile", hFile, "lpBuffer", lpBuffer, "nNumberOfBytesToRead", nNumberOfBytesToRead, "lpNumberOfBytesRead", lpNumberOfBytesRead, "lpOverlapped", lpOverlapped);
+	LOQ_bool("filesystem", "pphhh", "hFile", hFile, "lpBuffer", lpBuffer, "nNumberOfBytesToRead", nNumberOfBytesToRead, "lpNumberOfBytesRead", lpNumberOfBytesRead, "lpOverlapped", lpOverlapped);
 	return ret;
 }
 
@@ -2375,7 +2375,7 @@ HOOKDEF(BOOL, WINAPI, SetFilePointerEx,
 ) {
 	BOOL ret;
 	ret = Old_SetFilePointerEx(hFile, liDistanceToMove, lpNewFilePointer, dwMoveMethod);
-	LOQ_bool("filesystem", "ppph", "hFile", hFile, "liDistanceToMove", liDistanceToMove, "lpNewFilePointer", lpNewFilePointer, "dwMoveMethod", dwMoveMethod);
+	LOQ_bool("filesystem", "phhh", "hFile", hFile, "liDistanceToMove", liDistanceToMove, "lpNewFilePointer", lpNewFilePointer, "dwMoveMethod", dwMoveMethod);
 	return ret;
 }
 

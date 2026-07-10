@@ -334,10 +334,10 @@ HOOKDEF(BOOL, WINAPI, EnumServicesStatusExA,
 }
 
 
-// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+// ---- all unhooked-classified hooks (auto-generated, sanitized types) ----
 
 HOOKDEF(BOOL, WINAPI, CloseServiceHandle,
-	SC_HANDLE hSCObject
+	PVOID hSCObject
 ) {
 	BOOL ret;
 	ret = Old_CloseServiceHandle(hSCObject);
@@ -346,10 +346,10 @@ HOOKDEF(BOOL, WINAPI, CloseServiceHandle,
 }
 
 HOOKDEF(BOOL, WINAPI, EnumServicesStatusA,
-	SC_HANDLE hSCManager,
+	PVOID hSCManager,
 	DWORD dwServiceType,
 	DWORD dwServiceState,
-	LPENUM_SERVICE_STATUSA lpServices,
+	PVOID lpServices,
 	DWORD cbBufSize,
 	LPDWORD pcbBytesNeeded,
 	LPDWORD lpServicesReturned,
@@ -357,25 +357,25 @@ HOOKDEF(BOOL, WINAPI, EnumServicesStatusA,
 ) {
 	BOOL ret;
 	ret = Old_EnumServicesStatusA(hSCManager, dwServiceType, dwServiceState, lpServices, cbBufSize, pcbBytesNeeded, lpServicesReturned, lpResumeHandle);
-	LOQ_bool("services", "phhphppp", "hSCManager", hSCManager, "dwServiceType", dwServiceType, "dwServiceState", dwServiceState, "lpServices", lpServices, "cbBufSize", cbBufSize, "pcbBytesNeeded", pcbBytesNeeded, "lpServicesReturned", lpServicesReturned, "lpResumeHandle", lpResumeHandle);
+	LOQ_bool("services", "phhphhhh", "hSCManager", hSCManager, "dwServiceType", dwServiceType, "dwServiceState", dwServiceState, "lpServices", lpServices, "cbBufSize", cbBufSize, "pcbBytesNeeded", pcbBytesNeeded, "lpServicesReturned", lpServicesReturned, "lpResumeHandle", lpResumeHandle);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, QueryServiceConfigA,
-	SC_HANDLE hService,
-	LPQUERY_SERVICE_CONFIGA lpServiceConfig,
+	PVOID hService,
+	PVOID lpServiceConfig,
 	DWORD cbBufSize,
 	LPDWORD pcbBytesNeeded
 ) {
 	BOOL ret;
 	ret = Old_QueryServiceConfigA(hService, lpServiceConfig, cbBufSize, pcbBytesNeeded);
-	LOQ_bool("services", "pphp", "hService", hService, "lpServiceConfig", lpServiceConfig, "cbBufSize", cbBufSize, "pcbBytesNeeded", pcbBytesNeeded);
+	LOQ_bool("services", "pphh", "hService", hService, "lpServiceConfig", lpServiceConfig, "cbBufSize", cbBufSize, "pcbBytesNeeded", pcbBytesNeeded);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, QueryServiceStatus,
-	SC_HANDLE hService,
-	LPSERVICE_STATUS lpServiceStatus
+	PVOID hService,
+	PVOID lpServiceStatus
 ) {
 	BOOL ret;
 	ret = Old_QueryServiceStatus(hService, lpServiceStatus);
@@ -384,14 +384,14 @@ HOOKDEF(BOOL, WINAPI, QueryServiceStatus,
 }
 
 HOOKDEF(BOOL, WINAPI, QueryServiceStatusEx,
-	SC_HANDLE hService,
-	SC_STATUS_TYPE InfoLevel,
+	PVOID hService,
+	int InfoLevel,
 	LPBYTE lpBuffer,
 	DWORD cbBufSize,
 	LPDWORD pcbBytesNeeded
 ) {
 	BOOL ret;
 	ret = Old_QueryServiceStatusEx(hService, InfoLevel, lpBuffer, cbBufSize, pcbBytesNeeded);
-	LOQ_bool("services", "phphp", "hService", hService, "InfoLevel", InfoLevel, "lpBuffer", lpBuffer, "cbBufSize", cbBufSize, "pcbBytesNeeded", pcbBytesNeeded);
+	LOQ_bool("services", "pihhh", "hService", hService, "InfoLevel", InfoLevel, "lpBuffer", lpBuffer, "cbBufSize", cbBufSize, "pcbBytesNeeded", pcbBytesNeeded);
 	return ret;
 }

@@ -1063,7 +1063,7 @@ HOOKDEF(BOOL, WINAPI, Thread32Next,
 }
 
 
-// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+// ---- all unhooked-classified hooks (auto-generated, sanitized types) ----
 
 HOOKDEF(HANDLE, WINAPI, GetCurrentThread,
 	void
@@ -1080,7 +1080,7 @@ HOOKDEF(BOOL, WINAPI, GetExitCodeThread,
 ) {
 	BOOL ret;
 	ret = Old_GetExitCodeThread(hThread, lpExitCode);
-	LOQ_bool("threading", "pp", "hThread", hThread, "lpExitCode", lpExitCode);
+	LOQ_bool("threading", "ph", "hThread", hThread, "lpExitCode", lpExitCode);
 	return ret;
 }
 
@@ -1102,7 +1102,7 @@ HOOKDEF(BOOL, WINAPI, GetThreadTimes,
 ) {
 	BOOL ret;
 	ret = Old_GetThreadTimes(hThread, lpCreationTime, lpExitTime, lpKernelTime, lpUserTime);
-	LOQ_bool("threading", "ppppp", "hThread", hThread, "lpCreationTime", lpCreationTime, "lpExitTime", lpExitTime, "lpKernelTime", lpKernelTime, "lpUserTime", lpUserTime);
+	LOQ_bool("threading", "phhhh", "hThread", hThread, "lpCreationTime", lpCreationTime, "lpExitTime", lpExitTime, "lpKernelTime", lpKernelTime, "lpUserTime", lpUserTime);
 	return ret;
 }
 
@@ -1112,7 +1112,7 @@ HOOKDEF(BOOL, WINAPI, QueryThreadCycleTime,
 ) {
 	BOOL ret;
 	ret = Old_QueryThreadCycleTime(ThreadHandle, CycleTime);
-	LOQ_bool("threading", "pp", "ThreadHandle", ThreadHandle, "CycleTime", CycleTime);
+	LOQ_bool("threading", "ph", "ThreadHandle", ThreadHandle, "CycleTime", CycleTime);
 	return ret;
 }
 

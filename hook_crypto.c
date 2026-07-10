@@ -620,10 +620,10 @@ HOOKDEF(NTSTATUS, WINAPI, BCryptEncrypt,
 }
 
 
-// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+// ---- all unhooked-classified hooks (auto-generated, sanitized types) ----
 
 HOOKDEF(BOOL, WINAPI, CertCloseStore,
-	HCERTSTORE hCertStore,
+	PVOID hCertStore,
 	DWORD dwFlags
 ) {
 	BOOL ret;
@@ -632,22 +632,22 @@ HOOKDEF(BOOL, WINAPI, CertCloseStore,
 	return ret;
 }
 
-HOOKDEF(PCCERT_CONTEXT, WINAPI, CertFindCertificateInStore,
-	HCERTSTORE hCertStore,
+HOOKDEF(PVOID, WINAPI, CertFindCertificateInStore,
+	PVOID hCertStore,
 	DWORD dwCertEncodingType,
 	DWORD dwFindFlags,
 	DWORD dwFindType,
-	const void* pvFindPara,
-	PCCERT_CONTEXT pPrevCertContext
+	PVOID pvFindPara,
+	PVOID pPrevCertContext
 ) {
-	PCCERT_CONTEXT ret;
+	PVOID ret;
 	ret = Old_CertFindCertificateInStore(hCertStore, dwCertEncodingType, dwFindFlags, dwFindType, pvFindPara, pPrevCertContext);
 	LOQ_nonnull("crypto", "phhhpp", "hCertStore", hCertStore, "dwCertEncodingType", dwCertEncodingType, "dwFindFlags", dwFindFlags, "dwFindType", dwFindType, "pvFindPara", pvFindPara, "pPrevCertContext", pPrevCertContext);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, CertFreeCertificateContext,
-	PCCERT_CONTEXT pCertContext
+	PVOID pCertContext
 ) {
 	BOOL ret;
 	ret = Old_CertFreeCertificateContext(pCertContext);
@@ -656,10 +656,10 @@ HOOKDEF(BOOL, WINAPI, CertFreeCertificateContext,
 }
 
 HOOKDEF(DWORD, WINAPI, CertGetNameStringW,
-	PCCERT_CONTEXT pCertContext,
+	PVOID pCertContext,
 	DWORD dwType,
 	DWORD dwFlags,
-	void* pvTypePara,
+	PVOID pvTypePara,
 	LPWSTR pszNameString,
 	DWORD cchNameString
 ) {
@@ -672,8 +672,8 @@ HOOKDEF(DWORD, WINAPI, CertGetNameStringW,
 HOOKDEF(BOOL, WINAPI, CredEnumerateW,
 	LPCWSTR Filter,
 	DWORD Flags,
-	DWORD* Count,
-	PCREDENTIALW** Credential
+	PVOID Count,
+	PVOID Credential
 ) {
 	BOOL ret;
 	ret = Old_CredEnumerateW(Filter, Flags, Count, Credential);
@@ -691,7 +691,7 @@ HOOKDEF(void, WINAPI, CredFree,
 }
 
 HOOKDEF(BOOL, WINAPI, CryptMsgClose,
-	HCRYPTMSG hCryptMsg
+	PVOID hCryptMsg
 ) {
 	BOOL ret;
 	ret = Old_CryptMsgClose(hCryptMsg);
@@ -700,11 +700,11 @@ HOOKDEF(BOOL, WINAPI, CryptMsgClose,
 }
 
 HOOKDEF(BOOL, WINAPI, CryptMsgGetParam,
-	HCRYPTMSG hCryptMsg,
+	PVOID hCryptMsg,
 	DWORD dwParamType,
 	DWORD dwIndex,
-	void* pvData,
-	DWORD* pcbData
+	PVOID pvData,
+	PVOID pcbData
 ) {
 	BOOL ret;
 	ret = Old_CryptMsgGetParam(hCryptMsg, dwParamType, dwIndex, pvData, pcbData);

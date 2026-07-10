@@ -527,7 +527,7 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 }
 
 
-// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+// ---- all unhooked-classified hooks (auto-generated, sanitized types) ----
 
 HOOKDEF(BOOL, WINAPI, AddClipboardFormatListener,
 	HWND hwnd
@@ -626,7 +626,7 @@ HOOKDEF(BOOL, WINAPI, DestroyWindow,
 }
 
 HOOKDEF(LRESULT, WINAPI, DispatchMessage,
-	const MSG* lpMsg
+	PVOID lpMsg
 ) {
 	LRESULT ret;
 	ret = Old_DispatchMessage(lpMsg);
@@ -635,7 +635,7 @@ HOOKDEF(LRESULT, WINAPI, DispatchMessage,
 }
 
 HOOKDEF(LRESULT, WINAPI, DispatchMessageA,
-	const MSG* lpMsg
+	PVOID lpMsg
 ) {
 	LRESULT ret;
 	ret = Old_DispatchMessageA(lpMsg);
@@ -644,7 +644,7 @@ HOOKDEF(LRESULT, WINAPI, DispatchMessageA,
 }
 
 HOOKDEF(LRESULT, WINAPI, DispatchMessageW,
-	const MSG* lpMsg
+	PVOID lpMsg
 ) {
 	LRESULT ret;
 	ret = Old_DispatchMessageW(lpMsg);
@@ -665,7 +665,7 @@ HOOKDEF(BOOL, WINAPI, EndDialog,
 HOOKDEF(BOOL, WINAPI, EnumDisplaySettings,
 	LPCTSTR lpszDeviceName,
 	DWORD iModeNum,
-	DEVMODE* lpDevMode
+	PVOID lpDevMode
 ) {
 	BOOL ret;
 	ret = Old_EnumDisplaySettings(lpszDeviceName, iModeNum, lpDevMode);
@@ -676,7 +676,7 @@ HOOKDEF(BOOL, WINAPI, EnumDisplaySettings,
 HOOKDEF(BOOL, WINAPI, EnumDisplaySettingsA,
 	LPCSTR lpszDeviceName,
 	DWORD iModeNum,
-	DEVMODEA* lpDevMode
+	PVOID lpDevMode
 ) {
 	BOOL ret;
 	ret = Old_EnumDisplaySettingsA(lpszDeviceName, iModeNum, lpDevMode);
@@ -691,7 +691,7 @@ HOOKDEF(DWORD, WINAPI, FormatMessageA,
 	DWORD dwLanguageId,
 	LPSTR lpBuffer,
 	DWORD nSize,
-	va_list* Arguments
+	PVOID Arguments
 ) {
 	DWORD ret;
 	ret = Old_FormatMessageA(dwFlags, lpSource, dwMessageId, dwLanguageId, lpBuffer, nSize, Arguments);
@@ -705,14 +705,14 @@ HOOKDEF(HWND, WINAPI, GetAncestor,
 ) {
 	HWND ret;
 	ret = Old_GetAncestor(hwnd, gaFlags);
-	LOQ_nonnull("misc", "ph", "hwnd", hwnd, "gaFlags", gaFlags);
+	LOQ_nonzero("misc", "ph", "hwnd", hwnd, "gaFlags", gaFlags);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, GetClassInfoExA,
 	HINSTANCE hInstance,
 	LPCSTR lpszClass,
-	LPWNDCLASSEXA lpwcx
+	PVOID lpwcx
 ) {
 	BOOL ret;
 	ret = Old_GetClassInfoExA(hInstance, lpszClass, lpwcx);
@@ -727,7 +727,7 @@ HOOKDEF(int, WINAPI, GetClassName,
 ) {
 	int ret;
 	ret = Old_GetClassName(hWnd, lpClassName, nMaxCount);
-	LOQ_nonzero("misc", "ppi", "hWnd", hWnd, "lpClassName", lpClassName, "nMaxCount", nMaxCount);
+	LOQ_nonzero("misc", "phi", "hWnd", hWnd, "lpClassName", lpClassName, "nMaxCount", nMaxCount);
 	return ret;
 }
 
@@ -736,7 +736,7 @@ HOOKDEF(HWND, WINAPI, GetClipboardOwner,
 ) {
 	HWND ret;
 	ret = Old_GetClipboardOwner();
-	LOQ_nonnull("misc", "");
+	LOQ_nonzero("misc", "");
 	return ret;
 }
 
@@ -754,12 +754,12 @@ HOOKDEF(HWND, WINAPI, GetConsoleWindow,
 ) {
 	HWND ret;
 	ret = Old_GetConsoleWindow();
-	LOQ_nonnull("misc", "");
+	LOQ_nonzero("misc", "");
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, GetCursorInfo,
-	PCURSORINFO pci
+	PVOID pci
 ) {
 	BOOL ret;
 	ret = Old_GetCursorInfo(pci);
@@ -772,7 +772,7 @@ HOOKDEF(HDC, WINAPI, GetDC,
 ) {
 	HDC ret;
 	ret = Old_GetDC(hWnd);
-	LOQ_nonnull("misc", "p", "hWnd", hWnd);
+	LOQ_nonzero("misc", "p", "hWnd", hWnd);
 	return ret;
 }
 
@@ -781,7 +781,7 @@ HOOKDEF(HWND, WINAPI, GetDesktopWindow,
 ) {
 	HWND ret;
 	ret = Old_GetDesktopWindow();
-	LOQ_nonnull("misc", "");
+	LOQ_nonzero("misc", "");
 	return ret;
 }
 
@@ -799,13 +799,13 @@ HOOKDEF(HWND, WINAPI, GetForegroundWindow,
 ) {
 	HWND ret;
 	ret = Old_GetForegroundWindow();
-	LOQ_nonnull("misc", "");
+	LOQ_nonzero("misc", "");
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, GetGUIThreadInfo,
 	DWORD idThread,
-	PGUITHREADINFO pgui
+	PVOID pgui
 ) {
 	BOOL ret;
 	ret = Old_GetGUIThreadInfo(idThread, pgui);
@@ -836,7 +836,7 @@ HOOKDEF(BOOL, WINAPI, GetKeyboardState,
 ) {
 	BOOL ret;
 	ret = Old_GetKeyboardState(lpKeyState);
-	LOQ_bool("misc", "p", "lpKeyState", lpKeyState);
+	LOQ_bool("misc", "h", "lpKeyState", lpKeyState);
 	return ret;
 }
 
@@ -848,7 +848,7 @@ HOOKDEF(BOOL, WINAPI, GetMessage,
 ) {
 	BOOL ret;
 	ret = Old_GetMessage(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax);
-	LOQ_bool("misc", "pphh", "lpMsg", lpMsg, "hWnd", hWnd, "wMsgFilterMin", wMsgFilterMin, "wMsgFilterMax", wMsgFilterMax);
+	LOQ_bool("misc", "hphh", "lpMsg", lpMsg, "hWnd", hWnd, "wMsgFilterMin", wMsgFilterMin, "wMsgFilterMax", wMsgFilterMax);
 	return ret;
 }
 
@@ -860,7 +860,7 @@ HOOKDEF(BOOL, WINAPI, GetMessageA,
 ) {
 	BOOL ret;
 	ret = Old_GetMessageA(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax);
-	LOQ_bool("misc", "pphh", "lpMsg", lpMsg, "hWnd", hWnd, "wMsgFilterMin", wMsgFilterMin, "wMsgFilterMax", wMsgFilterMax);
+	LOQ_bool("misc", "hphh", "lpMsg", lpMsg, "hWnd", hWnd, "wMsgFilterMin", wMsgFilterMin, "wMsgFilterMax", wMsgFilterMax);
 	return ret;
 }
 
@@ -872,13 +872,13 @@ HOOKDEF(BOOL, WINAPI, GetMessageW,
 ) {
 	BOOL ret;
 	ret = Old_GetMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax);
-	LOQ_bool("misc", "pphh", "lpMsg", lpMsg, "hWnd", hWnd, "wMsgFilterMin", wMsgFilterMin, "wMsgFilterMax", wMsgFilterMax);
+	LOQ_bool("misc", "hphh", "lpMsg", lpMsg, "hWnd", hWnd, "wMsgFilterMin", wMsgFilterMin, "wMsgFilterMax", wMsgFilterMax);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, GetMonitorInfo,
 	HMONITOR hMonitor,
-	LPMONITORINFO lpmi
+	PVOID lpmi
 ) {
 	BOOL ret;
 	ret = Old_GetMonitorInfo(hMonitor, lpmi);
@@ -887,13 +887,13 @@ HOOKDEF(BOOL, WINAPI, GetMonitorInfo,
 }
 
 HOOKDEF(UINT, WINAPI, GetRawInputBuffer,
-	PRAWINPUT pData,
+	PVOID pData,
 	PUINT pcbSize,
 	UINT cbSizeHeader
 ) {
 	UINT ret;
 	ret = Old_GetRawInputBuffer(pData, pcbSize, cbSizeHeader);
-	LOQ_nonzero("misc", "pph", "pData", pData, "pcbSize", pcbSize, "cbSizeHeader", cbSizeHeader);
+	LOQ_nonzero("misc", "phh", "pData", pData, "pcbSize", pcbSize, "cbSizeHeader", cbSizeHeader);
 	return ret;
 }
 
@@ -906,7 +906,7 @@ HOOKDEF(UINT, WINAPI, GetRawInputData,
 ) {
 	UINT ret;
 	ret = Old_GetRawInputData(hRawInput, uiCommand, pData, pcbSize, cbSizeHeader);
-	LOQ_nonzero("misc", "phpph", "hRawInput", hRawInput, "uiCommand", uiCommand, "pData", pData, "pcbSize", pcbSize, "cbSizeHeader", cbSizeHeader);
+	LOQ_nonzero("misc", "phphh", "hRawInput", hRawInput, "uiCommand", uiCommand, "pData", pData, "pcbSize", pcbSize, "cbSizeHeader", cbSizeHeader);
 	return ret;
 }
 
@@ -926,7 +926,7 @@ HOOKDEF(HWND, WINAPI, GetWindow,
 ) {
 	HWND ret;
 	ret = Old_GetWindow(hWnd, uCmd);
-	LOQ_nonnull("misc", "ph", "hWnd", hWnd, "uCmd", uCmd);
+	LOQ_nonzero("misc", "ph", "hWnd", hWnd, "uCmd", uCmd);
 	return ret;
 }
 
@@ -966,7 +966,7 @@ HOOKDEF(BOOL, WINAPI, GetWindowRect,
 ) {
 	BOOL ret;
 	ret = Old_GetWindowRect(hWnd, lpRect);
-	LOQ_bool("misc", "pp", "hWnd", hWnd, "lpRect", lpRect);
+	LOQ_bool("misc", "ph", "hWnd", hWnd, "lpRect", lpRect);
 	return ret;
 }
 
@@ -977,7 +977,7 @@ HOOKDEF(int, WINAPI, GetWindowText,
 ) {
 	int ret;
 	ret = Old_GetWindowText(hWnd, lpString, nMaxCount);
-	LOQ_nonzero("misc", "ppi", "hWnd", hWnd, "lpString", lpString, "nMaxCount", nMaxCount);
+	LOQ_nonzero("misc", "phi", "hWnd", hWnd, "lpString", lpString, "nMaxCount", nMaxCount);
 	return ret;
 }
 
@@ -998,7 +998,7 @@ HOOKDEF(DWORD, WINAPI, GetWindowThreadProcessId,
 ) {
 	DWORD ret;
 	ret = Old_GetWindowThreadProcessId(hWnd, lpdwProcessId);
-	LOQ_nonzero("misc", "pp", "hWnd", hWnd, "lpdwProcessId", lpdwProcessId);
+	LOQ_nonzero("misc", "ph", "hWnd", hWnd, "lpdwProcessId", lpdwProcessId);
 	return ret;
 }
 
@@ -1037,7 +1037,7 @@ HOOKDEF(HCURSOR, WINAPI, LoadCursor,
 ) {
 	HCURSOR ret;
 	ret = Old_LoadCursor(hInstance, lpCursorName);
-	LOQ_nonnull("misc", "ps", "hInstance", hInstance, "lpCursorName", lpCursorName);
+	LOQ_nonzero("misc", "ps", "hInstance", hInstance, "lpCursorName", lpCursorName);
 	return ret;
 }
 
@@ -1047,7 +1047,7 @@ HOOKDEF(HCURSOR, WINAPI, LoadCursorW,
 ) {
 	HCURSOR ret;
 	ret = Old_LoadCursorW(hInstance, lpCursorName);
-	LOQ_nonnull("misc", "pu", "hInstance", hInstance, "lpCursorName", lpCursorName);
+	LOQ_nonzero("misc", "pu", "hInstance", hInstance, "lpCursorName", lpCursorName);
 	return ret;
 }
 
@@ -1057,7 +1057,7 @@ HOOKDEF(HICON, WINAPI, LoadIconW,
 ) {
 	HICON ret;
 	ret = Old_LoadIconW(hInstance, lpIconName);
-	LOQ_nonnull("misc", "pu", "hInstance", hInstance, "lpIconName", lpIconName);
+	LOQ_nonzero("misc", "pu", "hInstance", hInstance, "lpIconName", lpIconName);
 	return ret;
 }
 
@@ -1067,7 +1067,7 @@ HOOKDEF(HMONITOR, WINAPI, MonitorFromWindow,
 ) {
 	HMONITOR ret;
 	ret = Old_MonitorFromWindow(hwnd, dwFlags);
-	LOQ_nonnull("misc", "ph", "hwnd", hwnd, "dwFlags", dwFlags);
+	LOQ_nonzero("misc", "ph", "hwnd", hwnd, "dwFlags", dwFlags);
 	return ret;
 }
 
@@ -1089,7 +1089,7 @@ HOOKDEF(BOOL, WINAPI, PeekMessage,
 ) {
 	BOOL ret;
 	ret = Old_PeekMessage(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
-	LOQ_bool("misc", "pphhh", "lpMsg", lpMsg, "hWnd", hWnd, "wMsgFilterMin", wMsgFilterMin, "wMsgFilterMax", wMsgFilterMax, "wRemoveMsg", wRemoveMsg);
+	LOQ_bool("misc", "hphhh", "lpMsg", lpMsg, "hWnd", hWnd, "wMsgFilterMin", wMsgFilterMin, "wMsgFilterMax", wMsgFilterMax, "wRemoveMsg", wRemoveMsg);
 	return ret;
 }
 
@@ -1102,7 +1102,7 @@ HOOKDEF(BOOL, WINAPI, PeekMessageA,
 ) {
 	BOOL ret;
 	ret = Old_PeekMessageA(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
-	LOQ_bool("misc", "pphhh", "lpMsg", lpMsg, "hWnd", hWnd, "wMsgFilterMin", wMsgFilterMin, "wMsgFilterMax", wMsgFilterMax, "wRemoveMsg", wRemoveMsg);
+	LOQ_bool("misc", "hphhh", "lpMsg", lpMsg, "hWnd", hWnd, "wMsgFilterMin", wMsgFilterMin, "wMsgFilterMax", wMsgFilterMax, "wRemoveMsg", wRemoveMsg);
 	return ret;
 }
 
@@ -1115,7 +1115,7 @@ HOOKDEF(BOOL, WINAPI, PeekMessageW,
 ) {
 	BOOL ret;
 	ret = Old_PeekMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
-	LOQ_bool("misc", "pphhh", "lpMsg", lpMsg, "hWnd", hWnd, "wMsgFilterMin", wMsgFilterMin, "wMsgFilterMax", wMsgFilterMax, "wRemoveMsg", wRemoveMsg);
+	LOQ_bool("misc", "hphhh", "lpMsg", lpMsg, "hWnd", hWnd, "wMsgFilterMin", wMsgFilterMin, "wMsgFilterMax", wMsgFilterMax, "wRemoveMsg", wRemoveMsg);
 	return ret;
 }
 
@@ -1129,29 +1129,29 @@ HOOKDEF(void, WINAPI, PostQuitMessage,
 }
 
 HOOKDEF(ATOM, WINAPI, RegisterClassA,
-	const WNDCLASSA* lpWndClass
+	PVOID lpWndClass
 ) {
 	ATOM ret;
 	ret = Old_RegisterClassA(lpWndClass);
-	LOQ_nonnull("misc", "p", "lpWndClass", lpWndClass);
+	LOQ_nonzero("misc", "p", "lpWndClass", lpWndClass);
 	return ret;
 }
 
 HOOKDEF(ATOM, WINAPI, RegisterClassExA,
-	const WNDCLASSEXA* unnamedParam1
+	PVOID unnamedParam1
 ) {
 	ATOM ret;
 	ret = Old_RegisterClassExA(unnamedParam1);
-	LOQ_nonnull("misc", "p", "unnamedParam1", unnamedParam1);
+	LOQ_nonzero("misc", "p", "unnamedParam1", unnamedParam1);
 	return ret;
 }
 
 HOOKDEF(ATOM, WINAPI, RegisterClassExW,
-	const WNDCLASSEXW* unnamedParam1
+	PVOID unnamedParam1
 ) {
 	ATOM ret;
 	ret = Old_RegisterClassExW(unnamedParam1);
-	LOQ_nonnull("misc", "p", "unnamedParam1", unnamedParam1);
+	LOQ_nonzero("misc", "p", "unnamedParam1", unnamedParam1);
 	return ret;
 }
 
@@ -1168,7 +1168,7 @@ HOOKDEF(BOOL, WINAPI, RegisterHotKey,
 }
 
 HOOKDEF(BOOL, WINAPI, RegisterRawInputDevices,
-	PCRAWINPUTDEVICE pRawInputDevices,
+	PVOID pRawInputDevices,
 	UINT uiNumDevices,
 	UINT cbSize
 ) {
@@ -1220,7 +1220,7 @@ HOOKDEF(HWND, WINAPI, SetClipboardViewer,
 ) {
 	HWND ret;
 	ret = Old_SetClipboardViewer(hWndNewViewer);
-	LOQ_nonnull("misc", "p", "hWndNewViewer", hWndNewViewer);
+	LOQ_nonzero("misc", "p", "hWndNewViewer", hWndNewViewer);
 	return ret;
 }
 
@@ -1240,7 +1240,7 @@ HOOKDEF(UINT_PTR, WINAPI, SetTimer,
 	HWND hWnd,
 	UINT_PTR nIDEvent,
 	UINT uElapse,
-	TIMERPROC lpTimerFunc
+	PVOID lpTimerFunc
 ) {
 	UINT_PTR ret;
 	ret = Old_SetTimer(hWnd, nIDEvent, uElapse, lpTimerFunc);
@@ -1252,14 +1252,14 @@ HOOKDEF(HWINEVENTHOOK, WINAPI, SetWinEventHook,
 	DWORD eventMin,
 	DWORD eventMax,
 	HMODULE hmodWinEventProc,
-	WINEVENTPROC pfnWinEventProc,
+	PVOID pfnWinEventProc,
 	DWORD idProcess,
 	DWORD idThread,
 	DWORD dwFlags
 ) {
 	HWINEVENTHOOK ret;
 	ret = Old_SetWinEventHook(eventMin, eventMax, hmodWinEventProc, pfnWinEventProc, idProcess, idThread, dwFlags);
-	LOQ_nonnull("misc", "hhpphhh", "eventMin", eventMin, "eventMax", eventMax, "hmodWinEventProc", hmodWinEventProc, "pfnWinEventProc", pfnWinEventProc, "idProcess", idProcess, "idThread", idThread, "dwFlags", dwFlags);
+	LOQ_nonzero("misc", "hhpphhh", "eventMin", eventMin, "eventMax", eventMax, "hmodWinEventProc", hmodWinEventProc, "pfnWinEventProc", pfnWinEventProc, "idProcess", idProcess, "idThread", idThread, "dwFlags", dwFlags);
 	return ret;
 }
 
@@ -1274,7 +1274,7 @@ HOOKDEF(BOOL, WINAPI, ShowWindow,
 }
 
 HOOKDEF(BOOL, WINAPI, TranslateMessage,
-	const MSG* lpMsg
+	PVOID lpMsg
 ) {
 	BOOL ret;
 	ret = Old_TranslateMessage(lpMsg);
@@ -1325,6 +1325,6 @@ HOOKDEF(HWND, WINAPI, WindowFromPoint,
 ) {
 	HWND ret;
 	ret = Old_WindowFromPoint(Point);
-	LOQ_nonnull("misc", "p", "Point", Point);
+	LOQ_nonzero("misc", "h", "Point", Point);
 	return ret;
 }

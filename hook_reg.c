@@ -702,7 +702,7 @@ HOOKDEF(LONG, WINAPI, RegNotifyChangeKeyValue,
 }
 
 
-// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+// ---- all unhooked-classified hooks (auto-generated, sanitized types) ----
 
 HOOKDEF(LSTATUS, WINAPI, RegGetValueA,
 	HKEY hkey,
@@ -715,7 +715,7 @@ HOOKDEF(LSTATUS, WINAPI, RegGetValueA,
 ) {
 	LSTATUS ret;
 	ret = Old_RegGetValueA(hkey, lpSubKey, lpValue, dwFlags, pdwType, pvData, pcbData);
-	LOQ_zero("registry", "psshppp", "hkey", hkey, "lpSubKey", lpSubKey, "lpValue", lpValue, "dwFlags", dwFlags, "pdwType", pdwType, "pvData", pvData, "pcbData", pcbData);
+	LOQ_zero("registry", "psshhph", "hkey", hkey, "lpSubKey", lpSubKey, "lpValue", lpValue, "dwFlags", dwFlags, "pdwType", pdwType, "pvData", pvData, "pcbData", pcbData);
 	return ret;
 }
 
@@ -730,17 +730,17 @@ HOOKDEF(LSTATUS, WINAPI, RegGetValueW,
 ) {
 	LSTATUS ret;
 	ret = Old_RegGetValueW(hkey, lpSubKey, lpValue, dwFlags, pdwType, pvData, pcbData);
-	LOQ_zero("registry", "puuhppp", "hkey", hkey, "lpSubKey", lpSubKey, "lpValue", lpValue, "dwFlags", dwFlags, "pdwType", pdwType, "pvData", pvData, "pcbData", pcbData);
+	LOQ_zero("registry", "puuhhph", "hkey", hkey, "lpSubKey", lpSubKey, "lpValue", lpValue, "dwFlags", dwFlags, "pdwType", pdwType, "pvData", pvData, "pcbData", pcbData);
 	return ret;
 }
 
 HOOKDEF(LSTATUS, WINAPI, RegOpenCurrentUser,
-	REGSAM samDesired,
-	PHKEY phkResult
+	PVOID samDesired,
+	PVOID phkResult
 ) {
 	LSTATUS ret;
 	ret = Old_RegOpenCurrentUser(samDesired, phkResult);
-	LOQ_zero("registry", "hp", "samDesired", samDesired, "phkResult", phkResult);
+	LOQ_zero("registry", "pp", "samDesired", samDesired, "phkResult", phkResult);
 	return ret;
 }
 
@@ -748,13 +748,13 @@ HOOKDEF(LSTATUS, WINAPI, SHRegGetValueW,
 	HKEY hkey,
 	LPCWSTR pszSubKey,
 	LPCWSTR pszValue,
-	SRRF srrfFlags,
-	DWORD* pdwType,
-	void* pvData,
-	DWORD* pcbData
+	PVOID srrfFlags,
+	PVOID pdwType,
+	PVOID pvData,
+	PVOID pcbData
 ) {
 	LSTATUS ret;
 	ret = Old_SHRegGetValueW(hkey, pszSubKey, pszValue, srrfFlags, pdwType, pvData, pcbData);
-	LOQ_zero("registry", "puuhppp", "hkey", hkey, "pszSubKey", pszSubKey, "pszValue", pszValue, "srrfFlags", srrfFlags, "pdwType", pdwType, "pvData", pvData, "pcbData", pcbData);
+	LOQ_zero("registry", "puupppp", "hkey", hkey, "pszSubKey", pszSubKey, "pszValue", pszValue, "srrfFlags", srrfFlags, "pdwType", pdwType, "pvData", pvData, "pcbData", pcbData);
 	return ret;
 }

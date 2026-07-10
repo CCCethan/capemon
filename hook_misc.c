@@ -2235,8 +2235,7 @@ HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInterfaceDetailA,
 }
 
 
-
-// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+// ---- all unhooked-classified hooks (auto-generated, sanitized types) ----
 
 HOOKDEF(BOOL, WINAPI, AllocConsole,
 	void
@@ -2262,13 +2261,13 @@ HOOKDEF(BOOL, WINAPI, CancelIoEx,
 ) {
 	BOOL ret;
 	ret = Old_CancelIoEx(hFile, lpOverlapped);
-	LOQ_bool("misc", "pp", "hFile", hFile, "lpOverlapped", lpOverlapped);
+	LOQ_bool("misc", "ph", "hFile", hFile, "lpOverlapped", lpOverlapped);
 	return ret;
 }
 
 HOOKDEF(LONG, WINAPI, CompareFileTime,
-	const FILETIME* lpFileTime1,
-	const FILETIME* lpFileTime2
+	PVOID lpFileTime1,
+	PVOID lpFileTime2
 ) {
 	LONG ret;
 	ret = Old_CompareFileTime(lpFileTime1, lpFileTime2);
@@ -2277,29 +2276,29 @@ HOOKDEF(LONG, WINAPI, CompareFileTime,
 }
 
 HOOKDEF(HRESULT, WINAPI, D3D11CreateDevice,
-	IDXGIAdapter* pAdapter,
-	D3D_DRIVER_TYPE DriverType,
+	PVOID pAdapter,
+	int DriverType,
 	HMODULE Software,
 	UINT Flags,
-	const D3D_FEATURE_LEVEL* pFeatureLevels,
+	PVOID pFeatureLevels,
 	UINT FeatureLevels,
 	UINT SDKVersion,
-	ID3D11Device** ppDevice,
-	D3D_FEATURE_LEVEL* pFeatureLevel,
-	ID3D11DeviceContext** ppImmediateContext
+	PVOID ppDevice,
+	PVOID pFeatureLevel,
+	PVOID ppImmediateContext
 ) {
 	HRESULT ret;
 	ret = Old_D3D11CreateDevice(pAdapter, DriverType, Software, Flags, pFeatureLevels, FeatureLevels, SDKVersion, ppDevice, pFeatureLevel, ppImmediateContext);
-	LOQ_hresult("misc", "phphphhppp", "pAdapter", pAdapter, "DriverType", DriverType, "Software", Software, "Flags", Flags, "pFeatureLevels", pFeatureLevels, "FeatureLevels", FeatureLevels, "SDKVersion", SDKVersion, "ppDevice", ppDevice, "pFeatureLevel", pFeatureLevel, "ppImmediateContext", ppImmediateContext);
+	LOQ_hresult("misc", "piphphhppp", "pAdapter", pAdapter, "DriverType", DriverType, "Software", Software, "Flags", Flags, "pFeatureLevels", pFeatureLevels, "FeatureLevels", FeatureLevels, "SDKVersion", SDKVersion, "ppDevice", ppDevice, "pFeatureLevel", pFeatureLevel, "ppImmediateContext", ppImmediateContext);
 	return ret;
 }
 
 HOOKDEF(HRESULT, WINAPI, DirectInput8Create,
 	HINSTANCE hinst,
 	DWORD dwVersion,
-	REFIID riidltf,
-	LPVOID* ppvOut,
-	LPUNKNOWN punkOuter
+	PVOID riidltf,
+	PVOID ppvOut,
+	PVOID punkOuter
 ) {
 	HRESULT ret;
 	ret = Old_DirectInput8Create(hinst, dwVersion, riidltf, ppvOut, punkOuter);
@@ -2318,7 +2317,7 @@ HOOKDEF(BOOL, WINAPI, EnumPrinterDriversA,
 ) {
 	BOOL ret;
 	ret = Old_EnumPrinterDriversA(pName, pEnvironment, Level, pDriverInfo, cbBuf, pcbNeeded, pcReturned);
-	LOQ_bool("misc", "pphphpp", "pName", pName, "pEnvironment", pEnvironment, "Level", Level, "pDriverInfo", pDriverInfo, "cbBuf", cbBuf, "pcbNeeded", pcbNeeded, "pcReturned", pcReturned);
+	LOQ_bool("misc", "pphhhhh", "pName", pName, "pEnvironment", pEnvironment, "Level", Level, "pDriverInfo", pDriverInfo, "cbBuf", cbBuf, "pcbNeeded", pcbNeeded, "pcReturned", pcReturned);
 	return ret;
 }
 
@@ -2333,7 +2332,7 @@ HOOKDEF(BOOL, WINAPI, EnumPrinters,
 ) {
 	BOOL ret;
 	ret = Old_EnumPrinters(Flags, Name, Level, pPrinterEnum, cbBuf, pcbNeeded, pcReturned);
-	LOQ_bool("misc", "hphphpp", "Flags", Flags, "Name", Name, "Level", Level, "pPrinterEnum", pPrinterEnum, "cbBuf", cbBuf, "pcbNeeded", pcbNeeded, "pcReturned", pcReturned);
+	LOQ_bool("misc", "hhhhhhh", "Flags", Flags, "Name", Name, "Level", Level, "pPrinterEnum", pPrinterEnum, "cbBuf", cbBuf, "pcbNeeded", pcbNeeded, "pcReturned", pcReturned);
 	return ret;
 }
 
@@ -2348,7 +2347,7 @@ HOOKDEF(BOOL, WINAPI, EnumPrintersA,
 ) {
 	BOOL ret;
 	ret = Old_EnumPrintersA(Flags, Name, Level, pPrinterEnum, cbBuf, pcbNeeded, pcReturned);
-	LOQ_bool("misc", "hphphpp", "Flags", Flags, "Name", Name, "Level", Level, "pPrinterEnum", pPrinterEnum, "cbBuf", cbBuf, "pcbNeeded", pcbNeeded, "pcReturned", pcReturned);
+	LOQ_bool("misc", "hphhhhh", "Flags", Flags, "Name", Name, "Level", Level, "pPrinterEnum", pPrinterEnum, "cbBuf", cbBuf, "pcbNeeded", pcbNeeded, "pcReturned", pcReturned);
 	return ret;
 }
 
@@ -2363,12 +2362,12 @@ HOOKDEF(BOOL, WINAPI, EnumPrintersW,
 ) {
 	BOOL ret;
 	ret = Old_EnumPrintersW(Flags, Name, Level, pPrinterEnum, cbBuf, pcbNeeded, pcReturned);
-	LOQ_bool("misc", "hphphpp", "Flags", Flags, "Name", Name, "Level", Level, "pPrinterEnum", pPrinterEnum, "cbBuf", cbBuf, "pcbNeeded", pcbNeeded, "pcReturned", pcReturned);
+	LOQ_bool("misc", "hphhhhh", "Flags", Flags, "Name", Name, "Level", Level, "pPrinterEnum", pPrinterEnum, "cbBuf", cbBuf, "pcbNeeded", pcbNeeded, "pcReturned", pcReturned);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, EvtClose,
-	EVT_HANDLE Object
+	PVOID Object
 ) {
 	BOOL ret;
 	ret = Old_EvtClose(Object);
@@ -2377,44 +2376,44 @@ HOOKDEF(BOOL, WINAPI, EvtClose,
 }
 
 HOOKDEF(BOOL, WINAPI, EvtNext,
-	EVT_HANDLE ResultSet,
+	PVOID ResultSet,
 	DWORD EventsSize,
-	PEVT_HANDLE Events,
+	PVOID Events,
 	DWORD Timeout,
 	DWORD Flags,
 	PDWORD Returned
 ) {
 	BOOL ret;
 	ret = Old_EvtNext(ResultSet, EventsSize, Events, Timeout, Flags, Returned);
-	LOQ_bool("misc", "phphhp", "ResultSet", ResultSet, "EventsSize", EventsSize, "Events", Events, "Timeout", Timeout, "Flags", Flags, "Returned", Returned);
+	LOQ_bool("misc", "phphhh", "ResultSet", ResultSet, "EventsSize", EventsSize, "Events", Events, "Timeout", Timeout, "Flags", Flags, "Returned", Returned);
 	return ret;
 }
 
-HOOKDEF(EVT_HANDLE, WINAPI, EvtOpenPublisherEnum,
-	EVT_HANDLE Session,
+HOOKDEF(PVOID, WINAPI, EvtOpenPublisherEnum,
+	PVOID Session,
 	DWORD Flags
 ) {
-	EVT_HANDLE ret;
+	PVOID ret;
 	ret = Old_EvtOpenPublisherEnum(Session, Flags);
 	LOQ_nonnull("misc", "ph", "Session", Session, "Flags", Flags);
 	return ret;
 }
 
-HOOKDEF(EVT_HANDLE, WINAPI, EvtQuery,
-	EVT_HANDLE Session,
+HOOKDEF(PVOID, WINAPI, EvtQuery,
+	PVOID Session,
 	LPCWSTR Path,
 	LPCWSTR Query,
 	DWORD Flags
 ) {
-	EVT_HANDLE ret;
+	PVOID ret;
 	ret = Old_EvtQuery(Session, Path, Query, Flags);
 	LOQ_nonnull("misc", "puuh", "Session", Session, "Path", Path, "Query", Query, "Flags", Flags);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, EvtRender,
-	EVT_HANDLE Context,
-	EVT_HANDLE Fragment,
+	PVOID Context,
+	PVOID Fragment,
 	DWORD Flags,
 	DWORD BufferSize,
 	PVOID Buffer,
@@ -2423,7 +2422,7 @@ HOOKDEF(BOOL, WINAPI, EvtRender,
 ) {
 	BOOL ret;
 	ret = Old_EvtRender(Context, Fragment, Flags, BufferSize, Buffer, BufferUsed, PropertyCount);
-	LOQ_bool("misc", "pphhppp", "Context", Context, "Fragment", Fragment, "Flags", Flags, "BufferSize", BufferSize, "Buffer", Buffer, "BufferUsed", BufferUsed, "PropertyCount", PropertyCount);
+	LOQ_bool("misc", "pphhphh", "Context", Context, "Fragment", Fragment, "Flags", Flags, "BufferSize", BufferSize, "Buffer", Buffer, "BufferUsed", BufferUsed, "PropertyCount", PropertyCount);
 	return ret;
 }
 
@@ -2450,22 +2449,22 @@ HOOKDEF(DWORD, WINAPI, ExpandEnvironmentStringsW,
 }
 
 HOOKDEF(BOOL, WINAPI, FileTimeToLocalFileTime,
-	const FILETIME* lpFileTime,
+	PVOID lpFileTime,
 	LPFILETIME lpLocalFileTime
 ) {
 	BOOL ret;
 	ret = Old_FileTimeToLocalFileTime(lpFileTime, lpLocalFileTime);
-	LOQ_bool("misc", "pp", "lpFileTime", lpFileTime, "lpLocalFileTime", lpLocalFileTime);
+	LOQ_bool("misc", "ph", "lpFileTime", lpFileTime, "lpLocalFileTime", lpLocalFileTime);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime,
-	const FILETIME* lpFileTime,
+	PVOID lpFileTime,
 	LPSYSTEMTIME lpSystemTime
 ) {
 	BOOL ret;
 	ret = Old_FileTimeToSystemTime(lpFileTime, lpSystemTime);
-	LOQ_bool("misc", "pp", "lpFileTime", lpFileTime, "lpSystemTime", lpSystemTime);
+	LOQ_bool("misc", "ph", "lpFileTime", lpFileTime, "lpSystemTime", lpSystemTime);
 	return ret;
 }
 
@@ -2483,7 +2482,7 @@ HOOKDEF(BOOL, WINAPI, FreeEnvironmentStringsW,
 ) {
 	BOOL ret;
 	ret = Old_FreeEnvironmentStringsW(penv);
-	LOQ_bool("misc", "p", "penv", penv);
+	LOQ_bool("misc", "h", "penv", penv);
 	return ret;
 }
 
@@ -2497,13 +2496,13 @@ HOOKDEF(BOOL, WINAPI, FreeLibrary,
 }
 
 HOOKDEF(BOOL, WINAPI, GetComputerNameExA,
-	COMPUTER_NAME_FORMAT NameType,
+	int NameType,
 	LPSTR lpBuffer,
 	LPDWORD nSize
 ) {
 	BOOL ret;
 	ret = Old_GetComputerNameExA(NameType, lpBuffer, nSize);
-	LOQ_bool("misc", "hpp", "NameType", NameType, "lpBuffer", lpBuffer, "nSize", nSize);
+	LOQ_bool("misc", "iph", "NameType", NameType, "lpBuffer", lpBuffer, "nSize", nSize);
 	return ret;
 }
 
@@ -2513,7 +2512,7 @@ HOOKDEF(BOOL, WINAPI, GetConsoleMode,
 ) {
 	BOOL ret;
 	ret = Old_GetConsoleMode(hConsoleHandle, lpMode);
-	LOQ_bool("misc", "pp", "hConsoleHandle", hConsoleHandle, "lpMode", lpMode);
+	LOQ_bool("misc", "ph", "hConsoleHandle", hConsoleHandle, "lpMode", lpMode);
 	return ret;
 }
 
@@ -2532,7 +2531,7 @@ HOOKDEF(LPWCH, WINAPI, GetEnvironmentStringsW,
 ) {
 	LPWCH ret;
 	ret = Old_GetEnvironmentStringsW();
-	LOQ_nonnull("misc", "");
+	LOQ_nonzero("misc", "");
 	return ret;
 }
 
@@ -2559,7 +2558,7 @@ HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableW,
 }
 
 HOOKDEF(void, WINAPI, GetNativeSystemInfo,
-	LPSYSTEM_INFO lpSystemInfo
+	PVOID lpSystemInfo
 ) {
 	int ret = 0;
 	Old_GetNativeSystemInfo(lpSystemInfo);
@@ -2572,20 +2571,20 @@ HOOKDEF(BOOL, WINAPI, GetNumaHighestNodeNumber,
 ) {
 	BOOL ret;
 	ret = Old_GetNumaHighestNodeNumber(HighestNodeNumber);
-	LOQ_bool("misc", "p", "HighestNodeNumber", HighestNodeNumber);
+	LOQ_bool("misc", "h", "HighestNodeNumber", HighestNodeNumber);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, GetQueuedCompletionStatus,
 	HANDLE CompletionPort,
 	LPDWORD lpNumberOfBytesTransferred,
-	PULONG_PTR lpCompletionKey,
-	LPOVERLAPPED* lpOverlapped,
+	PVOID lpCompletionKey,
+	PVOID lpOverlapped,
 	DWORD dwMilliseconds
 ) {
 	BOOL ret;
 	ret = Old_GetQueuedCompletionStatus(CompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, lpOverlapped, dwMilliseconds);
-	LOQ_bool("misc", "pppph", "CompletionPort", CompletionPort, "lpNumberOfBytesTransferred", lpNumberOfBytesTransferred, "lpCompletionKey", lpCompletionKey, "lpOverlapped", lpOverlapped, "dwMilliseconds", dwMilliseconds);
+	LOQ_bool("misc", "phpph", "CompletionPort", CompletionPort, "lpNumberOfBytesTransferred", lpNumberOfBytesTransferred, "lpCompletionKey", lpCompletionKey, "lpOverlapped", lpOverlapped, "dwMilliseconds", dwMilliseconds);
 	return ret;
 }
 
@@ -2623,7 +2622,7 @@ HOOKDEF(void, WINAPI, GetSystemTimePreciseAsFileTime,
 ) {
 	int ret = 0;
 	Old_GetSystemTimePreciseAsFileTime(lpSystemTimeAsFileTime);
-	LOQ_void("misc", "p", "lpSystemTimeAsFileTime", lpSystemTimeAsFileTime);
+	LOQ_void("misc", "h", "lpSystemTimeAsFileTime", lpSystemTimeAsFileTime);
 	return;
 }
 
@@ -2634,12 +2633,12 @@ HOOKDEF(BOOL, WINAPI, GetSystemTimes,
 ) {
 	BOOL ret;
 	ret = Old_GetSystemTimes(lpIdleTime, lpKernelTime, lpUserTime);
-	LOQ_bool("misc", "ppp", "lpIdleTime", lpIdleTime, "lpKernelTime", lpKernelTime, "lpUserTime", lpUserTime);
+	LOQ_bool("misc", "hhh", "lpIdleTime", lpIdleTime, "lpKernelTime", lpKernelTime, "lpUserTime", lpUserTime);
 	return ret;
 }
 
 HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation,
-	LPTIME_ZONE_INFORMATION lpTimeZoneInformation
+	PVOID lpTimeZoneInformation
 ) {
 	DWORD ret;
 	ret = Old_GetTimeZoneInformation(lpTimeZoneInformation);
@@ -2654,7 +2653,7 @@ HOOKDEF(BOOL, WINAPI, GetUserProfileDirectoryW,
 ) {
 	BOOL ret;
 	ret = Old_GetUserProfileDirectoryW(hToken, lpProfileDir, lpcchSize);
-	LOQ_bool("misc", "ppp", "hToken", hToken, "lpProfileDir", lpProfileDir, "lpcchSize", lpcchSize);
+	LOQ_bool("misc", "pph", "hToken", hToken, "lpProfileDir", lpProfileDir, "lpcchSize", lpcchSize);
 	return ret;
 }
 
@@ -2663,12 +2662,12 @@ HOOKDEF(HMODULE, WINAPI, LoadLibraryA,
 ) {
 	HMODULE ret;
 	ret = Old_LoadLibraryA(lpLibFileName);
-	LOQ_nonnull("misc", "s", "lpLibFileName", lpLibFileName);
+	LOQ_nonzero("misc", "s", "lpLibFileName", lpLibFileName);
 	return ret;
 }
 
 HOOKDEF(HRESULT, WINAPI, MFCreateAttributes,
-	IMFAttributes** ppMFAttributes,
+	PVOID ppMFAttributes,
 	UINT32 cInitialSize
 ) {
 	HRESULT ret;
@@ -2678,9 +2677,9 @@ HOOKDEF(HRESULT, WINAPI, MFCreateAttributes,
 }
 
 HOOKDEF(HRESULT, WINAPI, MFEnumDeviceSources,
-	IMFAttributes* pAttributes,
-	IMFActivate*** pppSourceActivate,
-	UINT32* pcSourceActivate
+	PVOID pAttributes,
+	PVOID pppSourceActivate,
+	PVOID pcSourceActivate
 ) {
 	HRESULT ret;
 	ret = Old_MFEnumDeviceSources(pAttributes, pppSourceActivate, pcSourceActivate);
@@ -2722,14 +2721,14 @@ HOOKDEF(UINT, WINAPI, MsiEnumProductsExW,
 	LPCWSTR szUserSid,
 	DWORD dwContext,
 	DWORD dwIndex,
-	WCHAR* szInstalledProductCode,
-	MSIINSTALLCONTEXT* pdwInstalledContext,
+	PVOID szInstalledProductCode,
+	PVOID pdwInstalledContext,
 	LPWSTR szSid,
 	LPDWORD pcchSid
 ) {
 	UINT ret;
 	ret = Old_MsiEnumProductsExW(szProductCode, szUserSid, dwContext, dwIndex, szInstalledProductCode, pdwInstalledContext, szSid, pcchSid);
-	LOQ_nonzero("misc", "uuhhpppp", "szProductCode", szProductCode, "szUserSid", szUserSid, "dwContext", dwContext, "dwIndex", dwIndex, "szInstalledProductCode", szInstalledProductCode, "pdwInstalledContext", pdwInstalledContext, "szSid", szSid, "pcchSid", pcchSid);
+	LOQ_nonzero("misc", "uuhhppph", "szProductCode", szProductCode, "szUserSid", szUserSid, "dwContext", dwContext, "dwIndex", dwIndex, "szInstalledProductCode", szInstalledProductCode, "pdwInstalledContext", pdwInstalledContext, "szSid", szSid, "pcchSid", pcchSid);
 	return ret;
 }
 
@@ -2751,7 +2750,7 @@ HOOKDEF(UINT, WINAPI, MsiGetProductInfoA,
 ) {
 	UINT ret;
 	ret = Old_MsiGetProductInfoA(szProduct, szProperty, lpValueBuf, pcchValueBuf);
-	LOQ_nonzero("misc", "sspp", "szProduct", szProduct, "szProperty", szProperty, "lpValueBuf", lpValueBuf, "pcchValueBuf", pcchValueBuf);
+	LOQ_nonzero("misc", "ssph", "szProduct", szProduct, "szProperty", szProperty, "lpValueBuf", lpValueBuf, "pcchValueBuf", pcchValueBuf);
 	return ret;
 }
 
@@ -2763,128 +2762,128 @@ HOOKDEF(UINT, WINAPI, MsiGetProductInfoW,
 ) {
 	UINT ret;
 	ret = Old_MsiGetProductInfoW(szProduct, szProperty, lpValueBuf, pcchValueBuf);
-	LOQ_nonzero("misc", "uupp", "szProduct", szProduct, "szProperty", szProperty, "lpValueBuf", lpValueBuf, "pcchValueBuf", pcchValueBuf);
+	LOQ_nonzero("misc", "uuph", "szProduct", szProduct, "szProperty", szProperty, "lpValueBuf", lpValueBuf, "pcchValueBuf", pcchValueBuf);
 	return ret;
 }
 
-HOOKDEF(PDH_STATUS, WINAPI, PdhAddCounterA,
-	PDH_HQUERY hQuery,
+HOOKDEF(LONG, WINAPI, PdhAddCounterA,
+	PVOID hQuery,
 	LPCSTR szFullCounterPath,
 	DWORD_PTR dwUserData,
-	PDH_HCOUNTER* phCounter
+	PVOID phCounter
 ) {
-	PDH_STATUS ret;
+	LONG ret;
 	ret = Old_PdhAddCounterA(hQuery, szFullCounterPath, dwUserData, phCounter);
 	LOQ_zero("misc", "pshp", "hQuery", hQuery, "szFullCounterPath", szFullCounterPath, "dwUserData", dwUserData, "phCounter", phCounter);
 	return ret;
 }
 
-HOOKDEF(PDH_STATUS, WINAPI, PdhAddCounterW,
-	PDH_HQUERY hQuery,
+HOOKDEF(LONG, WINAPI, PdhAddCounterW,
+	PVOID hQuery,
 	LPCWSTR szFullCounterPath,
 	DWORD_PTR dwUserData,
-	PDH_HCOUNTER* phCounter
+	PVOID phCounter
 ) {
-	PDH_STATUS ret;
+	LONG ret;
 	ret = Old_PdhAddCounterW(hQuery, szFullCounterPath, dwUserData, phCounter);
 	LOQ_zero("misc", "puhp", "hQuery", hQuery, "szFullCounterPath", szFullCounterPath, "dwUserData", dwUserData, "phCounter", phCounter);
 	return ret;
 }
 
-HOOKDEF(PDH_STATUS, WINAPI, PdhAddEnglishCounter,
-	PDH_HQUERY hQuery,
+HOOKDEF(LONG, WINAPI, PdhAddEnglishCounter,
+	PVOID hQuery,
 	LPCTSTR szFullCounterPath,
 	DWORD_PTR dwUserData,
-	PDH_HCOUNTER* phCounter
+	PVOID phCounter
 ) {
-	PDH_STATUS ret;
+	LONG ret;
 	ret = Old_PdhAddEnglishCounter(hQuery, szFullCounterPath, dwUserData, phCounter);
 	LOQ_zero("misc", "pshp", "hQuery", hQuery, "szFullCounterPath", szFullCounterPath, "dwUserData", dwUserData, "phCounter", phCounter);
 	return ret;
 }
 
-HOOKDEF(PDH_STATUS, WINAPI, PdhAddEnglishCounterA,
-	PDH_HQUERY hQuery,
+HOOKDEF(LONG, WINAPI, PdhAddEnglishCounterA,
+	PVOID hQuery,
 	LPCSTR szFullCounterPath,
 	DWORD_PTR dwUserData,
-	PDH_HCOUNTER* phCounter
+	PVOID phCounter
 ) {
-	PDH_STATUS ret;
+	LONG ret;
 	ret = Old_PdhAddEnglishCounterA(hQuery, szFullCounterPath, dwUserData, phCounter);
 	LOQ_zero("misc", "pshp", "hQuery", hQuery, "szFullCounterPath", szFullCounterPath, "dwUserData", dwUserData, "phCounter", phCounter);
 	return ret;
 }
 
-HOOKDEF(PDH_STATUS, WINAPI, PdhAddEnglishCounterW,
-	PDH_HQUERY hQuery,
+HOOKDEF(LONG, WINAPI, PdhAddEnglishCounterW,
+	PVOID hQuery,
 	LPCWSTR szFullCounterPath,
 	DWORD_PTR dwUserData,
-	PDH_HCOUNTER* phCounter
+	PVOID phCounter
 ) {
-	PDH_STATUS ret;
+	LONG ret;
 	ret = Old_PdhAddEnglishCounterW(hQuery, szFullCounterPath, dwUserData, phCounter);
 	LOQ_zero("misc", "puhp", "hQuery", hQuery, "szFullCounterPath", szFullCounterPath, "dwUserData", dwUserData, "phCounter", phCounter);
 	return ret;
 }
 
-HOOKDEF(PDH_STATUS, WINAPI, PdhCloseQuery,
-	PDH_HQUERY hQuery
+HOOKDEF(LONG, WINAPI, PdhCloseQuery,
+	PVOID hQuery
 ) {
-	PDH_STATUS ret;
+	LONG ret;
 	ret = Old_PdhCloseQuery(hQuery);
 	LOQ_zero("misc", "p", "hQuery", hQuery);
 	return ret;
 }
 
-HOOKDEF(PDH_STATUS, WINAPI, PdhCollectQueryData,
-	PDH_HQUERY hQuery
+HOOKDEF(LONG, WINAPI, PdhCollectQueryData,
+	PVOID hQuery
 ) {
-	PDH_STATUS ret;
+	LONG ret;
 	ret = Old_PdhCollectQueryData(hQuery);
 	LOQ_zero("misc", "p", "hQuery", hQuery);
 	return ret;
 }
 
-HOOKDEF(PDH_STATUS, WINAPI, PdhGetFormattedCounterValue,
-	PDH_HCOUNTER hCounter,
+HOOKDEF(LONG, WINAPI, PdhGetFormattedCounterValue,
+	PVOID hCounter,
 	DWORD dwFormat,
 	LPDWORD lpdwType,
-	PPDH_FMT_COUNTERVALUE pValue
+	PVOID pValue
 ) {
-	PDH_STATUS ret;
+	LONG ret;
 	ret = Old_PdhGetFormattedCounterValue(hCounter, dwFormat, lpdwType, pValue);
-	LOQ_zero("misc", "phpp", "hCounter", hCounter, "dwFormat", dwFormat, "lpdwType", lpdwType, "pValue", pValue);
+	LOQ_zero("misc", "phhp", "hCounter", hCounter, "dwFormat", dwFormat, "lpdwType", lpdwType, "pValue", pValue);
 	return ret;
 }
 
-HOOKDEF(PDH_STATUS, WINAPI, PdhOpenQuery,
+HOOKDEF(LONG, WINAPI, PdhOpenQuery,
 	LPCTSTR szDataSource,
 	DWORD_PTR dwUserData,
-	PDH_HQUERY* phQuery
+	PVOID phQuery
 ) {
-	PDH_STATUS ret;
+	LONG ret;
 	ret = Old_PdhOpenQuery(szDataSource, dwUserData, phQuery);
 	LOQ_zero("misc", "shp", "szDataSource", szDataSource, "dwUserData", dwUserData, "phQuery", phQuery);
 	return ret;
 }
 
-HOOKDEF(PDH_STATUS, WINAPI, PdhOpenQueryA,
+HOOKDEF(LONG, WINAPI, PdhOpenQueryA,
 	LPCSTR szDataSource,
 	DWORD_PTR dwUserData,
-	PDH_HQUERY* phQuery
+	PVOID phQuery
 ) {
-	PDH_STATUS ret;
+	LONG ret;
 	ret = Old_PdhOpenQueryA(szDataSource, dwUserData, phQuery);
 	LOQ_zero("misc", "shp", "szDataSource", szDataSource, "dwUserData", dwUserData, "phQuery", phQuery);
 	return ret;
 }
 
-HOOKDEF(PDH_STATUS, WINAPI, PdhOpenQueryW,
+HOOKDEF(LONG, WINAPI, PdhOpenQueryW,
 	LPCWSTR szDataSource,
 	DWORD_PTR dwUserData,
-	PDH_HQUERY* phQuery
+	PVOID phQuery
 ) {
-	PDH_STATUS ret;
+	LONG ret;
 	ret = Old_PdhOpenQueryW(szDataSource, dwUserData, phQuery);
 	LOQ_zero("misc", "uhp", "szDataSource", szDataSource, "dwUserData", dwUserData, "phQuery", phQuery);
 	return ret;
@@ -2892,25 +2891,25 @@ HOOKDEF(PDH_STATUS, WINAPI, PdhOpenQueryW,
 
 HOOKDEF(BOOL, WINAPI, PeekConsoleInput,
 	HANDLE hConsoleInput,
-	PINPUT_RECORD lpBuffer,
+	PVOID lpBuffer,
 	DWORD nLength,
 	LPDWORD lpNumberOfEventsRead
 ) {
 	BOOL ret;
 	ret = Old_PeekConsoleInput(hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
-	LOQ_bool("misc", "pphp", "hConsoleInput", hConsoleInput, "lpBuffer", lpBuffer, "nLength", nLength, "lpNumberOfEventsRead", lpNumberOfEventsRead);
+	LOQ_bool("misc", "pphh", "hConsoleInput", hConsoleInput, "lpBuffer", lpBuffer, "nLength", nLength, "lpNumberOfEventsRead", lpNumberOfEventsRead);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, PeekConsoleInputA,
 	HANDLE hConsoleInput,
-	PINPUT_RECORD lpBuffer,
+	PVOID lpBuffer,
 	DWORD nLength,
 	LPDWORD lpNumberOfEventsRead
 ) {
 	BOOL ret;
 	ret = Old_PeekConsoleInputA(hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
-	LOQ_bool("misc", "pphp", "hConsoleInput", hConsoleInput, "lpBuffer", lpBuffer, "nLength", nLength, "lpNumberOfEventsRead", lpNumberOfEventsRead);
+	LOQ_bool("misc", "pphh", "hConsoleInput", hConsoleInput, "lpBuffer", lpBuffer, "nLength", nLength, "lpNumberOfEventsRead", lpNumberOfEventsRead);
 	return ret;
 }
 
@@ -2922,7 +2921,7 @@ HOOKDEF(BOOL, WINAPI, PostQueuedCompletionStatus,
 ) {
 	BOOL ret;
 	ret = Old_PostQueuedCompletionStatus(CompletionPort, dwNumberOfBytesTransferred, dwCompletionKey, lpOverlapped);
-	LOQ_bool("misc", "phhp", "CompletionPort", CompletionPort, "dwNumberOfBytesTransferred", dwNumberOfBytesTransferred, "dwCompletionKey", dwCompletionKey, "lpOverlapped", lpOverlapped);
+	LOQ_bool("misc", "phhh", "CompletionPort", CompletionPort, "dwNumberOfBytesTransferred", dwNumberOfBytesTransferred, "dwCompletionKey", dwCompletionKey, "lpOverlapped", lpOverlapped);
 	return ret;
 }
 
@@ -2931,12 +2930,12 @@ HOOKDEF(void, WINAPI, QueryInterruptTimePrecise,
 ) {
 	int ret = 0;
 	Old_QueryInterruptTimePrecise(lpInterruptTimePrecise);
-	LOQ_void("misc", "p", "lpInterruptTimePrecise", lpInterruptTimePrecise);
+	LOQ_void("misc", "h", "lpInterruptTimePrecise", lpInterruptTimePrecise);
 	return;
 }
 
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
-	LARGE_INTEGER* lpPerformanceCount
+	PVOID lpPerformanceCount
 ) {
 	BOOL ret;
 	ret = Old_QueryPerformanceCounter(lpPerformanceCount);
@@ -2945,7 +2944,7 @@ HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 }
 
 HOOKDEF(BOOL, WINAPI, QueryPerformanceFrequency,
-	LARGE_INTEGER* lpFrequency
+	PVOID lpFrequency
 ) {
 	BOOL ret;
 	ret = Old_QueryPerformanceFrequency(lpFrequency);
@@ -2958,7 +2957,7 @@ HOOKDEF(BOOL, WINAPI, QueryUnbiasedInterruptTime,
 ) {
 	BOOL ret;
 	ret = Old_QueryUnbiasedInterruptTime(UnbiasedTime);
-	LOQ_bool("misc", "p", "UnbiasedTime", UnbiasedTime);
+	LOQ_bool("misc", "h", "UnbiasedTime", UnbiasedTime);
 	return ret;
 }
 
@@ -2967,36 +2966,36 @@ HOOKDEF(void, WINAPI, QueryUnbiasedInterruptTimePrecise,
 ) {
 	int ret = 0;
 	Old_QueryUnbiasedInterruptTimePrecise(lpUnbiasedInterruptTimePrecise);
-	LOQ_void("misc", "p", "lpUnbiasedInterruptTimePrecise", lpUnbiasedInterruptTimePrecise);
+	LOQ_void("misc", "h", "lpUnbiasedInterruptTimePrecise", lpUnbiasedInterruptTimePrecise);
 	return;
 }
 
 HOOKDEF(BOOL, WINAPI, ReadConsoleInput,
 	HANDLE hConsoleInput,
-	PINPUT_RECORD lpBuffer,
+	PVOID lpBuffer,
 	DWORD nLength,
 	LPDWORD lpNumberOfEventsRead
 ) {
 	BOOL ret;
 	ret = Old_ReadConsoleInput(hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
-	LOQ_bool("misc", "pphp", "hConsoleInput", hConsoleInput, "lpBuffer", lpBuffer, "nLength", nLength, "lpNumberOfEventsRead", lpNumberOfEventsRead);
+	LOQ_bool("misc", "pphh", "hConsoleInput", hConsoleInput, "lpBuffer", lpBuffer, "nLength", nLength, "lpNumberOfEventsRead", lpNumberOfEventsRead);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, ReadConsoleInputA,
 	HANDLE hConsoleInput,
-	PINPUT_RECORD lpBuffer,
+	PVOID lpBuffer,
 	DWORD nLength,
 	LPDWORD lpNumberOfEventsRead
 ) {
 	BOOL ret;
 	ret = Old_ReadConsoleInputA(hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
-	LOQ_bool("misc", "pphp", "hConsoleInput", hConsoleInput, "lpBuffer", lpBuffer, "nLength", nLength, "lpNumberOfEventsRead", lpNumberOfEventsRead);
+	LOQ_bool("misc", "pphh", "hConsoleInput", hConsoleInput, "lpBuffer", lpBuffer, "nLength", nLength, "lpNumberOfEventsRead", lpNumberOfEventsRead);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, SetConsoleCtrlHandler,
-	PHANDLER_ROUTINE HandlerRoutine,
+	PVOID HandlerRoutine,
 	BOOL Add
 ) {
 	BOOL ret;
@@ -3037,23 +3036,23 @@ HOOKDEF(DWORD, WINAPI, SleepEx,
 }
 
 HOOKDEF(BOOL, WINAPI, SystemTimeToFileTime,
-	const SYSTEMTIME* lpSystemTime,
+	PVOID lpSystemTime,
 	LPFILETIME lpFileTime
 ) {
 	BOOL ret;
 	ret = Old_SystemTimeToFileTime(lpSystemTime, lpFileTime);
-	LOQ_bool("misc", "pp", "lpSystemTime", lpSystemTime, "lpFileTime", lpFileTime);
+	LOQ_bool("misc", "ph", "lpSystemTime", lpSystemTime, "lpFileTime", lpFileTime);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, TzSpecificLocalTimeToSystemTime,
-	const TIME_ZONE_INFORMATION* lpTimeZoneInformation,
-	const SYSTEMTIME* lpLocalTime,
+	PVOID lpTimeZoneInformation,
+	PVOID lpLocalTime,
 	LPSYSTEMTIME lpUniversalTime
 ) {
 	BOOL ret;
 	ret = Old_TzSpecificLocalTimeToSystemTime(lpTimeZoneInformation, lpLocalTime, lpUniversalTime);
-	LOQ_bool("misc", "ppp", "lpTimeZoneInformation", lpTimeZoneInformation, "lpLocalTime", lpLocalTime, "lpUniversalTime", lpUniversalTime);
+	LOQ_bool("misc", "pph", "lpTimeZoneInformation", lpTimeZoneInformation, "lpLocalTime", lpLocalTime, "lpUniversalTime", lpUniversalTime);
 	return ret;
 }
 
@@ -3080,30 +3079,30 @@ HOOKDEF(BOOL, WINAPI, sndPlaySoundA,
 	return ret;
 }
 
-HOOKDEF(MMRESULT, WINAPI, timeBeginPeriod,
+HOOKDEF(UINT, WINAPI, timeBeginPeriod,
 	UINT uPeriod
 ) {
-	MMRESULT ret;
+	UINT ret;
 	ret = Old_timeBeginPeriod(uPeriod);
-	LOQ_zero("misc", "h", "uPeriod", uPeriod);
+	LOQ_nonzero("misc", "h", "uPeriod", uPeriod);
 	return ret;
 }
 
-HOOKDEF(MMRESULT, WINAPI, timeEndPeriod,
+HOOKDEF(UINT, WINAPI, timeEndPeriod,
 	UINT uPeriod
 ) {
-	MMRESULT ret;
+	UINT ret;
 	ret = Old_timeEndPeriod(uPeriod);
-	LOQ_zero("misc", "h", "uPeriod", uPeriod);
+	LOQ_nonzero("misc", "h", "uPeriod", uPeriod);
 	return ret;
 }
 
-HOOKDEF(MMRESULT, WINAPI, timeGetDevCaps,
-	LPTIMECAPS ptc,
+HOOKDEF(UINT, WINAPI, timeGetDevCaps,
+	PVOID ptc,
 	UINT cbtc
 ) {
-	MMRESULT ret;
+	UINT ret;
 	ret = Old_timeGetDevCaps(ptc, cbtc);
-	LOQ_zero("misc", "ph", "ptc", ptc, "cbtc", cbtc);
+	LOQ_nonzero("misc", "ph", "ptc", ptc, "cbtc", cbtc);
 	return ret;
 }

@@ -1644,9 +1644,7 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 }
 
 
-
-
-// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+// ---- all unhooked-classified hooks (auto-generated, sanitized types) ----
 
 HOOKDEF(DWORD, WINAPI, GetActiveProcessorCount,
 	WORD GroupNumber
@@ -1672,34 +1670,34 @@ HOOKDEF(BOOL, WINAPI, GetExitCodeProcess,
 ) {
 	BOOL ret;
 	ret = Old_GetExitCodeProcess(hProcess, lpExitCode);
-	LOQ_bool("process", "pp", "hProcess", hProcess, "lpExitCode", lpExitCode);
+	LOQ_bool("process", "ph", "hProcess", hProcess, "lpExitCode", lpExitCode);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, GetLogicalProcessorInformation,
-	PSYSTEM_LOGICAL_PROCESSOR_INFORMATION Buffer,
+	PVOID Buffer,
 	PDWORD ReturnedLength
 ) {
 	BOOL ret;
 	ret = Old_GetLogicalProcessorInformation(Buffer, ReturnedLength);
-	LOQ_bool("process", "pp", "Buffer", Buffer, "ReturnedLength", ReturnedLength);
+	LOQ_bool("process", "ph", "Buffer", Buffer, "ReturnedLength", ReturnedLength);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, GetLogicalProcessorInformationEx,
-	LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType,
-	PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX Buffer,
+	int RelationshipType,
+	PVOID Buffer,
 	PDWORD ReturnedLength
 ) {
 	BOOL ret;
 	ret = Old_GetLogicalProcessorInformationEx(RelationshipType, Buffer, ReturnedLength);
-	LOQ_bool("process", "hpp", "RelationshipType", RelationshipType, "Buffer", Buffer, "ReturnedLength", ReturnedLength);
+	LOQ_bool("process", "iph", "RelationshipType", RelationshipType, "Buffer", Buffer, "ReturnedLength", ReturnedLength);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, GetNumaNodeProcessorMaskEx,
 	USHORT Node,
-	PGROUP_AFFINITY ProcessorMask
+	PVOID ProcessorMask
 ) {
 	BOOL ret;
 	ret = Old_GetNumaNodeProcessorMaskEx(Node, ProcessorMask);
@@ -1709,8 +1707,8 @@ HOOKDEF(BOOL, WINAPI, GetNumaNodeProcessorMaskEx,
 
 HOOKDEF(BOOL, WINAPI, GetProcessAffinityMask,
 	HANDLE hProcess,
-	PDWORD_PTR lpProcessAffinityMask,
-	PDWORD_PTR lpSystemAffinityMask
+	PVOID lpProcessAffinityMask,
+	PVOID lpSystemAffinityMask
 ) {
 	BOOL ret;
 	ret = Old_GetProcessAffinityMask(hProcess, lpProcessAffinityMask, lpSystemAffinityMask);
@@ -1736,31 +1734,31 @@ HOOKDEF(BOOL, WINAPI, GetProcessTimes,
 ) {
 	BOOL ret;
 	ret = Old_GetProcessTimes(hProcess, lpCreationTime, lpExitTime, lpKernelTime, lpUserTime);
-	LOQ_bool("process", "ppppp", "hProcess", hProcess, "lpCreationTime", lpCreationTime, "lpExitTime", lpExitTime, "lpKernelTime", lpKernelTime, "lpUserTime", lpUserTime);
+	LOQ_bool("process", "phhhh", "hProcess", hProcess, "lpCreationTime", lpCreationTime, "lpExitTime", lpExitTime, "lpKernelTime", lpKernelTime, "lpUserTime", lpUserTime);
 	return ret;
 }
 
 HOOKDEF(PDWORD, WINAPI, GetSidSubAuthority,
-	PSID pSid,
+	PVOID pSid,
 	DWORD nSubAuthority
 ) {
 	PDWORD ret;
 	ret = Old_GetSidSubAuthority(pSid, nSubAuthority);
-	LOQ_nonnull("process", "ph", "pSid", pSid, "nSubAuthority", nSubAuthority);
+	LOQ_nonzero("process", "ph", "pSid", pSid, "nSubAuthority", nSubAuthority);
 	return ret;
 }
 
 HOOKDEF(PUCHAR, WINAPI, GetSidSubAuthorityCount,
-	PSID pSid
+	PVOID pSid
 ) {
 	PUCHAR ret;
 	ret = Old_GetSidSubAuthorityCount(pSid);
-	LOQ_nonnull("process", "p", "pSid", pSid);
+	LOQ_nonzero("process", "p", "pSid", pSid);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, IsValidSid,
-	PSID pSid
+	PVOID pSid
 ) {
 	BOOL ret;
 	ret = Old_IsValidSid(pSid);
@@ -1774,13 +1772,13 @@ HOOKDEF(HLOCAL, WINAPI, LocalAlloc,
 ) {
 	HLOCAL ret;
 	ret = Old_LocalAlloc(uFlags, uBytes);
-	LOQ_nonnull("process", "hh", "uFlags", uFlags, "uBytes", uBytes);
+	LOQ_nonzero("process", "hh", "uFlags", uFlags, "uBytes", uBytes);
 	return ret;
 }
 
 HOOKDEF(BOOL, WINAPI, ProcessIdToSessionId,
 	DWORD dwProcessId,
-	DWORD* pSessionId
+	PVOID pSessionId
 ) {
 	BOOL ret;
 	ret = Old_ProcessIdToSessionId(dwProcessId, pSessionId);
@@ -1805,7 +1803,7 @@ HOOKDEF(LPVOID, WINAPI, VirtualAlloc,
 ) {
 	LPVOID ret;
 	ret = Old_VirtualAlloc(lpAddress, dwSize, flAllocationType, flProtect);
-	LOQ_nonnull("process", "phhh", "lpAddress", lpAddress, "dwSize", dwSize, "flAllocationType", flAllocationType, "flProtect", flProtect);
+	LOQ_nonzero("process", "phhh", "lpAddress", lpAddress, "dwSize", dwSize, "flAllocationType", flAllocationType, "flProtect", flProtect);
 	return ret;
 }
 

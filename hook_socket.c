@@ -594,7 +594,7 @@ HOOKDEF(int, WSAAPI, WSASendMsg,
 }
 
 
-// ---- all unhooked-classified hooks (auto-generated, correct signatures) ----
+// ---- all unhooked-classified hooks (auto-generated, sanitized types) ----
 
 HOOKDEF(int, WINAPI, WSACleanup,
 	void
@@ -606,7 +606,7 @@ HOOKDEF(int, WINAPI, WSACleanup,
 }
 
 HOOKDEF(BOOL, WINAPI, WSACloseEvent,
-	WSAEVENT hEvent
+	HANDLE hEvent
 ) {
 	BOOL ret;
 	ret = Old_WSACloseEvent(hEvent);
@@ -614,12 +614,12 @@ HOOKDEF(BOOL, WINAPI, WSACloseEvent,
 	return ret;
 }
 
-HOOKDEF(WSAEVENT, WINAPI, WSACreateEvent,
+HOOKDEF(HANDLE, WINAPI, WSACreateEvent,
 	void
 ) {
-	WSAEVENT ret;
+	HANDLE ret;
 	ret = Old_WSACreateEvent();
-	LOQ_nonnull("network", "");
+	LOQ_handle("network", "");
 	return ret;
 }
 
@@ -633,38 +633,38 @@ HOOKDEF(int, WINAPI, WSAGetLastError,
 }
 
 HOOKDEF(BOOL, WINAPI, WSAGetOverlappedResult,
-	SOCKET s,
-	LPWSAOVERLAPPED lpOverlapped,
+	UINT_PTR s,
+	PVOID lpOverlapped,
 	LPDWORD lpcbTransfer,
 	BOOL fWait,
 	LPDWORD lpdwFlags
 ) {
 	BOOL ret;
 	ret = Old_WSAGetOverlappedResult(s, lpOverlapped, lpcbTransfer, fWait, lpdwFlags);
-	LOQ_bool("network", "pppip", "s", s, "lpOverlapped", lpOverlapped, "lpcbTransfer", lpcbTransfer, "fWait", fWait, "lpdwFlags", lpdwFlags);
+	LOQ_bool("network", "hphih", "s", s, "lpOverlapped", lpOverlapped, "lpcbTransfer", lpcbTransfer, "fWait", fWait, "lpdwFlags", lpdwFlags);
 	return ret;
 }
 
 HOOKDEF(int, WINAPI, WSAIoctl,
-	SOCKET s,
+	UINT_PTR s,
 	DWORD dwIoControlCode,
 	LPVOID lpvInBuffer,
 	DWORD cbInBuffer,
 	LPVOID lpvOutBuffer,
 	DWORD cbOutBuffer,
 	LPDWORD lpcbBytesReturned,
-	LPWSAOVERLAPPED lpOverlapped,
-	LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine
+	PVOID lpOverlapped,
+	PVOID lpCompletionRoutine
 ) {
 	int ret;
 	ret = Old_WSAIoctl(s, dwIoControlCode, lpvInBuffer, cbInBuffer, lpvOutBuffer, cbOutBuffer, lpcbBytesReturned, lpOverlapped, lpCompletionRoutine);
-	LOQ_nonzero("network", "phphphppp", "s", s, "dwIoControlCode", dwIoControlCode, "lpvInBuffer", lpvInBuffer, "cbInBuffer", cbInBuffer, "lpvOutBuffer", lpvOutBuffer, "cbOutBuffer", cbOutBuffer, "lpcbBytesReturned", lpcbBytesReturned, "lpOverlapped", lpOverlapped, "lpCompletionRoutine", lpCompletionRoutine);
+	LOQ_nonzero("network", "hhphphhpp", "s", s, "dwIoControlCode", dwIoControlCode, "lpvInBuffer", lpvInBuffer, "cbInBuffer", cbInBuffer, "lpvOutBuffer", lpvOutBuffer, "cbOutBuffer", cbOutBuffer, "lpcbBytesReturned", lpcbBytesReturned, "lpOverlapped", lpOverlapped, "lpCompletionRoutine", lpCompletionRoutine);
 	return ret;
 }
 
 HOOKDEF(DWORD, WINAPI, WSAWaitForMultipleEvents,
 	DWORD cEvents,
-	const WSAEVENT* lphEvents,
+	PVOID lphEvents,
 	BOOL fWaitAll,
 	DWORD dwTimeout,
 	BOOL fAlertable
@@ -676,7 +676,7 @@ HOOKDEF(DWORD, WINAPI, WSAWaitForMultipleEvents,
 }
 
 HOOKDEF(void, WINAPI, freeaddrinfo,
-	PADDRINFOA pAddrInfo
+	PVOID pAddrInfo
 ) {
 	int ret = 0;
 	Old_freeaddrinfo(pAddrInfo);
@@ -684,10 +684,10 @@ HOOKDEF(void, WINAPI, freeaddrinfo,
 	return;
 }
 
-HOOKDEF(u_short, WINAPI, htons,
-	u_short hostshort
+HOOKDEF(USHORT, WINAPI, htons,
+	USHORT hostshort
 ) {
-	u_short ret;
+	USHORT ret;
 	ret = Old_htons(hostshort);
 	LOQ_nonzero("network", "h", "hostshort", hostshort);
 	return ret;
@@ -695,19 +695,19 @@ HOOKDEF(u_short, WINAPI, htons,
 
 HOOKDEF(INT, WINAPI, inet_pton,
 	INT Family,
-	PCSTR pszAddrString,
+	PVOID pszAddrString,
 	PVOID pAddrBuf
 ) {
 	INT ret;
 	ret = Old_inet_pton(Family, pszAddrString, pAddrBuf);
-	LOQ_zero("network", "isp", "Family", Family, "pszAddrString", pszAddrString, "pAddrBuf", pAddrBuf);
+	LOQ_nonzero("network", "isp", "Family", Family, "pszAddrString", pszAddrString, "pAddrBuf", pAddrBuf);
 	return ret;
 }
 
-HOOKDEF(u_long, WINAPI, ntohl,
-	u_long netlong
+HOOKDEF(ULONG, WINAPI, ntohl,
+	ULONG netlong
 ) {
-	u_long ret;
+	ULONG ret;
 	ret = Old_ntohl(netlong);
 	LOQ_nonzero("network", "h", "netlong", netlong);
 	return ret;
