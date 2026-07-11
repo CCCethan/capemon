@@ -876,7 +876,7 @@ hook_t full_hooks[] = {
 	HOOK(advapi32, CredFree),
 	HOOK(crypt32, CryptMsgClose),
 	HOOK(crypt32, CryptMsgGetParam),
-	=======*/
+	=====*/
 	/*third bisection========
 	HOOK(d3d11, D3D11CreateDevice),
 	HOOK(user32, DefWindowProc),
