@@ -26,6 +26,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma comment(lib, "wbemuuid.lib")
 
+/* ======================================================================
+ * MIRAGE2 REQUIRED TYPE HEADERS -- needed by the added HOOKDEF decls below
+ * ====================================================================== */
+#include <cfgmgr32.h>
+#include <d3d11.h>
+#include <winevt.h>
+#include <wincrypt.h>
+#include <setupapi.h>
+#include <objbase.h>
+#include <mfapi.h>
+#include <mfidl.h>
+#include <mfobjects.h>
+#include <iphlpapi.h>
+#include <icmpapi.h>
+#include <shlobj.h>
+#include <lm.h>
+#include <winnetwk.h>
+#include <mmsystem.h>
+#include <dbghelp.h>
+#include <msi.h>
+#include <wtsapi32.h>
+#include <wincred.h>
+#include <nb30.h>
+#include <pdh.h>
+#include <powrprof.h>
+#include <vfw.h>
+#include <oleauto.h>
+#include <shlwapi.h>
+#include <winsvc.h>
+
 //
 // File Hooks
 //

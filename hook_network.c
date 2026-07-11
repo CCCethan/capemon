@@ -1087,6 +1087,14 @@ HOOKDEF(HRESULT, WINAPI, MkParseDisplayNameEx,
  * Auto-generated skeletons from data/api_hook_analysis/unhooked_api_classified.jsonl
  * Added 2026-07-11. Fill in spoofing/filtering logic per API as needed.
  * ============================================================================ */
+/* ---- MIRAGE2 REQUIRED TYPE HEADERS ---- */
+#include <iphlpapi.h>
+#include <icmpapi.h>
+#include <lm.h>
+#include <winnetwk.h>
+#include <wtsapi32.h>
+#include <nb30.h>
+
 #include <iphlpapi.h>
 #include <winnetwk.h>
 #include <lm.h>

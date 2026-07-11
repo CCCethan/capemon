@@ -707,6 +707,9 @@ HOOKDEF(LONG, WINAPI, RegNotifyChangeKeyValue,
  * Auto-generated skeletons from data/api_hook_analysis/unhooked_api_classified.jsonl
  * Added 2026-07-11. Fill in spoofing/filtering logic per API as needed.
  * ============================================================================ */
+/* ---- MIRAGE2 REQUIRED TYPE HEADERS ---- */
+#include <shlwapi.h>
+
 #include <shlwapi.h>
 
 HOOKDEF(LSTATUS, WINAPI, RegGetValueA,

@@ -2031,6 +2031,26 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
  * Auto-generated skeletons from data/api_hook_analysis/unhooked_api_classified.jsonl
  * Added 2026-07-11. Fill in spoofing/filtering logic per API as needed.
  * ============================================================================ */
+/* ---- MIRAGE2 REQUIRED TYPE HEADERS ---- */
+#include <cfgmgr32.h>
+#include <d3d11.h>
+#include <winevt.h>
+#include <setupapi.h>
+#include <objbase.h>
+#include <mfapi.h>
+#include <mfidl.h>
+#include <mfobjects.h>
+#include <mmsystem.h>
+#include <dbghelp.h>
+#include <msi.h>
+#include <pdh.h>
+#include <powrprof.h>
+#include <vfw.h>
+#ifndef DIRECTINPUT_VERSION
+#define DIRECTINPUT_VERSION 0x0800
+#endif
+#include <dinput.h>
+
 #include <vfw.h>
 #include <cfgmgr32.h>
 #include <d3d11.h>

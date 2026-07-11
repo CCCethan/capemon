@@ -625,6 +625,9 @@ HOOKDEF(NTSTATUS, WINAPI, BCryptEncrypt,
  * Auto-generated skeletons from data/api_hook_analysis/unhooked_api_classified.jsonl
  * Added 2026-07-11. Fill in spoofing/filtering logic per API as needed.
  * ============================================================================ */
+/* ---- MIRAGE2 REQUIRED TYPE HEADERS ---- */
+#include <wincred.h>
+
 HOOKDEF(BOOL, WINAPI, CertCloseStore,
 	HCERTSTORE hCertStore,
 	DWORD dwFlags
