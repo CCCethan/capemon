@@ -33,7 +33,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <d3d11.h>
 #include <winevt.h>
 #include <wincrypt.h>
-#include <setupapi.h>
 #include <objbase.h>
 #include <mfapi.h>
 #include <mfidl.h>
@@ -46,8 +45,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <mmsystem.h>
 #include <dbghelp.h>
 #include <msi.h>
-#include <wtsapi32.h>
-#include <wincred.h>
 #include <nb30.h>
 #include <pdh.h>
 #include <powrprof.h>
@@ -4254,7 +4251,7 @@ HOOKDEF(BOOL, WINAPI, CredEnumerateW,
 	LPCWSTR Filter,
 	DWORD Flags,
 	DWORD* Count,
-	PCREDENTIALW** Credential
+	PVOID** Credential
 );
 
 HOOKDEF(void, WINAPI, CredFree,
@@ -4741,7 +4738,7 @@ HOOKDEF(DWORD, WINAPI, GetIfTable,
 );
 
 HOOKDEF(NETIO_STATUS, WINAPI, GetIfTable2,
-	PMIB_IF_TABLE2* Table
+	PVOID* Table
 );
 
 HOOKDEF(DWORD, WINAPI, GetIpNetTable,
@@ -5916,7 +5913,7 @@ HOOKDEF(BOOL, WINAPI, SetupDiEnumDeviceInterfaces,
 	PSP_DEVINFO_DATA DeviceInfoData,
 	const GUID* InterfaceClassGuid,
 	DWORD MemberIndex,
-	PSP_DEVICE_INTERFACE_DATA DeviceInterfaceData
+	PVOID DeviceInterfaceData
 );
 
 HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInstanceIdA,
@@ -5929,8 +5926,8 @@ HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInstanceIdA,
 
 HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInterfaceDetail,
 	HDEVINFO DeviceInfoSet,
-	PSP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
-	PSP_DEVICE_INTERFACE_DETAIL_DATA DeviceInterfaceDetailData,
+	PVOID DeviceInterfaceData,
+	PVOID DeviceInterfaceDetailData,
 	DWORD DeviceInterfaceDetailDataSize,
 	PDWORD RequiredSize,
 	PSP_DEVINFO_DATA DeviceInfoData
@@ -5938,8 +5935,8 @@ HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInterfaceDetail,
 
 HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInterfaceDetailA,
 	HDEVINFO DeviceInfoSet,
-	PSP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
-	PSP_DEVICE_INTERFACE_DETAIL_DATA_A DeviceInterfaceDetailData,
+	PVOID DeviceInterfaceData,
+	PVOID DeviceInterfaceDetailData,
 	DWORD DeviceInterfaceDetailDataSize,
 	PDWORD RequiredSize,
 	PSP_DEVINFO_DATA DeviceInfoData
@@ -6138,7 +6135,7 @@ HOOKDEF(BOOL, WINAPI, WTSEnumerateProcessesA,
 	HANDLE hServer,
 	DWORD Reserved,
 	DWORD Version,
-	PWTS_PROCESS_INFOA* ppProcessInfo,
+	PVOID* ppProcessInfo,
 	DWORD* pCount
 );
 

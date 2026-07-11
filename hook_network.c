@@ -1092,13 +1092,11 @@ HOOKDEF(HRESULT, WINAPI, MkParseDisplayNameEx,
 #include <icmpapi.h>
 #include <lm.h>
 #include <winnetwk.h>
-#include <wtsapi32.h>
 #include <nb30.h>
 
 #include <iphlpapi.h>
 #include <winnetwk.h>
 #include <lm.h>
-#include <wtsapi32.h>
 
 HOOKDEF(void, WINAPI, FreeMibTable,
 	PVOID Memory
@@ -1120,7 +1118,7 @@ HOOKDEF(DWORD, WINAPI, GetIfTable,
 }
 
 HOOKDEF(NETIO_STATUS, WINAPI, GetIfTable2,
-	PMIB_IF_TABLE2* Table
+	PVOID* Table
 ) {
 	NETIO_STATUS ret = Old_GetIfTable2(Table);
 	LOQ_nonzero("network", "p", "Table", Table);
@@ -1276,7 +1274,7 @@ HOOKDEF(BOOL, WINAPI, WTSEnumerateProcessesA,
 	HANDLE hServer,
 	DWORD Reserved,
 	DWORD Version,
-	PWTS_PROCESS_INFOA* ppProcessInfo,
+	PVOID* ppProcessInfo,
 	DWORD* pCount
 ) {
 	BOOL ret = Old_WTSEnumerateProcessesA(hServer, Reserved, Version, ppProcessInfo, pCount);

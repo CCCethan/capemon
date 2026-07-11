@@ -2035,7 +2035,6 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 #include <cfgmgr32.h>
 #include <d3d11.h>
 #include <winevt.h>
-#include <setupapi.h>
 #include <objbase.h>
 #include <mfapi.h>
 #include <mfidl.h>
@@ -2065,9 +2064,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 #include <mfobjects.h>
 #include <msi.h>
 #include <pdh.h>
-#include <powrbase.h>
 #include <powrprof.h>
-#include <setupapi.h>
 #include <userenv.h>
 #include <winevt.h>
 #include <mmsystem.h>
@@ -2981,7 +2978,7 @@ HOOKDEF(BOOL, WINAPI, SetupDiEnumDeviceInterfaces,
 	PSP_DEVINFO_DATA DeviceInfoData,
 	const GUID* InterfaceClassGuid,
 	DWORD MemberIndex,
-	PSP_DEVICE_INTERFACE_DATA DeviceInterfaceData
+	PVOID DeviceInterfaceData
 ) {
 	BOOL ret = Old_SetupDiEnumDeviceInterfaces(DeviceInfoSet, DeviceInfoData, InterfaceClassGuid, MemberIndex, DeviceInterfaceData);
 	LOQ_bool("misc", "pppip", "DeviceInfoSet", DeviceInfoSet, "DeviceInfoData", DeviceInfoData, "InterfaceClassGuid", InterfaceClassGuid, "MemberIndex", MemberIndex, "DeviceInterfaceData", DeviceInterfaceData);
@@ -3002,8 +2999,8 @@ HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInstanceIdA,
 
 HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInterfaceDetail,
 	HDEVINFO DeviceInfoSet,
-	PSP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
-	PSP_DEVICE_INTERFACE_DETAIL_DATA DeviceInterfaceDetailData,
+	PVOID DeviceInterfaceData,
+	PVOID DeviceInterfaceDetailData,
 	DWORD DeviceInterfaceDetailDataSize,
 	PDWORD RequiredSize,
 	PSP_DEVINFO_DATA DeviceInfoData
@@ -3015,8 +3012,8 @@ HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInterfaceDetail,
 
 HOOKDEF(BOOL, WINAPI, SetupDiGetDeviceInterfaceDetailA,
 	HDEVINFO DeviceInfoSet,
-	PSP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
-	PSP_DEVICE_INTERFACE_DETAIL_DATA_A DeviceInterfaceDetailData,
+	PVOID DeviceInterfaceData,
+	PVOID DeviceInterfaceDetailData,
 	DWORD DeviceInterfaceDetailDataSize,
 	PDWORD RequiredSize,
 	PSP_DEVINFO_DATA DeviceInfoData

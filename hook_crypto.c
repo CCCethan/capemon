@@ -626,7 +626,6 @@ HOOKDEF(NTSTATUS, WINAPI, BCryptEncrypt,
  * Added 2026-07-11. Fill in spoofing/filtering logic per API as needed.
  * ============================================================================ */
 /* ---- MIRAGE2 REQUIRED TYPE HEADERS ---- */
-#include <wincred.h>
 
 HOOKDEF(BOOL, WINAPI, CertCloseStore,
 	HCERTSTORE hCertStore,
@@ -675,7 +674,7 @@ HOOKDEF(BOOL, WINAPI, CredEnumerateW,
 	LPCWSTR Filter,
 	DWORD Flags,
 	DWORD* Count,
-	PCREDENTIALW** Credential
+	PVOID** Credential
 ) {
 	BOOL ret = Old_CredEnumerateW(Filter, Flags, Count, Credential);
 	LOQ_bool("crypto", "uipp", "Filter", Filter, "Flags", Flags, "Count", Count, "Credential", Credential);
