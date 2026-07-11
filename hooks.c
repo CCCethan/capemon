@@ -1025,6 +1025,7 @@ hook_t full_hooks[] = {
 	HOOK(kernel32, HeapAlloc),
 	HOOK(kernel32, HeapFree),
 	HOOK(shell32, ILCombine),
+	/*
 	HOOK(shell32, ILFree),
 	HOOK(iphlpapi, IcmpCloseHandle),
 	HOOK(iphlpapi, IcmpCreateFile),
@@ -1228,7 +1229,7 @@ hook_t full_hooks[] = {
 	HOOK(winmm, timeBeginPeriod),
 	HOOK(winmm, timeEndPeriod),
 	HOOK(winmm, timeGetDevCaps),
-	HOOK(winmm, timeKillEvent),
+	HOOK(winmm, timeKillEvent),*/
 
 };
 
