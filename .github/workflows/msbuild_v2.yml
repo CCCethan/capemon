@@ -2,9 +2,9 @@ name: MSBuild
 
 on:
   push:
-    branches: [ "capemon" ]
+    branches: [ "MIRAGE2" ]
   pull_request:
-    branches: [ "capemon" ]
+    branches: [ "MIRAGE2" ]
 
 env:  
   BUILD_CONFIGURATION: Release
