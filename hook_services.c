@@ -249,3 +249,81 @@ HOOKDEF(BOOL, WINAPI, DeleteService,
 	free(servicename);
 	return ret;
 }
+
+
+/* ============================================================================
+ * MIRAGE2 ADDED HOOKS -- hook_services.c
+ * Auto-generated skeletons from data/api_hook_analysis/unhooked_api_classified.jsonl
+ * Added 2026-07-11. Fill in spoofing/filtering logic per API as needed.
+ * ============================================================================ */
+HOOKDEF(BOOL, WINAPI, CloseServiceHandle,
+	SC_HANDLE hSCObject
+) {
+	BOOL ret = Old_CloseServiceHandle(hSCObject);
+	LOQ_bool("services", "p", "HSCObject", hSCObject);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, EnumServicesStatusA,
+	SC_HANDLE hSCManager,
+	DWORD dwServiceType,
+	DWORD dwServiceState,
+	LPENUM_SERVICE_STATUSA lpServices,
+	DWORD cbBufSize,
+	LPDWORD pcbBytesNeeded,
+	LPDWORD lpServicesReturned,
+	LPDWORD lpResumeHandle
+) {
+	BOOL ret = Old_EnumServicesStatusA(hSCManager, dwServiceType, dwServiceState, lpServices, cbBufSize, pcbBytesNeeded, lpServicesReturned, lpResumeHandle);
+	LOQ_bool("services", "piipippp", "HSCManager", hSCManager, "DwServiceType", dwServiceType, "DwServiceState", dwServiceState, "LpServices", lpServices, "CbBufSize", cbBufSize, "PcbBytesNeeded", pcbBytesNeeded, "LpServicesReturned", lpServicesReturned, "LpResumeHandle", lpResumeHandle);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, EnumServicesStatusExA,
+	SC_HANDLE hSCManager,
+	SC_ENUM_TYPE InfoLevel,
+	DWORD dwServiceType,
+	DWORD dwServiceState,
+	LPBYTE lpServices,
+	DWORD cbBufSize,
+	LPDWORD pcbBytesNeeded,
+	LPDWORD lpServicesReturned,
+	LPDWORD lpResumeHandle,
+	LPCSTR pszGroupName
+) {
+	BOOL ret = Old_EnumServicesStatusExA(hSCManager, InfoLevel, dwServiceType, dwServiceState, lpServices, cbBufSize, pcbBytesNeeded, lpServicesReturned, lpResumeHandle, pszGroupName);
+	LOQ_bool("services", "piiipippps", "HSCManager", hSCManager, "InfoLevel", InfoLevel, "DwServiceType", dwServiceType, "DwServiceState", dwServiceState, "LpServices", lpServices, "CbBufSize", cbBufSize, "PcbBytesNeeded", pcbBytesNeeded, "LpServicesReturned", lpServicesReturned, "LpResumeHandle", lpResumeHandle, "PszGroupName", pszGroupName);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, QueryServiceConfigA,
+	SC_HANDLE hService,
+	LPQUERY_SERVICE_CONFIGA lpServiceConfig,
+	DWORD cbBufSize,
+	LPDWORD pcbBytesNeeded
+) {
+	BOOL ret = Old_QueryServiceConfigA(hService, lpServiceConfig, cbBufSize, pcbBytesNeeded);
+	LOQ_bool("services", "ppip", "HService", hService, "LpServiceConfig", lpServiceConfig, "CbBufSize", cbBufSize, "PcbBytesNeeded", pcbBytesNeeded);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, QueryServiceStatus,
+	SC_HANDLE hService,
+	LPSERVICE_STATUS lpServiceStatus
+) {
+	BOOL ret = Old_QueryServiceStatus(hService, lpServiceStatus);
+	LOQ_bool("services", "pp", "HService", hService, "LpServiceStatus", lpServiceStatus);
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, QueryServiceStatusEx,
+	SC_HANDLE hService,
+	SC_STATUS_TYPE InfoLevel,
+	LPBYTE lpBuffer,
+	DWORD cbBufSize,
+	LPDWORD pcbBytesNeeded
+) {
+	BOOL ret = Old_QueryServiceStatusEx(hService, InfoLevel, lpBuffer, cbBufSize, pcbBytesNeeded);
+	LOQ_bool("services", "pipip", "HService", hService, "InfoLevel", InfoLevel, "LpBuffer", lpBuffer, "CbBufSize", cbBufSize, "PcbBytesNeeded", pcbBytesNeeded);
+	return ret;
+}

@@ -592,3 +592,113 @@ HOOKDEF(int, WSAAPI, WSASendMsg,
 	LOQ_sockerr("network", "Bsi", "MsgBuffer", lpNumberOfBytesSent, buf, "ip", ip, "port", port);
 	return ret;
 }
+
+
+/* ============================================================================
+ * MIRAGE2 ADDED HOOKS -- hook_socket.c
+ * Auto-generated skeletons from data/api_hook_analysis/unhooked_api_classified.jsonl
+ * Added 2026-07-11. Fill in spoofing/filtering logic per API as needed.
+ * ============================================================================ */
+HOOKDEF(int, WINAPI, WSACleanup
+) {
+	int ret = Old_WSACleanup();
+	LOQ_nonzero("socket", "");
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, WSACloseEvent,
+	WSAEVENT hEvent
+) {
+	BOOL ret = Old_WSACloseEvent(hEvent);
+	LOQ_bool("socket", "i", "HEvent", hEvent);
+	return ret;
+}
+
+HOOKDEF(WSAEVENT, WINAPI, WSACreateEvent
+) {
+	WSAEVENT ret = Old_WSACreateEvent();
+	LOQ_nonzero("socket", "");
+	return ret;
+}
+
+HOOKDEF(int, WINAPI, WSAGetLastError
+) {
+	int ret = Old_WSAGetLastError();
+	LOQ_nonzero("socket", "");
+	return ret;
+}
+
+HOOKDEF(BOOL, WINAPI, WSAGetOverlappedResult,
+	SOCKET s,
+	LPWSAOVERLAPPED lpOverlapped,
+	LPDWORD lpcbTransfer,
+	BOOL fWait,
+	LPDWORD lpdwFlags
+) {
+	BOOL ret = Old_WSAGetOverlappedResult(s, lpOverlapped, lpcbTransfer, fWait, lpdwFlags);
+	LOQ_bool("socket", "ippip", "S", s, "LpOverlapped", lpOverlapped, "LpcbTransfer", lpcbTransfer, "FWait", fWait, "LpdwFlags", lpdwFlags);
+	return ret;
+}
+
+HOOKDEF(int, WINAPI, WSAIoctl,
+	SOCKET s,
+	DWORD dwIoControlCode,
+	LPVOID lpvInBuffer,
+	DWORD cbInBuffer,
+	LPVOID lpvOutBuffer,
+	DWORD cbOutBuffer,
+	LPDWORD lpcbBytesReturned,
+	LPWSAOVERLAPPED lpOverlapped,
+	LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine
+) {
+	int ret = Old_WSAIoctl(s, dwIoControlCode, lpvInBuffer, cbInBuffer, lpvOutBuffer, cbOutBuffer, lpcbBytesReturned, lpOverlapped, lpCompletionRoutine);
+	LOQ_nonzero("socket", "iipipippp", "S", s, "DwIoControlCode", dwIoControlCode, "LpvInBuffer", lpvInBuffer, "CbInBuffer", cbInBuffer, "LpvOutBuffer", lpvOutBuffer, "CbOutBuffer", cbOutBuffer, "LpcbBytesReturned", lpcbBytesReturned, "LpOverlapped", lpOverlapped, "LpCompletionRoutine", lpCompletionRoutine);
+	return ret;
+}
+
+HOOKDEF(DWORD, WINAPI, WSAWaitForMultipleEvents,
+	DWORD cEvents,
+	const WSAEVENT* lphEvents,
+	BOOL fWaitAll,
+	DWORD dwTimeout,
+	BOOL fAlertable
+) {
+	DWORD ret = Old_WSAWaitForMultipleEvents(cEvents, lphEvents, fWaitAll, dwTimeout, fAlertable);
+	LOQ_nonzero("socket", "ipiii", "CEvents", cEvents, "LphEvents", lphEvents, "FWaitAll", fWaitAll, "DwTimeout", dwTimeout, "FAlertable", fAlertable);
+	return ret;
+}
+
+HOOKDEF(void, WINAPI, freeaddrinfo,
+	PADDRINFOA pAddrInfo
+) {
+	int ret = 0;
+	Old_freeaddrinfo(pAddrInfo);
+	LOQ_void("socket", "p", "PAddrInfo", pAddrInfo);
+	return;
+}
+
+HOOKDEF(u_short, WINAPI, htons,
+	u_short hostshort
+) {
+	u_short ret = Old_htons(hostshort);
+	LOQ_nonzero("socket", "i", "Hostshort", hostshort);
+	return ret;
+}
+
+HOOKDEF(INT, WINAPI, inet_pton,
+	INT Family,
+	PCSTR pszAddrString,
+	PVOID pAddrBuf
+) {
+	INT ret = Old_inet_pton(Family, pszAddrString, pAddrBuf);
+	LOQ_nonzero("socket", "isp", "Family", Family, "PszAddrString", pszAddrString, "PAddrBuf", pAddrBuf);
+	return ret;
+}
+
+HOOKDEF(u_long, WINAPI, ntohl,
+	u_long netlong
+) {
+	u_long ret = Old_ntohl(netlong);
+	LOQ_nonzero("socket", "i", "Netlong", netlong);
+	return ret;
+}

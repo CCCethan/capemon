@@ -673,3 +673,27 @@ void init_startup_time(unsigned int startup_time)
 {
 	time_skipped.QuadPart += (unsigned __int64) startup_time * 10000;
 }
+
+
+/* ============================================================================
+ * MIRAGE2 ADDED HOOKS -- hook_sleep.c
+ * Auto-generated skeletons from data/api_hook_analysis/unhooked_api_classified.jsonl
+ * Added 2026-07-11. Fill in spoofing/filtering logic per API as needed.
+ * ============================================================================ */
+HOOKDEF(void, WINAPI, Sleep,
+	DWORD dwMilliseconds
+) {
+	int ret = 0;
+	Old_Sleep(dwMilliseconds);
+	LOQ_void("sleep", "i", "DwMilliseconds", dwMilliseconds);
+	return;
+}
+
+HOOKDEF(DWORD, WINAPI, SleepEx,
+	DWORD dwMilliseconds,
+	BOOL bAlertable
+) {
+	DWORD ret = Old_SleepEx(dwMilliseconds, bAlertable);
+	LOQ_nonzero("sleep", "ii", "DwMilliseconds", dwMilliseconds, "BAlertable", bAlertable);
+	return ret;
+}

@@ -700,3 +700,62 @@ HOOKDEF(LONG, WINAPI, RegNotifyChangeKeyValue,
 
 	return ret;
 }
+
+
+/* ============================================================================
+ * MIRAGE2 ADDED HOOKS -- hook_reg.c
+ * Auto-generated skeletons from data/api_hook_analysis/unhooked_api_classified.jsonl
+ * Added 2026-07-11. Fill in spoofing/filtering logic per API as needed.
+ * ============================================================================ */
+#include <shlwapi.h>
+
+HOOKDEF(LSTATUS, WINAPI, RegGetValueA,
+	HKEY hkey,
+	LPCSTR lpSubKey,
+	LPCSTR lpValue,
+	DWORD dwFlags,
+	LPDWORD pdwType,
+	PVOID pvData,
+	LPDWORD pcbData
+) {
+	LSTATUS ret = Old_RegGetValueA(hkey, lpSubKey, lpValue, dwFlags, pdwType, pvData, pcbData);
+	LOQ_zero("registry", "pssippp", "Hkey", hkey, "LpSubKey", lpSubKey, "LpValue", lpValue, "DwFlags", dwFlags, "PdwType", pdwType, "PvData", pvData, "PcbData", pcbData);
+	return ret;
+}
+
+HOOKDEF(LSTATUS, WINAPI, RegGetValueW,
+	HKEY hkey,
+	LPCWSTR lpSubKey,
+	LPCWSTR lpValue,
+	DWORD dwFlags,
+	LPDWORD pdwType,
+	PVOID pvData,
+	LPDWORD pcbData
+) {
+	LSTATUS ret = Old_RegGetValueW(hkey, lpSubKey, lpValue, dwFlags, pdwType, pvData, pcbData);
+	LOQ_zero("registry", "puuippp", "Hkey", hkey, "LpSubKey", lpSubKey, "LpValue", lpValue, "DwFlags", dwFlags, "PdwType", pdwType, "PvData", pvData, "PcbData", pcbData);
+	return ret;
+}
+
+HOOKDEF(LSTATUS, WINAPI, RegOpenCurrentUser,
+	REGSAM samDesired,
+	PHKEY phkResult
+) {
+	LSTATUS ret = Old_RegOpenCurrentUser(samDesired, phkResult);
+	LOQ_zero("registry", "ip", "SamDesired", samDesired, "PhkResult", phkResult);
+	return ret;
+}
+
+HOOKDEF(LSTATUS, WINAPI, SHRegGetValueW,
+	HKEY hkey,
+	LPCWSTR pszSubKey,
+	LPCWSTR pszValue,
+	SRRF srrfFlags,
+	DWORD* pdwType,
+	void* pvData,
+	DWORD* pcbData
+) {
+	LSTATUS ret = Old_SHRegGetValueW(hkey, pszSubKey, pszValue, srrfFlags, pdwType, pvData, pcbData);
+	LOQ_zero("registry", "puuippp", "Hkey", hkey, "PszSubKey", pszSubKey, "PszValue", pszValue, "SrrfFlags", srrfFlags, "PdwType", pdwType, "PvData", pvData, "PcbData", pcbData);
+	return ret;
+}
