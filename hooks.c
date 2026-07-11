@@ -923,7 +923,7 @@ hook_t full_hooks[] = {
 	HOOK(kernel32, FreeEnvironmentStringsW),
 	HOOK(kernel32, FreeLibrary),
 	HOOK(iphlpapi, FreeMibTable),
-	*/============
+	*/
 	/*second bisection========
 	HOOK(kernel32, GenerateConsoleCtrlEvent),
 	HOOK(kernel32, GetActiveProcessorCount),
