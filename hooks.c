@@ -922,6 +922,7 @@ hook_t full_hooks[] = {
 	HOOK(kernel32, FreeEnvironmentStringsW),
 	HOOK(kernel32, FreeLibrary),
 	HOOK(iphlpapi, FreeMibTable),
+	/*second bisection========
 	HOOK(kernel32, GenerateConsoleCtrlEvent),
 	HOOK(kernel32, GetActiveProcessorCount),
 	HOOK(kernel32, GetActiveProcessorGroupCount),
@@ -1025,7 +1026,8 @@ hook_t full_hooks[] = {
 	HOOK(kernel32, HeapAlloc),
 	HOOK(kernel32, HeapFree),
 	HOOK(shell32, ILCombine),
-	/*
+	=======*/
+	/*first bisection=====
 	HOOK(shell32, ILFree),
 	HOOK(iphlpapi, IcmpCloseHandle),
 	HOOK(iphlpapi, IcmpCreateFile),
