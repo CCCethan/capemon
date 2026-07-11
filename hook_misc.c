@@ -2725,7 +2725,7 @@ HOOKDEF(PDH_STATUS, WINAPI, PdhAddCounterA,
 	PDH_HCOUNTER* phCounter
 ) {
 	PDH_STATUS ret = Old_PdhAddCounterA(hQuery, szFullCounterPath, dwUserData, phCounter);
-	LOQ_nonnull("misc", "psip", "HQuery", hQuery, "SzFullCounterPath", szFullCounterPath, "DwUserData", dwUserData, "PhCounter", phCounter);
+	LOQ_zero("misc", "psip", "HQuery", hQuery, "SzFullCounterPath", szFullCounterPath, "DwUserData", dwUserData, "PhCounter", phCounter);
 	return ret;
 }
 
@@ -2736,7 +2736,7 @@ HOOKDEF(PDH_STATUS, WINAPI, PdhAddCounterW,
 	PDH_HCOUNTER* phCounter
 ) {
 	PDH_STATUS ret = Old_PdhAddCounterW(hQuery, szFullCounterPath, dwUserData, phCounter);
-	LOQ_nonnull("misc", "puip", "HQuery", hQuery, "SzFullCounterPath", szFullCounterPath, "DwUserData", dwUserData, "PhCounter", phCounter);
+	LOQ_zero("misc", "puip", "HQuery", hQuery, "SzFullCounterPath", szFullCounterPath, "DwUserData", dwUserData, "PhCounter", phCounter);
 	return ret;
 }
 
@@ -2747,7 +2747,7 @@ HOOKDEF(PDH_STATUS, WINAPI, PdhAddEnglishCounter,
 	PDH_HCOUNTER* phCounter
 ) {
 	PDH_STATUS ret = Old_PdhAddEnglishCounter(hQuery, szFullCounterPath, dwUserData, phCounter);
-	LOQ_nonnull("misc", "psip", "HQuery", hQuery, "SzFullCounterPath", szFullCounterPath, "DwUserData", dwUserData, "PhCounter", phCounter);
+	LOQ_zero("misc", "psip", "HQuery", hQuery, "SzFullCounterPath", szFullCounterPath, "DwUserData", dwUserData, "PhCounter", phCounter);
 	return ret;
 }
 
@@ -2758,7 +2758,7 @@ HOOKDEF(PDH_STATUS, WINAPI, PdhAddEnglishCounterA,
 	PDH_HCOUNTER* phCounter
 ) {
 	PDH_STATUS ret = Old_PdhAddEnglishCounterA(hQuery, szFullCounterPath, dwUserData, phCounter);
-	LOQ_nonnull("misc", "psip", "HQuery", hQuery, "SzFullCounterPath", szFullCounterPath, "DwUserData", dwUserData, "PhCounter", phCounter);
+	LOQ_zero("misc", "psip", "HQuery", hQuery, "SzFullCounterPath", szFullCounterPath, "DwUserData", dwUserData, "PhCounter", phCounter);
 	return ret;
 }
 
@@ -2769,7 +2769,7 @@ HOOKDEF(PDH_STATUS, WINAPI, PdhAddEnglishCounterW,
 	PDH_HCOUNTER* phCounter
 ) {
 	PDH_STATUS ret = Old_PdhAddEnglishCounterW(hQuery, szFullCounterPath, dwUserData, phCounter);
-	LOQ_nonnull("misc", "puip", "HQuery", hQuery, "SzFullCounterPath", szFullCounterPath, "DwUserData", dwUserData, "PhCounter", phCounter);
+	LOQ_zero("misc", "puip", "HQuery", hQuery, "SzFullCounterPath", szFullCounterPath, "DwUserData", dwUserData, "PhCounter", phCounter);
 	return ret;
 }
 
@@ -2777,7 +2777,7 @@ HOOKDEF(PDH_STATUS, WINAPI, PdhCloseQuery,
 	PDH_HQUERY hQuery
 ) {
 	PDH_STATUS ret = Old_PdhCloseQuery(hQuery);
-	LOQ_nonnull("misc", "p", "HQuery", hQuery);
+	LOQ_zero("misc", "p", "HQuery", hQuery);
 	return ret;
 }
 
@@ -2785,7 +2785,7 @@ HOOKDEF(PDH_STATUS, WINAPI, PdhCollectQueryData,
 	PDH_HQUERY hQuery
 ) {
 	PDH_STATUS ret = Old_PdhCollectQueryData(hQuery);
-	LOQ_nonnull("misc", "p", "HQuery", hQuery);
+	LOQ_zero("misc", "p", "HQuery", hQuery);
 	return ret;
 }
 
@@ -2796,7 +2796,7 @@ HOOKDEF(PDH_STATUS, WINAPI, PdhGetFormattedCounterValue,
 	PPDH_FMT_COUNTERVALUE pValue
 ) {
 	PDH_STATUS ret = Old_PdhGetFormattedCounterValue(hCounter, dwFormat, lpdwType, pValue);
-	LOQ_nonnull("misc", "pipp", "HCounter", hCounter, "DwFormat", dwFormat, "LpdwType", lpdwType, "PValue", pValue);
+	LOQ_zero("misc", "pipp", "HCounter", hCounter, "DwFormat", dwFormat, "LpdwType", lpdwType, "PValue", pValue);
 	return ret;
 }
 
@@ -2806,7 +2806,7 @@ HOOKDEF(PDH_STATUS, WINAPI, PdhOpenQuery,
 	PDH_HQUERY* phQuery
 ) {
 	PDH_STATUS ret = Old_PdhOpenQuery(szDataSource, dwUserData, phQuery);
-	LOQ_nonnull("misc", "sip", "SzDataSource", szDataSource, "DwUserData", dwUserData, "PhQuery", phQuery);
+	LOQ_zero("misc", "sip", "SzDataSource", szDataSource, "DwUserData", dwUserData, "PhQuery", phQuery);
 	return ret;
 }
 
@@ -2816,7 +2816,7 @@ HOOKDEF(PDH_STATUS, WINAPI, PdhOpenQueryA,
 	PDH_HQUERY* phQuery
 ) {
 	PDH_STATUS ret = Old_PdhOpenQueryA(szDataSource, dwUserData, phQuery);
-	LOQ_nonnull("misc", "sip", "SzDataSource", szDataSource, "DwUserData", dwUserData, "PhQuery", phQuery);
+	LOQ_zero("misc", "sip", "SzDataSource", szDataSource, "DwUserData", dwUserData, "PhQuery", phQuery);
 	return ret;
 }
 
@@ -2826,7 +2826,7 @@ HOOKDEF(PDH_STATUS, WINAPI, PdhOpenQueryW,
 	PDH_HQUERY* phQuery
 ) {
 	PDH_STATUS ret = Old_PdhOpenQueryW(szDataSource, dwUserData, phQuery);
-	LOQ_nonnull("misc", "uip", "SzDataSource", szDataSource, "DwUserData", dwUserData, "PhQuery", phQuery);
+	LOQ_zero("misc", "uip", "SzDataSource", szDataSource, "DwUserData", dwUserData, "PhQuery", phQuery);
 	return ret;
 }
 
