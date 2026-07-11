@@ -846,6 +846,7 @@ hook_t full_hooks[] = {
 	HOOK(advapi32, CloseServiceHandle),
 	HOOK(kernel32, CloseThreadpoolTimer),
 	HOOK(kernel32, CloseThreadpoolWait),
+	/*forth bisection========
 	HOOK(ole32, CoInitialize),
 	HOOK(ole32, CoInitializeEx),
 	HOOK(ole32, CoInitializeSecurity),
@@ -875,6 +876,7 @@ hook_t full_hooks[] = {
 	HOOK(advapi32, CredFree),
 	HOOK(crypt32, CryptMsgClose),
 	HOOK(crypt32, CryptMsgGetParam),
+	=======*/
 	/*third bisection========
 	HOOK(d3d11, D3D11CreateDevice),
 	HOOK(user32, DefWindowProc),
