@@ -819,6 +819,7 @@ hook_t full_hooks[] = {
 	 * Auto-generated from data/api_hook_analysis/unhooked_api_classified.jsonl
 	 * Added 2026-07-11.
 	 * ====================================================================== */
+	/*forth bisection========
 	HOOK(user32, AddClipboardFormatListener),
 	HOOK_NOTAIL(kernel32, AddVectoredExceptionHandler, 2),
 	HOOK(kernel32, AllocConsole),
@@ -846,7 +847,7 @@ hook_t full_hooks[] = {
 	HOOK(advapi32, CloseServiceHandle),
 	HOOK(kernel32, CloseThreadpoolTimer),
 	HOOK(kernel32, CloseThreadpoolWait),
-	/*forth bisection========
+	===========*/
 	HOOK(ole32, CoInitialize),
 	HOOK(ole32, CoInitializeEx),
 	HOOK(ole32, CoInitializeSecurity),
@@ -876,7 +877,6 @@ hook_t full_hooks[] = {
 	HOOK(advapi32, CredFree),
 	HOOK(crypt32, CryptMsgClose),
 	HOOK(crypt32, CryptMsgGetParam),
-	=====*/
 	/*third bisection========
 	HOOK(d3d11, D3D11CreateDevice),
 	HOOK(user32, DefWindowProc),
