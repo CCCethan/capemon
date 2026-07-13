@@ -868,6 +868,7 @@ hook_t full_hooks[] = {
 	HOOK(kernel32, CreateIoCompletionPort),
 	HOOK(kernel32, CreatePipe),
 	HOOK(kernel32, CreateSemaphoreA),
+	/*sixth bisection========
 	HOOK_NOTAIL(kernel32, CreateThreadpoolTimer, 3),
 	HOOK_NOTAIL(kernel32, CreateThreadpoolWait, 3),
 	HOOK(kernel32, CreateTimerQueue),
@@ -879,6 +880,7 @@ hook_t full_hooks[] = {
 	HOOK(advapi32, CredFree),
 	HOOK(crypt32, CryptMsgClose),
 	HOOK(crypt32, CryptMsgGetParam),
+	=========*/
 	/*third bisection========
 	HOOK(d3d11, D3D11CreateDevice),
 	HOOK(user32, DefWindowProc),
