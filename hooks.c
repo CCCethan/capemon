@@ -859,6 +859,7 @@ hook_t full_hooks[] = {
 	HOOK(advapi32, ConvertSidToStringSidW),
 	HOOK(ole32, CreateBindCtx),
 	=========*/
+	/*sixth bisection========
 	HOOK(kernel32, CreateEvent),
 	HOOK(kernel32, CreateEventA),
 	HOOK(kernel32, CreateFileA),
@@ -868,7 +869,7 @@ hook_t full_hooks[] = {
 	HOOK(kernel32, CreateIoCompletionPort),
 	HOOK(kernel32, CreatePipe),
 	HOOK(kernel32, CreateSemaphoreA),
-	/*sixth bisection========
+	========*/
 	HOOK_NOTAIL(kernel32, CreateThreadpoolTimer, 3),
 	HOOK_NOTAIL(kernel32, CreateThreadpoolWait, 3),
 	HOOK(kernel32, CreateTimerQueue),
@@ -876,6 +877,7 @@ hook_t full_hooks[] = {
 	HOOK(kernel32, CreateWaitableTimerA),
 	HOOK(kernel32, CreateWaitableTimerExW),
 	HOOK(kernel32, CreateWaitableTimerW),
+	/*seventh bisection========
 	HOOK(advapi32, CredEnumerateW),
 	HOOK(advapi32, CredFree),
 	HOOK(crypt32, CryptMsgClose),
