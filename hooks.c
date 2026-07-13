@@ -870,15 +870,15 @@ hook_t full_hooks[] = {
 	HOOK(kernel32, CreatePipe),
 	HOOK(kernel32, CreateSemaphoreA),
 	========*/
-	/*eighth bisection========
 	HOOK_NOTAIL(kernel32, CreateThreadpoolTimer, 3),
 	HOOK_NOTAIL(kernel32, CreateThreadpoolWait, 3),
 	HOOK(kernel32, CreateTimerQueue),
-	=========*/
+	/*eighth bisection========
 	HOOK(kernel32, CreateWaitableTimer),
 	HOOK(kernel32, CreateWaitableTimerA),
 	HOOK(kernel32, CreateWaitableTimerExW),
 	HOOK(kernel32, CreateWaitableTimerW),
+	=========*/
 	/*seventh bisection========
 	HOOK(advapi32, CredEnumerateW),
 	HOOK(advapi32, CredFree),
