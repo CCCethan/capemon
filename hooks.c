@@ -848,6 +848,7 @@ hook_t full_hooks[] = {
 	HOOK(kernel32, CloseThreadpoolTimer),
 	HOOK(kernel32, CloseThreadpoolWait),
 	===========*/
+	/*fifth bisection========
 	HOOK(ole32, CoInitialize),
 	HOOK(ole32, CoInitializeEx),
 	HOOK(ole32, CoInitializeSecurity),
@@ -857,6 +858,7 @@ hook_t full_hooks[] = {
 	HOOK(kernel32, CompareFileTime),
 	HOOK(advapi32, ConvertSidToStringSidW),
 	HOOK(ole32, CreateBindCtx),
+	=========*/
 	HOOK(kernel32, CreateEvent),
 	HOOK(kernel32, CreateEventA),
 	HOOK(kernel32, CreateFileA),
