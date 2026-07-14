@@ -892,7 +892,7 @@ hook_t full_hooks[] = {
 	//HOOK(kernel32, EnterCriticalSection),
 	HOOK_NOTAIL(user32, EnumDisplaySettings, 3),
 	HOOK_NOTAIL(user32, EnumDisplaySettingsA, 3),
-	HOOK(winspool.drv, EnumPrinterDriversA),
+	//HOOK(winspool.drv, EnumPrinterDriversA),
 	//HOOK_NOTAIL(winspool.drv, EnumPrinters, 7),
 	//HOOK_NOTAIL(winspool.drv, EnumPrintersA, 7),
 	//HOOK_NOTAIL(winspool.drv, EnumPrintersW, 7),
