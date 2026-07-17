@@ -818,14 +818,14 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_034_cpu_info_checker_02 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker BEGIN <<< */
 HOOK(kernel32, ExitProcess),
 HOOK(kernel32, FreeLibrary),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernel32, RaiseException),
 HOOK(kernel32, Sleep),
 HOOK(kernel32, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_034_cpu_info_checker_02 END <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker END <<< */
 };
 
 hook_t native_hooks[] = {
