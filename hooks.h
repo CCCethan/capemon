@@ -2690,6 +2690,32 @@ HOOKDEF(BOOL, WINAPI, DeleteService,
 	__in  SC_HANDLE hService
 );
 
+HOOKDEF(BOOL, WINAPI, EnumServicesStatusExW,
+	__in      SC_HANDLE hSCManager,
+	__in      SC_ENUM_TYPE InfoLevel,
+	__in      DWORD dwServiceType,
+	__in      DWORD dwServiceState,
+	__out_bcount_opt(cbBufSize) LPBYTE lpServices,
+	__in      DWORD cbBufSize,
+	__out     LPDWORD pcbBytesNeeded,
+	__out     LPDWORD lpServicesReturned,
+	__inout_opt LPDWORD lpResumeHandle,
+	__in_opt  LPCWSTR pszGroupName
+);
+
+HOOKDEF(BOOL, WINAPI, EnumServicesStatusExA,
+	__in      SC_HANDLE hSCManager,
+	__in      SC_ENUM_TYPE InfoLevel,
+	__in      DWORD dwServiceType,
+	__in      DWORD dwServiceState,
+	__out_bcount_opt(cbBufSize) LPBYTE lpServices,
+	__in      DWORD cbBufSize,
+	__out     LPDWORD pcbBytesNeeded,
+	__out     LPDWORD lpServicesReturned,
+	__inout_opt LPDWORD lpResumeHandle,
+	__in_opt  LPCSTR pszGroupName
+);
+
 
 //
 // Sleep Hooks

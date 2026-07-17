@@ -270,7 +270,7 @@ HOOKDEF(BOOL, WINAPI, EnumServicesStatusExW,
 	return ret;
 }
 
-HOOK(BOOL, WINAPI, EnumServicesStatusExA,
+HOOKDEF(BOOL, WINAPI, EnumServicesStatusExA,
 	__in SC_HANDLE hSCManager,
 	__in SC_ENUM_TYPE InfoLevel,
 	__in DWORD dwServiceType,
@@ -282,5 +282,7 @@ HOOK(BOOL, WINAPI, EnumServicesStatusExA,
 	__inout_opt LPDWORD lpResumeHandle,
 	__in_opt LPCSTR pszGroupName
 ) {
-	BOOL ret = Old_EnumServicesStatusExA()
+	BOOL ret = Old_EnumServicesStatusExA(hSCManager, InfoLevel, dwServiceType, dwServiceState, lpServices, cbBufSize, pcbBytesNeeded, lpServicesReturned, lpResumeHandle, pszGroupName);
+	LOQ_void("services", "EnumServicesStatusExA");
+	return ret;
 }
