@@ -2157,59 +2157,6 @@ HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation, // 呼出規約は WINAPI 仮定(
 	return ret;
 }
 
-// -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
-HOOKDEF(LPVOID, WINAPI, HeapAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hHeap,
-	_In_ DWORD dwFlags,
-	_In_ SIZE_T dwBytes
-) {
-	LPVOID ret;
-	ret = Old_HeapAlloc(hHeap, dwFlags, dwBytes);
-	LOQ_nonnull("misc", "pii", "Heap", hHeap, "Flags", dwFlags, "Bytes", dwBytes);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
-// REVIEW: 引数 lpMem: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
-HOOKDEF(BOOL, WINAPI, HeapFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hHeap,
-	_In_ DWORD dwFlags,
-	_In_ LPVOID lpMem
-) {
-	BOOL ret;
-	ret = Old_HeapFree(hHeap, dwFlags, lpMem);
-	LOQ_bool("misc", "pi", "Heap", hHeap, "Flags", dwFlags);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
-// REVIEW: 引数 lpMem: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
-HOOKDEF(LPVOID, WINAPI, HeapReAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hHeap,
-	_In_ DWORD dwFlags,
-	_In_ LPVOID lpMem,
-	_In_ SIZE_T dwBytes
-) {
-	LPVOID ret;
-	ret = Old_HeapReAlloc(hHeap, dwFlags, lpMem, dwBytes);
-	LOQ_nonnull("misc", "pii", "Heap", hHeap, "Flags", dwFlags, "Bytes", dwBytes);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
-// REVIEW: 戻り型 SIZE_T の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpMem: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
-HOOKDEF(SIZE_T, WINAPI, HeapSize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hHeap,
-	_In_ DWORD dwFlags,
-	_In_ LPCVOID lpMem
-) {
-	SIZE_T ret;
-	ret = Old_HeapSize(hHeap, dwFlags, lpMem);
-	LOQ_nonzero("misc", "pi", "Heap", hHeap, "Flags", dwFlags);
-	return ret;
-}
-
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
 HOOKDEF(BOOL, WINAPI, IsValidCodePage, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT CodePage
@@ -2312,15 +2259,6 @@ HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW, // 呼出規約は WINAPI 仮定(
 	ret = Old_SetEnvironmentVariableW(lpName, lpValue);
 	LOQ_bool("misc", "uu", "Name", lpName, "Value", lpValue);
 	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
-HOOKDEF(void, WINAPI, SetLastError, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwErrCode
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_SetLastError(dwErrCode);
-	LOQ_void("misc", "i", "ErrCode", dwErrCode);
 }
 
 // -> hook_misc.c に追加 | category="misc" | winapi:Memory Management

@@ -3951,12 +3951,6 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ DWORD dwFlagsAndAttributes,
 	_In_opt_ HANDLE hTemplateFile
 );
-HOOKDEF(void, WINAPI, DeleteCriticalSection,
-	_Inout_ LPCRITICAL_SECTION lpCriticalSection
-);
-HOOKDEF(void, WINAPI, EnterCriticalSection,
-	_Inout_ LPCRITICAL_SECTION lpCriticalSection
-);
 HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW,
 	_In_ LOCALE_ENUMPROC lpLocaleEnumProc,
 	_In_ DWORD dwFlags
@@ -3988,15 +3982,6 @@ HOOKDEF(BOOL, WINAPI, GetConsoleMode,
 	_Out_ LPDWORD lpMode
 );
 HOOKDEF(UINT, WINAPI, GetConsoleOutputCP,
-	void
-);
-HOOKDEF(HANDLE, WINAPI, GetCurrentProcess,
-	void
-);
-HOOKDEF(DWORD, WINAPI, GetCurrentProcessId,
-	void
-);
-HOOKDEF(DWORD, WINAPI, GetCurrentThreadId,
 	void
 );
 HOOKDEF(int, WINAPI, GetDateFormatW,
@@ -4043,9 +4028,6 @@ HOOKDEF(FARPROC, WINAPI, GetProcAddress,
 	_In_ HMODULE hModule,
 	_In_ LPCSTR lpProcName
 );
-HOOKDEF(HANDLE, WINAPI, GetProcessHeap,
-	void
-);
 HOOKDEF(VOID, WINAPI, GetStartupInfoW,
 	_Out_ LPSTARTUPINFOW lpStartupInfo
 );
@@ -4068,36 +4050,6 @@ HOOKDEF(int, WINAPI, GetTimeFormatW,
 );
 HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation,
 	_Out_ LPTIME_ZONE_INFORMATION lpTimeZoneInformation
-);
-HOOKDEF(LPVOID, WINAPI, HeapAlloc,
-	_In_ HANDLE hHeap,
-	_In_ DWORD dwFlags,
-	_In_ SIZE_T dwBytes
-);
-HOOKDEF(BOOL, WINAPI, HeapFree,
-	_In_ HANDLE hHeap,
-	_In_ DWORD dwFlags,
-	_In_ LPVOID lpMem
-);
-HOOKDEF(LPVOID, WINAPI, HeapReAlloc,
-	_In_ HANDLE hHeap,
-	_In_ DWORD dwFlags,
-	_In_ LPVOID lpMem,
-	_In_ SIZE_T dwBytes
-);
-HOOKDEF(SIZE_T, WINAPI, HeapSize,
-	_In_ HANDLE hHeap,
-	_In_ DWORD dwFlags,
-	_In_ LPCVOID lpMem
-);
-HOOKDEF(BOOL, WINAPI, InitializeCriticalSectionAndSpinCount,
-	_Out_ LPCRITICAL_SECTION lpCriticalSection,
-	_In_ DWORD dwSpinCount
-);
-HOOKDEF(BOOL, WINAPI, InitializeCriticalSectionEx,
-	_Out_ LPCRITICAL_SECTION lpCriticalSection,
-	_In_ DWORD dwSpinCount,
-	_In_ DWORD Flags
 );
 HOOKDEF(BOOL, WINAPI, IsValidCodePage,
 	_In_ UINT CodePage
@@ -4124,9 +4076,6 @@ HOOKDEF(int, WINAPI, LCMapStringW,
 	_In_ int cchSrc,
 	_Out_opt_ LPWSTR lpDestStr,
 	_In_ int cchDest
-);
-HOOKDEF(void, WINAPI, LeaveCriticalSection,
-	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 );
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
@@ -4164,9 +4113,6 @@ HOOKDEF(BOOL, WINAPI, SetFilePointerEx,
 	_Out_opt_ PLARGE_INTEGER lpNewFilePointer,
 	_In_ DWORD dwMoveMethod
 );
-HOOKDEF(void, WINAPI, SetLastError,
-	_In_ DWORD dwErrCode
-);
 HOOKDEF(BOOL, WINAPI, SetStdHandle,
 	_In_ DWORD nStdHandle,
 	_In_ HANDLE hHandle
@@ -4177,19 +4123,6 @@ HOOKDEF(VOID, WINAPI, Sleep,
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
-);
-HOOKDEF(DWORD, WINAPI, TlsAlloc,
-	void
-);
-HOOKDEF(BOOL, WINAPI, TlsFree,
-	_In_ DWORD dwTlsIndex
-);
-HOOKDEF(LPVOID, WINAPI, TlsGetValue,
-	_In_ DWORD dwTlsIndex
-);
-HOOKDEF(BOOL, WINAPI, TlsSetValue,
-	_In_ DWORD dwTlsIndex,
-	_In_opt_ LPVOID lpTlsValue
 );
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
