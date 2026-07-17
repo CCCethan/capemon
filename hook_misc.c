@@ -2007,3 +2007,473 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 		"OutputBuffer", OutputBufferLength, OutputBuffer);
 	return ret;
 }
+
+/* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
+HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hObject
+) {
+	BOOL ret;
+	ret = Old_CloseHandle(hObject);
+	LOQ_bool("misc", "p", "Object", hObject);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 引数 lpLocaleEnumProc: 型 LOCALE_ENUMPROC はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LOCALE_ENUMPROC lpLocaleEnumProc,
+	_In_ DWORD dwFlags
+) {
+	BOOL ret;
+	ret = Old_EnumSystemLocalesW(lpLocaleEnumProc, dwFlags);
+	LOQ_bool("misc", "i", "Flags", dwFlags);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(UINT, WINAPI, GetACP, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	UINT ret;
+	ret = Old_GetACP();
+	LOQ_nonzero("misc", "");
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 引数 lpCPInfo: 型 LPCPINFO はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(BOOL, WINAPI, GetCPInfo, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ UINT CodePage,
+	_Out_ LPCPINFO lpCPInfo
+) {
+	BOOL ret;
+	ret = Old_GetCPInfo(CodePage, lpCPInfo);
+	LOQ_bool("misc", "i", "CodePage", CodePage);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 Locale: 型 LCID はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 lpDate: 型 const SYSTEMTIME* はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(int, WINAPI, GetDateFormatW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LCID Locale,
+	_In_ DWORD dwFlags,
+	_In_opt_ const SYSTEMTIME* lpDate,
+	_In_opt_ LPCWSTR lpFormat,
+	_Out_opt_ LPWSTR lpDateStr,
+	_In_ int cchDate
+) {
+	int ret;
+	ret = Old_GetDateFormatW(Locale, dwFlags, lpDate, lpFormat, lpDateStr, cchDate);
+	LOQ_nonzero("misc", "iuui", "Flags", dwFlags, "Format", lpFormat, "DateStr", lpDateStr, "Date", cchDate);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	LPWSTR ret;
+	ret = Old_GetEnvironmentStringsW();
+	LOQ_nonnull("misc", "");
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(DWORD, WINAPI, GetLastError, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	DWORD ret;
+	ret = Old_GetLastError();
+	LOQ_nonzero("misc", "");
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 Locale: 型 LCID はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 LCType: 型 LCTYPE はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(int, WINAPI, GetLocaleInfoW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LCID Locale,
+	_In_ LCTYPE LCType,
+	_Out_opt_ LPWSTR lpLCData,
+	_In_ int cchData
+) {
+	int ret;
+	ret = Old_GetLocaleInfoW(Locale, LCType, lpLCData, cchData);
+	LOQ_nonzero("misc", "ui", "LCData", lpLCData, "Data", cchData);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(UINT, WINAPI, GetOEMCP, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	UINT ret;
+	ret = Old_GetOEMCP();
+	LOQ_nonzero("misc", "");
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 引数 lpCharType: 型 LPWORD はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(BOOL, WINAPI, GetStringTypeW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwInfoType,
+	_In_ LPCWSTR lpSrcStr,
+	_In_ int cchSrc,
+	_Out_ LPWORD lpCharType
+) {
+	BOOL ret;
+	ret = Old_GetStringTypeW(dwInfoType, lpSrcStr, cchSrc, lpCharType);
+	LOQ_bool("misc", "iui", "InfoType", dwInfoType, "SrcStr", lpSrcStr, "Src", cchSrc);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 Locale: 型 LCID はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 lpTime: 型 const SYSTEMTIME* はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(int, WINAPI, GetTimeFormatW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LCID Locale,
+	_In_ DWORD dwFlags,
+	_In_opt_ const SYSTEMTIME* lpTime,
+	_In_opt_ LPCWSTR lpFormat,
+	_Out_opt_ LPWSTR lpTimeStr,
+	_In_ int cchTime
+) {
+	int ret;
+	ret = Old_GetTimeFormatW(Locale, dwFlags, lpTime, lpFormat, lpTimeStr, cchTime);
+	LOQ_nonzero("misc", "iuui", "Flags", dwFlags, "Format", lpFormat, "TimeStr", lpTimeStr, "Time", cchTime);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Time
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpTimeZoneInformation: 型 LPTIME_ZONE_INFORMATION はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPTIME_ZONE_INFORMATION lpTimeZoneInformation
+) {
+	DWORD ret;
+	ret = Old_GetTimeZoneInformation(lpTimeZoneInformation);
+	LOQ_nonzero("misc", "");
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
+HOOKDEF(LPVOID, WINAPI, HeapAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hHeap,
+	_In_ DWORD dwFlags,
+	_In_ SIZE_T dwBytes
+) {
+	LPVOID ret;
+	ret = Old_HeapAlloc(hHeap, dwFlags, dwBytes);
+	LOQ_nonnull("misc", "pii", "Heap", hHeap, "Flags", dwFlags, "Bytes", dwBytes);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
+// REVIEW: 引数 lpMem: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+HOOKDEF(BOOL, WINAPI, HeapFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hHeap,
+	_In_ DWORD dwFlags,
+	_In_ LPVOID lpMem
+) {
+	BOOL ret;
+	ret = Old_HeapFree(hHeap, dwFlags, lpMem);
+	LOQ_bool("misc", "pi", "Heap", hHeap, "Flags", dwFlags);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
+// REVIEW: 引数 lpMem: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+HOOKDEF(LPVOID, WINAPI, HeapReAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hHeap,
+	_In_ DWORD dwFlags,
+	_In_ LPVOID lpMem,
+	_In_ SIZE_T dwBytes
+) {
+	LPVOID ret;
+	ret = Old_HeapReAlloc(hHeap, dwFlags, lpMem, dwBytes);
+	LOQ_nonnull("misc", "pii", "Heap", hHeap, "Flags", dwFlags, "Bytes", dwBytes);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
+// REVIEW: 戻り型 SIZE_T の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpMem: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+HOOKDEF(SIZE_T, WINAPI, HeapSize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hHeap,
+	_In_ DWORD dwFlags,
+	_In_ LPCVOID lpMem
+) {
+	SIZE_T ret;
+	ret = Old_HeapSize(hHeap, dwFlags, lpMem);
+	LOQ_nonzero("misc", "pi", "Heap", hHeap, "Flags", dwFlags);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+HOOKDEF(BOOL, WINAPI, IsValidCodePage, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ UINT CodePage
+) {
+	BOOL ret;
+	ret = Old_IsValidCodePage(CodePage);
+	LOQ_bool("misc", "i", "CodePage", CodePage);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 引数 Locale: 型 LCID はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(BOOL, WINAPI, IsValidLocale, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LCID Locale,
+	_In_ DWORD dwFlags
+) {
+	BOOL ret;
+	ret = Old_IsValidLocale(Locale, dwFlags);
+	LOQ_bool("misc", "i", "Flags", dwFlags);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpVersionInformation: 型 LPNLSVERSIONINFO はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 lpReserved: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+// REVIEW: 引数 sortHandle: 型 LPARAM はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(int, WINAPI, LCMapStringEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCWSTR lpLocaleName,
+	_In_ DWORD dwMapFlags,
+	_In_ LPCWSTR lpSrcStr,
+	_In_ int cchSrc,
+	_Out_opt_ LPWSTR lpDestStr,
+	_In_ int cchDest,
+	_In_opt_ LPNLSVERSIONINFO lpVersionInformation,
+	_In_opt_ LPVOID lpReserved,
+	_In_opt_ LPARAM sortHandle
+) {
+	int ret;
+	ret = Old_LCMapStringEx(lpLocaleName, dwMapFlags, lpSrcStr, cchSrc, lpDestStr, cchDest, lpVersionInformation, lpReserved, sortHandle);
+	LOQ_nonzero("misc", "uiuiui", "LocaleName", lpLocaleName, "MapFlags", dwMapFlags, "SrcStr", lpSrcStr, "Src", cchSrc, "DestStr", lpDestStr, "Dest", cchDest);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 Locale: 型 LCID はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(int, WINAPI, LCMapStringW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LCID Locale,
+	_In_ DWORD dwMapFlags,
+	_In_ LPCWSTR lpSrcStr,
+	_In_ int cchSrc,
+	_Out_opt_ LPWSTR lpDestStr,
+	_In_ int cchDest
+) {
+	int ret;
+	ret = Old_LCMapStringW(Locale, dwMapFlags, lpSrcStr, cchSrc, lpDestStr, cchDest);
+	LOQ_nonzero("misc", "iuiui", "MapFlags", dwMapFlags, "SrcStr", lpSrcStr, "Src", cchSrc, "DestStr", lpDestStr, "Dest", cchDest);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Unicode and Character Set
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(int, WINAPI, MultiByteToWideChar, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ UINT CodePage,
+	_In_ DWORD dwFlags,
+	_In_ LPCSTR lpMultiByteStr,
+	_In_ int cbMultiByte,
+	_Out_opt_ LPWSTR lpWideCharStr,
+	_In_ int cchWideChar
+) {
+	int ret;
+	ret = Old_MultiByteToWideChar(CodePage, dwFlags, lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar);
+	LOQ_nonzero("misc", "iisiui", "CodePage", CodePage, "Flags", dwFlags, "MultiByteStr", lpMultiByteStr, "MultiByte", cbMultiByte, "WideCharStr", lpWideCharStr, "WideChar", cchWideChar);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Time
+HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LARGE_INTEGER* lpPerformanceCount
+) {
+	BOOL ret;
+	ret = Old_QueryPerformanceCounter(lpPerformanceCount);
+	LOQ_bool("misc", "i", "PerformanceCount", lpPerformanceCount);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Time
+HOOKDEF(BOOL, WINAPI, QueryPerformanceFrequency, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LARGE_INTEGER* lpFrequency
+) {
+	BOOL ret;
+	ret = Old_QueryPerformanceFrequency(lpFrequency);
+	LOQ_bool("misc", "i", "Frequency", lpFrequency);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
+HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwExceptionCode,
+	_In_ DWORD dwExceptionFlags,
+	_In_ DWORD nNumberOfArguments,
+	_In_ const ULONG_PTR* lpArguments
+) {
+	void ret = 0; (void)ret;
+	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
+	LOQ_void("misc", "iiii", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
+// REVIEW: 引数 ContextRecord: 型 PCONTEXT はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(VOID, WINAPI, RtlCaptureContext, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ PCONTEXT ContextRecord
+) {
+	VOID ret = 0; (void)ret;
+	Old_RtlCaptureContext(ContextRecord);
+	LOQ_void("misc", "");
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
+// REVIEW: 引数 ImageBase: 出力スカラの ENSURE_ 型を要確認(PULONGLONG)
+// REVIEW: 引数 TargetGp: 出力スカラの ENSURE_ 型を要確認(PULONGLONG)
+HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ ULONGLONG ControlPc,
+	_Out_ PULONGLONG ImageBase,
+	_Out_ PULONGLONG TargetGp
+) {
+	PVOID ret;
+	ENSURE_DWORD(ImageBase);
+	ENSURE_DWORD(TargetGp);
+	ret = Old_RtlLookupFunctionEntry(ControlPc, ImageBase, TargetGp);
+	LOQ_nonnull("misc", "iii", "ControlPc", ControlPc, "ImageBase", *ImageBase, "TargetGp", *TargetGp);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
+// REVIEW: 引数 TargetFrame: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+// REVIEW: 引数 TargetIp: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+// REVIEW: 引数 ExceptionRecord: 型 PEXCEPTION_RECORD はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 ReturnValue: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(void, WINAPI, RtlUnwind, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ PVOID TargetFrame,
+	_In_opt_ PVOID TargetIp,
+	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
+	_In_ PVOID ReturnValue
+) {
+	void ret = 0; (void)ret;
+	Old_RtlUnwind(TargetFrame, TargetIp, ExceptionRecord, ReturnValue);
+	LOQ_void("misc", "");
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
+// REVIEW: 引数 TargetFrame: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+// REVIEW: 引数 TargetIp: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+// REVIEW: 引数 ExceptionRecord: 型 PEXCEPTION_RECORD はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 ReturnValue: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+// REVIEW: 引数 OriginalContext: 型 PCONTEXT はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 HistoryTable: 型 PUNWIND_HISTORY_TABLE はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(void, WINAPI, RtlUnwindEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ PVOID TargetFrame,
+	_In_opt_ PVOID TargetIp,
+	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
+	_In_ PVOID ReturnValue,
+	_In_ PCONTEXT OriginalContext,
+	_In_opt_ PUNWIND_HISTORY_TABLE HistoryTable
+) {
+	void ret = 0; (void)ret;
+	Old_RtlUnwindEx(TargetFrame, TargetIp, ExceptionRecord, ReturnValue, OriginalContext, HistoryTable);
+	LOQ_void("misc", "");
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
+// REVIEW: 引数 HandlerType: 型  はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 ImageBase: 型  はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 ControlPC: 型  はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 FunctionEntry: 型  はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 ContextRecord: 型  はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 InFunction: 型  はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 EstablisherFrame: 型  はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 ContextPointers: 型  はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(PEXCEPTION_ROUTINE, WINAPI, RtlVirtualUnwind, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_  HandlerType,
+	_In_  ImageBase,
+	_In_  ControlPC,
+	_In_  FunctionEntry,
+	_Inout_  ContextRecord,
+	_Out_  InFunction,
+	_Out_  EstablisherFrame,
+	_Inout_opt_  ContextPointers
+) {
+	PEXCEPTION_ROUTINE ret;
+	ret = Old_RtlVirtualUnwind(HandlerType, ImageBase, ControlPC, FunctionEntry, ContextRecord, InFunction, EstablisherFrame, ContextPointers);
+	LOQ_nonnull("misc", "");
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
+HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCWSTR lpName,
+	_In_opt_ LPCWSTR lpValue
+) {
+	BOOL ret;
+	ret = Old_SetEnvironmentVariableW(lpName, lpValue);
+	LOQ_bool("misc", "uu", "Name", lpName, "Value", lpValue);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
+HOOKDEF(void, WINAPI, SetLastError, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwErrCode
+) {
+	void ret = 0; (void)ret;
+	Old_SetLastError(dwErrCode);
+	LOQ_void("misc", "i", "ErrCode", dwErrCode);
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
+// REVIEW: 引数 lpAddress: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPVOID lpAddress,
+	_In_ SIZE_T dwSize,
+	_In_ DWORD flNewProtect,
+	_Out_ PDWORD lpflOldProtect
+) {
+	BOOL ret;
+	ENSURE_DWORD(lpflOldProtect);
+	ret = Old_VirtualProtect(lpAddress, dwSize, flNewProtect, lpflOldProtect);
+	LOQ_bool("misc", "iii", "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", *lpflOldProtect);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Unicode and Character Set
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpUsedDefaultChar: 型 LPBOOL はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(int, WINAPI, WideCharToMultiByte, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ UINT CodePage,
+	_In_ DWORD dwFlags,
+	_In_ LPCWSTR lpWideCharStr,
+	_In_ int cchWideChar,
+	_Out_opt_ LPSTR lpMultiByteStr,
+	_In_ int cbMultiByte,
+	_In_opt_ LPCSTR lpDefaultChar,
+	_Out_opt_ LPBOOL lpUsedDefaultChar
+) {
+	int ret;
+	ret = Old_WideCharToMultiByte(CodePage, dwFlags, lpWideCharStr, cchWideChar, lpMultiByteStr, cbMultiByte, lpDefaultChar, lpUsedDefaultChar);
+	LOQ_nonzero("misc", "iiuisis", "CodePage", CodePage, "Flags", dwFlags, "WideCharStr", lpWideCharStr, "WideChar", cchWideChar, "MultiByteStr", lpMultiByteStr, "MultiByte", cbMultiByte, "DefaultChar", lpDefaultChar);
+	return ret;
+}
+/* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker END <<< */
+

@@ -1539,3 +1539,257 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	LOQ_zero("process", "lL", "Attribute", Attribute, "Value", lpValue);
 	return ret;
 }
+
+/* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker BEGIN <<< */
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ UINT uExitCode
+) {
+	VOID ret = 0; (void)ret;
+	Old_ExitProcess(uExitCode);
+	LOQ_void("process", "i", "UExitCode", uExitCode);
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpCallback: 型 PFLS_CALLBACK_FUNCTION はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(DWORD, WINAPI, FlsAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ PFLS_CALLBACK_FUNCTION lpCallback
+) {
+	DWORD ret;
+	ret = Old_FlsAlloc(lpCallback);
+	LOQ_nonzero("process", "");
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, FlsFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwFlsIndex
+) {
+	BOOL ret;
+	ret = Old_FlsFree(dwFlsIndex);
+	LOQ_bool("process", "i", "FlsIndex", dwFlsIndex);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(PVOID, WINAPI, FlsGetValue, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwFlsIndex
+) {
+	PVOID ret;
+	ret = Old_FlsGetValue(dwFlsIndex);
+	LOQ_nonnull("process", "i", "FlsIndex", dwFlsIndex);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 引数 lpFlsData: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+HOOKDEF(BOOL, WINAPI, FlsSetValue, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwFlsIndex,
+	_In_opt_ PVOID lpFlsData
+) {
+	BOOL ret;
+	ret = Old_FlsSetValue(dwFlsIndex, lpFlsData);
+	LOQ_bool("process", "i", "FlsIndex", dwFlsIndex);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, FreeEnvironmentStringsW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPWSTR lpszEnvironmentBlock
+) {
+	BOOL ret;
+	ret = Old_FreeEnvironmentStringsW(lpszEnvironmentBlock);
+	LOQ_bool("process", "u", "SzEnvironmentBlock", lpszEnvironmentBlock);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
+HOOKDEF(BOOL, WINAPI, FreeLibrary, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HMODULE hModule
+) {
+	BOOL ret;
+	ret = Old_FreeLibrary(hModule);
+	LOQ_bool("process", "p", "Module", hModule);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(HANDLE, WINAPI, GetCurrentProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	HANDLE ret;
+	ret = Old_GetCurrentProcess();
+	LOQ_handle("process", "");
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(DWORD, WINAPI, GetCurrentProcessId, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	DWORD ret;
+	ret = Old_GetCurrentProcessId();
+	LOQ_nonzero("process", "");
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(DWORD, WINAPI, GetCurrentThreadId, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	DWORD ret;
+	ret = Old_GetCurrentThreadId();
+	LOQ_nonzero("process", "");
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetModuleFileNameW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ HMODULE hModule,
+	_Out_ LPWSTR lpFilename,
+	_In_ DWORD nSize
+) {
+	DWORD ret;
+	ret = Old_GetModuleFileNameW(hModule, lpFilename, nSize);
+	LOQ_nonzero("process", "pFi", "Module", hModule, "Filename", lpFilename, "Size", nSize);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
+HOOKDEF(BOOL, WINAPI, GetModuleHandleExW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwFlags,
+	_In_opt_ LPCWSTR lpModuleName,
+	_Out_ HMODULE* phModule
+) {
+	BOOL ret;
+	ret = Old_GetModuleHandleExW(dwFlags, lpModuleName, phModule);
+	LOQ_bool("process", "iFp", "Flags", dwFlags, "ModuleName", lpModuleName, "HModule", phModule);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
+HOOKDEF(HMODULE, WINAPI, GetModuleHandleW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCWSTR lpModuleName
+) {
+	HMODULE ret;
+	ret = Old_GetModuleHandleW(lpModuleName);
+	LOQ_nonnull("process", "F", "ModuleName", lpModuleName);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
+HOOKDEF(FARPROC, WINAPI, GetProcAddress, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HMODULE hModule,
+	_In_ LPCSTR lpProcName
+) {
+	FARPROC ret;
+	ret = Old_GetProcAddress(hModule, lpProcName);
+	LOQ_nonnull("process", "ps", "Module", hModule, "ProcName", lpProcName);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Memory Management
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(HANDLE, WINAPI, GetProcessHeap, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	HANDLE ret;
+	ret = Old_GetProcessHeap();
+	LOQ_handle("process", "");
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 引数 lpStartupInfo: 型 LPSTARTUPINFOW はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(VOID, WINAPI, GetStartupInfoW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPSTARTUPINFOW lpStartupInfo
+) {
+	VOID ret = 0; (void)ret;
+	Old_GetStartupInfoW(lpStartupInfo);
+	LOQ_void("process", "");
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:System Information Functions
+HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD ProcessorFeature
+) {
+	BOOL ret;
+	ret = Old_IsProcessorFeaturePresent(ProcessorFeature);
+	LOQ_bool("process", "i", "ProcessorFeature", ProcessorFeature);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(VOID, WINAPI, Sleep, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwMilliseconds
+) {
+	VOID ret = 0; (void)ret;
+	Old_Sleep(dwMilliseconds);
+	LOQ_void("process", "i", "Milliseconds", dwMilliseconds);
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, TerminateProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hProcess,
+	_In_ UINT uExitCode
+) {
+	BOOL ret;
+	ret = Old_TerminateProcess(hProcess, uExitCode);
+	LOQ_bool("process", "pi", "Process", hProcess, "UExitCode", uExitCode);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(DWORD, WINAPI, TlsAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	DWORD ret;
+	ret = Old_TlsAlloc();
+	LOQ_nonzero("process", "");
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, TlsFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwTlsIndex
+) {
+	BOOL ret;
+	ret = Old_TlsFree(dwTlsIndex);
+	LOQ_bool("process", "i", "TlsIndex", dwTlsIndex);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(LPVOID, WINAPI, TlsGetValue, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwTlsIndex
+) {
+	LPVOID ret;
+	ret = Old_TlsGetValue(dwTlsIndex);
+	LOQ_nonnull("process", "i", "TlsIndex", dwTlsIndex);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 引数 lpTlsValue: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwTlsIndex,
+	_In_opt_ LPVOID lpTlsValue
+) {
+	BOOL ret;
+	ret = Old_TlsSetValue(dwTlsIndex, lpTlsValue);
+	LOQ_bool("process", "i", "TlsIndex", dwTlsIndex);
+	return ret;
+}
+/* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker END <<< */
+
