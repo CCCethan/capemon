@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_020_computer_system_manufacturer_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
 HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwExceptionCode,
@@ -2033,5 +2033,5 @@ HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_nonzero("misc", "");
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_020_computer_system_manufacturer_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker END <<< */
 

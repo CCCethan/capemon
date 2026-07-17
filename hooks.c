@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_020_computer_system_manufacturer_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker BEGIN <<< */
 HOOK(ole32, CoInitializeEx),
 HOOK(ole32, CoInitializeSecurity),
 HOOK(ole32, CoSetProxyBlanket),
@@ -831,7 +831,7 @@ HOOK(kernel32, Sleep),
 HOOK(oleaut32, SysAllocString),
 HOOK(kernel32, TerminateProcess),
 HOOK(oleaut32, VariantClear),
-/* >>> AUTOHOOK_pa_alk_020_computer_system_manufacturer_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker END <<< */
 };
 
 hook_t native_hooks[] = {
