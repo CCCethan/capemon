@@ -819,21 +819,12 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
 /* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker BEGIN <<< */
-HOOK(kernel32, CloseHandle),
-HOOK(kernel32, CreateFileW),
 HOOK(kernel32, ExitProcess),
-HOOK(kernel32, FindClose),
-HOOK(kernel32, FlushFileBuffers),
 HOOK(kernel32, FreeLibrary),
-HOOK(kernel32, GetFileSizeEx),
-HOOK(kernel32, GetFileType),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernel32, RaiseException),
-HOOK(kernel32, ReadFile),
-HOOK(kernel32, SetFilePointerEx),
 HOOK(kernel32, Sleep),
 HOOK(kernel32, TerminateProcess),
-HOOK(kernel32, WriteFile),
 /* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker END <<< */
 };
 

@@ -3931,36 +3931,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 #include "hook_vbscript.h"
 
 /* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, CloseHandle,
-	_In_ HANDLE hObject
-);
-HOOKDEF(HANDLE, WINAPI, CreateFileW,
-	_In_ LPCWSTR lpFileName,
-	_In_ DWORD dwDesiredAccess,
-	_In_ DWORD dwShareMode,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-	_In_ DWORD dwCreationDisposition,
-	_In_ DWORD dwFlagsAndAttributes,
-	_In_opt_ HANDLE hTemplateFile
-);
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
-HOOKDEF(BOOL, WINAPI, FindClose,
-	_Inout_ HANDLE hFindFile
-);
-HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
-	_In_ HANDLE hFile
-);
 HOOKDEF(BOOL, WINAPI, FreeLibrary,
 	_In_ HMODULE hModule
-);
-HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
-	_In_ HANDLE hFile,
-	_Out_ PLARGE_INTEGER lpFileSize
-);
-HOOKDEF(DWORD, WINAPI, GetFileType,
-	_In_ HANDLE hFile
 );
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
@@ -3973,32 +3948,12 @@ HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD nNumberOfArguments,
 	_In_ const ULONG_PTR* lpArguments
 );
-HOOKDEF(BOOL, WINAPI, ReadFile,
-	_In_ HANDLE hFile,
-	_Out_ LPVOID lpBuffer,
-	_In_ DWORD nNumberOfBytesToRead,
-	_Out_opt_ LPDWORD lpNumberOfBytesRead,
-	_Inout_opt_ LPOVERLAPPED lpOverlapped
-);
-HOOKDEF(BOOL, WINAPI, SetFilePointerEx,
-	_In_ HANDLE hFile,
-	_In_ LARGE_INTEGER liDistanceToMove,
-	_Out_opt_ PLARGE_INTEGER lpNewFilePointer,
-	_In_ DWORD dwMoveMethod
-);
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
 );
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
-);
-HOOKDEF(BOOL, WINAPI, WriteFile,
-	_In_ HANDLE hFile,
-	_In_ LPCVOID lpBuffer,
-	_In_ DWORD nNumberOfBytesToWrite,
-	_Out_opt_ LPDWORD lpNumberOfBytesWritten,
-	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
 /* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker END <<< */

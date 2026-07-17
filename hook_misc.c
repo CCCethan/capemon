@@ -2009,16 +2009,6 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 }
 
 /* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
-HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hObject
-) {
-	BOOL ret;
-	ret = Old_CloseHandle(hObject);
-	LOQ_bool("misc", "p", "Object", hObject);
-	return ret;
-}
-
 // -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
 HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwExceptionCode,
