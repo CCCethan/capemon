@@ -3929,32 +3929,3 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 );
 
 #include "hook_vbscript.h"
-
-/* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker BEGIN <<< */
-HOOKDEF(VOID, WINAPI, ExitProcess,
-	_In_ UINT uExitCode
-);
-HOOKDEF(BOOL, WINAPI, FreeLibrary,
-	_In_ HMODULE hModule
-);
-HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
-	_In_opt_ HMODULE hModule,
-	_Out_ LPWSTR lpFilename,
-	_In_ DWORD nSize
-);
-HOOKDEF(void, WINAPI, RaiseException,
-	_In_ DWORD dwExceptionCode,
-	_In_ DWORD dwExceptionFlags,
-	_In_ DWORD nNumberOfArguments,
-	_In_ const ULONG_PTR* lpArguments
-);
-HOOKDEF(VOID, WINAPI, Sleep,
-	_In_ DWORD dwMilliseconds
-);
-HOOKDEF(BOOL, WINAPI, TerminateProcess,
-	_In_ HANDLE hProcess,
-	_In_ UINT uExitCode
-);
-
-/* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker END <<< */
-

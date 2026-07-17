@@ -2007,18 +2007,3 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 		"OutputBuffer", OutputBufferLength, OutputBuffer);
 	return ret;
 }
-
-/* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
-HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwExceptionCode,
-	_In_ DWORD dwExceptionFlags,
-	_In_ DWORD nNumberOfArguments,
-	_In_ const ULONG_PTR* lpArguments
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
-	LOQ_void("misc", "iiii", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
-}
-/* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker END <<< */
-
