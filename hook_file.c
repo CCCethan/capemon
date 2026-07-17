@@ -1927,45 +1927,16 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
-HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetFileAttributesA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCSTR lpFileName
 ) {
-	BOOL ret;
-	ret = Old_AreFileApisANSI();
-	LOQ_bool("filesystem", "");
+	DWORD ret;
+	ret = Old_GetFileAttributesA(lpFileName);
+	LOQ_nonzero("filesystem", "f", "FileName", lpFileName);
 	return ret;
 }
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 引数 fInfoLevelId: 型 GET_FILEEX_INFO_LEVELS はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 引数 lpFileInformation: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
-HOOKDEF(BOOL, WINAPI, GetFileAttributesExW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpFileName,
-	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
-	_Out_ LPVOID lpFileInformation
-) {
-	BOOL ret;
-	ret = Old_GetFileAttributesExW(lpFileName, fInfoLevelId, lpFileInformation);
-	LOQ_bool("filesystem", "F", "FileName", lpFileName);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 引数 FileInformationClass: 型 FILE_INFO_BY_HANDLE_CLASS はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 引数 lpFileInformation: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
-HOOKDEF(BOOL, WINAPI, GetFileInformationByHandleEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFile,
-	_In_ FILE_INFO_BY_HANDLE_CLASS FileInformationClass,
-	_Out_ LPVOID lpFileInformation,
-	_In_ DWORD dwBufferSize
-) {
-	BOOL ret;
-	ret = Old_GetFileInformationByHandleEx(hFile, FileInformationClass, lpFileInformation, dwBufferSize);
-	LOQ_bool("filesystem", "pi", "File", hFile, "BufferSize", dwBufferSize);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker END <<< */
 
