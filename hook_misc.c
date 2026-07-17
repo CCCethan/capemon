@@ -2008,7 +2008,40 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Pipes
+// REVIEW: 引数 lpPipeAttributes: 型 LPSECURITY_ATTRIBUTES はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(BOOL, WINAPI, CreatePipe, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ PHANDLE hReadPipe,
+	_Out_ PHANDLE hWritePipe,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpPipeAttributes,
+	_In_ DWORD nSize
+) {
+	BOOL ret;
+	ENSURE_HANDLE(hReadPipe);
+	ENSURE_HANDLE(hWritePipe);
+	ret = Old_CreatePipe(hReadPipe, hWritePipe, lpPipeAttributes, nSize);
+	LOQ_bool("misc", "ppi", "ReadPipe", *hReadPipe, "WritePipe", *hWritePipe, "Size", nSize);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
+HOOKDEF(BOOL, WINAPI, DuplicateHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hSourceProcessHandle,
+	_In_ HANDLE hSourceHandle,
+	_In_ HANDLE hTargetProcessHandle,
+	_Out_ LPHANDLE lpTargetHandle,
+	_In_ DWORD dwDesiredAccess,
+	_In_ BOOL bInheritHandle,
+	_In_ DWORD dwOptions
+) {
+	BOOL ret;
+	ENSURE_HANDLE(lpTargetHandle);
+	ret = Old_DuplicateHandle(hSourceProcessHandle, hSourceHandle, hTargetProcessHandle, lpTargetHandle, dwDesiredAccess, bInheritHandle, dwOptions);
+	LOQ_bool("misc", "ppppiii", "SourceProcessHandle", hSourceProcessHandle, "SourceHandle", hSourceHandle, "TargetProcessHandle", hTargetProcessHandle, "TargetHandle", *lpTargetHandle, "DesiredAccess", dwDesiredAccess, "InheritHandle", bInheritHandle, "Options", dwOptions);
+	return ret;
+}
+
 // -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
 HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwExceptionCode,
@@ -2020,5 +2053,5 @@ HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/na
 	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
 	LOQ_void("misc", "iiii", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
 }
-/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker END <<< */
 

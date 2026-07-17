@@ -818,14 +818,22 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker BEGIN <<< */
+HOOK(kernel32, AreFileApisANSI),
+HOOK(kernel32, CreatePipe),
+HOOK(kernel32, DuplicateHandle),
 HOOK(kernel32, ExitProcess),
+HOOK(kernel32, FormatMessageA),
 HOOK(kernel32, FreeLibrary),
+HOOK(kernel32, GetExitCodeProcess),
+HOOK(kernel32, GetFileAttributesExW),
+HOOK(kernel32, GetFileInformationByHandleEx),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernel32, RaiseException),
 HOOK(kernel32, Sleep),
 HOOK(kernel32, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker END <<< */
+HOOK(kernel32, WaitForSingleObject),
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker END <<< */
 };
 
 hook_t native_hooks[] = {

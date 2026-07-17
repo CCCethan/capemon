@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1557,6 +1557,18 @@ HOOKDEF(BOOL, WINAPI, FreeLibrary, // 呼出規約は WINAPI 仮定(socket/nativ
 	BOOL ret;
 	ret = Old_FreeLibrary(hModule);
 	LOQ_bool("process", "p", "Module", hModule);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 引数 lpExitCode: 型 LPDWORD はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(BOOL, WINAPI, GetExitCodeProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hProcess,
+	_Out_ LPDWORD lpExitCode
+) {
+	BOOL ret;
+	ret = Old_GetExitCodeProcess(hProcess, lpExitCode);
+	LOQ_bool("process", "p", "Process", hProcess);
 	return ret;
 }
 
@@ -1592,5 +1604,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess, // 呼出規約は WINAPI 仮定(socket/
 	LOQ_bool("process", "pi", "Process", hProcess, "UExitCode", uExitCode);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker END <<< */
 
