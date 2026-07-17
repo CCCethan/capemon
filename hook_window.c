@@ -525,3 +525,25 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_061_error_report_checker BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Error Handling
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpSource: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+// REVIEW: 引数 Arguments: 型 va_list* はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(DWORD, WINAPI, FormatMessageA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwFlags,
+	_In_opt_ LPCVOID lpSource,
+	_In_ DWORD dwMessageId,
+	_In_ DWORD dwLanguageId,
+	_Out_ LPSTR lpBuffer,
+	_In_ DWORD nSize,
+	_In_opt_ va_list* Arguments
+) {
+	DWORD ret;
+	ret = Old_FormatMessageA(dwFlags, lpSource, dwMessageId, dwLanguageId, lpBuffer, nSize, Arguments);
+	LOQ_nonzero("windows", "iiisi", "Flags", dwFlags, "MessageId", dwMessageId, "LanguageId", dwLanguageId, "Buffer", lpBuffer, "Size", nSize);
+	return ret;
+}
+/* >>> AUTOHOOK_pa_alk_061_error_report_checker END <<< */
+
