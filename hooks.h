@@ -1687,19 +1687,6 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
 );
-HOOKDEF(DWORD, WINAPI, FlsAlloc,
-	_In_ PFLS_CALLBACK_FUNCTION lpCallback
-);
-HOOKDEF(BOOL, WINAPI, FlsFree,
-	_In_ DWORD dwFlsIndex
-);
-HOOKDEF(PVOID, WINAPI, FlsGetValue,
-	_In_ DWORD dwFlsIndex
-);
-HOOKDEF(BOOL, WINAPI, FlsSetValue,
-	_In_ DWORD dwFlsIndex,
-	_In_opt_ PVOID lpFlsData
-);
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
 );
@@ -1749,9 +1736,6 @@ HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 );
 HOOKDEF(DWORD, WINAPI, GetFileType,
 	_In_ HANDLE hFile
-);
-HOOKDEF(DWORD, WINAPI, GetLastError,
-	void
 );
 HOOKDEF(int, WINAPI, GetLocaleInfoW,
 	_In_ LCID Locale,
@@ -1835,12 +1819,6 @@ HOOKDEF(BOOL, WINAPI, InitializeCriticalSectionEx,
 	_In_ DWORD dwSpinCount,
 	_In_ DWORD Flags
 );
-HOOKDEF(void, WINAPI, InitializeSListHead,
-	_Inout_ PSLIST_HEADER ListHead
-);
-HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent,
-	_In_ DWORD ProcessorFeature
-);
 HOOKDEF(BOOL, WINAPI, IsValidCodePage,
 	_In_ UINT CodePage
 );
@@ -1870,14 +1848,6 @@ HOOKDEF(int, WINAPI, LCMapStringW,
 HOOKDEF(void, WINAPI, LeaveCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 );
-HOOKDEF(int, WINAPI, MultiByteToWideChar,
-	_In_ UINT CodePage,
-	_In_ DWORD dwFlags,
-	_In_ LPCSTR lpMultiByteStr,
-	_In_ int cbMultiByte,
-	_Out_opt_ LPWSTR lpWideCharStr,
-	_In_ int cchWideChar
-);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -1903,42 +1873,6 @@ HOOKDEF(BOOL, WINAPI, ReadFile,
 	_In_ DWORD nNumberOfBytesToRead,
 	_Out_opt_ LPDWORD lpNumberOfBytesRead,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
-);
-HOOKDEF(VOID, WINAPI, RtlCaptureContext,
-	_Out_ PCONTEXT ContextRecord
-);
-HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
-	_In_ ULONGLONG ControlPc,
-	_Out_ PULONGLONG ImageBase,
-	_Out_ PULONGLONG TargetGp
-);
-HOOKDEF(PVOID, WINAPI, RtlPcToFileHeader,
-	_In_ PVOID PcValue,
-	_Out_ PVOID* BaseOfImage
-);
-HOOKDEF(void, WINAPI, RtlUnwind,
-	_In_opt_ PVOID TargetFrame,
-	_In_opt_ PVOID TargetIp,
-	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
-	_In_ PVOID ReturnValue
-);
-HOOKDEF(void, WINAPI, RtlUnwindEx,
-	_In_opt_ PVOID TargetFrame,
-	_In_opt_ PVOID TargetIp,
-	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
-	_In_ PVOID ReturnValue,
-	_In_ PCONTEXT OriginalContext,
-	_In_opt_ PUNWIND_HISTORY_TABLE HistoryTable
-);
-HOOKDEF(PEXCEPTION_ROUTINE, WINAPI, RtlVirtualUnwind,
-	_In_  HandlerType,
-	_In_  ImageBase,
-	_In_  ControlPC,
-	_In_  FunctionEntry,
-	_Inout_  ContextRecord,
-	_Out_  InFunction,
-	_Out_  EstablisherFrame,
-	_Inout_opt_  ContextPointers
 );
 HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
@@ -1982,16 +1916,6 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ SIZE_T dwSize,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
-);
-HOOKDEF(int, WINAPI, WideCharToMultiByte,
-	_In_ UINT CodePage,
-	_In_ DWORD dwFlags,
-	_In_ LPCWSTR lpWideCharStr,
-	_In_ int cchWideChar,
-	_Out_opt_ LPSTR lpMultiByteStr,
-	_In_ int cbMultiByte,
-	_In_opt_ LPCSTR lpDefaultChar,
-	_Out_opt_ LPBOOL lpUsedDefaultChar
 );
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,

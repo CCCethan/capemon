@@ -1545,54 +1545,9 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
 ) {
-	VOID ret = 0; (void)ret;
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
 	Old_ExitProcess(uExitCode);
 	LOQ_void("process", "i", "UExitCode", uExitCode);
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpCallback: 型 PFLS_CALLBACK_FUNCTION はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
-HOOKDEF(DWORD, WINAPI, FlsAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PFLS_CALLBACK_FUNCTION lpCallback
-) {
-	DWORD ret;
-	ret = Old_FlsAlloc(lpCallback);
-	LOQ_nonzero("process", "");
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, FlsFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwFlsIndex
-) {
-	BOOL ret;
-	ret = Old_FlsFree(dwFlsIndex);
-	LOQ_bool("process", "i", "FlsIndex", dwFlsIndex);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(PVOID, WINAPI, FlsGetValue, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwFlsIndex
-) {
-	PVOID ret;
-	ret = Old_FlsGetValue(dwFlsIndex);
-	LOQ_nonnull("process", "i", "FlsIndex", dwFlsIndex);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-// REVIEW: 引数 lpFlsData: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
-HOOKDEF(BOOL, WINAPI, FlsSetValue, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwFlsIndex,
-	_In_opt_ PVOID lpFlsData
-) {
-	BOOL ret;
-	ret = Old_FlsSetValue(dwFlsIndex, lpFlsData);
-	LOQ_bool("process", "i", "FlsIndex", dwFlsIndex);
-	return ret;
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Processes
@@ -1713,26 +1668,16 @@ HOOKDEF(HANDLE, WINAPI, GetProcessHeap, // 呼出規約は WINAPI 仮定(socket/
 HOOKDEF(VOID, WINAPI, GetStartupInfoW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Out_ LPSTARTUPINFOW lpStartupInfo
 ) {
-	VOID ret = 0; (void)ret;
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
 	Old_GetStartupInfoW(lpStartupInfo);
 	LOQ_void("process", "");
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:System Information Functions
-HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD ProcessorFeature
-) {
-	BOOL ret;
-	ret = Old_IsProcessorFeaturePresent(ProcessorFeature);
-	LOQ_bool("process", "i", "ProcessorFeature", ProcessorFeature);
-	return ret;
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, Sleep, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwMilliseconds
 ) {
-	VOID ret = 0; (void)ret;
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
 	Old_Sleep(dwMilliseconds);
 	LOQ_void("process", "i", "Milliseconds", dwMilliseconds);
 }

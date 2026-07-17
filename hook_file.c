@@ -2006,20 +2006,6 @@ HOOKDEF(BOOL, WINAPI, ReadFile, // 呼出規約は WINAPI 仮定(socket/native/C
 	return ret;
 }
 
-// -> hook_file.c に追加 | category="filesystem" | winapi:Error Handling
-// REVIEW: 引数 PcValue: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
-// REVIEW: 引数 BaseOfImage: 型 PVOID* はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
-HOOKDEF(PVOID, WINAPI, RtlPcToFileHeader, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PVOID PcValue,
-	_Out_ PVOID* BaseOfImage
-) {
-	PVOID ret;
-	ret = Old_RtlPcToFileHeader(PcValue, BaseOfImage);
-	LOQ_nonnull("filesystem", "");
-	return ret;
-}
-
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 // REVIEW: 引数 lpNewFilePointer: 出力スカラの ENSURE_ 型を要確認(PLARGE_INTEGER)
 HOOKDEF(BOOL, WINAPI, SetFilePointerEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)

@@ -185,7 +185,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 ) {
-	void ret = 0; (void)ret;
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
 	Old_DeleteCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "");
 }
@@ -196,7 +196,7 @@ HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(so
 HOOKDEF(void, WINAPI, EnterCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 ) {
-	void ret = 0; (void)ret;
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
 	Old_EnterCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "");
 }
@@ -227,23 +227,12 @@ HOOKDEF(BOOL, WINAPI, InitializeCriticalSectionEx, // 呼出規約は WINAPI 仮
 }
 
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-// REVIEW: 引数 ListHead: 型 PSLIST_HEADER はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
-HOOKDEF(void, WINAPI, InitializeSListHead, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ PSLIST_HEADER ListHead
-) {
-	void ret = 0; (void)ret;
-	Old_InitializeSListHead(ListHead);
-	LOQ_void("sync", "");
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 // REVIEW: 引数 lpCriticalSection: 型 LPCRITICAL_SECTION はログ指定子を自動決定できず(構造体等)。手動検討
 // REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
 HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 ) {
-	void ret = 0; (void)ret;
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "");
 }
