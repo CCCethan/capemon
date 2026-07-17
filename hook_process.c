@@ -1550,16 +1550,6 @@ HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_void("process", "i", "UExitCode", uExitCode);
 }
 
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, FreeEnvironmentStringsW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPWSTR lpszEnvironmentBlock
-) {
-	BOOL ret;
-	ret = Old_FreeEnvironmentStringsW(lpszEnvironmentBlock);
-	LOQ_bool("process", "u", "SzEnvironmentBlock", lpszEnvironmentBlock);
-	return ret;
-}
-
 // -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
 HOOKDEF(BOOL, WINAPI, FreeLibrary, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HMODULE hModule
@@ -1581,50 +1571,6 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW, // 呼出規約は WINAPI 仮定(sock
 	ret = Old_GetModuleFileNameW(hModule, lpFilename, nSize);
 	LOQ_nonzero("process", "pFi", "Module", hModule, "Filename", lpFilename, "Size", nSize);
 	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
-HOOKDEF(BOOL, WINAPI, GetModuleHandleExW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwFlags,
-	_In_opt_ LPCWSTR lpModuleName,
-	_Out_ HMODULE* phModule
-) {
-	BOOL ret;
-	ret = Old_GetModuleHandleExW(dwFlags, lpModuleName, phModule);
-	LOQ_bool("process", "iFp", "Flags", dwFlags, "ModuleName", lpModuleName, "HModule", phModule);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
-HOOKDEF(HMODULE, WINAPI, GetModuleHandleW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCWSTR lpModuleName
-) {
-	HMODULE ret;
-	ret = Old_GetModuleHandleW(lpModuleName);
-	LOQ_nonnull("process", "F", "ModuleName", lpModuleName);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
-HOOKDEF(FARPROC, WINAPI, GetProcAddress, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HMODULE hModule,
-	_In_ LPCSTR lpProcName
-) {
-	FARPROC ret;
-	ret = Old_GetProcAddress(hModule, lpProcName);
-	LOQ_nonnull("process", "ps", "Module", hModule, "ProcName", lpProcName);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-// REVIEW: 引数 lpStartupInfo: 型 LPSTARTUPINFOW はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
-HOOKDEF(VOID, WINAPI, GetStartupInfoW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPSTARTUPINFOW lpStartupInfo
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_GetStartupInfoW(lpStartupInfo);
-	LOQ_void("process", "");
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Processes
