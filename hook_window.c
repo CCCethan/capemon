@@ -525,16 +525,3 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
-
-/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
-HOOKDEF(BOOL, WINAPI, PathFileExistsA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR pszPath
-) {
-	BOOL ret;
-	ret = Old_PathFileExistsA(pszPath);
-	LOQ_bool("windows", "f", "SzPath", pszPath);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker END <<< */
-
