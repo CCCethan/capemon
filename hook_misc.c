@@ -2007,3 +2007,31 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 		"OutputBuffer", OutputBufferLength, OutputBuffer);
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
+HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwExceptionCode,
+	_In_ DWORD dwExceptionFlags,
+	_In_ DWORD nNumberOfArguments,
+	_In_ const ULONG_PTR* lpArguments
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
+	LOQ_void("misc", "iiii", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 戻り型 BSTR の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 psz: 型 const OLECHAR* はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ const OLECHAR* psz
+) {
+	BSTR ret;
+	ret = Old_SysAllocString(psz);
+	LOQ_nonzero("misc", "");
+	return ret;
+}
+/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker END <<< */
+
