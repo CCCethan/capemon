@@ -818,23 +818,17 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker BEGIN <<< */
-HOOK(ole32, CoInitializeEx),
-HOOK(ole32, CoInitializeSecurity),
-HOOK(ole32, CoSetProxyBlanket),
-HOOK(ole32, CoUninitialize),
+/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker BEGIN <<< */
 HOOK(kernel32, ExitProcess),
 HOOK(kernel32, FreeLibrary),
 HOOK(kernel32, GetModuleFileNameW),
+HOOK(kernel32, GetWindowsDirectoryA),
+HOOK(shlwapi, PathCombineA),
+HOOK(shlwapi, PathFileExistsA),
 HOOK(kernel32, RaiseException),
-HOOK(oleaut32, SafeArrayGetElement),
-HOOK(oleaut32, SafeArrayGetLBound),
-HOOK(oleaut32, SafeArrayGetUBound),
 HOOK(kernel32, Sleep),
-HOOK(oleaut32, SysAllocString),
 HOOK(kernel32, TerminateProcess),
-HOOK(oleaut32, VariantClear),
-/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker END <<< */
 };
 
 hook_t native_hooks[] = {
