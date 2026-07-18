@@ -1080,3 +1080,51 @@ HOOKDEF(HRESULT, WINAPI, MkParseDisplayNameEx,
 	LOQ_hresult("network", "u", "Name", szName);
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_205_virtualbox_network_resource_checker BEGIN <<< */
+// -> hook_network.c に追加 | category="network" | winapi:Windows Networking (WNet)
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, WNetCloseEnum, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hEnum
+) {
+	DWORD ret;
+	ret = Old_WNetCloseEnum(hEnum);
+	LOQ_nonzero("network", "p", "Enum", hEnum);
+	return ret;
+}
+
+// -> hook_network.c に追加 | category="network" | winapi:Windows Networking (WNet)
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpcCount: 型 LPDWORD はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 lpBuffer: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+// REVIEW: 引数 lpBufferSize: 型 LPDWORD はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(DWORD, WINAPI, WNetEnumResourceW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hEnum,
+	_Inout_ LPDWORD lpcCount,
+	_Out_ LPVOID lpBuffer,
+	_Inout_ LPDWORD lpBufferSize
+) {
+	DWORD ret;
+	ret = Old_WNetEnumResourceW(hEnum, lpcCount, lpBuffer, lpBufferSize);
+	LOQ_nonzero("network", "p", "Enum", hEnum);
+	return ret;
+}
+
+// -> hook_network.c に追加 | category="network" | winapi:Windows Networking (WNet)
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpNetResource: 型 LPNETRESOURCE はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(DWORD, WINAPI, WNetOpenEnumW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwScope,
+	_In_ DWORD dwType,
+	_In_ DWORD dwUsage,
+	_In_ LPNETRESOURCE lpNetResource,
+	_Out_ LPHANDLE lphEnum
+) {
+	DWORD ret;
+	ENSURE_HANDLE(lphEnum);
+	ret = Old_WNetOpenEnumW(dwScope, dwType, dwUsage, lpNetResource, lphEnum);
+	LOQ_nonzero("network", "iiip", "Scope", dwScope, "Type", dwType, "Usage", dwUsage, "HEnum", *lphEnum);
+	return ret;
+}
+/* >>> AUTOHOOK_pa_alk_205_virtualbox_network_resource_checker END <<< */
+
