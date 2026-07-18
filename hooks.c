@@ -818,15 +818,15 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_131_printer_count_checker BEGIN <<< */
-HOOK(winspool, EnumPrintersW),
+/* >>> AUTOHOOK_pa_alk_132_printer_presence_checker BEGIN <<< */
+HOOK(winspool, EnumPrintersA),
 HOOK(kernel32, ExitProcess),
 HOOK(kernel32, FreeLibrary),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernel32, RaiseException),
 HOOK(kernel32, Sleep),
 HOOK(kernel32, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_131_printer_count_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_132_printer_presence_checker END <<< */
 };
 
 hook_t native_hooks[] = {
