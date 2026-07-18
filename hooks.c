@@ -818,14 +818,17 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_207_virtualbox_registry_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker BEGIN <<< */
 HOOK(kernel32, ExitProcess),
 HOOK(kernel32, FreeLibrary),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernel32, RaiseException),
 HOOK(kernel32, Sleep),
 HOOK(kernel32, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_207_virtualbox_registry_checker END <<< */
+HOOK(mpr, WNetCloseEnum),
+HOOK(mpr, WNetEnumResourceW),
+HOOK(mpr, WNetOpenEnumW),
+/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker END <<< */
 };
 
 hook_t native_hooks[] = {

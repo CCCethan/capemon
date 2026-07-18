@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_207_virtualbox_registry_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker BEGIN <<< */
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
@@ -3955,6 +3955,22 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
 );
+HOOKDEF(DWORD, WINAPI, WNetCloseEnum,
+	_In_ HANDLE hEnum
+);
+HOOKDEF(DWORD, WINAPI, WNetEnumResourceW,
+	_In_ HANDLE hEnum,
+	_Inout_ LPDWORD lpcCount,
+	_Out_ LPVOID lpBuffer,
+	_Inout_ LPDWORD lpBufferSize
+);
+HOOKDEF(DWORD, WINAPI, WNetOpenEnumW,
+	_In_ DWORD dwScope,
+	_In_ DWORD dwType,
+	_In_ DWORD dwUsage,
+	_In_ LPNETRESOURCE lpNetResource,
+	_Out_ LPHANDLE lphEnum
+);
 
-/* >>> AUTOHOOK_pa_alk_207_virtualbox_registry_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker END <<< */
 
