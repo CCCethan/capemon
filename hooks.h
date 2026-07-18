@@ -3963,7 +3963,7 @@ HOOKDEF(HRESULT, WINAPI, SHGetDesktopFolder,
 HOOKDEF(HRESULT, WINAPI, SHGetSpecialFolderLocation,
 	_In_ HWND hwndOwner,
 	_In_ int nFolder,
-	_Out_ PIDLIST_ABSOLUTE* ppidl
+	_Out_ PVOID* ppidl
 );
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
