@@ -531,7 +531,7 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 // REVIEW: 引数 ppshf: 型 IShellFolder** はログ指定子を自動決定できず(構造体等)。手動検討
 // REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
 HOOKDEF(HRESULT, WINAPI, SHGetDesktopFolder, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ IShellFolder** ppshf
+	_Out_ PVOID** ppshf
 ) {
 	HRESULT ret;
 	ret = Old_SHGetDesktopFolder(ppshf);

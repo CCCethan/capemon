@@ -3958,7 +3958,7 @@ HOOKDEF(void, WINAPI, RaiseException,
 	_In_ const ULONG_PTR* lpArguments
 );
 HOOKDEF(HRESULT, WINAPI, SHGetDesktopFolder,
-	_Out_ IShellFolder** ppshf
+	_Out_ PVOID** ppshf
 );
 HOOKDEF(HRESULT, WINAPI, SHGetSpecialFolderLocation,
 	_In_ HWND hwndOwner,
