@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker BEGIN <<< */
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
@@ -3942,20 +3942,14 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
 );
+HOOKDEF(HMODULE, WINAPI, LoadLibraryW,
+	_In_ LPCWSTR lpFileName
+);
 HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD dwExceptionCode,
 	_In_ DWORD dwExceptionFlags,
 	_In_ DWORD nNumberOfArguments,
 	_In_ const ULONG_PTR* lpArguments
-);
-HOOKDEF(LONG, WINAPI, RegGetValueA,
-	_In_ HKEY hkey,
-	_In_opt_ LPCSTR lpSubKey,
-	_In_opt_ LPCSTR lpValue,
-	_In_opt_ DWORD dwFlags,
-	_Out_opt_ LPDWORD pdwType,
-	_Out_opt_ PVOID pvData,
-	_Inout_opt_ LPDWORD pcbData
 );
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
@@ -3965,5 +3959,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker END <<< */
 

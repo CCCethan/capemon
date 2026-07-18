@@ -700,26 +700,3 @@ HOOKDEF(LONG, WINAPI, RegNotifyChangeKeyValue,
 
 	return ret;
 }
-
-/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker BEGIN <<< */
-// -> hook_reg.c に追加 | category="registry" | winapi:Registry
-// REVIEW: 戻り型 LONG の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 pdwType: 型 LPDWORD はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 引数 pvData: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
-// REVIEW: 引数 pcbData: 型 LPDWORD はログ指定子を自動決定できず(構造体等)。手動検討
-HOOKDEF(LONG, WINAPI, RegGetValueA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HKEY hkey,
-	_In_opt_ LPCSTR lpSubKey,
-	_In_opt_ LPCSTR lpValue,
-	_In_opt_ DWORD dwFlags,
-	_Out_opt_ LPDWORD pdwType,
-	_Out_opt_ PVOID pvData,
-	_Inout_opt_ LPDWORD pcbData
-) {
-	LONG ret;
-	ret = Old_RegGetValueA(hkey, lpSubKey, lpValue, dwFlags, pdwType, pvData, pcbData);
-	LOQ_nonzero("registry", "pssi", "Key", hkey, "SubKey", lpSubKey, "Value", lpValue, "Flags", dwFlags);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker END <<< */
-
