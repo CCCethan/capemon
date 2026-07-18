@@ -71,3 +71,71 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	LOQ_hresult("com", "uu", "NetworkResource", strNetworkResource, "User", strUser);
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_177_thermal_zone_checker BEGIN <<< */
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pvReserved: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
+HOOKDEF(HRESULT, WINAPI, CoInitializeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPVOID pvReserved,
+	_In_ DWORD dwCoInit
+) {
+	HRESULT ret;
+	ret = Old_CoInitializeEx(pvReserved, dwCoInit);
+	LOQ_hresult("com", "i", "CoInit", dwCoInit);
+	return ret;
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pSecDesc: 型 PSECURITY_DESCRIPTOR はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 asAuthSvc: 型 SOLE_AUTHENTICATION_SERVICE* はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 pReserved1: 型 void* はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 pAuthList: 型 void* はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 pReserved3: 型 void* はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ PSECURITY_DESCRIPTOR pSecDesc,
+	_In_ LONG cAuthSvc,
+	_In_opt_ SOLE_AUTHENTICATION_SERVICE* asAuthSvc,
+	_In_opt_ void* pReserved1,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ void* pAuthList,
+	_In_ DWORD dwCapabilities,
+	_In_opt_ void* pReserved3
+) {
+	HRESULT ret;
+	ret = Old_CoInitializeSecurity(pSecDesc, cAuthSvc, asAuthSvc, pReserved1, dwAuthnLevel, dwImpLevel, pAuthList, dwCapabilities, pReserved3);
+	LOQ_hresult("com", "iiii", "CAuthSvc", cAuthSvc, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "Capabilities", dwCapabilities);
+	return ret;
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pProxy: 型 IUnknown* はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 pServerPrincName: 型 OLECHAR* はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 pAuthInfo: 型 RPC_AUTH_IDENTITY_HANDLE はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ IUnknown* pProxy,
+	_In_ DWORD dwAuthnSvc,
+	_In_ DWORD dwAuthzSvc,
+	_In_opt_ OLECHAR* pServerPrincName,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ RPC_AUTH_IDENTITY_HANDLE pAuthInfo,
+	_In_ DWORD dwCapabilities
+) {
+	HRESULT ret;
+	ret = Old_CoSetProxyBlanket(pProxy, dwAuthnSvc, dwAuthzSvc, pServerPrincName, dwAuthnLevel, dwImpLevel, pAuthInfo, dwCapabilities);
+	LOQ_hresult("com", "iiiii", "AuthnSvc", dwAuthnSvc, "AuthzSvc", dwAuthzSvc, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "Capabilities", dwCapabilities);
+	return ret;
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(void, WINAPI, CoUninitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_CoUninitialize();
+	LOQ_void("com", "");
+}
+/* >>> AUTOHOOK_pa_alk_177_thermal_zone_checker END <<< */
+

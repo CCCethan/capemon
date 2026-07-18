@@ -1926,34 +1926,3 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 
 	return ret;
 }
-
-/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker BEGIN <<< */
-// -> hook_file.c に追加 | category="filesystem" | winapi:Time
-// REVIEW: 引数 lpFileTime: 型 const FILETIME* はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 引数 lpLocalFileTime: 型 LPFILETIME はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
-HOOKDEF(BOOL, WINAPI, FileTimeToLocalFileTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const FILETIME* lpFileTime,
-	_Out_ LPFILETIME lpLocalFileTime
-) {
-	BOOL ret;
-	ret = Old_FileTimeToLocalFileTime(lpFileTime, lpLocalFileTime);
-	LOQ_bool("filesystem", "");
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Time
-// REVIEW: 引数 lpFileTime: 型 const FILETIME* はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 引数 lpSystemTime: 型 LPSYSTEMTIME はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
-HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const FILETIME* lpFileTime,
-	_Out_ LPSYSTEMTIME lpSystemTime
-) {
-	BOOL ret;
-	ret = Old_FileTimeToSystemTime(lpFileTime, lpSystemTime);
-	LOQ_bool("filesystem", "");
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker END <<< */
-
