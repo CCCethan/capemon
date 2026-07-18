@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_129_power_capabilities_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_130_printer_config_checker BEGIN <<< */
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
@@ -3941,9 +3941,6 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
-);
-HOOKDEF(BOOLEAN, WINAPI, GetPwrCapabilities,
-	_Out_ PSYSTEM_POWER_CAPABILITIES lpSystemPowerCapabilities
 );
 HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD dwExceptionCode,
@@ -3959,5 +3956,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_129_power_capabilities_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_130_printer_config_checker END <<< */
 

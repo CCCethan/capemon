@@ -2008,19 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_129_power_capabilities_checker BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Power Management
-// REVIEW: 引数 lpSystemPowerCapabilities: 型 PSYSTEM_POWER_CAPABILITIES はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
-HOOKDEF(BOOLEAN, WINAPI, GetPwrCapabilities, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ PSYSTEM_POWER_CAPABILITIES lpSystemPowerCapabilities
-) {
-	BOOLEAN ret;
-	ret = Old_GetPwrCapabilities(lpSystemPowerCapabilities);
-	LOQ_bool("misc", "");
-	return ret;
-}
-
+/* >>> AUTOHOOK_pa_alk_130_printer_config_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
 HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwExceptionCode,
@@ -2032,5 +2020,5 @@ HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/na
 	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
 	LOQ_void("misc", "iiii", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
 }
-/* >>> AUTOHOOK_pa_alk_129_power_capabilities_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_130_printer_config_checker END <<< */
 
