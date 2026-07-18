@@ -3930,35 +3930,46 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker BEGIN <<< */
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
+HOOKDEF(DWORD, WINAPI, ExpandEnvironmentStringsA,
+	_In_ LPCSTR lpSrc,
+	_Out_opt_ LPSTR lpDst,
+	_In_ DWORD nSize
+);
 HOOKDEF(BOOL, WINAPI, FreeLibrary,
 	_In_ HMODULE hModule
+);
+HOOKDEF(DWORD, WINAPI, GetFileAttributesA,
+	_In_ LPCSTR lpFileName
 );
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
 );
-HOOKDEF(UINT, WINAPI, GetWindowsDirectoryA,
-	_Out_ LPSTR lpBuffer,
-	_In_ UINT uSize
+HOOKDEF(BOOL, WINAPI, IsWow64Process,
+	_In_ HANDLE hProcess,
+	_Out_ PBOOL Wow64Process
 );
 HOOKDEF(LPSTR, WINAPI, PathCombineA,
 	_Out_ LPSTR pszPathOut,
 	_In_opt_ LPCSTR pszPathIn,
 	_In_ LPCSTR pszMore
 );
-HOOKDEF(BOOL, WINAPI, PathFileExistsA,
-	_In_ LPCSTR pszPath
-);
 HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD dwExceptionCode,
 	_In_ DWORD dwExceptionFlags,
 	_In_ DWORD nNumberOfArguments,
 	_In_ const ULONG_PTR* lpArguments
+);
+HOOKDEF(BOOL, WINAPI, SHGetSpecialFolderPathA,
+	HWND hwndOwner,
+	_Out_ LPSTR lpszPath,
+	_In_ int csidl,
+	_In_ BOOL fCreate
 );
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
@@ -3968,5 +3979,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker END <<< */
 

@@ -818,17 +818,19 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker BEGIN <<< */
 HOOK(kernel32, ExitProcess),
+HOOK(kernel32, ExpandEnvironmentStringsA),
 HOOK(kernel32, FreeLibrary),
+HOOK(kernel32, GetFileAttributesA),
 HOOK(kernel32, GetModuleFileNameW),
-HOOK(kernel32, GetWindowsDirectoryA),
+HOOK(kernel32, IsWow64Process),
 HOOK(shlwapi, PathCombineA),
-HOOK(shlwapi, PathFileExistsA),
 HOOK(kernel32, RaiseException),
+HOOK(shell32, SHGetSpecialFolderPathA),
 HOOK(kernel32, Sleep),
 HOOK(kernel32, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker END <<< */
 };
 
 hook_t native_hooks[] = {
