@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_184_user_input_activity_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_188_vbox_registry_key_checker BEGIN <<< */
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
@@ -3956,5 +3956,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_184_user_input_activity_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_188_vbox_registry_key_checker END <<< */
 
