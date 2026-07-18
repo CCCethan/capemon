@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_173_system_uptime_checker_01 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_174_system_uptime_checker_02 BEGIN <<< */
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
@@ -3956,5 +3956,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_173_system_uptime_checker_01 END <<< */
+/* >>> AUTOHOOK_pa_alk_174_system_uptime_checker_02 END <<< */
 
