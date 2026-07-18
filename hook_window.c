@@ -525,3 +525,72 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Hooks
+// REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 hhk: 型 HHOOK はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 wParam: 型 WPARAM はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 引数 lParam: 型 LPARAM はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(LRESULT, WINAPI, CallNextHookEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ HHOOK hhk,
+	_In_ int nCode,
+	_In_ WPARAM wParam,
+	_In_ LPARAM lParam
+) {
+	LRESULT ret;
+	ret = Old_CallNextHookEx(hhk, nCode, wParam, lParam);
+	LOQ_nonzero("windows", "i", "Code", nCode);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
+// REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpmsg: 型 const MSG* はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(LRESULT, WINAPI, DispatchMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const MSG* lpmsg
+) {
+	LRESULT ret;
+	ret = Old_DispatchMessageW(lpmsg);
+	LOQ_nonzero("windows", "");
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
+// REVIEW: 引数 lpMsg: 型 LPMSG はログ指定子を自動決定できず(構造体等)。手動検討
+HOOKDEF(BOOL, WINAPI, PeekMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPMSG lpMsg,
+	_In_opt_ HWND hWnd,
+	_In_ UINT wMsgFilterMin,
+	_In_ UINT wMsgFilterMax,
+	_In_ UINT wRemoveMsg
+) {
+	BOOL ret;
+	ret = Old_PeekMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
+	LOQ_bool("windows", "piii", "Wnd", hWnd, "WMsgFilterMin", wMsgFilterMin, "WMsgFilterMax", wMsgFilterMax, "WRemoveMsg", wRemoveMsg);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
+HOOKDEF(VOID, WINAPI, PostQuitMessage, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ int nExitCode
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_PostQuitMessage(nExitCode);
+	LOQ_void("windows", "i", "ExitCode", nExitCode);
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Keyboard Input
+// REVIEW: 引数 lpMsg: 型 const MSG* はログ指定子を自動決定できず(構造体等)。手動検討
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
+HOOKDEF(BOOL, WINAPI, TranslateMessage, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const MSG* lpMsg
+) {
+	BOOL ret;
+	ret = Old_TranslateMessage(lpMsg);
+	LOQ_bool("windows", "");
+	return ret;
+}
+/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker END <<< */
+

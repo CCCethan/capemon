@@ -818,14 +818,20 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker BEGIN <<< */
+HOOK(user32, CallNextHookEx),
+HOOK(user32, DispatchMessageW),
 HOOK(kernel32, ExitProcess),
 HOOK(kernel32, FreeLibrary),
 HOOK(kernel32, GetModuleFileNameW),
+HOOK(user32, MsgWaitForMultipleObjects),
+HOOK(user32, PeekMessageW),
+HOOK(user32, PostQuitMessage),
 HOOK(kernel32, RaiseException),
 HOOK(kernel32, Sleep),
 HOOK(kernel32, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker END <<< */
+HOOK(user32, TranslateMessage),
+/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker END <<< */
 };
 
 hook_t native_hooks[] = {
