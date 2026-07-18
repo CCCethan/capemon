@@ -71,25 +71,3 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	LOQ_hresult("com", "uu", "NetworkResource", strNetworkResource, "User", strUser);
 	return ret;
 }
-
-/* >>> AUTOHOOK_pa_alk_132_printer_presence_checker BEGIN <<< */
-// -> hook_com.c に追加 | category="com" | winapi:Print Spooler
-// REVIEW: 引数 pPrinterEnum: 型 LPBYTE はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 引数 pcbNeeded: 型 LPDWORD はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 引数 pcReturned: 型 LPDWORD はログ指定子を自動決定できず(構造体等)。手動検討
-HOOKDEF(BOOL, WINAPI, EnumPrintersA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD Flags,
-	_In_ LPSTR Name,
-	_In_ DWORD Level,
-	_Out_ LPBYTE pPrinterEnum,
-	_In_ DWORD cbBuf,
-	_Out_ LPDWORD pcbNeeded,
-	_Out_ LPDWORD pcReturned
-) {
-	BOOL ret;
-	ret = Old_EnumPrintersA(Flags, Name, Level, pPrinterEnum, cbBuf, pcbNeeded, pcReturned);
-	LOQ_bool("com", "isii", "Flags", Flags, "Name", Name, "Level", Level, "Buf", cbBuf);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_132_printer_presence_checker END <<< */
-
