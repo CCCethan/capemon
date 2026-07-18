@@ -818,14 +818,17 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_174_system_uptime_checker_02 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker BEGIN <<< */
 HOOK(kernel32, ExitProcess),
+HOOK(kernel32, FileTimeToLocalFileTime),
+HOOK(kernel32, FileTimeToSystemTime),
 HOOK(kernel32, FreeLibrary),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernel32, RaiseException),
+HOOK(shell32, SHGetFolderPathA),
 HOOK(kernel32, Sleep),
 HOOK(kernel32, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_174_system_uptime_checker_02 END <<< */
+/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker END <<< */
 };
 
 hook_t native_hooks[] = {
