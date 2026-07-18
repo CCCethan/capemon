@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_167_smbios_table_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_172_system_uptime_checker BEGIN <<< */
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
@@ -3941,12 +3941,6 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
-);
-HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
-	_In_ DWORD FirmwareTableProviderSignature,
-	_In_ DWORD FirmwareTableID,
-	_Out_ PVOID pFirmwareTableBuffer,
-	_In_ DWORD BufferSize
 );
 HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD dwExceptionCode,
@@ -3962,5 +3956,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_167_smbios_table_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_172_system_uptime_checker END <<< */
 
