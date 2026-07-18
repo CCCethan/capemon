@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_122_pci_device_id_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_127_physical_memory_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
 HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwExceptionCode,
@@ -2033,5 +2033,5 @@ HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_nonzero("misc", "");
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_122_pci_device_id_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_127_physical_memory_checker END <<< */
 

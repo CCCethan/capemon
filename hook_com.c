@@ -72,7 +72,7 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_122_pci_device_id_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_127_physical_memory_checker BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:COM
 // REVIEW: 引数 pvReserved: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
 HOOKDEF(HRESULT, WINAPI, CoInitializeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -137,17 +137,5 @@ HOOKDEF(void, WINAPI, CoUninitialize, // 呼出規約は WINAPI 仮定(socket/na
 	Old_CoUninitialize();
 	LOQ_void("com", "");
 }
-
-// -> hook_com.c に追加 | category="com" | winapi:Conversion and Manipulation
-// REVIEW: 引数 pvarg: 型 VARIANTARG* はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
-HOOKDEF(HRESULT, WINAPI, VariantClear, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ VARIANTARG* pvarg
-) {
-	HRESULT ret;
-	ret = Old_VariantClear(pvarg);
-	LOQ_hresult("com", "");
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_122_pci_device_id_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_127_physical_memory_checker END <<< */
 

@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_122_pci_device_id_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_127_physical_memory_checker BEGIN <<< */
 HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
 	_In_opt_ LPVOID pvReserved,
 	_In_ DWORD dwCoInit
@@ -3986,9 +3986,6 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
 );
-HOOKDEF(HRESULT, WINAPI, VariantClear,
-	_Inout_ VARIANTARG* pvarg
-);
 
-/* >>> AUTOHOOK_pa_alk_122_pci_device_id_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_127_physical_memory_checker END <<< */
 

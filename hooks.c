@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_122_pci_device_id_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_127_physical_memory_checker BEGIN <<< */
 HOOK(ole32, CoInitializeEx),
 HOOK(ole32, CoInitializeSecurity),
 HOOK(ole32, CoSetProxyBlanket),
@@ -830,8 +830,7 @@ HOOK(kernel32, RaiseException),
 HOOK(kernel32, Sleep),
 HOOK(oleaut32, SysAllocString),
 HOOK(kernel32, TerminateProcess),
-HOOK(oleaut32, VariantClear),
-/* >>> AUTOHOOK_pa_alk_122_pci_device_id_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_127_physical_memory_checker END <<< */
 };
 
 hook_t native_hooks[] = {
