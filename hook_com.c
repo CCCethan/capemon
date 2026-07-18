@@ -71,39 +71,3 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	LOQ_hresult("com", "uu", "NetworkResource", strNetworkResource, "User", strUser);
 	return ret;
 }
-
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker BEGIN <<< */
-// -> hook_com.c に追加 | category="com" | winapi:COM
-// REVIEW: 引数 pvReserved: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
-// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
-HOOKDEF(HRESULT, WINAPI, CoInitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPVOID pvReserved
-) {
-	HRESULT ret;
-	ret = Old_CoInitialize(pvReserved);
-	LOQ_hresult("com", "");
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:COM
-// REVIEW: 引数 pv: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
-// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
-HOOKDEF(void, WINAPI, CoTaskMemFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPVOID pv
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_CoTaskMemFree(pv);
-	LOQ_void("com", "");
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:COM
-// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
-HOOKDEF(void, WINAPI, CoUninitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_CoUninitialize();
-	LOQ_void("com", "");
-}
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker END <<< */
-

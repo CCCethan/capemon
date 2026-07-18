@@ -818,19 +818,16 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker BEGIN <<< */
-HOOK(ole32, CoInitialize),
-HOOK(ole32, CoTaskMemFree),
-HOOK(ole32, CoUninitialize),
+/* >>> AUTOHOOK_pa_alk_155_shell_history_checker BEGIN <<< */
 HOOK(kernel32, ExitProcess),
 HOOK(kernel32, FreeLibrary),
+HOOK(kernel32, GetEnvironmentVariableA),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernel32, RaiseException),
-HOOK(shell32, SHGetDesktopFolder),
-HOOK(shell32, SHGetSpecialFolderLocation),
+HOOK(kernel32, SetEndOfFile),
 HOOK(kernel32, Sleep),
 HOOK(kernel32, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_155_shell_history_checker END <<< */
 };
 
 hook_t native_hooks[] = {

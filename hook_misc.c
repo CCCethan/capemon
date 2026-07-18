@@ -2008,7 +2008,20 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_155_shell_history_checker BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCSTR lpName,
+	_Out_opt_ LPSTR lpBuffer,
+	_In_ DWORD nSize
+) {
+	DWORD ret;
+	ret = Old_GetEnvironmentVariableA(lpName, lpBuffer, nSize);
+	LOQ_nonzero("misc", "ssi", "Name", lpName, "Buffer", lpBuffer, "Size", nSize);
+	return ret;
+}
+
 // -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
 HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwExceptionCode,
@@ -2020,5 +2033,5 @@ HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/na
 	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
 	LOQ_void("misc", "iiii", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
 }
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_155_shell_history_checker END <<< */
 

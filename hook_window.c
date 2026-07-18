@@ -525,31 +525,3 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
-
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
-// REVIEW: 引数 ppshf: 型 IShellFolder** はログ指定子を自動決定できず(構造体等)。手動検討
-// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
-HOOKDEF(HRESULT, WINAPI, SHGetDesktopFolder, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ PVOID** ppshf
-) {
-	HRESULT ret;
-	ret = Old_SHGetDesktopFolder(ppshf);
-	LOQ_hresult("windows", "");
-	return ret;
-}
-
-// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
-// REVIEW: 引数 ppidl: 型 PIDLIST_ABSOLUTE* はログ指定子を自動決定できず(構造体等)。手動検討
-HOOKDEF(HRESULT, WINAPI, SHGetSpecialFolderLocation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HWND hwndOwner,
-	_In_ int nFolder,
-	_Out_ PVOID* ppidl
-) {
-	HRESULT ret;
-	ret = Old_SHGetSpecialFolderLocation(hwndOwner, nFolder, ppidl);
-	LOQ_hresult("windows", "pi", "WndOwner", hwndOwner, "Folder", nFolder);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker END <<< */
-
