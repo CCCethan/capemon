@@ -72,7 +72,7 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_101_memory_array_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_103_memory_instance_checker BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:COM
 // REVIEW: 引数 pvReserved: 生バッファ(void*)。長さ引数とペアで S/b 指定を手動検討
 HOOKDEF(HRESULT, WINAPI, CoInitializeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -137,5 +137,5 @@ HOOKDEF(void, WINAPI, CoUninitialize, // 呼出規約は WINAPI 仮定(socket/na
 	Old_CoUninitialize();
 	LOQ_void("com", "");
 }
-/* >>> AUTOHOOK_pa_alk_101_memory_array_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_103_memory_instance_checker END <<< */
 

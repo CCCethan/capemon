@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_101_memory_array_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_103_memory_instance_checker BEGIN <<< */
 HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
 	_In_opt_ LPVOID pvReserved,
 	_In_ DWORD dwCoInit
@@ -3987,5 +3987,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_101_memory_array_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_103_memory_instance_checker END <<< */
 
