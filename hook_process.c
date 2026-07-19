@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_235_wmi_system_model_checker BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1573,16 +1573,6 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW, // 呼出規約は WINAPI 仮定(sock
 	return ret;
 }
 
-// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
-HOOKDEF(HMODULE, WINAPI, LoadLibraryW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpFileName
-) {
-	HMODULE ret;
-	ret = Old_LoadLibraryW(lpFileName);
-	LOQ_nonnull("process", "F", "FileName", lpFileName);
-	return ret;
-}
-
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, Sleep, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwMilliseconds
@@ -1602,5 +1592,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess, // 呼出規約は WINAPI 仮定(socket/
 	LOQ_bool("process", "pi", "Process", hProcess, "UExitCode", uExitCode);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_235_wmi_system_model_checker END <<< */
 

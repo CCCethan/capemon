@@ -818,15 +818,20 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_235_wmi_system_model_checker BEGIN <<< */
+HOOK(ole32, CoInitializeEx),
+HOOK(ole32, CoInitializeSecurity),
+HOOK(ole32, CoSetProxyBlanket),
+HOOK(ole32, CoUninitialize),
 HOOK(kernel32, ExitProcess),
 HOOK(kernel32, FreeLibrary),
 HOOK(kernel32, GetModuleFileNameW),
-HOOK(kernel32, LoadLibraryW),
 HOOK(kernel32, RaiseException),
 HOOK(kernel32, Sleep),
+HOOK(oleaut32, SysAllocString),
 HOOK(kernel32, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker END <<< */
+HOOK(oleaut32, VariantClear),
+/* >>> AUTOHOOK_pa_alk_235_wmi_system_model_checker END <<< */
 };
 
 hook_t native_hooks[] = {
