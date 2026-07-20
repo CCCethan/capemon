@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_235_wmi_system_model_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_084_hypervisor_checker BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1573,6 +1573,16 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW, // 呼出規約は WINAPI 仮定(sock
 	return ret;
 }
 
+// -> hook_process.c に追加 | category="process" | winapi:System Information Functions
+HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD ProcessorFeature
+) {
+	BOOL ret;
+	ret = Old_IsProcessorFeaturePresent(ProcessorFeature);
+	LOQ_bool("process", "i", "ProcessorFeature", ProcessorFeature);
+	return ret;
+}
+
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, Sleep, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwMilliseconds
@@ -1592,5 +1602,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess, // 呼出規約は WINAPI 仮定(socket/
 	LOQ_bool("process", "pi", "Process", hProcess, "UExitCode", uExitCode);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_235_wmi_system_model_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_084_hypervisor_checker END <<< */
 
