@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_084_hypervisor_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_057_drive_size_checker BEGIN <<< */
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
@@ -3944,6 +3944,17 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 );
 HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent,
 	_In_ DWORD ProcessorFeature
+);
+HOOKDEF(int, WINAPI, LCMapStringEx,
+	_In_opt_ LPCWSTR lpLocaleName,
+	_In_ DWORD dwMapFlags,
+	_In_ LPCWSTR lpSrcStr,
+	_In_ int cchSrc,
+	_Out_opt_ LPWSTR lpDestStr,
+	_In_ int cchDest,
+	_In_opt_ LPNLSVERSIONINFO lpVersionInformation,
+	_In_opt_ LPVOID lpReserved,
+	_In_opt_ LPARAM sortHandle
 );
 HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD dwExceptionCode,
@@ -3959,5 +3970,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_084_hypervisor_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_057_drive_size_checker END <<< */
 
