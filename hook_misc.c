@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_006_bios_version_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
 // REVIEW: 引数 lpLocaleEnumProcEx: 型 LOCALE_ENUMPROCEX を i(int32)で仮記録。要確認
 // REVIEW: 引数 lParam: 型 LPARAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -2130,17 +2130,5 @@ HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/na
 	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
 	LOQ_void("misc", "iiiI", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
 }
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
-// REVIEW: 戻り型 BSTR の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 psz: 型 const OLECHAR* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ const OLECHAR* psz
-) {
-	BSTR ret;
-	ret = Old_SysAllocString(psz);
-	LOQ_nonzero("misc", "p", "Sz", psz);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_006_bios_version_checker END <<< */
 
