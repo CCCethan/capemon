@@ -3930,7 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_057_drive_size_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
+	void
+);
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
@@ -3959,5 +3962,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_057_drive_size_checker END <<< */
 
