@@ -1926,16 +1926,3 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 
 	return ret;
 }
-
-/* >>> AUTOHOOK_pa_alk_006_bios_version_checker BEGIN <<< */
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	BOOL ret;
-	ret = Old_AreFileApisANSI();
-	LOQ_bool("filesystem", "");
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_006_bios_version_checker END <<< */
-
