@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_061_error_report_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3939,6 +3939,17 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 );
 HOOKDEF(BOOL, WINAPI, FreeLibrary,
 	_In_ HMODULE hModule
+);
+HOOKDEF(BOOL, WINAPI, GetFileAttributesExW,
+	_In_ LPCWSTR lpFileName,
+	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	_Out_ LPVOID lpFileInformation
+);
+HOOKDEF(BOOL, WINAPI, GetFileInformationByHandleEx,
+	_In_ HANDLE hFile,
+	_In_ FILE_INFO_BY_HANDLE_CLASS FileInformationClass,
+	_Out_ LPVOID lpFileInformation,
+	_In_ DWORD dwBufferSize
 );
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
@@ -3962,5 +3973,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_061_error_report_checker END <<< */
 
