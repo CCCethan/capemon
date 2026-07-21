@@ -3930,18 +3930,9 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_132_printer_presence_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_133_process_based_env_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
-);
-HOOKDEF(BOOL, WINAPI, EnumPrintersA,
-	_In_ DWORD Flags,
-	_In_ LPSTR Name,
-	_In_ DWORD Level,
-	_Out_ LPBYTE pPrinterEnum,
-	_In_ DWORD cbBuf,
-	_Out_ LPDWORD pcbNeeded,
-	_Out_ LPDWORD pcReturned
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
@@ -3971,5 +3962,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_132_printer_presence_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_133_process_based_env_checker END <<< */
 
