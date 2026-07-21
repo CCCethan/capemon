@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1602,5 +1602,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess, // 呼出規約は WINAPI 仮定(socket/
 	LOQ_bool("process", "pi", "Process", hProcess, "UExitCode", uExitCode);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker END <<< */
 
