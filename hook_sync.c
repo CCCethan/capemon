@@ -177,3 +177,18 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker BEGIN <<< */
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, WaitForSingleObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hHandle,
+	_In_ DWORD dwMilliseconds
+) {
+	DWORD ret;
+	ret = Old_WaitForSingleObject(hHandle, dwMilliseconds);
+	LOQ_nonzero("sync", "pi", "Handle", hHandle, "Milliseconds", dwMilliseconds);
+	return ret;
+}
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker END <<< */
+

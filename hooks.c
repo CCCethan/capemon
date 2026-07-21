@@ -818,19 +818,31 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CompareStringEx),
 HOOK(kernelbase, CompareStringEx),
+HOOK(kernel32, CreatePipe),
+HOOK(kernelbase, CreatePipe),
+HOOK(kernel32, DuplicateHandle),
+HOOK(kernelbase, DuplicateHandle),
 HOOK(kernel32, EnumSystemLocalesEx),
 HOOK(kernelbase, EnumSystemLocalesEx),
 HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
+HOOK(kernel32, FormatMessageA),
+HOOK(kernelbase, FormatMessageA),
 HOOK(kernel32, FreeLibrary),
 HOOK(kernelbase, FreeLibrary),
 HOOK(kernel32, GetDateFormatEx),
 HOOK(kernelbase, GetDateFormatEx),
+HOOK(kernel32, GetExitCodeProcess),
+HOOK(kernelbase, GetExitCodeProcess),
+HOOK(kernel32, GetFileAttributesExW),
+HOOK(kernelbase, GetFileAttributesExW),
+HOOK(kernel32, GetFileInformationByHandleEx),
+HOOK(kernelbase, GetFileInformationByHandleEx),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernelbase, GetModuleFileNameW),
 HOOK(kernel32, GetTimeFormatEx),
@@ -851,7 +863,9 @@ HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker END <<< */
+HOOK(kernel32, WaitForSingleObject),
+HOOK(kernelbase, WaitForSingleObject),
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker END <<< */
 };
 
 hook_t native_hooks[] = {
