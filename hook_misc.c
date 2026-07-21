@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
 HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwExceptionCode,
@@ -2020,5 +2020,5 @@ HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/na
 	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
 	LOQ_void("misc", "iiiI", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
 }
-/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker END <<< */
 
