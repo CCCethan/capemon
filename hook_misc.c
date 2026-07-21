@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_006_bios_version_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
 // REVIEW: 引数 lpLocaleEnumProcEx: 型 LOCALE_ENUMPROCEX を i(int32)で仮記録。要確認
 // REVIEW: 引数 lParam: 型 LPARAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -2130,5 +2130,5 @@ HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/na
 	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
 	LOQ_void("misc", "iiiI", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
 }
-/* >>> AUTOHOOK_pa_alk_006_bios_version_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker END <<< */
 

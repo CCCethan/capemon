@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_006_bios_version_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CompareStringEx),
@@ -851,7 +851,7 @@ HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_006_bios_version_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker END <<< */
 };
 
 hook_t native_hooks[] = {
