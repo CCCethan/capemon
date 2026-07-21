@@ -525,3 +525,16 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Windows
+HOOKDEF(HWND, WINAPI, GetForegroundWindow, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	HWND ret;
+	ret = Old_GetForegroundWindow();
+	LOQ_nonnull("windows", "");
+	return ret;
+}
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker END <<< */
+
