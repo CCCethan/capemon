@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_034_cpu_info_checker_02 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3962,5 +3962,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01 END <<< */
+/* >>> AUTOHOOK_pa_alk_034_cpu_info_checker_02 END <<< */
 
