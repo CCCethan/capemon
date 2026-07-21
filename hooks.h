@@ -4229,42 +4229,6 @@ HOOKDEF(BOOL, WINAPI, ReadFile,
 	_Out_opt_ LPDWORD lpNumberOfBytesRead,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
-HOOKDEF(VOID, WINAPI, RtlCaptureContext,
-	_Out_ PCONTEXT ContextRecord
-);
-HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
-	_In_ ULONGLONG ControlPc,
-	_Out_ PULONGLONG ImageBase,
-	_Out_ PULONGLONG TargetGp
-);
-HOOKDEF(PVOID, WINAPI, RtlPcToFileHeader,
-	_In_ PVOID PcValue,
-	_Out_ PVOID* BaseOfImage
-);
-HOOKDEF(void, WINAPI, RtlUnwind,
-	_In_opt_ PVOID TargetFrame,
-	_In_opt_ PVOID TargetIp,
-	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
-	_In_ PVOID ReturnValue
-);
-HOOKDEF(void, WINAPI, RtlUnwindEx,
-	_In_opt_ PVOID TargetFrame,
-	_In_opt_ PVOID TargetIp,
-	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
-	_In_ PVOID ReturnValue,
-	_In_ PCONTEXT OriginalContext,
-	_In_opt_ PUNWIND_HISTORY_TABLE HistoryTable
-);
-HOOKDEF(PEXCEPTION_ROUTINE, WINAPI, RtlVirtualUnwind,
-	_In_  HandlerType,
-	_In_  ImageBase,
-	_In_  ControlPC,
-	_In_  FunctionEntry,
-	_Inout_  ContextRecord,
-	_Out_  InFunction,
-	_Out_  EstablisherFrame,
-	_Inout_opt_  ContextPointers
-);
 HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
 	_In_opt_ LPCWSTR lpValue

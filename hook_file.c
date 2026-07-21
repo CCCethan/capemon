@@ -2014,19 +2014,6 @@ HOOKDEF(BOOL, WINAPI, ReadFile, // 呼出規約は WINAPI 仮定(socket/native/C
 	return ret;
 }
 
-// -> hook_file.c に追加 | category="filesystem" | winapi:Error Handling
-// REVIEW: 引数 PcValue: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-// REVIEW: 引数 BaseOfImage: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(PVOID, WINAPI, RtlPcToFileHeader, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PVOID PcValue,
-	_Out_ PVOID* BaseOfImage
-) {
-	PVOID ret;
-	ret = Old_RtlPcToFileHeader(PcValue, BaseOfImage);
-	LOQ_nonnull("filesystem", "pp", "PcValue", PcValue, "BaseOfImage", BaseOfImage);
-	return ret;
-}
-
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, SetFilePointerEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hFile,
