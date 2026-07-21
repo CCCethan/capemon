@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3962,5 +3962,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis END <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker END <<< */
 

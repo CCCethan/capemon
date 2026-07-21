@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, ExitProcess),
@@ -835,7 +835,7 @@ HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis END <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker END <<< */
 };
 
 hook_t native_hooks[] = {
