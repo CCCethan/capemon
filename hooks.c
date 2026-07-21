@@ -818,38 +818,27 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
-HOOK(kernel32, CreatePipe),
-HOOK(kernelbase, CreatePipe),
-HOOK(kernel32, DuplicateHandle),
-HOOK(kernelbase, DuplicateHandle),
 HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
-HOOK(kernel32, FormatMessageA),
-HOOK(kernelbase, FormatMessageA),
 HOOK(kernel32, FreeLibrary),
 HOOK(kernelbase, FreeLibrary),
-HOOK(kernel32, GetExitCodeProcess),
-HOOK(kernelbase, GetExitCodeProcess),
-HOOK(kernel32, GetFileAttributesExW),
-HOOK(kernelbase, GetFileAttributesExW),
-HOOK(kernel32, GetFileInformationByHandleEx),
-HOOK(kernelbase, GetFileInformationByHandleEx),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernelbase, GetModuleFileNameW),
 HOOK(kernel32, IsProcessorFeaturePresent),
 HOOK(kernelbase, IsProcessorFeaturePresent),
+HOOK(kernel32, PathFileExistsA),
+HOOK(kernelbase, PathFileExistsA),
+HOOK(shlwapi, PathFileExistsA),
 HOOK(kernel32, RaiseException),
 HOOK(kernelbase, RaiseException),
 HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-HOOK(kernel32, WaitForSingleObject),
-HOOK(kernelbase, WaitForSingleObject),
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker END <<< */
 };
 
 hook_t native_hooks[] = {
