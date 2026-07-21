@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_057_drive_size_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3962,5 +3962,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_057_drive_size_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis END <<< */
 
