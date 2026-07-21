@@ -3930,10 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_133_process_based_env_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
-	void
-);
+/* >>> AUTOHOOK_pa_alk_140_processor_id_checker BEGIN <<< */
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
@@ -3962,5 +3959,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_133_process_based_env_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_140_processor_id_checker END <<< */
 
