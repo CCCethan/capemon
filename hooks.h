@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_131_printer_count_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3971,14 +3971,10 @@ HOOKDEF(void, WINAPI, DeleteCriticalSection,
 HOOKDEF(void, WINAPI, EnterCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 );
-HOOKDEF(BOOL, WINAPI, EnumPrintersW,
-	_In_ DWORD Flags,
-	_In_ LPWSTR Name,
-	_In_ DWORD Level,
-	_Out_ LPBYTE pPrinterEnum,
-	_In_ DWORD cbBuf,
-	_Out_ LPDWORD pcbNeeded,
-	_Out_ LPDWORD pcReturned
+HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables,
+	_In_ DWORD FirmwareTableProviderSignature,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
 );
 HOOKDEF(BOOL, WINAPI, EnumSystemLocalesEx,
 	_In_ LOCALE_ENUMPROCEX lpLocaleEnumProcEx,
@@ -4101,6 +4097,12 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW,
 	_In_ LPCWSTR lpSrcStr,
 	_In_ int cchSrc,
 	_Out_ LPWORD lpCharType
+);
+HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
+	_In_ DWORD FirmwareTableProviderSignature,
+	_In_ DWORD FirmwareTableID,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
 );
 HOOKDEF(int, WINAPI, GetTimeFormatEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4229,6 +4231,42 @@ HOOKDEF(BOOL, WINAPI, ReadFile,
 	_Out_opt_ LPDWORD lpNumberOfBytesRead,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
+HOOKDEF(VOID, WINAPI, RtlCaptureContext,
+	_Out_ PCONTEXT ContextRecord
+);
+HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
+	_In_ ULONGLONG ControlPc,
+	_Out_ PULONGLONG ImageBase,
+	_Out_ PULONGLONG TargetGp
+);
+HOOKDEF(PVOID, WINAPI, RtlPcToFileHeader,
+	_In_ PVOID PcValue,
+	_Out_ PVOID* BaseOfImage
+);
+HOOKDEF(void, WINAPI, RtlUnwind,
+	_In_opt_ PVOID TargetFrame,
+	_In_opt_ PVOID TargetIp,
+	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
+	_In_ PVOID ReturnValue
+);
+HOOKDEF(void, WINAPI, RtlUnwindEx,
+	_In_opt_ PVOID TargetFrame,
+	_In_opt_ PVOID TargetIp,
+	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
+	_In_ PVOID ReturnValue,
+	_In_ PCONTEXT OriginalContext,
+	_In_opt_ PUNWIND_HISTORY_TABLE HistoryTable
+);
+HOOKDEF(PEXCEPTION_ROUTINE, WINAPI, RtlVirtualUnwind,
+	_In_  HandlerType,
+	_In_  ImageBase,
+	_In_  ControlPC,
+	_In_  FunctionEntry,
+	_Inout_  ContextRecord,
+	_Out_  InFunction,
+	_Out_  EstablisherFrame,
+	_Inout_opt_  ContextPointers
+);
 HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
 	_In_opt_ LPCWSTR lpValue
@@ -4280,5 +4318,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_131_printer_count_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 
