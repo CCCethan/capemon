@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_127_physical_memory_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_129_power_capabilities_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3944,6 +3944,9 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
+);
+HOOKDEF(BOOLEAN, WINAPI, GetPwrCapabilities,
+	_Out_ PSYSTEM_POWER_CAPABILITIES lpSystemPowerCapabilities
 );
 HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent,
 	_In_ DWORD ProcessorFeature
@@ -3962,5 +3965,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_127_physical_memory_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_129_power_capabilities_checker END <<< */
 
