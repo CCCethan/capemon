@@ -3930,9 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_209_virtualbox_window_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_212_vm_service_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
+);
+HOOKDEF(BOOL, WINAPI, CloseServiceHandle,
+	_In_ SC_HANDLE hSCObject
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
@@ -3962,5 +3965,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_209_virtualbox_window_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_212_vm_service_checker END <<< */
 
