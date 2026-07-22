@@ -3930,7 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_177_thermal_zone_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_183_user_inactivity_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
+	void
+);
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
@@ -3959,5 +3962,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_177_thermal_zone_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_183_user_inactivity_checker END <<< */
 
