@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_101_memory_array_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3962,5 +3962,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_101_memory_array_checker END <<< */
 
