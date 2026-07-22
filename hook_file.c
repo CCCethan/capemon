@@ -1927,7 +1927,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_051_disk_enum_registry_checker BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1937,34 +1937,5 @@ HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/n
 	LOQ_bool("filesystem", "");
 	return ret;
 }
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 引数 fInfoLevelId: 型 GET_FILEEX_INFO_LEVELS を i(int32)で仮記録。要確認
-// REVIEW: 引数 lpFileInformation: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, GetFileAttributesExW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpFileName,
-	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
-	_Out_ LPVOID lpFileInformation
-) {
-	BOOL ret;
-	ret = Old_GetFileAttributesExW(lpFileName, fInfoLevelId, lpFileInformation);
-	LOQ_bool("filesystem", "Fip", "FileName", lpFileName, "InfoLevelId", fInfoLevelId, "FileInformation", lpFileInformation);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 引数 FileInformationClass: 型 FILE_INFO_BY_HANDLE_CLASS を i(int32)で仮記録。要確認
-// REVIEW: 引数 lpFileInformation: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, GetFileInformationByHandleEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFile,
-	_In_ FILE_INFO_BY_HANDLE_CLASS FileInformationClass,
-	_Out_ LPVOID lpFileInformation,
-	_In_ DWORD dwBufferSize
-) {
-	BOOL ret;
-	ret = Old_GetFileInformationByHandleEx(hFile, FileInformationClass, lpFileInformation, dwBufferSize);
-	LOQ_bool("filesystem", "pipi", "File", hFile, "FileInformationClass", FileInformationClass, "FileInformation", lpFileInformation, "BufferSize", dwBufferSize);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_051_disk_enum_registry_checker END <<< */
 
