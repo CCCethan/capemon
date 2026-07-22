@@ -818,7 +818,9 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_140_processor_id_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker BEGIN <<< */
+HOOK(kernel32, AreFileApisANSI),
+HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
 HOOK(kernel32, FreeLibrary),
@@ -833,7 +835,7 @@ HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_140_processor_id_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker END <<< */
 };
 
 hook_t native_hooks[] = {
