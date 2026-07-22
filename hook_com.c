@@ -71,3 +71,16 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	LOQ_hresult("com", "uu", "NetworkResource", strNetworkResource, "User", strUser);
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker BEGIN <<< */
+// -> hook_com.c に追加 | category="com" | winapi:Device Context
+HOOKDEF(HDC, WINAPI, CreateCompatibleDC, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HDC hdc
+) {
+	HDC ret;
+	ret = Old_CreateCompatibleDC(hdc);
+	LOQ_nonnull("com", "p", "Dc", hdc);
+	return ret;
+}
+/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker END <<< */
+
