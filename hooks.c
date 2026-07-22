@@ -818,15 +818,11 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_177_thermal_zone_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
-HOOK(kernel32, FileTimeToLocalFileTime),
-HOOK(kernelbase, FileTimeToLocalFileTime),
-HOOK(kernel32, FileTimeToSystemTime),
-HOOK(kernelbase, FileTimeToSystemTime),
 HOOK(kernel32, FreeLibrary),
 HOOK(kernelbase, FreeLibrary),
 HOOK(kernel32, GetModuleFileNameW),
@@ -835,14 +831,11 @@ HOOK(kernel32, IsProcessorFeaturePresent),
 HOOK(kernelbase, IsProcessorFeaturePresent),
 HOOK(kernel32, RaiseException),
 HOOK(kernelbase, RaiseException),
-HOOK(kernel32, SHGetFolderPathA),
-HOOK(kernelbase, SHGetFolderPathA),
-HOOK(shell32, SHGetFolderPathA),
 HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_177_thermal_zone_checker END <<< */
 };
 
 hook_t native_hooks[] = {

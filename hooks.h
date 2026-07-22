@@ -3930,20 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_177_thermal_zone_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
-);
-HOOKDEF(BOOL, WINAPI, FileTimeToLocalFileTime,
-	_In_ const FILETIME* lpFileTime,
-	_Out_ LPFILETIME lpLocalFileTime
-);
-HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime,
-	_In_ const FILETIME* lpFileTime,
-	_Out_ LPSYSTEMTIME lpSystemTime
 );
 HOOKDEF(BOOL, WINAPI, FreeLibrary,
 	_In_ HMODULE hModule
@@ -3962,13 +3954,6 @@ HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD nNumberOfArguments,
 	_In_ const ULONG_PTR* lpArguments
 );
-HOOKDEF(HRESULT, WINAPI, SHGetFolderPathA,
-	_In_ HWND hwndOwner,
-	_In_ int nFolder,
-	_In_ HANDLE hToken,
-	_In_ DWORD dwFlags,
-	_Out_ LPSTR pszPath
-);
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
 );
@@ -3977,5 +3962,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_177_thermal_zone_checker END <<< */
 
