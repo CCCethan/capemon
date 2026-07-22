@@ -1927,7 +1927,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_155_shell_history_checker BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1937,5 +1937,15 @@ HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/n
 	LOQ_bool("filesystem", "");
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker END <<< */
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(BOOL, WINAPI, SetEndOfFile, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hFile
+) {
+	BOOL ret;
+	ret = Old_SetEndOfFile(hFile);
+	LOQ_bool("filesystem", "p", "File", hFile);
+	return ret;
+}
+/* >>> AUTOHOOK_pa_alk_155_shell_history_checker END <<< */
 

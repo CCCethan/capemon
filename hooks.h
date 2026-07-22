@@ -3930,42 +3930,20 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_155_shell_history_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
-);
-HOOKDEF(HRESULT, WINAPI, CoMarshalInterface,
-	_In_ LPSTREAM pStm,
-	_In_ REFIID riid,
-	_In_ LPUNKNOWN pUnk,
-	_In_ DWORD dwDestContext,
-	_In_opt_ LPVOID pvDestContext,
-	_In_ DWORD mshlflags
-);
-HOOKDEF(HRESULT, WINAPI, CoReleaseMarshalData,
-	_In_ LPSTREAM pStm
-);
-HOOKDEF(LPVOID, WINAPI, CoTaskMemAlloc,
-	_In_ SIZE_T cb
-);
-HOOKDEF(void, WINAPI, CoTaskMemFree,
-	_In_opt_ LPVOID pv
-);
-HOOKDEF(HRESULT, WINAPI, CoUnmarshalInterface,
-	_In_ LPSTREAM pStm,
-	_In_ REFIID riid,
-	_Out_ LPVOID* ppv
-);
-HOOKDEF(STDAPI, WINAPI, DllGetClassObject,
-	const CLSID &rclsid,
-	const IID &riid,
-	void** ppv
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
 HOOKDEF(BOOL, WINAPI, FreeLibrary,
 	_In_ HMODULE hModule
+);
+HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableA,
+	_In_opt_ LPCSTR lpName,
+	_Out_opt_ LPSTR lpBuffer,
+	_In_ DWORD nSize
 );
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
@@ -3981,25 +3959,16 @@ HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD nNumberOfArguments,
 	_In_ const ULONG_PTR* lpArguments
 );
-HOOKDEF(HRESULT, WINAPI, SHGetDesktopFolder,
-	_Out_ PVOID** ppshf
-);
-HOOKDEF(HRESULT, WINAPI, SHGetSpecialFolderLocation,
-	_In_ HWND hwndOwner,
-	_In_ int nFolder,
-	_Out_ PVOID* ppidl
+HOOKDEF(BOOL, WINAPI, SetEndOfFile,
+	_In_ HANDLE hFile
 );
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
-);
-HOOKDEF(HRESULT, WINAPI, StringFromIID,
-	_In_ REFIID rclsid,
-	_Out_ LPOLESTR* lplpsz
 );
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_155_shell_history_checker END <<< */
 
