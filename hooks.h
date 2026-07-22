@@ -3930,15 +3930,31 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker BEGIN <<< */
-HOOKDEF(LRESULT, WINAPI, CallNextHookEx,
-	_In_opt_ HHOOK hhk,
-	_In_ int nCode,
-	_In_ WPARAM wParam,
-	_In_ LPARAM lParam
+/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
+	void
 );
-HOOKDEF(LRESULT, WINAPI, DispatchMessageW,
-	_In_ const MSG* lpmsg
+HOOKDEF(HRESULT, WINAPI, CoMarshalInterface,
+	_In_ LPSTREAM pStm,
+	_In_ REFIID riid,
+	_In_ LPUNKNOWN pUnk,
+	_In_ DWORD dwDestContext,
+	_In_opt_ LPVOID pvDestContext,
+	_In_ DWORD mshlflags
+);
+HOOKDEF(HRESULT, WINAPI, CoReleaseMarshalData,
+	_In_ LPSTREAM pStm
+);
+HOOKDEF(LPVOID, WINAPI, CoTaskMemAlloc,
+	_In_ SIZE_T cb
+);
+HOOKDEF(void, WINAPI, CoTaskMemFree,
+	_In_opt_ LPVOID pv
+);
+HOOKDEF(HRESULT, WINAPI, CoUnmarshalInterface,
+	_In_ LPSTREAM pStm,
+	_In_ REFIID riid,
+	_Out_ LPVOID* ppv
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
@@ -3954,39 +3970,31 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent,
 	_In_ DWORD ProcessorFeature
 );
-HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects,
-	_In_ DWORD nCount,
-	_In_ const HANDLE* pHandles,
-	_In_ BOOL bWaitAll,
-	_In_ DWORD dwMilliseconds,
-	_In_ DWORD dwWakeMask
-);
-HOOKDEF(BOOL, WINAPI, PeekMessageW,
-	_Out_ LPMSG lpMsg,
-	_In_opt_ HWND hWnd,
-	_In_ UINT wMsgFilterMin,
-	_In_ UINT wMsgFilterMax,
-	_In_ UINT wRemoveMsg
-);
-HOOKDEF(VOID, WINAPI, PostQuitMessage,
-	_In_ int nExitCode
-);
 HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD dwExceptionCode,
 	_In_ DWORD dwExceptionFlags,
 	_In_ DWORD nNumberOfArguments,
 	_In_ const ULONG_PTR* lpArguments
 );
+HOOKDEF(HRESULT, WINAPI, SHGetDesktopFolder,
+	_Out_ PVOID** ppshf
+);
+HOOKDEF(HRESULT, WINAPI, SHGetSpecialFolderLocation,
+	_In_ HWND hwndOwner,
+	_In_ int nFolder,
+	_Out_ PVOID* ppidl
+);
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
+);
+HOOKDEF(HRESULT, WINAPI, StringFromIID,
+	_In_ REFIID rclsid,
+	_Out_ LPOLESTR* lplpsz
 );
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
 );
-HOOKDEF(BOOL, WINAPI, TranslateMessage,
-	_In_ const MSG* lpMsg
-);
 
-/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker END <<< */
 

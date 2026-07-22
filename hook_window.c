@@ -526,68 +526,27 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:Hooks
-// REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 hhk: 型 HHOOK は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 wParam: 型 WPARAM を i(int32)で仮記録。要確認
-// REVIEW: 引数 lParam: 型 LPARAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(LRESULT, WINAPI, CallNextHookEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ HHOOK hhk,
-	_In_ int nCode,
-	_In_ WPARAM wParam,
-	_In_ LPARAM lParam
+/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
+HOOKDEF(HRESULT, WINAPI, SHGetDesktopFolder, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ PVOID** ppshf
 ) {
-	LRESULT ret;
-	ret = Old_CallNextHookEx(hhk, nCode, wParam, lParam);
-	LOQ_nonzero("windows", "piip", "Hk", hhk, "Code", nCode, "WParam", wParam, "LParam", lParam);
+	HRESULT ret;
+	ret = Old_SHGetDesktopFolder(ppshf);
+	LOQ_hresult("windows", "P", "Pshf", ppshf);
 	return ret;
 }
 
-// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
-// REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpmsg: 型 const MSG* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(LRESULT, WINAPI, DispatchMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const MSG* lpmsg
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
+HOOKDEF(HRESULT, WINAPI, SHGetSpecialFolderLocation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hwndOwner,
+	_In_ int nFolder,
+	_Out_ PVOID* ppidl
 ) {
-	LRESULT ret;
-	ret = Old_DispatchMessageW(lpmsg);
-	LOQ_nonzero("windows", "p", "Msg", lpmsg);
+	HRESULT ret;
+	ret = Old_SHGetSpecialFolderLocation(hwndOwner, nFolder, ppidl);
+	LOQ_hresult("windows", "piP", "WndOwner", hwndOwner, "Folder", nFolder, "Pidl", ppidl);
 	return ret;
 }
-
-// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
-HOOKDEF(BOOL, WINAPI, PeekMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPMSG lpMsg,
-	_In_opt_ HWND hWnd,
-	_In_ UINT wMsgFilterMin,
-	_In_ UINT wMsgFilterMax,
-	_In_ UINT wRemoveMsg
-) {
-	BOOL ret;
-	ret = Old_PeekMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
-	LOQ_bool("windows", "Ppiii", "Msg", lpMsg, "Wnd", hWnd, "WMsgFilterMin", wMsgFilterMin, "WMsgFilterMax", wMsgFilterMax, "WRemoveMsg", wRemoveMsg);
-	return ret;
-}
-
-// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
-HOOKDEF(VOID, WINAPI, PostQuitMessage, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ int nExitCode
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_PostQuitMessage(nExitCode);
-	LOQ_void("windows", "i", "ExitCode", nExitCode);
-}
-
-// -> hook_window.c に追加 | category="windows" | winapi:Keyboard Input
-// REVIEW: 引数 lpMsg: 型 const MSG* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, TranslateMessage, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const MSG* lpMsg
-) {
-	BOOL ret;
-	ret = Old_TranslateMessage(lpMsg);
-	LOQ_bool("windows", "p", "Msg", lpMsg);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker END <<< */
 
