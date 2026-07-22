@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_200_virtualbox_device_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, ExitProcess),
@@ -831,11 +831,20 @@ HOOK(kernel32, IsProcessorFeaturePresent),
 HOOK(kernelbase, IsProcessorFeaturePresent),
 HOOK(kernel32, RaiseException),
 HOOK(kernelbase, RaiseException),
+HOOK(combase, SafeArrayGetElement),
+HOOK(ole32, SafeArrayGetElement),
+HOOK(oleaut32, SafeArrayGetElement),
+HOOK(combase, SafeArrayGetLBound),
+HOOK(ole32, SafeArrayGetLBound),
+HOOK(oleaut32, SafeArrayGetLBound),
+HOOK(combase, SafeArrayGetUBound),
+HOOK(ole32, SafeArrayGetUBound),
+HOOK(oleaut32, SafeArrayGetUBound),
 HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_200_virtualbox_device_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker END <<< */
 };
 
 hook_t native_hooks[] = {
