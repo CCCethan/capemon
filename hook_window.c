@@ -526,27 +526,19 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker BEGIN <<< */
 // -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
-HOOKDEF(HRESULT, WINAPI, SHGetDesktopFolder, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ PVOID** ppshf
-) {
-	HRESULT ret;
-	ret = Old_SHGetDesktopFolder(ppshf);
-	LOQ_hresult("windows", "P", "Pshf", ppshf);
-	return ret;
-}
-
-// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
-HOOKDEF(HRESULT, WINAPI, SHGetSpecialFolderLocation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+HOOKDEF(HRESULT, WINAPI, SHGetFolderPathA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HWND hwndOwner,
 	_In_ int nFolder,
-	_Out_ PVOID* ppidl
+	_In_ HANDLE hToken,
+	_In_ DWORD dwFlags,
+	_Out_ LPSTR pszPath
 ) {
 	HRESULT ret;
-	ret = Old_SHGetSpecialFolderLocation(hwndOwner, nFolder, ppidl);
-	LOQ_hresult("windows", "piP", "WndOwner", hwndOwner, "Folder", nFolder, "Pidl", ppidl);
+	ret = Old_SHGetFolderPathA(hwndOwner, nFolder, hToken, dwFlags, pszPath);
+	LOQ_hresult("windows", "pipif", "WndOwner", hwndOwner, "Folder", nFolder, "Token", hToken, "Flags", dwFlags, "SzPath", pszPath);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker END <<< */
 
