@@ -3930,9 +3930,36 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_129_power_capabilities_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
+);
+HOOKDEF(HRESULT, WINAPI, CoMarshalInterface,
+	_In_ LPSTREAM pStm,
+	_In_ REFIID riid,
+	_In_ LPUNKNOWN pUnk,
+	_In_ DWORD dwDestContext,
+	_In_opt_ LPVOID pvDestContext,
+	_In_ DWORD mshlflags
+);
+HOOKDEF(HRESULT, WINAPI, CoReleaseMarshalData,
+	_In_ LPSTREAM pStm
+);
+HOOKDEF(LPVOID, WINAPI, CoTaskMemAlloc,
+	_In_ SIZE_T cb
+);
+HOOKDEF(void, WINAPI, CoTaskMemFree,
+	_In_opt_ LPVOID pv
+);
+HOOKDEF(HRESULT, WINAPI, CoUnmarshalInterface,
+	_In_ LPSTREAM pStm,
+	_In_ REFIID riid,
+	_Out_ LPVOID* ppv
+);
+HOOKDEF(STDAPI, WINAPI, DllGetClassObject,
+	const CLSID &rclsid,
+	const IID &riid,
+	void** ppv
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
@@ -3945,9 +3972,6 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
 );
-HOOKDEF(BOOLEAN, WINAPI, GetPwrCapabilities,
-	_Out_ PSYSTEM_POWER_CAPABILITIES lpSystemPowerCapabilities
-);
 HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent,
 	_In_ DWORD ProcessorFeature
 );
@@ -3957,13 +3981,25 @@ HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD nNumberOfArguments,
 	_In_ const ULONG_PTR* lpArguments
 );
+HOOKDEF(HRESULT, WINAPI, SHGetDesktopFolder,
+	_Out_ PVOID** ppshf
+);
+HOOKDEF(HRESULT, WINAPI, SHGetSpecialFolderLocation,
+	_In_ HWND hwndOwner,
+	_In_ int nFolder,
+	_Out_ PVOID* ppidl
+);
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
+);
+HOOKDEF(HRESULT, WINAPI, StringFromIID,
+	_In_ REFIID rclsid,
+	_Out_ LPOLESTR* lplpsz
 );
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_129_power_capabilities_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker END <<< */
 
