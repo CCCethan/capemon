@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_155_shell_history_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_163_smbios_memory_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3939,11 +3939,6 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 );
 HOOKDEF(BOOL, WINAPI, FreeLibrary,
 	_In_ HMODULE hModule
-);
-HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableA,
-	_In_opt_ LPCSTR lpName,
-	_Out_opt_ LPSTR lpBuffer,
-	_In_ DWORD nSize
 );
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
@@ -3959,9 +3954,6 @@ HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD nNumberOfArguments,
 	_In_ const ULONG_PTR* lpArguments
 );
-HOOKDEF(BOOL, WINAPI, SetEndOfFile,
-	_In_ HANDLE hFile
-);
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
 );
@@ -3970,5 +3962,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_155_shell_history_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_163_smbios_memory_checker END <<< */
 
