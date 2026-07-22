@@ -1927,7 +1927,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1949,5 +1949,5 @@ HOOKDEF(LPSTR, WINAPI, PathCombineA, // 呼出規約は WINAPI 仮定(socket/nat
 	LOQ_nonnull("filesystem", "ffs", "SzPathOut", pszPathOut, "SzPathIn", pszPathIn, "SzMore", pszMore);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker END <<< */
 
