@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_204_virtualbox_mac_checker BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1584,17 +1584,6 @@ HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent, // 呼出規約は WINAPI 仮�
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, IsWow64Process, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hProcess,
-	_Out_ PBOOL Wow64Process
-) {
-	BOOL ret;
-	ret = Old_IsWow64Process(hProcess, Wow64Process);
-	LOQ_bool("process", "pI", "Process", hProcess, "Wow64Process", Wow64Process);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, Sleep, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwMilliseconds
 ) {
@@ -1613,5 +1602,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess, // 呼出規約は WINAPI 仮定(socket/
 	LOQ_bool("process", "pi", "Process", hProcess, "UExitCode", uExitCode);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_204_virtualbox_mac_checker END <<< */
 

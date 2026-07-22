@@ -818,34 +818,24 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_204_virtualbox_mac_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
-HOOK(kernel32, ExpandEnvironmentStringsA),
-HOOK(kernelbase, ExpandEnvironmentStringsA),
 HOOK(kernel32, FreeLibrary),
 HOOK(kernelbase, FreeLibrary),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernelbase, GetModuleFileNameW),
 HOOK(kernel32, IsProcessorFeaturePresent),
 HOOK(kernelbase, IsProcessorFeaturePresent),
-HOOK(kernel32, IsWow64Process),
-HOOK(kernelbase, IsWow64Process),
-HOOK(kernel32, PathCombineA),
-HOOK(kernelbase, PathCombineA),
-HOOK(shlwapi, PathCombineA),
 HOOK(kernel32, RaiseException),
 HOOK(kernelbase, RaiseException),
-HOOK(kernel32, SHGetSpecialFolderPathA),
-HOOK(kernelbase, SHGetSpecialFolderPathA),
-HOOK(shell32, SHGetSpecialFolderPathA),
 HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_204_virtualbox_mac_checker END <<< */
 };
 
 hook_t native_hooks[] = {
