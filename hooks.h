@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3945,29 +3945,26 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
 );
+HOOKDEF(UINT, WINAPI, GetWindowsDirectoryA,
+	_Out_ LPSTR lpBuffer,
+	_In_ UINT uSize
+);
 HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent,
 	_In_ DWORD ProcessorFeature
+);
+HOOKDEF(LPSTR, WINAPI, PathCombineA,
+	_Out_ LPSTR pszPathOut,
+	_In_opt_ LPCSTR pszPathIn,
+	_In_ LPCSTR pszMore
+);
+HOOKDEF(BOOL, WINAPI, PathFileExistsA,
+	_In_ LPCSTR pszPath
 );
 HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD dwExceptionCode,
 	_In_ DWORD dwExceptionFlags,
 	_In_ DWORD nNumberOfArguments,
 	_In_ const ULONG_PTR* lpArguments
-);
-HOOKDEF(HRESULT, WINAPI, SafeArrayGetElement,
-	_In_ SAFEARRAY* psa,
-	_In_ LONG* rgIndices,
-	_Out_ void* pv
-);
-HOOKDEF(HRESULT, WINAPI, SafeArrayGetLBound,
-	_In_ SAFEARRAY* psa,
-	_In_ UINT nDim,
-	_Out_ LONG* plLbound
-);
-HOOKDEF(HRESULT, WINAPI, SafeArrayGetUBound,
-	_In_ SAFEARRAY* psa,
-	_In_ UINT nDim,
-	_Out_ LONG* plUbound
 );
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
@@ -3977,5 +3974,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker END <<< */
 

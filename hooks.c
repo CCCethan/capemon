@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, ExitProcess),
@@ -827,24 +827,23 @@ HOOK(kernel32, FreeLibrary),
 HOOK(kernelbase, FreeLibrary),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernelbase, GetModuleFileNameW),
+HOOK(kernel32, GetWindowsDirectoryA),
+HOOK(kernelbase, GetWindowsDirectoryA),
 HOOK(kernel32, IsProcessorFeaturePresent),
 HOOK(kernelbase, IsProcessorFeaturePresent),
+HOOK(kernel32, PathCombineA),
+HOOK(kernelbase, PathCombineA),
+HOOK(shlwapi, PathCombineA),
+HOOK(kernel32, PathFileExistsA),
+HOOK(kernelbase, PathFileExistsA),
+HOOK(shlwapi, PathFileExistsA),
 HOOK(kernel32, RaiseException),
 HOOK(kernelbase, RaiseException),
-HOOK(combase, SafeArrayGetElement),
-HOOK(ole32, SafeArrayGetElement),
-HOOK(oleaut32, SafeArrayGetElement),
-HOOK(combase, SafeArrayGetLBound),
-HOOK(ole32, SafeArrayGetLBound),
-HOOK(oleaut32, SafeArrayGetLBound),
-HOOK(combase, SafeArrayGetUBound),
-HOOK(ole32, SafeArrayGetUBound),
-HOOK(oleaut32, SafeArrayGetUBound),
 HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker END <<< */
 };
 
 hook_t native_hooks[] = {
