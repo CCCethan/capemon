@@ -1120,7 +1120,19 @@ HOOKDEF(DWORD, WINAPI, WNetEnumResourceW, // 呼出規約は WINAPI 仮定(socke
 ) {
 	DWORD ret;
 	ret = Old_WNetEnumResourceW(hEnum, lpcCount, lpBuffer, lpBufferSize);
-	LOQ_nonzero("network", "pIpI", "Enum", hEnum, "CCount", lpcCount, "Buffer", lpBuffer, "BufferSize", lpBufferSize);
+	// 可読性改善(7.5・カウント駆動): 出力バッファは NETRESOURCEW 配列。件数=CCount(観測3, cap8)を
+	// ランタイム長ガードに使い、列挙された全資源名(\\... 共有フォルダ名等の検知対象)を先頭最大8件
+	// 'u' で可読化。deref はデフォルト capemon の WNetUseConnectionW と同一の既存イディオム
+	// (log.c の 'u' は __try 保護)。各 K は *lpcCount>K のときだけ読む。CCount>8 の超過分は非記録。
+	LOQ_nonzero("network", "pIpIuuuuuuuu", "Enum", hEnum, "CCount", lpcCount, "Buffer", lpBuffer, "BufferSize", lpBufferSize,
+		"RemoteName0", (lpBuffer && lpcCount && *lpcCount > 0) ? ((LPNETRESOURCEW)lpBuffer)[0].lpRemoteName : NULL,
+		"RemoteName1", (lpBuffer && lpcCount && *lpcCount > 1) ? ((LPNETRESOURCEW)lpBuffer)[1].lpRemoteName : NULL,
+		"RemoteName2", (lpBuffer && lpcCount && *lpcCount > 2) ? ((LPNETRESOURCEW)lpBuffer)[2].lpRemoteName : NULL,
+		"RemoteName3", (lpBuffer && lpcCount && *lpcCount > 3) ? ((LPNETRESOURCEW)lpBuffer)[3].lpRemoteName : NULL,
+		"RemoteName4", (lpBuffer && lpcCount && *lpcCount > 4) ? ((LPNETRESOURCEW)lpBuffer)[4].lpRemoteName : NULL,
+		"RemoteName5", (lpBuffer && lpcCount && *lpcCount > 5) ? ((LPNETRESOURCEW)lpBuffer)[5].lpRemoteName : NULL,
+		"RemoteName6", (lpBuffer && lpcCount && *lpcCount > 6) ? ((LPNETRESOURCEW)lpBuffer)[6].lpRemoteName : NULL,
+		"RemoteName7", (lpBuffer && lpcCount && *lpcCount > 7) ? ((LPNETRESOURCEW)lpBuffer)[7].lpRemoteName : NULL);
 	return ret;
 }
 
