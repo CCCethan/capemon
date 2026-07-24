@@ -3930,9 +3930,14 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
+);
+HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables,
+	_In_ DWORD FirmwareTableProviderSignature,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
@@ -3944,6 +3949,12 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
+);
+HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
+	_In_ DWORD FirmwareTableProviderSignature,
+	_In_ DWORD FirmwareTableID,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
 );
 HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent,
 	_In_ DWORD ProcessorFeature
@@ -3962,5 +3973,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 
