@@ -2019,7 +2019,8 @@ HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables, // 呼出規約は WINAPI 仮定
 ) {
 	UINT ret;
 	ret = Old_EnumSystemFirmwareTables(FirmwareTableProviderSignature, pFirmwareTableBuffer, BufferSize);
-	LOQ_nonzero("misc", "ipi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableBuffer", pFirmwareTableBuffer, "BufferSize", BufferSize);
+	// 可読性改善(7.5): 出力バッファ内容を 'b' で記録。長さ=min(ret=実書込byte数, BufferSize=容量)で過剰読み取り回避。
+	LOQ_nonzero("misc", "ibi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableBuffer", ((size_t)ret < (size_t)BufferSize ? (size_t)ret : (size_t)BufferSize), pFirmwareTableBuffer, "BufferSize", BufferSize);
 	return ret;
 }
 
@@ -2034,7 +2035,8 @@ HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable, // 呼出規約は WINAPI 仮定(s
 ) {
 	UINT ret;
 	ret = Old_GetSystemFirmwareTable(FirmwareTableProviderSignature, FirmwareTableID, pFirmwareTableBuffer, BufferSize);
-	LOQ_nonzero("misc", "iipi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableID", FirmwareTableID, "FirmwareTableBuffer", pFirmwareTableBuffer, "BufferSize", BufferSize);
+	// 可読性改善(7.5): 出力バッファ内容を 'b' で記録。長さ=min(ret=実書込byte数, BufferSize=容量)で過剰読み取り回避。
+	LOQ_nonzero("misc", "iibi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableID", FirmwareTableID, "FirmwareTableBuffer", ((size_t)ret < (size_t)BufferSize ? (size_t)ret : (size_t)BufferSize), pFirmwareTableBuffer, "BufferSize", BufferSize);
 	return ret;
 }
 
