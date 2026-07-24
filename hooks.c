@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_205_virtualbox_network_resource_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, ExitProcess),
@@ -911,7 +911,7 @@ HOOK(kernelbase, TerminateProcess),
 HOOK(mpr, WNetCloseEnum),
 HOOK(mpr, WNetEnumResourceW),
 HOOK(mpr, WNetOpenEnumW),
-/* >>> AUTOHOOK_pa_alk_205_virtualbox_network_resource_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker END <<< */
 };
 
 hook_t native_hooks[] = {

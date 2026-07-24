@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_205_virtualbox_network_resource_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4057,5 +4057,5 @@ HOOKDEF(DWORD, WINAPI, WNetOpenEnumW,
 	_Out_ LPHANDLE lphEnum
 );
 
-/* >>> AUTOHOOK_pa_alk_205_virtualbox_network_resource_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker END <<< */
 

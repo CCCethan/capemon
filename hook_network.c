@@ -1081,7 +1081,7 @@ HOOKDEF(HRESULT, WINAPI, MkParseDisplayNameEx,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_205_virtualbox_network_resource_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker BEGIN <<< */
 // -> hook_network.c に追加 | category="network" | winapi:Authentication
 // REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpRemoteName: 型 LPTSTR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -1120,20 +1120,7 @@ HOOKDEF(DWORD, WINAPI, WNetEnumResourceW, // 呼出規約は WINAPI 仮定(socke
 ) {
 	DWORD ret;
 	ret = Old_WNetEnumResourceW(hEnum, lpcCount, lpBuffer, lpBufferSize);
-	// 可読性改善(7.5): 出力バッファは NETRESOURCEW 配列。列挙された全資源名(\\... や
-	// "Microsoft Windows Network"/"Microsoft Terminal Services" 等の検知対象名)を先頭から最大8件
-	// 'u' で可読化する。deref はデフォルト capemon の WNetUseConnectionW と同一の既存イディオム
-	// (log.c の 'u' は __try 保護)。各インデックス K は *lpcCount>K のときだけ読む安全ガード付き
-	// (CCount を超える分は NULL=読み取らない)。CCount>8 の超過分は記録されない。
-	LOQ_nonzero("network", "pIpIuuuuuuuu", "Enum", hEnum, "CCount", lpcCount, "Buffer", lpBuffer, "BufferSize", lpBufferSize,
-		"RemoteName0", (lpBuffer && lpcCount && *lpcCount > 0) ? ((LPNETRESOURCEW)lpBuffer)[0].lpRemoteName : NULL,
-		"RemoteName1", (lpBuffer && lpcCount && *lpcCount > 1) ? ((LPNETRESOURCEW)lpBuffer)[1].lpRemoteName : NULL,
-		"RemoteName2", (lpBuffer && lpcCount && *lpcCount > 2) ? ((LPNETRESOURCEW)lpBuffer)[2].lpRemoteName : NULL,
-		"RemoteName3", (lpBuffer && lpcCount && *lpcCount > 3) ? ((LPNETRESOURCEW)lpBuffer)[3].lpRemoteName : NULL,
-		"RemoteName4", (lpBuffer && lpcCount && *lpcCount > 4) ? ((LPNETRESOURCEW)lpBuffer)[4].lpRemoteName : NULL,
-		"RemoteName5", (lpBuffer && lpcCount && *lpcCount > 5) ? ((LPNETRESOURCEW)lpBuffer)[5].lpRemoteName : NULL,
-		"RemoteName6", (lpBuffer && lpcCount && *lpcCount > 6) ? ((LPNETRESOURCEW)lpBuffer)[6].lpRemoteName : NULL,
-		"RemoteName7", (lpBuffer && lpcCount && *lpcCount > 7) ? ((LPNETRESOURCEW)lpBuffer)[7].lpRemoteName : NULL);
+	LOQ_nonzero("network", "pIpI", "Enum", hEnum, "CCount", lpcCount, "Buffer", lpBuffer, "BufferSize", lpBufferSize);
 	return ret;
 }
 
@@ -1152,5 +1139,5 @@ HOOKDEF(DWORD, WINAPI, WNetOpenEnumW, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_nonzero("network", "iiipP", "Scope", dwScope, "Type", dwType, "Usage", dwUsage, "NetResource", lpNetResource, "HEnum", lphEnum);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_205_virtualbox_network_resource_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker END <<< */
 
