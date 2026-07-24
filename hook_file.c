@@ -1927,8 +1927,9 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+// REVIEW: 記録できる引数を自動抽出できず(全て出力/バッファ/構造体)。手動でフォーマット記述が必要
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
 ) {
@@ -1937,5 +1938,5 @@ HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/n
 	LOQ_bool("filesystem", "");
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker END <<< */
 
