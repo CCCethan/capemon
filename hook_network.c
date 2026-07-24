@@ -1120,7 +1120,13 @@ HOOKDEF(DWORD, WINAPI, WNetEnumResourceW, // 呼出規約は WINAPI 仮定(socke
 ) {
 	DWORD ret;
 	ret = Old_WNetEnumResourceW(hEnum, lpcCount, lpBuffer, lpBufferSize);
-	LOQ_nonzero("network", "pIpI", "Enum", hEnum, "CCount", lpcCount, "Buffer", lpBuffer, "BufferSize", lpBufferSize);
+	// 可読性改善(7.5): 出力バッファは NETRESOURCEW 配列。先頭エントリの資源名(\\VBOXSVR\... 等の
+	// 検知対象名)を 'u' で可読化。deref はデフォルト capemon の WNetUseConnectionW と同一の既存イディオム
+	// (log.c の 'u' は __try 保護)。*lpcCount>0 のときだけ読む安全ガード付き。
+	LOQ_nonzero("network", "pIpIuuu", "Enum", hEnum, "CCount", lpcCount, "Buffer", lpBuffer, "BufferSize", lpBufferSize,
+		"RemoteName0", (lpBuffer && lpcCount && *lpcCount > 0) ? ((LPNETRESOURCEW)lpBuffer)[0].lpRemoteName : NULL,
+		"LocalName0",  (lpBuffer && lpcCount && *lpcCount > 0) ? ((LPNETRESOURCEW)lpBuffer)[0].lpLocalName  : NULL,
+		"Provider0",   (lpBuffer && lpcCount && *lpcCount > 0) ? ((LPNETRESOURCEW)lpBuffer)[0].lpProvider   : NULL);
 	return ret;
 }
 
