@@ -818,10 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_129_power_capabilities_checker BEGIN <<< */
-HOOK(powrprof, GetPwrCapabilities),
-HOOK(kernel32, AreFileApisANSI),
-HOOK(kernelbase, AreFileApisANSI),
+/* >>> AUTOHOOK_pa_alk_130_printer_config_checker BEGIN <<< */
 HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
 HOOK(kernel32, FreeLibrary),
@@ -836,7 +833,7 @@ HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_129_power_capabilities_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_130_printer_config_checker END <<< */
 };
 
 hook_t native_hooks[] = {
