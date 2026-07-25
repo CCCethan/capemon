@@ -3930,7 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
+	void
+);
 HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
 	_In_opt_ LPVOID pvReserved,
 	_In_ DWORD dwCoInit
@@ -3957,9 +3960,6 @@ HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
 	_In_ DWORD dwCapabilities
 );
 HOOKDEF(void, WINAPI, CoUninitialize,
-	void
-);
-HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
@@ -3990,5 +3990,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker END <<< */
 
