@@ -3930,12 +3930,9 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, GetFileInformationByHandleEx,
-	_In_ HANDLE hFile,
-	_In_ FILE_INFO_BY_HANDLE_CLASS FileInformationClass,
-	_Out_ LPVOID lpFileInformation,
-	_In_ DWORD dwBufferSize
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, PathFileExistsA,
+	_In_ LPCSTR pszPath
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
@@ -3968,5 +3965,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker END <<< */
 
