@@ -3930,36 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker BEGIN <<< */
-HOOKDEF(LRESULT, WINAPI, CallNextHookEx,
-	_In_opt_ HHOOK hhk,
-	_In_ int nCode,
-	_In_ WPARAM wParam,
-	_In_ LPARAM lParam
-);
-HOOKDEF(LRESULT, WINAPI, DispatchMessageW,
-	_In_ const MSG* lpmsg
-);
-HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects,
-	_In_ DWORD nCount,
-	_In_ const HANDLE* pHandles,
-	_In_ BOOL bWaitAll,
-	_In_ DWORD dwMilliseconds,
-	_In_ DWORD dwWakeMask
-);
-HOOKDEF(BOOL, WINAPI, PeekMessageW,
-	_Out_ LPMSG lpMsg,
-	_In_opt_ HWND hWnd,
-	_In_ UINT wMsgFilterMin,
-	_In_ UINT wMsgFilterMax,
-	_In_ UINT wRemoveMsg
-);
-HOOKDEF(VOID, WINAPI, PostQuitMessage,
-	_In_ int nExitCode
-);
-HOOKDEF(BOOL, WINAPI, TranslateMessage,
-	_In_ const MSG* lpMsg
-);
+/* >>> AUTOHOOK_pa_alk_110_mouse_movement_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3991,5 +3962,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_110_mouse_movement_checker END <<< */
 
