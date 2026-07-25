@@ -3930,10 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker BEGIN <<< */
-HOOKDEF(HWND, WINAPI, GetForegroundWindow,
-	void
-);
+/* >>> AUTOHOOK_pa_alk_084_hypervisor_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3965,5 +3962,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_084_hypervisor_checker END <<< */
 
