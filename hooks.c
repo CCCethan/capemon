@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_020_computer_system_manufacturer_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(combase, CoInitializeEx),
@@ -847,7 +847,7 @@ HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_020_computer_system_manufacturer_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker END <<< */
 };
 
 hook_t native_hooks[] = {
