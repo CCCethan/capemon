@@ -2019,7 +2019,8 @@ HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables, // 呼出規約は WINAPI 仮定
 ) {
 	UINT ret;
 	ret = Old_EnumSystemFirmwareTables(FirmwareTableProviderSignature, pFirmwareTableBuffer, BufferSize);
-	LOQ_nonzero("misc", "ipi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableBuffer", pFirmwareTableBuffer, "BufferSize", BufferSize);
+	// READABILITY[7.5]: ⑤出力バッファ。p→b で ACPI テーブルのバイト列を記録。長さ=書込長 min(戻り値, 容量)。NULL/サイズ0問い合わせは0バイトで安全
+	LOQ_nonzero("misc", "ibi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableBuffer", (size_t)(ret < BufferSize ? ret : BufferSize), pFirmwareTableBuffer, "BufferSize", BufferSize);
 	return ret;
 }
 
@@ -2034,7 +2035,8 @@ HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable, // 呼出規約は WINAPI 仮定(s
 ) {
 	UINT ret;
 	ret = Old_GetSystemFirmwareTable(FirmwareTableProviderSignature, FirmwareTableID, pFirmwareTableBuffer, BufferSize);
-	LOQ_nonzero("misc", "iipi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableID", FirmwareTableID, "FirmwareTableBuffer", pFirmwareTableBuffer, "BufferSize", BufferSize);
+	// READABILITY[7.5]: ⑤出力バッファ。p→b で ACPI テーブルのバイト列を記録。長さ=書込長 min(戻り値, 容量)。NULL/サイズ0問い合わせは0バイトで安全
+	LOQ_nonzero("misc", "iibi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableID", FirmwareTableID, "FirmwareTableBuffer", (size_t)(ret < BufferSize ? ret : BufferSize), pFirmwareTableBuffer, "BufferSize", BufferSize);
 	return ret;
 }
 
