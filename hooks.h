@@ -3930,7 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker BEGIN <<< */
+HOOKDEF(HWND, WINAPI, GetForegroundWindow,
+	void
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3962,5 +3965,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker END <<< */
 
