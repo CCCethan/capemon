@@ -525,21 +525,3 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
-
-/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
-HOOKDEF(BOOL, WINAPI, SHGetSpecialFolderPathA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	HWND hwndOwner,
-	_Out_ LPSTR lpszPath,
-	_In_ int csidl,
-	_In_ BOOL fCreate
-) {
-	BOOL ret;
-	ret = Old_SHGetSpecialFolderPathA(hwndOwner, lpszPath, csidl, fCreate);
-	LOQ_bool("windows", "pfii", "WndOwner", hwndOwner, "SzPath", lpszPath, "Csidl", csidl, "Create", fCreate);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker END <<< */
-
