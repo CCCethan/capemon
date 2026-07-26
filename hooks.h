@@ -3930,7 +3930,22 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_174_system_uptime_checker_02 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, FileTimeToLocalFileTime,
+	_In_ const FILETIME* lpFileTime,
+	_Out_ LPFILETIME lpLocalFileTime
+);
+HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime,
+	_In_ const FILETIME* lpFileTime,
+	_Out_ LPSYSTEMTIME lpSystemTime
+);
+HOOKDEF(HRESULT, WINAPI, SHGetFolderPathA,
+	_In_ HWND hwndOwner,
+	_In_ int nFolder,
+	_In_ HANDLE hToken,
+	_In_ DWORD dwFlags,
+	_Out_ LPSTR pszPath
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3962,5 +3977,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_174_system_uptime_checker_02 END <<< */
+/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker END <<< */
 
