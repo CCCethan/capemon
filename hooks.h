@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_209_virtualbox_window_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3948,85 +3948,6 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent,
 	_In_ DWORD ProcessorFeature
 );
-HOOKDEF(DWORD, WINAPI, NPAddConnection,
-	_In_ LPNETRESOURCE lpNetResource,
-	_In_ LPTSTR lpPassword,
-	_In_ LPTSTR lpUserName
-);
-HOOKDEF(DWORD, WINAPI, NPAddConnection3,
-	_In_ HWND hwndOwner,
-	_In_ LPNETRESOURCE lpNetResource,
-	_In_ LPTSTR lpPassword,
-	_In_ LPTSTR lpUserName,
-	_In_ DWORD dwFlags
-);
-HOOKDEF(DWORD, WINAPI, NPCancelConnection,
-	_In_ LPTSTR lpName,
-	_In_ BOOL fForce
-);
-HOOKDEF(DWORD, WINAPI, NPCloseEnum,
-	_In_ HANDLE hEnum
-);
-HOOKDEF(DWORD, WINAPI, NPEnumResource,
-	_In_ HANDLE hEnum,
-	_Inout_ LPDWORD lpcCount,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpBufferSize
-);
-HOOKDEF(DWORD, WINAPI, NPFormatNetworkName,
-	_In_ LPTSTR lpRemoteName,
-	_Out_ LPTSTR lpFormattedName,
-	_Inout_ LPDWORD lpnLength,
-	_In_ DWORD dwFlags,
-	_In_ DWORD dwAveCharPerLine
-);
-HOOKDEF(DWORD, WINAPI, NPGetCaps,
-	_In_ DWORD nIndex
-);
-HOOKDEF(DWORD, WINAPI, NPGetConnection,
-	_In_ LPTSTR lpLocalName,
-	_Out_ LPTSTR lpRemoteName,
-	_Inout_ LPDWORD lpBufferSize
-);
-HOOKDEF(DWORD, WINAPI, NPGetConnection3,
-	_In_ LPCWSTR lpLocalName,
-	_In_ DWORD dwLevel,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpBufferSize
-);
-HOOKDEF(DWORD, WINAPI, NPGetConnectionPerformance,
-	_In_ LPTSTR lpRemoteName,
-	_Out_ LPNETCONNECTINFOSTRUCT lpNetConnectInfo
-);
-HOOKDEF(DWORD, WINAPI, NPGetResourceInformation,
-	_In_ LPNETRESOURCE lpNetResource,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpcbBuffer,
-	_Out_ LPTSTR* lplpSystem
-);
-HOOKDEF(DWORD, WINAPI, NPGetResourceParent,
-	_In_ LPNETRESOURCE lpNetResource,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpcbBuffer
-);
-HOOKDEF(DWORD, WINAPI, NPGetUniversalName,
-	_In_ LPCTSTR lpLocalPath,
-	_In_ DWORD dwInfoLevel,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpBufferSize
-);
-HOOKDEF(DWORD, WINAPI, NPGetUser,
-	_In_ LPTSTR lpName,
-	_Out_ LPTSTR lpUserName,
-	_Inout_ LPDWORD lpBufferSize
-);
-HOOKDEF(DWORD, WINAPI, NPOpenEnum,
-	_In_ DWORD dwScope,
-	_In_ DWORD dwType,
-	_In_ DWORD dwUsage,
-	_In_ LPNETRESOURCE lpNetResource,
-	_Out_ LPHANDLE lphEnum
-);
 HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD dwExceptionCode,
 	_In_ DWORD dwExceptionFlags,
@@ -4040,22 +3961,6 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
 );
-HOOKDEF(DWORD, WINAPI, WNetCloseEnum,
-	_In_ HANDLE hEnum
-);
-HOOKDEF(DWORD, WINAPI, WNetEnumResourceW,
-	_In_ HANDLE hEnum,
-	_Inout_ LPDWORD lpcCount,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpBufferSize
-);
-HOOKDEF(DWORD, WINAPI, WNetOpenEnumW,
-	_In_ DWORD dwScope,
-	_In_ DWORD dwType,
-	_In_ DWORD dwUsage,
-	_In_ LPNETRESOURCE lpNetResource,
-	_Out_ LPHANDLE lphEnum
-);
 
-/* >>> AUTOHOOK_pa_alk_208_virtualbox_shared_folder_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_209_virtualbox_window_checker END <<< */
 
