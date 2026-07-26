@@ -3930,10 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_131_printer_count_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, EnumPrintersW,
+/* >>> AUTOHOOK_pa_alk_132_printer_presence_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, EnumPrintersA,
 	_In_ DWORD Flags,
-	_In_ LPWSTR Name,
+	_In_ LPSTR Name,
 	_In_ DWORD Level,
 	_Out_ LPBYTE pPrinterEnum,
 	_In_ DWORD cbBuf,
@@ -3971,5 +3971,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_131_printer_count_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_132_printer_presence_checker END <<< */
 
