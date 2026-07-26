@@ -3930,14 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_188_vbox_registry_key_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, IsWow64Process,
-	_In_ HANDLE hProcess,
-	_Out_ PBOOL Wow64Process
-);
-HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
-	void
-);
+/* >>> AUTOHOOK_pa_alk_190_vbox_window_checker BEGIN <<< */
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
@@ -3966,5 +3959,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_188_vbox_registry_key_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_190_vbox_window_checker END <<< */
 
