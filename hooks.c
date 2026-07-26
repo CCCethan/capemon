@@ -818,9 +818,30 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_200_virtualbox_device_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker BEGIN <<< */
+HOOK(combase, SafeArrayGetElement),
+HOOK(ole32, SafeArrayGetElement),
+HOOK(oleaut32, SafeArrayGetElement),
+HOOK(combase, SafeArrayGetLBound),
+HOOK(ole32, SafeArrayGetLBound),
+HOOK(oleaut32, SafeArrayGetLBound),
+HOOK(combase, SafeArrayGetUBound),
+HOOK(ole32, SafeArrayGetUBound),
+HOOK(oleaut32, SafeArrayGetUBound),
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
+HOOK(combase, CoInitializeEx),
+HOOK(ole32, CoInitializeEx),
+HOOK(oleaut32, CoInitializeEx),
+HOOK(combase, CoInitializeSecurity),
+HOOK(ole32, CoInitializeSecurity),
+HOOK(oleaut32, CoInitializeSecurity),
+HOOK(combase, CoSetProxyBlanket),
+HOOK(ole32, CoSetProxyBlanket),
+HOOK(oleaut32, CoSetProxyBlanket),
+HOOK(combase, CoUninitialize),
+HOOK(ole32, CoUninitialize),
+HOOK(oleaut32, CoUninitialize),
 HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
 HOOK(kernel32, FreeLibrary),
@@ -835,7 +856,7 @@ HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_200_virtualbox_device_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker END <<< */
 };
 
 hook_t native_hooks[] = {

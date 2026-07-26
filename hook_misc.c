@@ -2008,7 +2008,48 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_200_virtualbox_device_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 引数 psa: 型 SAFEARRAY* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetElement, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ SAFEARRAY* psa,
+	_In_ LONG* rgIndices,
+	_Out_ void* pv
+) {
+	HRESULT ret;
+	ret = Old_SafeArrayGetElement(psa, rgIndices, pv);
+	LOQ_hresult("misc", "pIP", "Sa", psa, "RgIndices", rgIndices, "V", pv);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 引数 psa: 型 SAFEARRAY* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetLBound, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ SAFEARRAY* psa,
+	_In_ UINT nDim,
+	_Out_ LONG* plLbound
+) {
+	HRESULT ret;
+	ret = Old_SafeArrayGetLBound(psa, nDim, plLbound);
+	LOQ_hresult("misc", "piI", "Sa", psa, "Dim", nDim, "LLbound", plLbound);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 引数 psa: 型 SAFEARRAY* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetUBound, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ SAFEARRAY* psa,
+	_In_ UINT nDim,
+	_Out_ LONG* plUbound
+) {
+	HRESULT ret;
+	ret = Old_SafeArrayGetUBound(psa, nDim, plUbound);
+	LOQ_hresult("misc", "piI", "Sa", psa, "Dim", nDim, "LUbound", plUbound);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
 HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwExceptionCode,
@@ -2020,5 +2061,5 @@ HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/na
 	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
 	LOQ_void("misc", "iiiI", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
 }
-/* >>> AUTOHOOK_pa_alk_200_virtualbox_device_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker END <<< */
 
