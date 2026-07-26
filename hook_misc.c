@@ -2008,7 +2008,224 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Font and Text
+// REVIEW: 戻り型 HFONT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lplf: 型 const LOGFONT* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HFONT, WINAPI, CreateFontIndirectW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const LOGFONT* lplf
+) {
+	HFONT ret;
+	ret = Old_CreateFontIndirectW(lplf);
+	LOQ_nonzero("misc", "p", "Lf", lplf);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Device Context
+HOOKDEF(BOOL, WINAPI, DeleteDC, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HDC hdc
+) {
+	BOOL ret;
+	ret = Old_DeleteDC(hdc);
+	LOQ_bool("misc", "p", "Dc", hdc);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Device Context
+HOOKDEF(BOOL, WINAPI, DeleteObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HGDIOBJ hObject
+) {
+	BOOL ret;
+	ret = Old_DeleteObject(hObject);
+	LOQ_bool("misc", "p", "Object", hObject);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Font and Text
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpDTParams: 型 LPDRAWTEXTPARAMS は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(int, WINAPI, DrawTextExW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HDC hdc,
+	_Inout_ LPWSTR lpchText,
+	_In_ int cchText,
+	_Inout_ LPRECT lprc,
+	_In_ UINT dwDTFormat,
+	_In_ LPDRAWTEXTPARAMS lpDTParams
+) {
+	int ret;
+	ret = Old_DrawTextExW(hdc, lpchText, cchText, lprc, dwDTFormat, lpDTParams);
+	LOQ_nonzero("misc", "puiPip", "Dc", hdc, "ChText", lpchText, "Text", cchText, "Rc", lprc, "DTFormat", dwDTFormat, "DTParams", lpDTParams);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Device Context
+HOOKDEF(BOOL, WINAPI, EnumDisplaySettingsW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCWSTR lpszDeviceName,
+	_In_ DWORD iModeNum,
+	_Out_ DEVMODE* lpDevMode
+) {
+	BOOL ret;
+	ret = Old_EnumDisplaySettingsW(lpszDeviceName, iModeNum, lpDevMode);
+	LOQ_bool("misc", "uiP", "SzDeviceName", lpszDeviceName, "IModeNum", iModeNum, "DevMode", lpDevMode);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Device Context
+HOOKDEF(HGDIOBJ, WINAPI, GetCurrentObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HDC hdc,
+	_In_ UINT uObjectType
+) {
+	HGDIOBJ ret;
+	ret = Old_GetCurrentObject(hdc, uObjectType);
+	LOQ_nonnull("misc", "pi", "Dc", hdc, "UObjectType", uObjectType);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Device Context
+HOOKDEF(HDC, WINAPI, GetDC, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hWnd
+) {
+	HDC ret;
+	ret = Old_GetDC(hWnd);
+	LOQ_nonnull("misc", "p", "Wnd", hWnd);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Device Context
+// REVIEW: 引数 hrgnClip: 型 HRGN は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HDC, WINAPI, GetDCEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hWnd,
+	_In_ HRGN hrgnClip,
+	_In_ DWORD flags
+) {
+	HDC ret;
+	ret = Old_GetDCEx(hWnd, hrgnClip, flags);
+	LOQ_nonnull("misc", "ppi", "Wnd", hWnd, "RgnClip", hrgnClip, "Lags", flags);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Device Context
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(int, WINAPI, GetDeviceCaps, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HDC hdc,
+	_In_ int nIndex
+) {
+	int ret;
+	ret = Old_GetDeviceCaps(hdc, nIndex);
+	LOQ_nonzero("misc", "pi", "Dc", hdc, "Index", nIndex);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Multiple Display Monitors
+// REVIEW: 引数 hMonitor: 型 HMONITOR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, GetMonitorInfoW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HMONITOR hMonitor,
+	_Out_ LPMONITORINFO lpmi
+) {
+	BOOL ret;
+	ret = Old_GetMonitorInfoW(hMonitor, lpmi);
+	LOQ_bool("misc", "pP", "Monitor", hMonitor, "Mi", lpmi);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Device Context
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpvObject: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(int, WINAPI, GetObjectW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HGDIOBJ hgdiobj,
+	_In_ int cbBuffer,
+	_Out_ LPVOID lpvObject
+) {
+	int ret;
+	ret = Old_GetObjectW(hgdiobj, cbBuffer, lpvObject);
+	LOQ_nonzero("misc", "pip", "Gdiobj", hgdiobj, "Buffer", cbBuffer, "VObject", lpvObject);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Device Context
+HOOKDEF(HGDIOBJ, WINAPI, GetStockObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ int fnObject
+) {
+	HGDIOBJ ret;
+	ret = Old_GetStockObject(fnObject);
+	LOQ_nonnull("misc", "i", "NObject", fnObject);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Painting and Drawing
+// REVIEW: 引数 lpRect: 型 const RECT* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, InvalidateRect, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hWnd,
+	_In_ const RECT* lpRect,
+	_In_ BOOL bErase
+) {
+	BOOL ret;
+	ret = Old_InvalidateRect(hWnd, lpRect, bErase);
+	LOQ_bool("misc", "ppi", "Wnd", hWnd, "Rect", lpRect, "Erase", bErase);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Large Integer
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(int, WINAPI, MulDiv, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ int nNumber,
+	_In_ int nNumerator,
+	_In_ int nDenominator
+) {
+	int ret;
+	ret = Old_MulDiv(nNumber, nNumerator, nDenominator);
+	LOQ_nonzero("misc", "iii", "Number", nNumber, "Numerator", nNumerator, "Denominator", nDenominator);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Device Context
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(int, WINAPI, ReleaseDC, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hWnd,
+	_In_ HDC hDC
+) {
+	int ret;
+	ret = Old_ReleaseDC(hWnd, hDC);
+	LOQ_nonzero("misc", "pp", "Wnd", hWnd, "DC", hDC);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Device Context
+HOOKDEF(HGDIOBJ, WINAPI, SelectObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HDC hdc,
+	_In_ HGDIOBJ hgdiobj
+) {
+	HGDIOBJ ret;
+	ret = Old_SelectObject(hdc, hgdiobj);
+	LOQ_nonnull("misc", "pp", "Dc", hdc, "Gdiobj", hgdiobj);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Painting and Drawing
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(int, WINAPI, SetBkMode, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HDC hdc,
+	_In_ int iBkMode
+) {
+	int ret;
+	ret = Old_SetBkMode(hdc, iBkMode);
+	LOQ_nonzero("misc", "pi", "Dc", hdc, "IBkMode", iBkMode);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Font and Text
+// REVIEW: 戻り型 COLORREF の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 crColor: 型 COLORREF を i(int32)で仮記録。要確認
+HOOKDEF(COLORREF, WINAPI, SetTextColor, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HDC hdc,
+	_In_ COLORREF crColor
+) {
+	COLORREF ret;
+	ret = Old_SetTextColor(hdc, crColor);
+	LOQ_nonzero("misc", "pi", "Dc", hdc, "CrColor", crColor);
+	return ret;
+}
+
 // -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
 HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwExceptionCode,
@@ -2020,5 +2237,5 @@ HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/na
 	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
 	LOQ_void("misc", "iiiI", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
 }
-/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker END <<< */
 

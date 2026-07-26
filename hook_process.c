@@ -1540,7 +1540,21 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker BEGIN <<< */
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, SleepEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwMilliseconds,
+	_In_ BOOL bAlertable
+) {
+	DWORD ret;
+	ret = Old_SleepEx(dwMilliseconds, bAlertable);
+	LOQ_nonzero("process", "ii", "Milliseconds", dwMilliseconds, "Alertable", bAlertable);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1602,5 +1616,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess, // 呼出規約は WINAPI 仮定(socket/
 	LOQ_bool("process", "pi", "Process", hProcess, "UExitCode", uExitCode);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker END <<< */
 

@@ -3930,15 +3930,170 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker BEGIN <<< */
-HOOKDEF(LONG, WINAPI, RegGetValueA,
-	_In_ HKEY hkey,
-	_In_opt_ LPCSTR lpSubKey,
-	_In_opt_ LPCSTR lpValue,
-	_In_opt_ DWORD dwFlags,
-	_Out_opt_ LPDWORD pdwType,
-	_Out_opt_ PVOID pvData,
-	_Inout_opt_ LPDWORD pcbData
+/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, BitBlt,
+	_In_ HDC hdcDest,
+	_In_ int nXDest,
+	_In_ int nYDest,
+	_In_ int nWidth,
+	_In_ int nHeight,
+	_In_ HDC hdcSrc,
+	_In_ int nXSrc,
+	_In_ int nYSrc,
+	_In_ DWORD dwRop
+);
+HOOKDEF(HBITMAP, WINAPI, CreateCompatibleBitmap,
+	_In_ HDC hdc,
+	_In_ int nWidth,
+	_In_ int nHeight
+);
+HOOKDEF(HDC, WINAPI, CreateCompatibleDC,
+	_In_ HDC hdc
+);
+HOOKDEF(HBITMAP, WINAPI, CreateDIBSection,
+	_In_ HDC hdc,
+	_In_ const BITMAPINFO* pbmi,
+	_In_ UINT iUsage,
+	_Out_ VOID** ppvBits,
+	_In_ HANDLE hSection,
+	_In_ DWORD dwOffset
+);
+HOOKDEF(HFONT, WINAPI, CreateFontIndirectW,
+	_In_ const LOGFONT* lplf
+);
+HOOKDEF(HBRUSH, WINAPI, CreateSolidBrush,
+	_In_ COLORREF crColor
+);
+HOOKDEF(BOOL, WINAPI, DeleteDC,
+	_In_ HDC hdc
+);
+HOOKDEF(BOOL, WINAPI, DeleteObject,
+	_In_ HGDIOBJ hObject
+);
+HOOKDEF(int, WINAPI, DrawTextExW,
+	_In_ HDC hdc,
+	_Inout_ LPWSTR lpchText,
+	_In_ int cchText,
+	_Inout_ LPRECT lprc,
+	_In_ UINT dwDTFormat,
+	_In_ LPDRAWTEXTPARAMS lpDTParams
+);
+HOOKDEF(BOOL, WINAPI, EnumDisplaySettingsW,
+	_In_ LPCWSTR lpszDeviceName,
+	_In_ DWORD iModeNum,
+	_Out_ DEVMODE* lpDevMode
+);
+HOOKDEF(int, WINAPI, FillRect,
+	_In_ HDC hDC,
+	_In_ const RECT* lprc,
+	_In_ HBRUSH hbr
+);
+HOOKDEF(HGDIOBJ, WINAPI, GetCurrentObject,
+	_In_ HDC hdc,
+	_In_ UINT uObjectType
+);
+HOOKDEF(HDC, WINAPI, GetDC,
+	_In_ HWND hWnd
+);
+HOOKDEF(HDC, WINAPI, GetDCEx,
+	_In_ HWND hWnd,
+	_In_ HRGN hrgnClip,
+	_In_ DWORD flags
+);
+HOOKDEF(int, WINAPI, GetDIBits,
+	_In_ HDC hdc,
+	_In_ HBITMAP hbmp,
+	_In_ UINT uStartScan,
+	_In_ UINT cScanLines,
+	_Out_ LPVOID lpvBits,
+	_Inout_ LPBITMAPINFO lpbi,
+	_In_ UINT uUsage
+);
+HOOKDEF(HWND, WINAPI, GetDesktopWindow,
+	void
+);
+HOOKDEF(int, WINAPI, GetDeviceCaps,
+	_In_ HDC hdc,
+	_In_ int nIndex
+);
+HOOKDEF(BOOL, WINAPI, GetMonitorInfoW,
+	_In_ HMONITOR hMonitor,
+	_Out_ LPMONITORINFO lpmi
+);
+HOOKDEF(int, WINAPI, GetObjectW,
+	_In_ HGDIOBJ hgdiobj,
+	_In_ int cbBuffer,
+	_Out_ LPVOID lpvObject
+);
+HOOKDEF(HWINSTA, WINAPI, GetProcessWindowStation,
+	void
+);
+HOOKDEF(HGDIOBJ, WINAPI, GetStockObject,
+	_In_ int fnObject
+);
+HOOKDEF(DWORD, WINAPI, GetSysColor,
+	_In_ int nIndex
+);
+HOOKDEF(HDESK, WINAPI, GetThreadDesktop,
+	_In_ DWORD dwThreadId
+);
+HOOKDEF(BOOL, WINAPI, GetUserObjectInformationW,
+	_In_ HANDLE hObj,
+	_In_ int nIndex,
+	_Out_opt_ PVOID pvInfo,
+	_In_ DWORD nLength,
+	_Out_opt_ LPDWORD lpnLengthNeeded
+);
+HOOKDEF(BOOL, WINAPI, GetUserPreferredUILanguages,
+	_In_ DWORD dwFlags,
+	_Out_ PULONG pulNumLanguages,
+	_Out_opt_ PZZWSTR pwszLanguagesBuffer,
+	_Inout_ PULONG pcchLanguagesBuffer
+);
+HOOKDEF(BOOL, WINAPI, InvalidateRect,
+	_In_ HWND hWnd,
+	_In_ const RECT* lpRect,
+	_In_ BOOL bErase
+);
+HOOKDEF(HMONITOR, WINAPI, MonitorFromWindow,
+	_In_ HWND hwnd,
+	_In_ DWORD dwFlags
+);
+HOOKDEF(int, WINAPI, MulDiv,
+	_In_ int nNumber,
+	_In_ int nNumerator,
+	_In_ int nDenominator
+);
+HOOKDEF(BOOL, WINAPI, OffsetRect,
+	_Inout_ LPRECT lprc,
+	_In_ int dx,
+	_In_ int dy
+);
+HOOKDEF(BOOL, WINAPI, RedrawWindow,
+	_In_ HWND hWnd,
+	_In_ const RECT* lprcUpdate,
+	_In_ HRGN hrgnUpdate,
+	_In_ UINT flags
+);
+HOOKDEF(int, WINAPI, ReleaseDC,
+	_In_ HWND hWnd,
+	_In_ HDC hDC
+);
+HOOKDEF(HGDIOBJ, WINAPI, SelectObject,
+	_In_ HDC hdc,
+	_In_ HGDIOBJ hgdiobj
+);
+HOOKDEF(int, WINAPI, SetBkMode,
+	_In_ HDC hdc,
+	_In_ int iBkMode
+);
+HOOKDEF(COLORREF, WINAPI, SetTextColor,
+	_In_ HDC hdc,
+	_In_ COLORREF crColor
+);
+HOOKDEF(DWORD, WINAPI, SleepEx,
+	_In_ DWORD dwMilliseconds,
+	_In_ BOOL bAlertable
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
@@ -3971,5 +4126,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_231_windows_activation_checker END <<< */
 
