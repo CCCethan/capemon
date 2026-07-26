@@ -1927,31 +1927,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker BEGIN <<< */
-// -> hook_file.c に追加 | category="filesystem" | winapi:Time
-// REVIEW: 引数 lpFileTime: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, FileTimeToLocalFileTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const FILETIME* lpFileTime,
-	_Out_ LPFILETIME lpLocalFileTime
-) {
-	BOOL ret;
-	ret = Old_FileTimeToLocalFileTime(lpFileTime, lpLocalFileTime);
-	LOQ_bool("filesystem", "pP", "FileTime", lpFileTime, "LocalFileTime", lpLocalFileTime);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Time
-// REVIEW: 引数 lpFileTime: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const FILETIME* lpFileTime,
-	_Out_ LPSYSTEMTIME lpSystemTime
-) {
-	BOOL ret;
-	ret = Old_FileTimeToSystemTime(lpFileTime, lpSystemTime);
-	LOQ_bool("filesystem", "pP", "FileTime", lpFileTime, "SystemTime", lpSystemTime);
-	return ret;
-}
-
+/* >>> AUTOHOOK_pa_alk_177_thermal_zone_checker BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1961,5 +1937,5 @@ HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/n
 	LOQ_bool("filesystem", "");
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_177_thermal_zone_checker END <<< */
 
