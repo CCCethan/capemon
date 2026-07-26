@@ -3930,36 +3930,103 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_204_virtualbox_mac_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_205_virtualbox_network_resource_checker BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, NPAddConnection,
+	_In_ LPNETRESOURCE lpNetResource,
+	_In_ LPTSTR lpPassword,
+	_In_ LPTSTR lpUserName
+);
+HOOKDEF(DWORD, WINAPI, NPAddConnection3,
+	_In_ HWND hwndOwner,
+	_In_ LPNETRESOURCE lpNetResource,
+	_In_ LPTSTR lpPassword,
+	_In_ LPTSTR lpUserName,
+	_In_ DWORD dwFlags
+);
+HOOKDEF(DWORD, WINAPI, NPCancelConnection,
+	_In_ LPTSTR lpName,
+	_In_ BOOL fForce
+);
+HOOKDEF(DWORD, WINAPI, NPCloseEnum,
+	_In_ HANDLE hEnum
+);
+HOOKDEF(DWORD, WINAPI, NPEnumResource,
+	_In_ HANDLE hEnum,
+	_Inout_ LPDWORD lpcCount,
+	_Out_ LPVOID lpBuffer,
+	_Inout_ LPDWORD lpBufferSize
+);
+HOOKDEF(DWORD, WINAPI, NPFormatNetworkName,
+	_In_ LPTSTR lpRemoteName,
+	_Out_ LPTSTR lpFormattedName,
+	_Inout_ LPDWORD lpnLength,
+	_In_ DWORD dwFlags,
+	_In_ DWORD dwAveCharPerLine
+);
+HOOKDEF(DWORD, WINAPI, NPGetCaps,
+	_In_ DWORD nIndex
+);
+HOOKDEF(DWORD, WINAPI, NPGetConnection,
+	_In_ LPTSTR lpLocalName,
+	_Out_ LPTSTR lpRemoteName,
+	_Inout_ LPDWORD lpBufferSize
+);
+HOOKDEF(DWORD, WINAPI, NPGetConnection3,
+	_In_ LPCWSTR lpLocalName,
+	_In_ DWORD dwLevel,
+	_Out_ LPVOID lpBuffer,
+	_Inout_ LPDWORD lpBufferSize
+);
+HOOKDEF(DWORD, WINAPI, NPGetConnectionPerformance,
+	_In_ LPTSTR lpRemoteName,
+	_Out_ LPNETCONNECTINFOSTRUCT lpNetConnectInfo
+);
+HOOKDEF(DWORD, WINAPI, NPGetResourceInformation,
+	_In_ LPNETRESOURCE lpNetResource,
+	_Out_ LPVOID lpBuffer,
+	_Inout_ LPDWORD lpcbBuffer,
+	_Out_ LPTSTR* lplpSystem
+);
+HOOKDEF(DWORD, WINAPI, NPGetResourceParent,
+	_In_ LPNETRESOURCE lpNetResource,
+	_Out_ LPVOID lpBuffer,
+	_Inout_ LPDWORD lpcbBuffer
+);
+HOOKDEF(DWORD, WINAPI, NPGetUniversalName,
+	_In_ LPCTSTR lpLocalPath,
+	_In_ DWORD dwInfoLevel,
+	_Out_ LPVOID lpBuffer,
+	_Inout_ LPDWORD lpBufferSize
+);
+HOOKDEF(DWORD, WINAPI, NPGetUser,
+	_In_ LPTSTR lpName,
+	_Out_ LPTSTR lpUserName,
+	_Inout_ LPDWORD lpBufferSize
+);
+HOOKDEF(DWORD, WINAPI, NPOpenEnum,
+	_In_ DWORD dwScope,
+	_In_ DWORD dwType,
+	_In_ DWORD dwUsage,
+	_In_ LPNETRESOURCE lpNetResource,
+	_Out_ LPHANDLE lphEnum
+);
+HOOKDEF(DWORD, WINAPI, WNetCloseEnum,
+	_In_ HANDLE hEnum
+);
+HOOKDEF(DWORD, WINAPI, WNetEnumResourceW,
+	_In_ HANDLE hEnum,
+	_Inout_ LPDWORD lpcCount,
+	_Out_ LPVOID lpBuffer,
+	_Inout_ LPDWORD lpBufferSize
+);
+HOOKDEF(DWORD, WINAPI, WNetOpenEnumW,
+	_In_ DWORD dwScope,
+	_In_ DWORD dwType,
+	_In_ DWORD dwUsage,
+	_In_ LPNETRESOURCE lpNetResource,
+	_Out_ LPHANDLE lphEnum
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
-	void
-);
-HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
-	_In_opt_ LPVOID pvReserved,
-	_In_ DWORD dwCoInit
-);
-HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity,
-	_In_opt_ PSECURITY_DESCRIPTOR pSecDesc,
-	_In_ LONG cAuthSvc,
-	_In_opt_ SOLE_AUTHENTICATION_SERVICE* asAuthSvc,
-	_In_opt_ void* pReserved1,
-	_In_ DWORD dwAuthnLevel,
-	_In_ DWORD dwImpLevel,
-	_In_opt_ void* pAuthList,
-	_In_ DWORD dwCapabilities,
-	_In_opt_ void* pReserved3
-);
-HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
-	_In_ IUnknown* pProxy,
-	_In_ DWORD dwAuthnSvc,
-	_In_ DWORD dwAuthzSvc,
-	_In_opt_ OLECHAR* pServerPrincName,
-	_In_ DWORD dwAuthnLevel,
-	_In_ DWORD dwImpLevel,
-	_In_opt_ RPC_AUTH_IDENTITY_HANDLE pAuthInfo,
-	_In_ DWORD dwCapabilities
-);
-HOOKDEF(void, WINAPI, CoUninitialize,
 	void
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
@@ -3990,5 +4057,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ UINT uExitCode
 );
 
-/* >>> AUTOHOOK_pa_alk_204_virtualbox_mac_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_205_virtualbox_network_resource_checker END <<< */
 
