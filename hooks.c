@@ -818,9 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_132_printer_presence_checker BEGIN <<< */
-HOOK(winspool, EnumPrintersA),
-HOOK(winspool.drv, EnumPrintersA),
+/* >>> AUTOHOOK_pa_alk_133_process_based_env_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, ExitProcess),
@@ -837,7 +835,7 @@ HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_132_printer_presence_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_133_process_based_env_checker END <<< */
 };
 
 hook_t native_hooks[] = {
