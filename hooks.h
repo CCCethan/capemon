@@ -3942,6 +3942,9 @@ HOOKDEF(BOOL, WINAPI, SHGetSpecialFolderPathA,
 	_In_ int csidl,
 	_In_ BOOL fCreate
 );
+HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
+	void
+);
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
