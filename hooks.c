@@ -818,13 +818,21 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_155_shell_history_checker BEGIN <<< */
-HOOK(kernel32, GetEnvironmentVariableA),
-HOOK(kernelbase, GetEnvironmentVariableA),
-HOOK(kernel32, SetEndOfFile),
-HOOK(kernelbase, SetEndOfFile),
+/* >>> AUTOHOOK_pa_alk_163_smbios_memory_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
+HOOK(combase, CoInitializeEx),
+HOOK(ole32, CoInitializeEx),
+HOOK(oleaut32, CoInitializeEx),
+HOOK(combase, CoInitializeSecurity),
+HOOK(ole32, CoInitializeSecurity),
+HOOK(oleaut32, CoInitializeSecurity),
+HOOK(combase, CoSetProxyBlanket),
+HOOK(ole32, CoSetProxyBlanket),
+HOOK(oleaut32, CoSetProxyBlanket),
+HOOK(combase, CoUninitialize),
+HOOK(ole32, CoUninitialize),
+HOOK(oleaut32, CoUninitialize),
 HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
 HOOK(kernel32, FreeLibrary),
@@ -839,7 +847,7 @@ HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_155_shell_history_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_163_smbios_memory_checker END <<< */
 };
 
 hook_t native_hooks[] = {
