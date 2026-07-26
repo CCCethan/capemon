@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_173_system_uptime_checker_01 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_174_system_uptime_checker_02 BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, ExitProcess),
@@ -835,7 +835,7 @@ HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
-/* >>> AUTOHOOK_pa_alk_173_system_uptime_checker_01 END <<< */
+/* >>> AUTOHOOK_pa_alk_174_system_uptime_checker_02 END <<< */
 };
 
 hook_t native_hooks[] = {
