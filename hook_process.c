@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_212_vm_service_checker BEGIN <<< */
+/* >>> AUTOHOOK_hookdb_all BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1584,12 +1584,35 @@ HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent, // 呼出規約は WINAPI 仮�
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, IsWow64Process, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hProcess,
+	_Out_ PBOOL Wow64Process
+) {
+	BOOL ret;
+	ret = Old_IsWow64Process(hProcess, Wow64Process);
+	LOQ_bool("process", "pI", "Process", hProcess, "Wow64Process", Wow64Process);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, Sleep, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwMilliseconds
 ) {
 	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
 	Old_Sleep(dwMilliseconds);
 	LOQ_void("process", "i", "Milliseconds", dwMilliseconds);
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, SleepEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwMilliseconds,
+	_In_ BOOL bAlertable
+) {
+	DWORD ret;
+	ret = Old_SleepEx(dwMilliseconds, bAlertable);
+	LOQ_nonzero("process", "ii", "Milliseconds", dwMilliseconds, "Alertable", bAlertable);
+	return ret;
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Processes
@@ -1602,5 +1625,5 @@ HOOKDEF(BOOL, WINAPI, TerminateProcess, // 呼出規約は WINAPI 仮定(socket/
 	LOQ_bool("process", "pi", "Process", hProcess, "UExitCode", uExitCode);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_212_vm_service_checker END <<< */
+/* >>> AUTOHOOK_hookdb_all END <<< */
 
