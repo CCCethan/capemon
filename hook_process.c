@@ -1540,16 +1540,15 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_TlsAlloc BEGIN <<< */
+/* >>> AUTOHOOK_TlsFree BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, TlsAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
+HOOKDEF(BOOL, WINAPI, TlsFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwTlsIndex
 ) {
-	DWORD ret;
-	ret = Old_TlsAlloc();
-	LOQ_nonzero("process", "");
+	BOOL ret;
+	ret = Old_TlsFree(dwTlsIndex);
+	LOQ_bool("process", "i", "TlsIndex", dwTlsIndex);
 	return ret;
 }
-/* >>> AUTOHOOK_TlsAlloc END <<< */
+/* >>> AUTOHOOK_TlsFree END <<< */
 

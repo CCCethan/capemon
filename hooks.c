@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_TlsAlloc BEGIN <<< */
-HOOK(kernel32, TlsAlloc),
-HOOK(kernelbase, TlsAlloc),
-/* >>> AUTOHOOK_TlsAlloc END <<< */
+/* >>> AUTOHOOK_TlsFree BEGIN <<< */
+HOOK(kernel32, TlsFree),
+HOOK(kernelbase, TlsFree),
+/* >>> AUTOHOOK_TlsFree END <<< */
 };
 
 hook_t native_hooks[] = {
