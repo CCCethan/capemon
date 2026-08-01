@@ -3930,11 +3930,13 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_RtlPcToFileHeader BEGIN <<< */
-HOOKDEF(PVOID, WINAPI, RtlPcToFileHeader,
-	_In_ PVOID PcValue,
-	_Out_ PVOID* BaseOfImage
+/* >>> AUTOHOOK_RtlUnwind BEGIN <<< */
+HOOKDEF(void, WINAPI, RtlUnwind,
+	_In_opt_ PVOID TargetFrame,
+	_In_opt_ PVOID TargetIp,
+	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
+	_In_ PVOID ReturnValue
 );
 
-/* >>> AUTOHOOK_RtlPcToFileHeader END <<< */
+/* >>> AUTOHOOK_RtlUnwind END <<< */
 

@@ -2007,3 +2007,22 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 		"OutputBuffer", OutputBufferLength, OutputBuffer);
 	return ret;
 }
+
+/* >>> AUTOHOOK_RtlUnwind BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
+// REVIEW: 引数 TargetFrame: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+// REVIEW: 引数 TargetIp: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+// REVIEW: 引数 ExceptionRecord: 型 PEXCEPTION_RECORD は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 ReturnValue: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(void, WINAPI, RtlUnwind, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ PVOID TargetFrame,
+	_In_opt_ PVOID TargetIp,
+	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
+	_In_ PVOID ReturnValue
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_RtlUnwind(TargetFrame, TargetIp, ExceptionRecord, ReturnValue);
+	LOQ_void("misc", "pppp", "TargetFrame", TargetFrame, "TargetIp", TargetIp, "ExceptionRecord", ExceptionRecord, "ReturnValue", ReturnValue);
+}
+/* >>> AUTOHOOK_RtlUnwind END <<< */
+
