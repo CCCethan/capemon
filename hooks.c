@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_lstrcmpW BEGIN <<< */
-HOOK(kernel32, lstrcmpW),
-HOOK(kernelbase, lstrcmpW),
-/* >>> AUTOHOOK_lstrcmpW END <<< */
+/* >>> AUTOHOOK_lstrcmpA BEGIN <<< */
+HOOK(kernel32, lstrcmpA),
+HOOK(kernelbase, lstrcmpA),
+/* >>> AUTOHOOK_lstrcmpA END <<< */
 };
 
 hook_t native_hooks[] = {
