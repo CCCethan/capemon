@@ -3930,12 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_HeapAlloc BEGIN <<< */
-HOOKDEF(LPVOID, WINAPI, HeapAlloc,
+/* >>> AUTOHOOK_HeapFree BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, HeapFree,
 	_In_ HANDLE hHeap,
 	_In_ DWORD dwFlags,
-	_In_ SIZE_T dwBytes
+	_In_ LPVOID lpMem
 );
 
-/* >>> AUTOHOOK_HeapAlloc END <<< */
+/* >>> AUTOHOOK_HeapFree END <<< */
 

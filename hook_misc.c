@@ -2008,17 +2008,18 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_HeapAlloc BEGIN <<< */
+/* >>> AUTOHOOK_HeapFree BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
-HOOKDEF(LPVOID, WINAPI, HeapAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+// REVIEW: 引数 lpMem: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, HeapFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hHeap,
 	_In_ DWORD dwFlags,
-	_In_ SIZE_T dwBytes
+	_In_ LPVOID lpMem
 ) {
-	LPVOID ret;
-	ret = Old_HeapAlloc(hHeap, dwFlags, dwBytes);
-	LOQ_nonnull("misc", "pii", "Heap", hHeap, "Flags", dwFlags, "Bytes", dwBytes);
+	BOOL ret;
+	ret = Old_HeapFree(hHeap, dwFlags, lpMem);
+	LOQ_bool("misc", "pip", "Heap", hHeap, "Flags", dwFlags, "Mem", lpMem);
 	return ret;
 }
-/* >>> AUTOHOOK_HeapAlloc END <<< */
+/* >>> AUTOHOOK_HeapFree END <<< */
 
