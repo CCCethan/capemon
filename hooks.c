@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_RtlVirtualUnwind BEGIN <<< */
-HOOK(kernel32, RtlVirtualUnwind),
-HOOK(kernelbase, RtlVirtualUnwind),
-/* >>> AUTOHOOK_RtlVirtualUnwind END <<< */
+/* >>> AUTOHOOK_RtlPcToFileHeader BEGIN <<< */
+HOOK(kernel32, RtlPcToFileHeader),
+HOOK(kernelbase, RtlPcToFileHeader),
+/* >>> AUTOHOOK_RtlPcToFileHeader END <<< */
 };
 
 hook_t native_hooks[] = {
