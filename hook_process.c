@@ -1540,17 +1540,15 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_TlsSetValue BEGIN <<< */
+/* >>> AUTOHOOK_GetCurrentProcess BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
-// REVIEW: 引数 lpTlsValue: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwTlsIndex,
-	_In_opt_ LPVOID lpTlsValue
+HOOKDEF(HANDLE, WINAPI, GetCurrentProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
 ) {
-	BOOL ret;
-	ret = Old_TlsSetValue(dwTlsIndex, lpTlsValue);
-	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
+	HANDLE ret;
+	ret = Old_GetCurrentProcess();
+	LOQ_handle("process", "");
 	return ret;
 }
-/* >>> AUTOHOOK_TlsSetValue END <<< */
+/* >>> AUTOHOOK_GetCurrentProcess END <<< */
 
