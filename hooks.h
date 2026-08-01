@@ -3930,10 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_TlsFree BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, TlsFree,
+/* >>> AUTOHOOK_TlsGetValue BEGIN <<< */
+HOOKDEF(LPVOID, WINAPI, TlsGetValue,
 	_In_ DWORD dwTlsIndex
 );
 
-/* >>> AUTOHOOK_TlsFree END <<< */
+/* >>> AUTOHOOK_TlsGetValue END <<< */
 
