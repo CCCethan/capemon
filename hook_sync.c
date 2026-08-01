@@ -178,14 +178,16 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_InitializeCriticalSection BEGIN <<< */
+/* >>> AUTOHOOK_InitializeCriticalSectionAndSpinCount BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(void, WINAPI, InitializeCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPCRITICAL_SECTION lpCriticalSection
+HOOKDEF(BOOL, WINAPI, InitializeCriticalSectionAndSpinCount, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPCRITICAL_SECTION lpCriticalSection,
+	_In_ DWORD dwSpinCount
 ) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_InitializeCriticalSection(lpCriticalSection);
-	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
+	BOOL ret;
+	ret = Old_InitializeCriticalSectionAndSpinCount(lpCriticalSection, dwSpinCount);
+	LOQ_bool("sync", "Pi", "CriticalSection", lpCriticalSection, "SpinCount", dwSpinCount);
+	return ret;
 }
-/* >>> AUTOHOOK_InitializeCriticalSection END <<< */
+/* >>> AUTOHOOK_InitializeCriticalSectionAndSpinCount END <<< */
 
