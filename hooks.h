@@ -3930,10 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_SetLastError BEGIN <<< */
-HOOKDEF(void, WINAPI, SetLastError,
-	_In_ DWORD dwErrCode
+/* >>> AUTOHOOK_lstrlenW BEGIN <<< */
+HOOKDEF(int, WINAPI, lstrlenW,
+	_In_ LPCWSTR lpString
 );
 
-/* >>> AUTOHOOK_SetLastError END <<< */
+/* >>> AUTOHOOK_lstrlenW END <<< */
 
