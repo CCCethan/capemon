@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_HeapReAlloc BEGIN <<< */
-HOOK(kernel32, HeapReAlloc),
-HOOK(kernelbase, HeapReAlloc),
-/* >>> AUTOHOOK_HeapReAlloc END <<< */
+/* >>> AUTOHOOK_HeapSize BEGIN <<< */
+HOOK(kernel32, HeapSize),
+HOOK(kernelbase, HeapSize),
+/* >>> AUTOHOOK_HeapSize END <<< */
 };
 
 hook_t native_hooks[] = {
