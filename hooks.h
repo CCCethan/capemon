@@ -3930,13 +3930,15 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_RtlUnwind BEGIN <<< */
-HOOKDEF(void, WINAPI, RtlUnwind,
+/* >>> AUTOHOOK_RtlUnwindEx BEGIN <<< */
+HOOKDEF(void, WINAPI, RtlUnwindEx,
 	_In_opt_ PVOID TargetFrame,
 	_In_opt_ PVOID TargetIp,
 	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
-	_In_ PVOID ReturnValue
+	_In_ PVOID ReturnValue,
+	_In_ PCONTEXT OriginalContext,
+	_In_opt_ PUNWIND_HISTORY_TABLE HistoryTable
 );
 
-/* >>> AUTOHOOK_RtlUnwind END <<< */
+/* >>> AUTOHOOK_RtlUnwindEx END <<< */
 
