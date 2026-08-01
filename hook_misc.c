@@ -2008,14 +2008,17 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_RtlCaptureContext BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
-HOOKDEF(VOID, WINAPI, RtlCaptureContext, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ PCONTEXT ContextRecord
+/* >>> AUTOHOOK_RtlLookupFunctionEntry BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
+HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ ULONGLONG ControlPc,
+	_Out_ PULONGLONG ImageBase,
+	_Out_ PULONGLONG TargetGp
 ) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_RtlCaptureContext(ContextRecord);
-	LOQ_void("misc", "P", "ContextRecord", ContextRecord);
+	PVOID ret;
+	ret = Old_RtlLookupFunctionEntry(ControlPc, ImageBase, TargetGp);
+	LOQ_nonnull("misc", "iII", "ControlPc", ControlPc, "ImageBase", ImageBase, "TargetGp", TargetGp);
+	return ret;
 }
-/* >>> AUTOHOOK_RtlCaptureContext END <<< */
+/* >>> AUTOHOOK_RtlLookupFunctionEntry END <<< */
 
