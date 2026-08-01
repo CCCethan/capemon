@@ -2008,24 +2008,16 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_RtlInstallFunctionTableCallback BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
-// REVIEW: 引数 TableIdentifier: 型 DWORD64 を i(int32)で仮記録。要確認
-// REVIEW: 引数 BaseAddress: 型 DWORD64 を i(int32)で仮記録。要確認
-// REVIEW: 引数 Callback: 型 PGET_RUNTIME_FUNCTION_CALLBACK は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 Context: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOLEAN, WINAPI, RtlInstallFunctionTableCallback, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD64 TableIdentifier,
-	_In_ DWORD64 BaseAddress,
-	_In_ DWORD Length,
-	_In_ PGET_RUNTIME_FUNCTION_CALLBACK Callback,
-	_In_ PVOID Context,
-	_In_ PCWSTR OutOfProcessCallbackDll
+/* >>> AUTOHOOK_RtlGetSuiteMask BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
+// REVIEW: 戻り型 ULONG NTAPI の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(ULONG NTAPI, WINAPI, RtlGetSuiteMask, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
 ) {
-	BOOLEAN ret;
-	ret = Old_RtlInstallFunctionTableCallback(TableIdentifier, BaseAddress, Length, Callback, Context, OutOfProcessCallbackDll);
-	LOQ_bool("misc", "iiippu", "TableIdentifier", TableIdentifier, "BaseAddress", BaseAddress, "Length", Length, "Callback", Callback, "Context", Context, "OutOfProcessCallbackDll", OutOfProcessCallbackDll);
+	ULONG NTAPI ret;
+	ret = Old_RtlGetSuiteMask();
+	LOQ_nonzero("misc", "");
 	return ret;
 }
-/* >>> AUTOHOOK_RtlInstallFunctionTableCallback END <<< */
+/* >>> AUTOHOOK_RtlGetSuiteMask END <<< */
 

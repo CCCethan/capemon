@@ -3930,15 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_RtlInstallFunctionTableCallback BEGIN <<< */
-HOOKDEF(BOOLEAN, WINAPI, RtlInstallFunctionTableCallback,
-	_In_ DWORD64 TableIdentifier,
-	_In_ DWORD64 BaseAddress,
-	_In_ DWORD Length,
-	_In_ PGET_RUNTIME_FUNCTION_CALLBACK Callback,
-	_In_ PVOID Context,
-	_In_ PCWSTR OutOfProcessCallbackDll
+/* >>> AUTOHOOK_RtlGetSuiteMask BEGIN <<< */
+HOOKDEF(ULONG NTAPI, WINAPI, RtlGetSuiteMask,
+	void
 );
 
-/* >>> AUTOHOOK_RtlInstallFunctionTableCallback END <<< */
+/* >>> AUTOHOOK_RtlGetSuiteMask END <<< */
 

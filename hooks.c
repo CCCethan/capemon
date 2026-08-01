@@ -818,10 +818,9 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_RtlInstallFunctionTableCallback BEGIN <<< */
-HOOK(kernel32, RtlInstallFunctionTableCallback),
-HOOK(kernelbase, RtlInstallFunctionTableCallback),
-/* >>> AUTOHOOK_RtlInstallFunctionTableCallback END <<< */
+/* >>> AUTOHOOK_RtlGetSuiteMask BEGIN <<< */
+HOOK(ntdll, RtlGetSuiteMask),
+/* >>> AUTOHOOK_RtlGetSuiteMask END <<< */
 };
 
 hook_t native_hooks[] = {
