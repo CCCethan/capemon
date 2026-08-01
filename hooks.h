@@ -3930,10 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_GetCurrentThreadId BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, GetCurrentThreadId,
+/* >>> AUTOHOOK_GetLastError BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, GetLastError,
 	void
 );
 
-/* >>> AUTOHOOK_GetCurrentThreadId END <<< */
+/* >>> AUTOHOOK_GetLastError END <<< */
 
