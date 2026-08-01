@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_GetProcessHeap BEGIN <<< */
-HOOK(kernel32, GetProcessHeap),
-HOOK(kernelbase, GetProcessHeap),
-/* >>> AUTOHOOK_GetProcessHeap END <<< */
+/* >>> AUTOHOOK_EnterCriticalSection BEGIN <<< */
+HOOK(kernel32, EnterCriticalSection),
+HOOK(kernelbase, EnterCriticalSection),
+/* >>> AUTOHOOK_EnterCriticalSection END <<< */
 };
 
 hook_t native_hooks[] = {

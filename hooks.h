@@ -3930,10 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_GetProcessHeap BEGIN <<< */
-HOOKDEF(HANDLE, WINAPI, GetProcessHeap,
-	void
+/* >>> AUTOHOOK_EnterCriticalSection BEGIN <<< */
+HOOKDEF(void, WINAPI, EnterCriticalSection,
+	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 );
 
-/* >>> AUTOHOOK_GetProcessHeap END <<< */
+/* >>> AUTOHOOK_EnterCriticalSection END <<< */
 

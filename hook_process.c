@@ -1539,16 +1539,3 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	LOQ_zero("process", "lL", "Attribute", Attribute, "Value", lpValue);
 	return ret;
 }
-
-/* >>> AUTOHOOK_GetProcessHeap BEGIN <<< */
-// -> hook_process.c に追加 | category="process" | winapi:Memory Management
-HOOKDEF(HANDLE, WINAPI, GetProcessHeap, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	HANDLE ret;
-	ret = Old_GetProcessHeap();
-	LOQ_handle("process", "");
-	return ret;
-}
-/* >>> AUTOHOOK_GetProcessHeap END <<< */
-
