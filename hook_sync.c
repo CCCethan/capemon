@@ -178,14 +178,14 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_EnterCriticalSection BEGIN <<< */
+/* >>> AUTOHOOK_LeaveCriticalSection BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(void, WINAPI, EnterCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 ) {
 	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_EnterCriticalSection(lpCriticalSection);
+	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
 }
-/* >>> AUTOHOOK_EnterCriticalSection END <<< */
+/* >>> AUTOHOOK_LeaveCriticalSection END <<< */
 
