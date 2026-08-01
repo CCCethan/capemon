@@ -3930,12 +3930,17 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_RtlLookupFunctionEntry BEGIN <<< */
-HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
-	_In_ ULONGLONG ControlPc,
-	_Out_ PULONGLONG ImageBase,
-	_Out_ PULONGLONG TargetGp
+/* >>> AUTOHOOK_RtlVirtualUnwind BEGIN <<< */
+HOOKDEF(PEXCEPTION_ROUTINE, WINAPI, RtlVirtualUnwind,
+	_In_  HandlerType,
+	_In_  ImageBase,
+	_In_  ControlPC,
+	_In_  FunctionEntry,
+	_Inout_  ContextRecord,
+	_Out_  InFunction,
+	_Out_  EstablisherFrame,
+	_Inout_opt_  ContextPointers
 );
 
-/* >>> AUTOHOOK_RtlLookupFunctionEntry END <<< */
+/* >>> AUTOHOOK_RtlVirtualUnwind END <<< */
 

@@ -2008,17 +2008,30 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_RtlLookupFunctionEntry BEGIN <<< */
+/* >>> AUTOHOOK_RtlVirtualUnwind BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
-HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ ULONGLONG ControlPc,
-	_Out_ PULONGLONG ImageBase,
-	_Out_ PULONGLONG TargetGp
+// REVIEW: 引数 HandlerType: 型  を i(int32)で仮記録。要確認
+// REVIEW: 引数 ImageBase: 型  を i(int32)で仮記録。要確認
+// REVIEW: 引数 ControlPC: 型  を i(int32)で仮記録。要確認
+// REVIEW: 引数 FunctionEntry: 型  を i(int32)で仮記録。要確認
+// REVIEW: 引数 ContextRecord: 型  を i(int32)で仮記録。要確認
+// REVIEW: 引数 InFunction: 型  を i(int32)で仮記録。要確認
+// REVIEW: 引数 EstablisherFrame: 型  を i(int32)で仮記録。要確認
+// REVIEW: 引数 ContextPointers: 型  を i(int32)で仮記録。要確認
+HOOKDEF(PEXCEPTION_ROUTINE, WINAPI, RtlVirtualUnwind, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_  HandlerType,
+	_In_  ImageBase,
+	_In_  ControlPC,
+	_In_  FunctionEntry,
+	_Inout_  ContextRecord,
+	_Out_  InFunction,
+	_Out_  EstablisherFrame,
+	_Inout_opt_  ContextPointers
 ) {
-	PVOID ret;
-	ret = Old_RtlLookupFunctionEntry(ControlPc, ImageBase, TargetGp);
-	LOQ_nonnull("misc", "iII", "ControlPc", ControlPc, "ImageBase", ImageBase, "TargetGp", TargetGp);
+	PEXCEPTION_ROUTINE ret;
+	ret = Old_RtlVirtualUnwind(HandlerType, ImageBase, ControlPC, FunctionEntry, ContextRecord, InFunction, EstablisherFrame, ContextPointers);
+	LOQ_nonnull("misc", "iiiiiiii", "HandlerType", HandlerType, "ImageBase", ImageBase, "ControlPC", ControlPC, "FunctionEntry", FunctionEntry, "ContextRecord", ContextRecord, "InFunction", InFunction, "EstablisherFrame", EstablisherFrame, "ContextPointers", ContextPointers);
 	return ret;
 }
-/* >>> AUTOHOOK_RtlLookupFunctionEntry END <<< */
+/* >>> AUTOHOOK_RtlVirtualUnwind END <<< */
 
