@@ -3931,7 +3931,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 #include "hook_vbscript.h"
 
 /* >>> AUTOHOOK_RtlGetSuiteMask BEGIN <<< */
-HOOKDEF(ULONG NTAPI, WINAPI, RtlGetSuiteMask,
+HOOKDEF(ULONG, NTAPI, RtlGetSuiteMask,
 	void
 );
 
