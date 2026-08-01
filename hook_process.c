@@ -1540,15 +1540,16 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetCurrentProcess BEGIN <<< */
+/* >>> AUTOHOOK_GetCurrentProcessId BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(HANDLE, WINAPI, GetCurrentProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetCurrentProcessId, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
 ) {
-	HANDLE ret;
-	ret = Old_GetCurrentProcess();
-	LOQ_handle("process", "");
+	DWORD ret;
+	ret = Old_GetCurrentProcessId();
+	LOQ_nonzero("process", "");
 	return ret;
 }
-/* >>> AUTOHOOK_GetCurrentProcess END <<< */
+/* >>> AUTOHOOK_GetCurrentProcessId END <<< */
 

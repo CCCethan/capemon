@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_GetCurrentProcess BEGIN <<< */
-HOOK(kernel32, GetCurrentProcess),
-HOOK(kernelbase, GetCurrentProcess),
-/* >>> AUTOHOOK_GetCurrentProcess END <<< */
+/* >>> AUTOHOOK_GetCurrentProcessId BEGIN <<< */
+HOOK(kernel32, GetCurrentProcessId),
+HOOK(kernelbase, GetCurrentProcessId),
+/* >>> AUTOHOOK_GetCurrentProcessId END <<< */
 };
 
 hook_t native_hooks[] = {

@@ -3930,10 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_GetCurrentProcess BEGIN <<< */
-HOOKDEF(HANDLE, WINAPI, GetCurrentProcess,
+/* >>> AUTOHOOK_GetCurrentProcessId BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, GetCurrentProcessId,
 	void
 );
 
-/* >>> AUTOHOOK_GetCurrentProcess END <<< */
+/* >>> AUTOHOOK_GetCurrentProcessId END <<< */
 
