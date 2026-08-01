@@ -2008,18 +2008,19 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_HeapFree BEGIN <<< */
+/* >>> AUTOHOOK_HeapReAlloc BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
-// REVIEW: 引数 lpMem: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, HeapFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+// REVIEW: 引数 lpMem: 入力バッファとして dwBytes バイト分を内容ログ('b')。dwBytes が実データ長でない/出力用バッファなら 'p'(アドレスのみ)へ戻すこと
+HOOKDEF(LPVOID, WINAPI, HeapReAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hHeap,
 	_In_ DWORD dwFlags,
-	_In_ LPVOID lpMem
+	_In_ LPVOID lpMem,
+	_In_ SIZE_T dwBytes
 ) {
-	BOOL ret;
-	ret = Old_HeapFree(hHeap, dwFlags, lpMem);
-	LOQ_bool("misc", "pip", "Heap", hHeap, "Flags", dwFlags, "Mem", lpMem);
+	LPVOID ret;
+	ret = Old_HeapReAlloc(hHeap, dwFlags, lpMem, dwBytes);
+	LOQ_nonnull("misc", "pibi", "Heap", hHeap, "Flags", dwFlags, "Mem", (size_t)dwBytes, lpMem, "Bytes", dwBytes);
 	return ret;
 }
-/* >>> AUTOHOOK_HeapFree END <<< */
+/* >>> AUTOHOOK_HeapReAlloc END <<< */
 
