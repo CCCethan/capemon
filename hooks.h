@@ -3930,11 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_lstrcmpA BEGIN <<< */
-HOOKDEF(int, WINAPI, lstrcmpA,
-	_In_ LPCSTR lpString1,
-	_In_ LPCSTR lpString2
+/* >>> AUTOHOOK_lstrcmpiW BEGIN <<< */
+HOOKDEF(int, WINAPI, lstrcmpiW,
+	_In_ LPCWSTR lpString1,
+	_In_ LPCWSTR lpString2
 );
 
-/* >>> AUTOHOOK_lstrcmpA END <<< */
+/* >>> AUTOHOOK_lstrcmpiW END <<< */
 
