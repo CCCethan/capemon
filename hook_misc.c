@@ -2008,16 +2008,17 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_lstrlenA BEGIN <<< */
+/* >>> AUTOHOOK_lstrcmpW BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Strings
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(int, WINAPI, lstrlenA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lpString
+HOOKDEF(int, WINAPI, lstrcmpW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCWSTR lpString1,
+	_In_ LPCWSTR lpString2
 ) {
 	int ret;
-	ret = Old_lstrlenA(lpString);
-	LOQ_nonzero("misc", "s", "String", lpString);
+	ret = Old_lstrcmpW(lpString1, lpString2);
+	LOQ_nonzero("misc", "uu", "String1", lpString1, "String2", lpString2);
 	return ret;
 }
-/* >>> AUTOHOOK_lstrlenA END <<< */
+/* >>> AUTOHOOK_lstrcmpW END <<< */
 
