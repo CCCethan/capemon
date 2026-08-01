@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_RtlAddFunctionTable BEGIN <<< */
-HOOK(kernel32, RtlAddFunctionTable),
-HOOK(kernelbase, RtlAddFunctionTable),
-/* >>> AUTOHOOK_RtlAddFunctionTable END <<< */
+/* >>> AUTOHOOK_RtlInstallFunctionTableCallback BEGIN <<< */
+HOOK(kernel32, RtlInstallFunctionTableCallback),
+HOOK(kernelbase, RtlInstallFunctionTableCallback),
+/* >>> AUTOHOOK_RtlInstallFunctionTableCallback END <<< */
 };
 
 hook_t native_hooks[] = {
