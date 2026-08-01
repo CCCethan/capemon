@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_LeaveCriticalSection BEGIN <<< */
-HOOK(kernel32, LeaveCriticalSection),
-HOOK(kernelbase, LeaveCriticalSection),
-/* >>> AUTOHOOK_LeaveCriticalSection END <<< */
+/* >>> AUTOHOOK_DeleteCriticalSection BEGIN <<< */
+HOOK(kernel32, DeleteCriticalSection),
+HOOK(kernelbase, DeleteCriticalSection),
+/* >>> AUTOHOOK_DeleteCriticalSection END <<< */
 };
 
 hook_t native_hooks[] = {
