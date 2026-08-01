@@ -3930,10 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_TryEnterCriticalSection BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, TryEnterCriticalSection,
-	_Inout_ LPCRITICAL_SECTION lpCriticalSection
+/* >>> AUTOHOOK_TlsAlloc BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, TlsAlloc,
+	void
 );
 
-/* >>> AUTOHOOK_TryEnterCriticalSection END <<< */
+/* >>> AUTOHOOK_TlsAlloc END <<< */
 

@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_TryEnterCriticalSection BEGIN <<< */
-HOOK(kernel32, TryEnterCriticalSection),
-HOOK(kernelbase, TryEnterCriticalSection),
-/* >>> AUTOHOOK_TryEnterCriticalSection END <<< */
+/* >>> AUTOHOOK_TlsAlloc BEGIN <<< */
+HOOK(kernel32, TlsAlloc),
+HOOK(kernelbase, TlsAlloc),
+/* >>> AUTOHOOK_TlsAlloc END <<< */
 };
 
 hook_t native_hooks[] = {
