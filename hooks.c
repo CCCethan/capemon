@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_GetLastError BEGIN <<< */
-HOOK(kernel32, GetLastError),
-HOOK(kernelbase, GetLastError),
-/* >>> AUTOHOOK_GetLastError END <<< */
+/* >>> AUTOHOOK_SetLastError BEGIN <<< */
+HOOK(kernel32, SetLastError),
+HOOK(kernelbase, SetLastError),
+/* >>> AUTOHOOK_SetLastError END <<< */
 };
 
 hook_t native_hooks[] = {

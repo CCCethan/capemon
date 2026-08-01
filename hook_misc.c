@@ -2008,16 +2008,14 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetLastError BEGIN <<< */
+/* >>> AUTOHOOK_SetLastError BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetLastError, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
+HOOKDEF(void, WINAPI, SetLastError, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwErrCode
 ) {
-	DWORD ret;
-	ret = Old_GetLastError();
-	LOQ_nonzero("misc", "");
-	return ret;
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_SetLastError(dwErrCode);
+	LOQ_void("misc", "i", "ErrCode", dwErrCode);
 }
-/* >>> AUTOHOOK_GetLastError END <<< */
+/* >>> AUTOHOOK_SetLastError END <<< */
 
