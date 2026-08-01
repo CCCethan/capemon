@@ -2008,16 +2008,17 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_RtlGetSuiteMask BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
-// REVIEW: 戻り型 ULONG の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(ULONG, NTAPI, RtlGetSuiteMask,
-	void
+/* >>> AUTOHOOK_HeapAlloc BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
+HOOKDEF(LPVOID, WINAPI, HeapAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hHeap,
+	_In_ DWORD dwFlags,
+	_In_ SIZE_T dwBytes
 ) {
-	ULONG ret;
-	ret = Old_RtlGetSuiteMask();
-	LOQ_nonzero("misc", "");
+	LPVOID ret;
+	ret = Old_HeapAlloc(hHeap, dwFlags, dwBytes);
+	LOQ_nonnull("misc", "pii", "Heap", hHeap, "Flags", dwFlags, "Bytes", dwBytes);
 	return ret;
 }
-/* >>> AUTOHOOK_RtlGetSuiteMask END <<< */
+/* >>> AUTOHOOK_HeapAlloc END <<< */
 

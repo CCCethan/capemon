@@ -3930,10 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_RtlGetSuiteMask BEGIN <<< */
-HOOKDEF(ULONG, NTAPI, RtlGetSuiteMask,
-	void
+/* >>> AUTOHOOK_HeapAlloc BEGIN <<< */
+HOOKDEF(LPVOID, WINAPI, HeapAlloc,
+	_In_ HANDLE hHeap,
+	_In_ DWORD dwFlags,
+	_In_ SIZE_T dwBytes
 );
 
-/* >>> AUTOHOOK_RtlGetSuiteMask END <<< */
+/* >>> AUTOHOOK_HeapAlloc END <<< */
 

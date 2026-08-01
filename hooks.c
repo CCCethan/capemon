@@ -818,9 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_RtlGetSuiteMask BEGIN <<< */
-HOOK(ntdll, RtlGetSuiteMask),
-/* >>> AUTOHOOK_RtlGetSuiteMask END <<< */
+/* >>> AUTOHOOK_HeapAlloc BEGIN <<< */
+HOOK(kernel32, HeapAlloc),
+HOOK(kernelbase, HeapAlloc),
+/* >>> AUTOHOOK_HeapAlloc END <<< */
 };
 
 hook_t native_hooks[] = {
