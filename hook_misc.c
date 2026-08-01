@@ -2008,16 +2008,16 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_lstrcatW BEGIN <<< */
+/* >>> AUTOHOOK_lstrcatA BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Strings
-HOOKDEF(LPWSTR, WINAPI, lstrcatW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ LPWSTR lpString1,
-	_In_ LPWSTR lpString2
+HOOKDEF(LPSTR, WINAPI, lstrcatA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ LPSTR lpString1,
+	_In_ LPSTR lpString2
 ) {
-	LPWSTR ret;
-	ret = Old_lstrcatW(lpString1, lpString2);
-	LOQ_nonnull("misc", "uu", "String1", lpString1, "String2", lpString2);
+	LPSTR ret;
+	ret = Old_lstrcatA(lpString1, lpString2);
+	LOQ_nonnull("misc", "ss", "String1", lpString1, "String2", lpString2);
 	return ret;
 }
-/* >>> AUTOHOOK_lstrcatW END <<< */
+/* >>> AUTOHOOK_lstrcatA END <<< */
 
