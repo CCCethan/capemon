@@ -2007,20 +2007,3 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 		"OutputBuffer", OutputBufferLength, OutputBuffer);
 	return ret;
 }
-
-/* >>> AUTOHOOK_HeapSize BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
-// REVIEW: 戻り型 SIZE_T の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpMem: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(SIZE_T, WINAPI, HeapSize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hHeap,
-	_In_ DWORD dwFlags,
-	_In_ LPCVOID lpMem
-) {
-	SIZE_T ret;
-	ret = Old_HeapSize(hHeap, dwFlags, lpMem);
-	LOQ_nonzero("misc", "pip", "Heap", hHeap, "Flags", dwFlags, "Mem", lpMem);
-	return ret;
-}
-/* >>> AUTOHOOK_HeapSize END <<< */
-

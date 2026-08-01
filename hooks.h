@@ -3930,12 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_HeapSize BEGIN <<< */
-HOOKDEF(SIZE_T, WINAPI, HeapSize,
-	_In_ HANDLE hHeap,
-	_In_ DWORD dwFlags,
-	_In_ LPCVOID lpMem
+/* >>> AUTOHOOK_GetProcessHeap BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, GetProcessHeap,
+	void
 );
 
-/* >>> AUTOHOOK_HeapSize END <<< */
+/* >>> AUTOHOOK_GetProcessHeap END <<< */
 
