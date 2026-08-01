@@ -2008,17 +2008,20 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_RtlRestoreContext BEGIN <<< */
+/* >>> AUTOHOOK_RtlAddFunctionTable BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
-// REVIEW: 引数 ContextRecord: 型 PCONTEXT は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 ExceptionRecord: 型 PEXCEPTION_RECORD は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(VOID, WINAPI, RtlRestoreContext, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PCONTEXT ContextRecord,
-	_In_ PEXCEPTION_RECORD ExceptionRecord
+// REVIEW: 引数 FunctionTable: 型 PRUNTIME_FUNCTION は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 BaseAddress: 型 DWORD64 を i(int32)で仮記録。要確認
+HOOKDEF(BOOLEAN, WINAPI, RtlAddFunctionTable, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ PRUNTIME_FUNCTION FunctionTable,
+	_In_ DWORD EntryCount,
+	_In_ DWORD64 BaseAddress,
+	_In_ ULONGLONG TargetGp
 ) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_RtlRestoreContext(ContextRecord, ExceptionRecord);
-	LOQ_void("misc", "pp", "ContextRecord", ContextRecord, "ExceptionRecord", ExceptionRecord);
+	BOOLEAN ret;
+	ret = Old_RtlAddFunctionTable(FunctionTable, EntryCount, BaseAddress, TargetGp);
+	LOQ_bool("misc", "piii", "FunctionTable", FunctionTable, "EntryCount", EntryCount, "BaseAddress", BaseAddress, "TargetGp", TargetGp);
+	return ret;
 }
-/* >>> AUTOHOOK_RtlRestoreContext END <<< */
+/* >>> AUTOHOOK_RtlAddFunctionTable END <<< */
 

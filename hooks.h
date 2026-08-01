@@ -3930,11 +3930,13 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_RtlRestoreContext BEGIN <<< */
-HOOKDEF(VOID, WINAPI, RtlRestoreContext,
-	_In_ PCONTEXT ContextRecord,
-	_In_ PEXCEPTION_RECORD ExceptionRecord
+/* >>> AUTOHOOK_RtlAddFunctionTable BEGIN <<< */
+HOOKDEF(BOOLEAN, WINAPI, RtlAddFunctionTable,
+	_In_ PRUNTIME_FUNCTION FunctionTable,
+	_In_ DWORD EntryCount,
+	_In_ DWORD64 BaseAddress,
+	_In_ ULONGLONG TargetGp
 );
 
-/* >>> AUTOHOOK_RtlRestoreContext END <<< */
+/* >>> AUTOHOOK_RtlAddFunctionTable END <<< */
 
