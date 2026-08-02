@@ -1081,7 +1081,7 @@ HOOKDEF(HRESULT, WINAPI, MkParseDisplayNameEx,
 	return ret;
 }
 
-/* >>> AUTOHOOK_all102 BEGIN <<< */
+/* >>> AUTOHOOK_all102v2 BEGIN <<< */
 // -> hook_network.c に追加 | category="network" | winapi:Authentication
 // REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpRemoteName: 型 LPTSTR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -1139,5 +1139,5 @@ HOOKDEF(DWORD, WINAPI, WNetOpenEnumW, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_nonzero("network", "iiipP", "Scope", dwScope, "Type", dwType, "Usage", dwUsage, "NetResource", lpNetResource, "HEnum", lphEnum);
 	return ret;
 }
-/* >>> AUTOHOOK_all102 END <<< */
+/* >>> AUTOHOOK_all102v2 END <<< */
 

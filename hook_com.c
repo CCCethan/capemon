@@ -72,7 +72,7 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_all102 BEGIN <<< */
+/* >>> AUTOHOOK_all102v2 BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:COM
 // REVIEW: 引数 pvReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
 HOOKDEF(HRESULT, WINAPI, CoInitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -268,5 +268,5 @@ HOOKDEF(HRESULT, WINAPI, StringFromIID, // 呼出規約は WINAPI 仮定(socket/
 	LOQ_hresult("com", "iP", "Rclsid", rclsid, "Lpsz", lplpsz);
 	return ret;
 }
-/* >>> AUTOHOOK_all102 END <<< */
+/* >>> AUTOHOOK_all102v2 END <<< */
 

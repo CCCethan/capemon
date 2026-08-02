@@ -178,7 +178,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_all102 BEGIN <<< */
+/* >>> AUTOHOOK_all102v2 BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 // REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -193,5 +193,5 @@ HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects, // 呼出規約は WINAPI 仮�
 	LOQ_nonzero("sync", "ipiii", "Count", nCount, "Handles", pHandles, "WaitAll", bWaitAll, "Milliseconds", dwMilliseconds, "WakeMask", dwWakeMask);
 	return ret;
 }
-/* >>> AUTOHOOK_all102 END <<< */
+/* >>> AUTOHOOK_all102v2 END <<< */
 

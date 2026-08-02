@@ -1927,7 +1927,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_all102 BEGIN <<< */
+/* >>> AUTOHOOK_all102v2 BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1998,5 +1998,5 @@ HOOKDEF(BOOL, WINAPI, SetEndOfFile, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_bool("filesystem", "p", "File", hFile);
 	return ret;
 }
-/* >>> AUTOHOOK_all102 END <<< */
+/* >>> AUTOHOOK_all102v2 END <<< */
 

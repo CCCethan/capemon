@@ -701,7 +701,7 @@ HOOKDEF(LONG, WINAPI, RegNotifyChangeKeyValue,
 	return ret;
 }
 
-/* >>> AUTOHOOK_all102 BEGIN <<< */
+/* >>> AUTOHOOK_all102v2 BEGIN <<< */
 // -> hook_reg.c に追加 | category="registry" | winapi:Registry
 // REVIEW: 戻り型 LONG の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 pvData: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
@@ -719,5 +719,5 @@ HOOKDEF(LONG, WINAPI, RegGetValueA, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_nonzero("registry", "pssiIpI", "Key", hkey, "SubKey", lpSubKey, "Value", lpValue, "Flags", dwFlags, "DwType", pdwType, "VData", pvData, "CbData", pcbData);
 	return ret;
 }
-/* >>> AUTOHOOK_all102 END <<< */
+/* >>> AUTOHOOK_all102v2 END <<< */
 

@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_all102 BEGIN <<< */
+/* >>> AUTOHOOK_all102v2 BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Font and Text
 // REVIEW: 戻り型 HFONT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lplf: 型 const LOGFONT* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -2544,5 +2544,5 @@ HOOKDEF(COLORREF, WINAPI, SetTextColor, // 呼出規約は WINAPI 仮定(socket/
 	LOQ_nonzero("misc", "pi", "Dc", hdc, "CrColor", crColor);
 	return ret;
 }
-/* >>> AUTOHOOK_all102 END <<< */
+/* >>> AUTOHOOK_all102v2 END <<< */
 

@@ -526,7 +526,7 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_all102 BEGIN <<< */
+/* >>> AUTOHOOK_all102v2 BEGIN <<< */
 // -> hook_window.c に追加 | category="windows" | winapi:Windows GDI
 HOOKDEF(BOOL, WINAPI, BitBlt, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HDC hdcDest,
@@ -869,5 +869,5 @@ HOOKDEF(BOOL, WINAPI, TranslateMessage, // 呼出規約は WINAPI 仮定(socket/
 	LOQ_bool("windows", "p", "Msg", lpMsg);
 	return ret;
 }
-/* >>> AUTOHOOK_all102 END <<< */
+/* >>> AUTOHOOK_all102v2 END <<< */
 
