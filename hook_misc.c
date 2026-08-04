@@ -2007,17 +2007,3 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 		"OutputBuffer", OutputBufferLength, OutputBuffer);
 	return ret;
 }
-
-/* >>> AUTOHOOK_SetEnvironmentVariableW BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
-HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpName,
-	_In_opt_ LPCWSTR lpValue
-) {
-	BOOL ret;
-	ret = Old_SetEnvironmentVariableW(lpName, lpValue);
-	LOQ_bool("misc", "uu", "Name", lpName, "Value", lpValue);
-	return ret;
-}
-/* >>> AUTOHOOK_SetEnvironmentVariableW END <<< */
-
