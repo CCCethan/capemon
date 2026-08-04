@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_IsValidCodePage BEGIN <<< */
-HOOK(kernel32, IsValidCodePage),
-HOOK(kernelbase, IsValidCodePage),
-/* >>> AUTOHOOK_IsValidCodePage END <<< */
+/* >>> AUTOHOOK_IsValidLocale BEGIN <<< */
+HOOK(kernel32, IsValidLocale),
+HOOK(kernelbase, IsValidLocale),
+/* >>> AUTOHOOK_IsValidLocale END <<< */
 };
 
 hook_t native_hooks[] = {

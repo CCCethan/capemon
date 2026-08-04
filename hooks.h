@@ -3930,10 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_IsValidCodePage BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, IsValidCodePage,
-	_In_ UINT CodePage
+/* >>> AUTOHOOK_IsValidLocale BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, IsValidLocale,
+	_In_ LCID Locale,
+	_In_ DWORD dwFlags
 );
 
-/* >>> AUTOHOOK_IsValidCodePage END <<< */
+/* >>> AUTOHOOK_IsValidLocale END <<< */
 

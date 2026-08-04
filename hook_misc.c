@@ -2008,15 +2008,17 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_IsValidCodePage BEGIN <<< */
+/* >>> AUTOHOOK_IsValidLocale BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-HOOKDEF(BOOL, WINAPI, IsValidCodePage, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ UINT CodePage
+// REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
+HOOKDEF(BOOL, WINAPI, IsValidLocale, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LCID Locale,
+	_In_ DWORD dwFlags
 ) {
 	BOOL ret;
-	ret = Old_IsValidCodePage(CodePage);
-	LOQ_bool("misc", "i", "CodePage", CodePage);
+	ret = Old_IsValidLocale(Locale, dwFlags);
+	LOQ_bool("misc", "ii", "Locale", Locale, "Flags", dwFlags);
 	return ret;
 }
-/* >>> AUTOHOOK_IsValidCodePage END <<< */
+/* >>> AUTOHOOK_IsValidLocale END <<< */
 
