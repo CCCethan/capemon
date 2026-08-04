@@ -178,16 +178,15 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_InterlockedPushEntrySList BEGIN <<< */
+/* >>> AUTOHOOK_InterlockedFlushSList BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(PSLIST_ENTRY, WINAPI, InterlockedPushEntrySList, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ PSLIST_HEADER ListHead,
-	_Inout_ PSLIST_ENTRY ListEntry
+HOOKDEF(PSLIST_ENTRY, WINAPI, InterlockedFlushSList, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ PSLIST_HEADER ListHead
 ) {
 	PSLIST_ENTRY ret;
-	ret = Old_InterlockedPushEntrySList(ListHead, ListEntry);
-	LOQ_nonnull("sync", "PP", "ListHead", ListHead, "ListEntry", ListEntry);
+	ret = Old_InterlockedFlushSList(ListHead);
+	LOQ_nonnull("sync", "P", "ListHead", ListHead);
 	return ret;
 }
-/* >>> AUTOHOOK_InterlockedPushEntrySList END <<< */
+/* >>> AUTOHOOK_InterlockedFlushSList END <<< */
 
