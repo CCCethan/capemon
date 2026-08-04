@@ -2008,17 +2008,15 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetSystemDefaultLocaleName BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(int, WINAPI, GetSystemDefaultLocaleName, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPWSTR lpLocaleName,
-	_In_ int cchLocaleName
+/* >>> AUTOHOOK_GetEnvironmentStringsW BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
+HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
 ) {
-	int ret;
-	ret = Old_GetSystemDefaultLocaleName(lpLocaleName, cchLocaleName);
-	LOQ_nonzero("misc", "ui", "LocaleName", lpLocaleName, "LocaleName", cchLocaleName);
+	LPWSTR ret;
+	ret = Old_GetEnvironmentStringsW();
+	LOQ_nonnull("misc", "");
 	return ret;
 }
-/* >>> AUTOHOOK_GetSystemDefaultLocaleName END <<< */
+/* >>> AUTOHOOK_GetEnvironmentStringsW END <<< */
 
