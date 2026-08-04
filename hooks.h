@@ -3930,10 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_GetConsoleOutputCP BEGIN <<< */
-HOOKDEF(UINT, WINAPI, GetConsoleOutputCP,
+/* >>> AUTOHOOK_GetConsoleCP BEGIN <<< */
+HOOKDEF(UINT, WINAPI, GetConsoleCP,
 	void
 );
 
-/* >>> AUTOHOOK_GetConsoleOutputCP END <<< */
+/* >>> AUTOHOOK_GetConsoleCP END <<< */
 

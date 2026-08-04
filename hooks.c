@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_GetConsoleOutputCP BEGIN <<< */
-HOOK(kernel32, GetConsoleOutputCP),
-HOOK(kernelbase, GetConsoleOutputCP),
-/* >>> AUTOHOOK_GetConsoleOutputCP END <<< */
+/* >>> AUTOHOOK_GetConsoleCP BEGIN <<< */
+HOOK(kernel32, GetConsoleCP),
+HOOK(kernelbase, GetConsoleCP),
+/* >>> AUTOHOOK_GetConsoleCP END <<< */
 };
 
 hook_t native_hooks[] = {
