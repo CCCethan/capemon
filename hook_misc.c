@@ -2008,17 +2008,15 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_IsValidLocale BEGIN <<< */
+/* >>> AUTOHOOK_IsValidLocaleName BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
-HOOKDEF(BOOL, WINAPI, IsValidLocale, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LCID Locale,
-	_In_ DWORD dwFlags
+HOOKDEF(BOOL, WINAPI, IsValidLocaleName, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCWSTR lpLocaleName
 ) {
 	BOOL ret;
-	ret = Old_IsValidLocale(Locale, dwFlags);
-	LOQ_bool("misc", "ii", "Locale", Locale, "Flags", dwFlags);
+	ret = Old_IsValidLocaleName(lpLocaleName);
+	LOQ_bool("misc", "u", "LocaleName", lpLocaleName);
 	return ret;
 }
-/* >>> AUTOHOOK_IsValidLocale END <<< */
+/* >>> AUTOHOOK_IsValidLocaleName END <<< */
 
