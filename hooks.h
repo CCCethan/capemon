@@ -3930,9 +3930,9 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_GetTimeFormatW BEGIN <<< */
-HOOKDEF(int, WINAPI, GetTimeFormatW,
-	_In_ LCID Locale,
+/* >>> AUTOHOOK_GetTimeFormatEx BEGIN <<< */
+HOOKDEF(int, WINAPI, GetTimeFormatEx,
+	_In_opt_ LPCWSTR lpLocaleName,
 	_In_ DWORD dwFlags,
 	_In_opt_ const SYSTEMTIME* lpTime,
 	_In_opt_ LPCWSTR lpFormat,
@@ -3940,5 +3940,5 @@ HOOKDEF(int, WINAPI, GetTimeFormatW,
 	_In_ int cchTime
 );
 
-/* >>> AUTOHOOK_GetTimeFormatW END <<< */
+/* >>> AUTOHOOK_GetTimeFormatEx END <<< */
 

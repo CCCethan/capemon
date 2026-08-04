@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_GetTimeFormatW BEGIN <<< */
-HOOK(kernel32, GetTimeFormatW),
-HOOK(kernelbase, GetTimeFormatW),
-/* >>> AUTOHOOK_GetTimeFormatW END <<< */
+/* >>> AUTOHOOK_GetTimeFormatEx BEGIN <<< */
+HOOK(kernel32, GetTimeFormatEx),
+HOOK(kernelbase, GetTimeFormatEx),
+/* >>> AUTOHOOK_GetTimeFormatEx END <<< */
 };
 
 hook_t native_hooks[] = {

@@ -2008,13 +2008,12 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetTimeFormatW BEGIN <<< */
+/* >>> AUTOHOOK_GetTimeFormatEx BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
 // REVIEW: 引数 lpTime: 型 const SYSTEMTIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(int, WINAPI, GetTimeFormatW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LCID Locale,
+HOOKDEF(int, WINAPI, GetTimeFormatEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCWSTR lpLocaleName,
 	_In_ DWORD dwFlags,
 	_In_opt_ const SYSTEMTIME* lpTime,
 	_In_opt_ LPCWSTR lpFormat,
@@ -2022,9 +2021,9 @@ HOOKDEF(int, WINAPI, GetTimeFormatW, // 呼出規約は WINAPI 仮定(socket/nat
 	_In_ int cchTime
 ) {
 	int ret;
-	ret = Old_GetTimeFormatW(Locale, dwFlags, lpTime, lpFormat, lpTimeStr, cchTime);
-	LOQ_nonzero("misc", "iipuui", "Locale", Locale, "Flags", dwFlags, "Time", lpTime, "Format", lpFormat, "TimeStr", lpTimeStr, "Time", cchTime);
+	ret = Old_GetTimeFormatEx(lpLocaleName, dwFlags, lpTime, lpFormat, lpTimeStr, cchTime);
+	LOQ_nonzero("misc", "uipuui", "LocaleName", lpLocaleName, "Flags", dwFlags, "Time", lpTime, "Format", lpFormat, "TimeStr", lpTimeStr, "Time", cchTime);
 	return ret;
 }
-/* >>> AUTOHOOK_GetTimeFormatW END <<< */
+/* >>> AUTOHOOK_GetTimeFormatEx END <<< */
 
