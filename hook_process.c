@@ -1540,15 +1540,17 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_LoadLibraryA BEGIN <<< */
+/* >>> AUTOHOOK_LoadLibraryExA BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
-HOOKDEF(HMODULE, WINAPI, LoadLibraryA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lpFileName
+HOOKDEF(HMODULE, WINAPI, LoadLibraryExA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCSTR lpFileName,
+	_Reserved_ HANDLE hFile,
+	_In_ DWORD dwFlags
 ) {
 	HMODULE ret;
-	ret = Old_LoadLibraryA(lpFileName);
-	LOQ_nonnull("process", "f", "FileName", lpFileName);
+	ret = Old_LoadLibraryExA(lpFileName, hFile, dwFlags);
+	LOQ_nonnull("process", "fpi", "FileName", lpFileName, "File", hFile, "Flags", dwFlags);
 	return ret;
 }
-/* >>> AUTOHOOK_LoadLibraryA END <<< */
+/* >>> AUTOHOOK_LoadLibraryExA END <<< */
 
