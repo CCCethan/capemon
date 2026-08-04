@@ -3930,11 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_LocaleNameToLCID BEGIN <<< */
-HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
-	_In_ LPCWSTR lpName,
+/* >>> AUTOHOOK_EnumSystemLocalesW BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW,
+	_In_ LOCALE_ENUMPROC lpLocaleEnumProc,
 	_In_ DWORD dwFlags
 );
 
-/* >>> AUTOHOOK_LocaleNameToLCID END <<< */
+/* >>> AUTOHOOK_EnumSystemLocalesW END <<< */
 

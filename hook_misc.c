@@ -2008,17 +2008,17 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_LocaleNameToLCID BEGIN <<< */
+/* >>> AUTOHOOK_EnumSystemLocalesW BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 LCID の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(LCID, WINAPI, LocaleNameToLCID, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpName,
+// REVIEW: 引数 lpLocaleEnumProc: 型 LOCALE_ENUMPROC を i(int32)で仮記録。要確認
+HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LOCALE_ENUMPROC lpLocaleEnumProc,
 	_In_ DWORD dwFlags
 ) {
-	LCID ret;
-	ret = Old_LocaleNameToLCID(lpName, dwFlags);
-	LOQ_nonzero("misc", "ui", "Name", lpName, "Flags", dwFlags);
+	BOOL ret;
+	ret = Old_EnumSystemLocalesW(lpLocaleEnumProc, dwFlags);
+	LOQ_bool("misc", "ii", "LocaleEnumProc", lpLocaleEnumProc, "Flags", dwFlags);
 	return ret;
 }
-/* >>> AUTOHOOK_LocaleNameToLCID END <<< */
+/* >>> AUTOHOOK_EnumSystemLocalesW END <<< */
 

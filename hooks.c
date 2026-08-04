@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_LocaleNameToLCID BEGIN <<< */
-HOOK(kernel32, LocaleNameToLCID),
-HOOK(kernelbase, LocaleNameToLCID),
-/* >>> AUTOHOOK_LocaleNameToLCID END <<< */
+/* >>> AUTOHOOK_EnumSystemLocalesW BEGIN <<< */
+HOOK(kernel32, EnumSystemLocalesW),
+HOOK(kernelbase, EnumSystemLocalesW),
+/* >>> AUTOHOOK_EnumSystemLocalesW END <<< */
 };
 
 hook_t native_hooks[] = {
