@@ -72,16 +72,21 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetConsoleCP BEGIN <<< */
+/* >>> AUTOHOOK_ReadConsoleW BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:Consoles
-// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(UINT, WINAPI, GetConsoleCP, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
+// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+// REVIEW: 引数 pInputControl: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, ReadConsoleW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hConsoleInput,
+	_Out_ LPVOID lpBuffer,
+	_In_ DWORD nNumberOfCharsToRead,
+	_Out_ LPDWORD lpNumberOfCharsRead,
+	_In_opt_ LPVOID pInputControl
 ) {
-	UINT ret;
-	ret = Old_GetConsoleCP();
-	LOQ_nonzero("com", "");
+	BOOL ret;
+	ret = Old_ReadConsoleW(hConsoleInput, lpBuffer, nNumberOfCharsToRead, lpNumberOfCharsRead, pInputControl);
+	LOQ_bool("com", "ppiIp", "ConsoleInput", hConsoleInput, "Buffer", lpBuffer, "NumberOfCharsToRead", nNumberOfCharsToRead, "NumberOfCharsRead", lpNumberOfCharsRead, "InputControl", pInputControl);
 	return ret;
 }
-/* >>> AUTOHOOK_GetConsoleCP END <<< */
+/* >>> AUTOHOOK_ReadConsoleW END <<< */
 
