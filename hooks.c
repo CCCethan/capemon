@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_QueryPerformanceCounter BEGIN <<< */
-HOOK(kernel32, QueryPerformanceCounter),
-HOOK(kernelbase, QueryPerformanceCounter),
-/* >>> AUTOHOOK_QueryPerformanceCounter END <<< */
+/* >>> AUTOHOOK_QueryPerformanceFrequency BEGIN <<< */
+HOOK(kernel32, QueryPerformanceFrequency),
+HOOK(kernelbase, QueryPerformanceFrequency),
+/* >>> AUTOHOOK_QueryPerformanceFrequency END <<< */
 };
 
 hook_t native_hooks[] = {
