@@ -1539,3 +1539,16 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	LOQ_zero("process", "lL", "Attribute", Attribute, "Value", lpValue);
 	return ret;
 }
+
+/* >>> AUTOHOOK_FreeEnvironmentStringsW BEGIN <<< */
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, FreeEnvironmentStringsW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPWSTR lpszEnvironmentBlock
+) {
+	BOOL ret;
+	ret = Old_FreeEnvironmentStringsW(lpszEnvironmentBlock);
+	LOQ_bool("process", "u", "SzEnvironmentBlock", lpszEnvironmentBlock);
+	return ret;
+}
+/* >>> AUTOHOOK_FreeEnvironmentStringsW END <<< */
+

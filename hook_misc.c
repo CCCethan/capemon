@@ -2007,16 +2007,3 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 		"OutputBuffer", OutputBufferLength, OutputBuffer);
 	return ret;
 }
-
-/* >>> AUTOHOOK_GetEnvironmentStringsW BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
-HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	LPWSTR ret;
-	ret = Old_GetEnvironmentStringsW();
-	LOQ_nonnull("misc", "");
-	return ret;
-}
-/* >>> AUTOHOOK_GetEnvironmentStringsW END <<< */
-
