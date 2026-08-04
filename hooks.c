@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_GetOEMCP BEGIN <<< */
-HOOK(kernel32, GetOEMCP),
-HOOK(kernelbase, GetOEMCP),
-/* >>> AUTOHOOK_GetOEMCP END <<< */
+/* >>> AUTOHOOK_GetCPInfo BEGIN <<< */
+HOOK(kernel32, GetCPInfo),
+HOOK(kernelbase, GetCPInfo),
+/* >>> AUTOHOOK_GetCPInfo END <<< */
 };
 
 hook_t native_hooks[] = {

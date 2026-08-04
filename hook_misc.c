@@ -2008,16 +2008,16 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetOEMCP BEGIN <<< */
+/* >>> AUTOHOOK_GetCPInfo BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(UINT, WINAPI, GetOEMCP, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
+HOOKDEF(BOOL, WINAPI, GetCPInfo, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ UINT CodePage,
+	_Out_ LPCPINFO lpCPInfo
 ) {
-	UINT ret;
-	ret = Old_GetOEMCP();
-	LOQ_nonzero("misc", "");
+	BOOL ret;
+	ret = Old_GetCPInfo(CodePage, lpCPInfo);
+	LOQ_bool("misc", "iP", "CodePage", CodePage, "CPInfo", lpCPInfo);
 	return ret;
 }
-/* >>> AUTOHOOK_GetOEMCP END <<< */
+/* >>> AUTOHOOK_GetCPInfo END <<< */
 
