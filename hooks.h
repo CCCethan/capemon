@@ -3930,13 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_VirtualProtect BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, VirtualProtect,
-	_In_ LPVOID lpAddress,
-	_In_ SIZE_T dwSize,
-	_In_ DWORD flNewProtect,
-	_Out_ PDWORD lpflOldProtect
+/* >>> AUTOHOOK_GetModuleHandleW BEGIN <<< */
+HOOKDEF(HMODULE, WINAPI, GetModuleHandleW,
+	_In_opt_ LPCWSTR lpModuleName
 );
 
-/* >>> AUTOHOOK_VirtualProtect END <<< */
+/* >>> AUTOHOOK_GetModuleHandleW END <<< */
 

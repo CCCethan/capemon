@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_VirtualProtect BEGIN <<< */
-HOOK(kernel32, VirtualProtect),
-HOOK(kernelbase, VirtualProtect),
-/* >>> AUTOHOOK_VirtualProtect END <<< */
+/* >>> AUTOHOOK_GetModuleHandleW BEGIN <<< */
+HOOK(kernel32, GetModuleHandleW),
+HOOK(kernelbase, GetModuleHandleW),
+/* >>> AUTOHOOK_GetModuleHandleW END <<< */
 };
 
 hook_t native_hooks[] = {
