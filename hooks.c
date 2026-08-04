@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_LCMapStringW BEGIN <<< */
-HOOK(kernel32, LCMapStringW),
-HOOK(kernelbase, LCMapStringW),
-/* >>> AUTOHOOK_LCMapStringW END <<< */
+/* >>> AUTOHOOK_LCMapStringA BEGIN <<< */
+HOOK(kernel32, LCMapStringA),
+HOOK(kernelbase, LCMapStringA),
+/* >>> AUTOHOOK_LCMapStringA END <<< */
 };
 
 hook_t native_hooks[] = {
