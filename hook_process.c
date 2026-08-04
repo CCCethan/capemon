@@ -1539,15 +1539,3 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	LOQ_zero("process", "lL", "Attribute", Attribute, "Value", lpValue);
 	return ret;
 }
-
-/* >>> AUTOHOOK_GetStartupInfoW BEGIN <<< */
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(VOID, WINAPI, GetStartupInfoW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPSTARTUPINFOW lpStartupInfo
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_GetStartupInfoW(lpStartupInfo);
-	LOQ_void("process", "P", "StartupInfo", lpStartupInfo);
-}
-/* >>> AUTOHOOK_GetStartupInfoW END <<< */
-
