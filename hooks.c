@@ -817,11 +817,6 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsMonthName),
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
-
-/* >>> AUTOHOOK_InterlockedFlushSList BEGIN <<< */
-HOOK(kernel32, InterlockedFlushSList),
-HOOK(kernelbase, InterlockedFlushSList),
-/* >>> AUTOHOOK_InterlockedFlushSList END <<< */
 };
 
 hook_t native_hooks[] = {
