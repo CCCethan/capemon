@@ -2008,16 +2008,15 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetCPInfo BEGIN <<< */
+/* >>> AUTOHOOK_IsValidCodePage BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-HOOKDEF(BOOL, WINAPI, GetCPInfo, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ UINT CodePage,
-	_Out_ LPCPINFO lpCPInfo
+HOOKDEF(BOOL, WINAPI, IsValidCodePage, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ UINT CodePage
 ) {
 	BOOL ret;
-	ret = Old_GetCPInfo(CodePage, lpCPInfo);
-	LOQ_bool("misc", "iP", "CodePage", CodePage, "CPInfo", lpCPInfo);
+	ret = Old_IsValidCodePage(CodePage);
+	LOQ_bool("misc", "i", "CodePage", CodePage);
 	return ret;
 }
-/* >>> AUTOHOOK_GetCPInfo END <<< */
+/* >>> AUTOHOOK_IsValidCodePage END <<< */
 

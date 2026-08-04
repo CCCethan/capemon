@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_GetCPInfo BEGIN <<< */
-HOOK(kernel32, GetCPInfo),
-HOOK(kernelbase, GetCPInfo),
-/* >>> AUTOHOOK_GetCPInfo END <<< */
+/* >>> AUTOHOOK_IsValidCodePage BEGIN <<< */
+HOOK(kernel32, IsValidCodePage),
+HOOK(kernelbase, IsValidCodePage),
+/* >>> AUTOHOOK_IsValidCodePage END <<< */
 };
 
 hook_t native_hooks[] = {
