@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_CompareStringW BEGIN <<< */
-HOOK(kernel32, CompareStringW),
-HOOK(kernelbase, CompareStringW),
-/* >>> AUTOHOOK_CompareStringW END <<< */
+/* >>> AUTOHOOK_CompareStringA BEGIN <<< */
+HOOK(kernel32, CompareStringA),
+HOOK(kernelbase, CompareStringA),
+/* >>> AUTOHOOK_CompareStringA END <<< */
 };
 
 hook_t native_hooks[] = {

@@ -3930,15 +3930,15 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_CompareStringW BEGIN <<< */
-HOOKDEF(int, WINAPI, CompareStringW,
+/* >>> AUTOHOOK_CompareStringA BEGIN <<< */
+HOOKDEF(int, WINAPI, CompareStringA,
 	_In_ LCID Locale,
 	_In_ DWORD dwCmpFlags,
-	_In_ LPCWSTR lpString1,
+	_In_ LPCSTR lpString1,
 	_In_ int cchCount1,
-	_In_ LPCWSTR lpString2,
+	_In_ LPCSTR lpString2,
 	_In_ int cchCount2
 );
 
-/* >>> AUTOHOOK_CompareStringW END <<< */
+/* >>> AUTOHOOK_CompareStringA END <<< */
 
