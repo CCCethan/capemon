@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_FreeEnvironmentStringsW BEGIN <<< */
-HOOK(kernel32, FreeEnvironmentStringsW),
-HOOK(kernelbase, FreeEnvironmentStringsW),
-/* >>> AUTOHOOK_FreeEnvironmentStringsW END <<< */
+/* >>> AUTOHOOK_SetEnvironmentVariableW BEGIN <<< */
+HOOK(kernel32, SetEnvironmentVariableW),
+HOOK(kernelbase, SetEnvironmentVariableW),
+/* >>> AUTOHOOK_SetEnvironmentVariableW END <<< */
 };
 
 hook_t native_hooks[] = {

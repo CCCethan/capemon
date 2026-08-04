@@ -3930,10 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_FreeEnvironmentStringsW BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, FreeEnvironmentStringsW,
-	_In_ LPWSTR lpszEnvironmentBlock
+/* >>> AUTOHOOK_SetEnvironmentVariableW BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
+	_In_ LPCWSTR lpName,
+	_In_opt_ LPCWSTR lpValue
 );
 
-/* >>> AUTOHOOK_FreeEnvironmentStringsW END <<< */
+/* >>> AUTOHOOK_SetEnvironmentVariableW END <<< */
 
