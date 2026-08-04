@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_GetTimeZoneInformation BEGIN <<< */
-HOOK(kernel32, GetTimeZoneInformation),
-HOOK(kernelbase, GetTimeZoneInformation),
-/* >>> AUTOHOOK_GetTimeZoneInformation END <<< */
+/* >>> AUTOHOOK_GetUserDefaultLocaleName BEGIN <<< */
+HOOK(kernel32, GetUserDefaultLocaleName),
+HOOK(kernelbase, GetUserDefaultLocaleName),
+/* >>> AUTOHOOK_GetUserDefaultLocaleName END <<< */
 };
 
 hook_t native_hooks[] = {

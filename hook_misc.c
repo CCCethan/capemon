@@ -2008,16 +2008,17 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetTimeZoneInformation BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Time
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPTIME_ZONE_INFORMATION lpTimeZoneInformation
+/* >>> AUTOHOOK_GetUserDefaultLocaleName BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(int, WINAPI, GetUserDefaultLocaleName, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPWSTR lpLocaleName,
+	_In_ int cchLocaleName
 ) {
-	DWORD ret;
-	ret = Old_GetTimeZoneInformation(lpTimeZoneInformation);
-	LOQ_nonzero("misc", "P", "TimeZoneInformation", lpTimeZoneInformation);
+	int ret;
+	ret = Old_GetUserDefaultLocaleName(lpLocaleName, cchLocaleName);
+	LOQ_nonzero("misc", "ui", "LocaleName", lpLocaleName, "LocaleName", cchLocaleName);
 	return ret;
 }
-/* >>> AUTOHOOK_GetTimeZoneInformation END <<< */
+/* >>> AUTOHOOK_GetUserDefaultLocaleName END <<< */
 

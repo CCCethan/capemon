@@ -3930,10 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_GetTimeZoneInformation BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation,
-	_Out_ LPTIME_ZONE_INFORMATION lpTimeZoneInformation
+/* >>> AUTOHOOK_GetUserDefaultLocaleName BEGIN <<< */
+HOOKDEF(int, WINAPI, GetUserDefaultLocaleName,
+	_Out_ LPWSTR lpLocaleName,
+	_In_ int cchLocaleName
 );
 
-/* >>> AUTOHOOK_GetTimeZoneInformation END <<< */
+/* >>> AUTOHOOK_GetUserDefaultLocaleName END <<< */
 
