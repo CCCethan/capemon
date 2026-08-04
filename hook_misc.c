@@ -2008,18 +2008,20 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetStringTypeW BEGIN <<< */
+/* >>> AUTOHOOK_GetStringTypeA BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-HOOKDEF(BOOL, WINAPI, GetStringTypeW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+// REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
+HOOKDEF(BOOL, WINAPI, GetStringTypeA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LCID Locale,
 	_In_ DWORD dwInfoType,
-	_In_ LPCWSTR lpSrcStr,
+	_In_ LPCSTR lpSrcStr,
 	_In_ int cchSrc,
 	_Out_ LPWORD lpCharType
 ) {
 	BOOL ret;
-	ret = Old_GetStringTypeW(dwInfoType, lpSrcStr, cchSrc, lpCharType);
-	LOQ_bool("misc", "iuiI", "InfoType", dwInfoType, "SrcStr", lpSrcStr, "Src", cchSrc, "CharType", lpCharType);
+	ret = Old_GetStringTypeA(Locale, dwInfoType, lpSrcStr, cchSrc, lpCharType);
+	LOQ_bool("misc", "iisiI", "Locale", Locale, "InfoType", dwInfoType, "SrcStr", lpSrcStr, "Src", cchSrc, "CharType", lpCharType);
 	return ret;
 }
-/* >>> AUTOHOOK_GetStringTypeW END <<< */
+/* >>> AUTOHOOK_GetStringTypeA END <<< */
 
