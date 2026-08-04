@@ -2008,23 +2008,23 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetDateFormatW BEGIN <<< */
+/* >>> AUTOHOOK_GetDateFormatEx BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
 // REVIEW: 引数 lpDate: 型 const SYSTEMTIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(int, WINAPI, GetDateFormatW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LCID Locale,
+HOOKDEF(int, WINAPI, GetDateFormatEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCWSTR lpLocaleName,
 	_In_ DWORD dwFlags,
 	_In_opt_ const SYSTEMTIME* lpDate,
 	_In_opt_ LPCWSTR lpFormat,
 	_Out_opt_ LPWSTR lpDateStr,
-	_In_ int cchDate
+	_In_ int cchDate,
+	_In_opt_ LPCWSTR lpCalendar
 ) {
 	int ret;
-	ret = Old_GetDateFormatW(Locale, dwFlags, lpDate, lpFormat, lpDateStr, cchDate);
-	LOQ_nonzero("misc", "iipuui", "Locale", Locale, "Flags", dwFlags, "Date", lpDate, "Format", lpFormat, "DateStr", lpDateStr, "Date", cchDate);
+	ret = Old_GetDateFormatEx(lpLocaleName, dwFlags, lpDate, lpFormat, lpDateStr, cchDate, lpCalendar);
+	LOQ_nonzero("misc", "uipuuiu", "LocaleName", lpLocaleName, "Flags", dwFlags, "Date", lpDate, "Format", lpFormat, "DateStr", lpDateStr, "Date", cchDate, "Calendar", lpCalendar);
 	return ret;
 }
-/* >>> AUTOHOOK_GetDateFormatW END <<< */
+/* >>> AUTOHOOK_GetDateFormatEx END <<< */
 
