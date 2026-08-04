@@ -72,16 +72,16 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetConsoleMode BEGIN <<< */
+/* >>> AUTOHOOK_GetConsoleOutputCP BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:Consoles
-HOOKDEF(BOOL, WINAPI, GetConsoleMode, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hConsoleHandle,
-	_Out_ LPDWORD lpMode
+// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(UINT, WINAPI, GetConsoleOutputCP, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
 ) {
-	BOOL ret;
-	ret = Old_GetConsoleMode(hConsoleHandle, lpMode);
-	LOQ_bool("com", "pI", "ConsoleHandle", hConsoleHandle, "Mode", lpMode);
+	UINT ret;
+	ret = Old_GetConsoleOutputCP();
+	LOQ_nonzero("com", "");
 	return ret;
 }
-/* >>> AUTOHOOK_GetConsoleMode END <<< */
+/* >>> AUTOHOOK_GetConsoleOutputCP END <<< */
 
