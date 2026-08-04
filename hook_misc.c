@@ -2008,22 +2008,27 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_LCMapStringA BEGIN <<< */
+/* >>> AUTOHOOK_LCMapStringEx BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
-HOOKDEF(int, WINAPI, LCMapStringA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LCID Locale,
+// REVIEW: 引数 lpVersionInformation: 型 LPNLSVERSIONINFO は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 lpReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+// REVIEW: 引数 sortHandle: 型 LPARAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(int, WINAPI, LCMapStringEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCWSTR lpLocaleName,
 	_In_ DWORD dwMapFlags,
-	_In_ LPCSTR lpSrcStr,
+	_In_ LPCWSTR lpSrcStr,
 	_In_ int cchSrc,
-	_Out_opt_ LPSTR lpDestStr,
-	_In_ int cchDest
+	_Out_opt_ LPWSTR lpDestStr,
+	_In_ int cchDest,
+	_In_opt_ LPNLSVERSIONINFO lpVersionInformation,
+	_In_opt_ LPVOID lpReserved,
+	_In_opt_ LPARAM sortHandle
 ) {
 	int ret;
-	ret = Old_LCMapStringA(Locale, dwMapFlags, lpSrcStr, cchSrc, lpDestStr, cchDest);
-	LOQ_nonzero("misc", "iisisi", "Locale", Locale, "MapFlags", dwMapFlags, "SrcStr", lpSrcStr, "Src", cchSrc, "DestStr", lpDestStr, "Dest", cchDest);
+	ret = Old_LCMapStringEx(lpLocaleName, dwMapFlags, lpSrcStr, cchSrc, lpDestStr, cchDest, lpVersionInformation, lpReserved, sortHandle);
+	LOQ_nonzero("misc", "uiuiuippp", "LocaleName", lpLocaleName, "MapFlags", dwMapFlags, "SrcStr", lpSrcStr, "Src", cchSrc, "DestStr", lpDestStr, "Dest", cchDest, "VersionInformation", lpVersionInformation, "Reserved", lpReserved, "SortHandle", sortHandle);
 	return ret;
 }
-/* >>> AUTOHOOK_LCMapStringA END <<< */
+/* >>> AUTOHOOK_LCMapStringEx END <<< */
 
