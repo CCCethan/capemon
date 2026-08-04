@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_EnumSystemLocalesEx BEGIN <<< */
-HOOK(kernel32, EnumSystemLocalesEx),
-HOOK(kernelbase, EnumSystemLocalesEx),
-/* >>> AUTOHOOK_EnumSystemLocalesEx END <<< */
+/* >>> AUTOHOOK_GetDateFormatW BEGIN <<< */
+HOOK(kernel32, GetDateFormatW),
+HOOK(kernelbase, GetDateFormatW),
+/* >>> AUTOHOOK_GetDateFormatW END <<< */
 };
 
 hook_t native_hooks[] = {

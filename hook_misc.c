@@ -2008,21 +2008,23 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_EnumSystemLocalesEx BEGIN <<< */
+/* >>> AUTOHOOK_GetDateFormatW BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 引数 lpLocaleEnumProcEx: 型 LOCALE_ENUMPROCEX を i(int32)で仮記録。要確認
-// REVIEW: 引数 lParam: 型 LPARAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 lpReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, EnumSystemLocalesEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LOCALE_ENUMPROCEX lpLocaleEnumProcEx,
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
+// REVIEW: 引数 lpDate: 型 const SYSTEMTIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(int, WINAPI, GetDateFormatW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LCID Locale,
 	_In_ DWORD dwFlags,
-	_In_ LPARAM lParam,
-	_In_opt_ LPVOID lpReserved
+	_In_opt_ const SYSTEMTIME* lpDate,
+	_In_opt_ LPCWSTR lpFormat,
+	_Out_opt_ LPWSTR lpDateStr,
+	_In_ int cchDate
 ) {
-	BOOL ret;
-	ret = Old_EnumSystemLocalesEx(lpLocaleEnumProcEx, dwFlags, lParam, lpReserved);
-	LOQ_bool("misc", "iipp", "LocaleEnumProcEx", lpLocaleEnumProcEx, "Flags", dwFlags, "LParam", lParam, "Reserved", lpReserved);
+	int ret;
+	ret = Old_GetDateFormatW(Locale, dwFlags, lpDate, lpFormat, lpDateStr, cchDate);
+	LOQ_nonzero("misc", "iipuui", "Locale", Locale, "Flags", dwFlags, "Date", lpDate, "Format", lpFormat, "DateStr", lpDateStr, "Date", cchDate);
 	return ret;
 }
-/* >>> AUTOHOOK_EnumSystemLocalesEx END <<< */
+/* >>> AUTOHOOK_GetDateFormatW END <<< */
 
