@@ -3930,11 +3930,13 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_EnumSystemLocalesW BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW,
-	_In_ LOCALE_ENUMPROC lpLocaleEnumProc,
-	_In_ DWORD dwFlags
+/* >>> AUTOHOOK_EnumSystemLocalesEx BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, EnumSystemLocalesEx,
+	_In_ LOCALE_ENUMPROCEX lpLocaleEnumProcEx,
+	_In_ DWORD dwFlags,
+	_In_ LPARAM lParam,
+	_In_opt_ LPVOID lpReserved
 );
 
-/* >>> AUTOHOOK_EnumSystemLocalesW END <<< */
+/* >>> AUTOHOOK_EnumSystemLocalesEx END <<< */
 

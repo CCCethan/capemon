@@ -2008,17 +2008,21 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_EnumSystemLocalesW BEGIN <<< */
+/* >>> AUTOHOOK_EnumSystemLocalesEx BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 引数 lpLocaleEnumProc: 型 LOCALE_ENUMPROC を i(int32)で仮記録。要確認
-HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LOCALE_ENUMPROC lpLocaleEnumProc,
-	_In_ DWORD dwFlags
+// REVIEW: 引数 lpLocaleEnumProcEx: 型 LOCALE_ENUMPROCEX を i(int32)で仮記録。要確認
+// REVIEW: 引数 lParam: 型 LPARAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 lpReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, EnumSystemLocalesEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LOCALE_ENUMPROCEX lpLocaleEnumProcEx,
+	_In_ DWORD dwFlags,
+	_In_ LPARAM lParam,
+	_In_opt_ LPVOID lpReserved
 ) {
 	BOOL ret;
-	ret = Old_EnumSystemLocalesW(lpLocaleEnumProc, dwFlags);
-	LOQ_bool("misc", "ii", "LocaleEnumProc", lpLocaleEnumProc, "Flags", dwFlags);
+	ret = Old_EnumSystemLocalesEx(lpLocaleEnumProcEx, dwFlags, lParam, lpReserved);
+	LOQ_bool("misc", "iipp", "LocaleEnumProcEx", lpLocaleEnumProcEx, "Flags", dwFlags, "LParam", lParam, "Reserved", lpReserved);
 	return ret;
 }
-/* >>> AUTOHOOK_EnumSystemLocalesW END <<< */
+/* >>> AUTOHOOK_EnumSystemLocalesEx END <<< */
 
