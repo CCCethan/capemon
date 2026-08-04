@@ -1540,15 +1540,17 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetModuleHandleW BEGIN <<< */
+/* >>> AUTOHOOK_GetModuleHandleExW BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
-HOOKDEF(HMODULE, WINAPI, GetModuleHandleW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCWSTR lpModuleName
+HOOKDEF(BOOL, WINAPI, GetModuleHandleExW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwFlags,
+	_In_opt_ LPCWSTR lpModuleName,
+	_Out_ HMODULE* phModule
 ) {
-	HMODULE ret;
-	ret = Old_GetModuleHandleW(lpModuleName);
-	LOQ_nonnull("process", "F", "ModuleName", lpModuleName);
+	BOOL ret;
+	ret = Old_GetModuleHandleExW(dwFlags, lpModuleName, phModule);
+	LOQ_bool("process", "iFp", "Flags", dwFlags, "ModuleName", lpModuleName, "HModule", phModule);
 	return ret;
 }
-/* >>> AUTOHOOK_GetModuleHandleW END <<< */
+/* >>> AUTOHOOK_GetModuleHandleExW END <<< */
 
