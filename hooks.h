@@ -3930,10 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_InitializeSListHead BEGIN <<< */
-HOOKDEF(void, WINAPI, InitializeSListHead,
-	_Inout_ PSLIST_HEADER ListHead
+/* >>> AUTOHOOK_InterlockedPushEntrySList BEGIN <<< */
+HOOKDEF(PSLIST_ENTRY, WINAPI, InterlockedPushEntrySList,
+	_Inout_ PSLIST_HEADER ListHead,
+	_Inout_ PSLIST_ENTRY ListEntry
 );
 
-/* >>> AUTOHOOK_InitializeSListHead END <<< */
+/* >>> AUTOHOOK_InterlockedPushEntrySList END <<< */
 

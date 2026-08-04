@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_InitializeSListHead BEGIN <<< */
-HOOK(kernel32, InitializeSListHead),
-HOOK(kernelbase, InitializeSListHead),
-/* >>> AUTOHOOK_InitializeSListHead END <<< */
+/* >>> AUTOHOOK_InterlockedPushEntrySList BEGIN <<< */
+HOOK(kernel32, InterlockedPushEntrySList),
+HOOK(kernelbase, InterlockedPushEntrySList),
+/* >>> AUTOHOOK_InterlockedPushEntrySList END <<< */
 };
 
 hook_t native_hooks[] = {
