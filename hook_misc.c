@@ -2008,20 +2008,16 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetLocaleInfoEx BEGIN <<< */
+/* >>> AUTOHOOK_GetACP BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 LCType: 型 LCTYPE を i(int32)で仮記録。要確認
-HOOKDEF(int, WINAPI, GetLocaleInfoEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCWSTR lpLocaleName,
-	_In_ LCTYPE LCType,
-	_Out_opt_ LPWSTR lpLCData,
-	_In_ int cchData
+// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(UINT, WINAPI, GetACP, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
 ) {
-	int ret;
-	ret = Old_GetLocaleInfoEx(lpLocaleName, LCType, lpLCData, cchData);
-	LOQ_nonzero("misc", "uiui", "LocaleName", lpLocaleName, "LCType", LCType, "LCData", lpLCData, "Data", cchData);
+	UINT ret;
+	ret = Old_GetACP();
+	LOQ_nonzero("misc", "");
 	return ret;
 }
-/* >>> AUTOHOOK_GetLocaleInfoEx END <<< */
+/* >>> AUTOHOOK_GetACP END <<< */
 
