@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_GetStringTypeA BEGIN <<< */
-HOOK(kernel32, GetStringTypeA),
-HOOK(kernelbase, GetStringTypeA),
-/* >>> AUTOHOOK_GetStringTypeA END <<< */
+/* >>> AUTOHOOK_GetLocaleInfoW BEGIN <<< */
+HOOK(kernel32, GetLocaleInfoW),
+HOOK(kernelbase, GetLocaleInfoW),
+/* >>> AUTOHOOK_GetLocaleInfoW END <<< */
 };
 
 hook_t native_hooks[] = {

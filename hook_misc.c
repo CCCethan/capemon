@@ -2008,20 +2008,21 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetStringTypeA BEGIN <<< */
+/* >>> AUTOHOOK_GetLocaleInfoW BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
-HOOKDEF(BOOL, WINAPI, GetStringTypeA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+// REVIEW: 引数 LCType: 型 LCTYPE を i(int32)で仮記録。要確認
+HOOKDEF(int, WINAPI, GetLocaleInfoW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ LCID Locale,
-	_In_ DWORD dwInfoType,
-	_In_ LPCSTR lpSrcStr,
-	_In_ int cchSrc,
-	_Out_ LPWORD lpCharType
+	_In_ LCTYPE LCType,
+	_Out_opt_ LPWSTR lpLCData,
+	_In_ int cchData
 ) {
-	BOOL ret;
-	ret = Old_GetStringTypeA(Locale, dwInfoType, lpSrcStr, cchSrc, lpCharType);
-	LOQ_bool("misc", "iisiI", "Locale", Locale, "InfoType", dwInfoType, "SrcStr", lpSrcStr, "Src", cchSrc, "CharType", lpCharType);
+	int ret;
+	ret = Old_GetLocaleInfoW(Locale, LCType, lpLCData, cchData);
+	LOQ_nonzero("misc", "iiui", "Locale", Locale, "LCType", LCType, "LCData", lpLCData, "Data", cchData);
 	return ret;
 }
-/* >>> AUTOHOOK_GetStringTypeA END <<< */
+/* >>> AUTOHOOK_GetLocaleInfoW END <<< */
 
