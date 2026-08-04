@@ -3929,3 +3929,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 );
 
 #include "hook_vbscript.h"
+
+/* >>> AUTOHOOK_GetProcAddress BEGIN <<< */
+HOOKDEF(FARPROC, WINAPI, GetProcAddress,
+	_In_ HMODULE hModule,
+	_In_ LPCSTR lpProcName
+);
+
+/* >>> AUTOHOOK_GetProcAddress END <<< */
+
