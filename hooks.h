@@ -3930,11 +3930,13 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_GetProcAddress BEGIN <<< */
-HOOKDEF(FARPROC, WINAPI, GetProcAddress,
-	_In_ HMODULE hModule,
-	_In_ LPCSTR lpProcName
+/* >>> AUTOHOOK_VirtualProtect BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, VirtualProtect,
+	_In_ LPVOID lpAddress,
+	_In_ SIZE_T dwSize,
+	_In_ DWORD flNewProtect,
+	_Out_ PDWORD lpflOldProtect
 );
 
-/* >>> AUTOHOOK_GetProcAddress END <<< */
+/* >>> AUTOHOOK_VirtualProtect END <<< */
 

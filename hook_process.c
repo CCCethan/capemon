@@ -1539,17 +1539,3 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	LOQ_zero("process", "lL", "Attribute", Attribute, "Value", lpValue);
 	return ret;
 }
-
-/* >>> AUTOHOOK_GetProcAddress BEGIN <<< */
-// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
-HOOKDEF(FARPROC, WINAPI, GetProcAddress, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HMODULE hModule,
-	_In_ LPCSTR lpProcName
-) {
-	FARPROC ret;
-	ret = Old_GetProcAddress(hModule, lpProcName);
-	LOQ_nonnull("process", "ps", "Module", hModule, "ProcName", lpProcName);
-	return ret;
-}
-/* >>> AUTOHOOK_GetProcAddress END <<< */
-

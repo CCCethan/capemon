@@ -2007,3 +2007,20 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 		"OutputBuffer", OutputBufferLength, OutputBuffer);
 	return ret;
 }
+
+/* >>> AUTOHOOK_VirtualProtect BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
+// REVIEW: 引数 lpAddress: 入力バッファとして dwSize バイト分を内容ログ('b')。dwSize が実データ長でない/出力用バッファなら 'p'(アドレスのみ)へ戻すこと
+HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPVOID lpAddress,
+	_In_ SIZE_T dwSize,
+	_In_ DWORD flNewProtect,
+	_Out_ PDWORD lpflOldProtect
+) {
+	BOOL ret;
+	ret = Old_VirtualProtect(lpAddress, dwSize, flNewProtect, lpflOldProtect);
+	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
+	return ret;
+}
+/* >>> AUTOHOOK_VirtualProtect END <<< */
+
