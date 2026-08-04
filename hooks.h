@@ -3930,18 +3930,13 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_LCMapStringEx BEGIN <<< */
-HOOKDEF(int, WINAPI, LCMapStringEx,
-	_In_opt_ LPCWSTR lpLocaleName,
-	_In_ DWORD dwMapFlags,
+/* >>> AUTOHOOK_GetStringTypeW BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, GetStringTypeW,
+	_In_ DWORD dwInfoType,
 	_In_ LPCWSTR lpSrcStr,
 	_In_ int cchSrc,
-	_Out_opt_ LPWSTR lpDestStr,
-	_In_ int cchDest,
-	_In_opt_ LPNLSVERSIONINFO lpVersionInformation,
-	_In_opt_ LPVOID lpReserved,
-	_In_opt_ LPARAM sortHandle
+	_Out_ LPWORD lpCharType
 );
 
-/* >>> AUTOHOOK_LCMapStringEx END <<< */
+/* >>> AUTOHOOK_GetStringTypeW END <<< */
 
