@@ -3930,11 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_GetUserDefaultLocaleName BEGIN <<< */
-HOOKDEF(int, WINAPI, GetUserDefaultLocaleName,
+/* >>> AUTOHOOK_GetSystemDefaultLocaleName BEGIN <<< */
+HOOKDEF(int, WINAPI, GetSystemDefaultLocaleName,
 	_Out_ LPWSTR lpLocaleName,
 	_In_ int cchLocaleName
 );
 
-/* >>> AUTOHOOK_GetUserDefaultLocaleName END <<< */
+/* >>> AUTOHOOK_GetSystemDefaultLocaleName END <<< */
 
