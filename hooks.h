@@ -3930,14 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_ReadConsoleW BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, ReadConsoleW,
-	_In_ HANDLE hConsoleInput,
-	_Out_ LPVOID lpBuffer,
-	_In_ DWORD nNumberOfCharsToRead,
-	_Out_ LPDWORD lpNumberOfCharsRead,
-	_In_opt_ LPVOID pInputControl
+/* >>> AUTOHOOK_QueryPerformanceCounter BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
+	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
 
-/* >>> AUTOHOOK_ReadConsoleW END <<< */
+/* >>> AUTOHOOK_QueryPerformanceCounter END <<< */
 
