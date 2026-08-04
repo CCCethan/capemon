@@ -3930,10 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_GetStdHandle BEGIN <<< */
-HOOKDEF(HANDLE, WINAPI, GetStdHandle,
-	_In_ DWORD nStdHandle
+/* >>> AUTOHOOK_SetStdHandle BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, SetStdHandle,
+	_In_ DWORD nStdHandle,
+	_In_ HANDLE hHandle
 );
 
-/* >>> AUTOHOOK_GetStdHandle END <<< */
+/* >>> AUTOHOOK_SetStdHandle END <<< */
 

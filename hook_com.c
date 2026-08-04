@@ -72,15 +72,16 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetStdHandle BEGIN <<< */
+/* >>> AUTOHOOK_SetStdHandle BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:Consoles
-HOOKDEF(HANDLE, WINAPI, GetStdHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD nStdHandle
+HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD nStdHandle,
+	_In_ HANDLE hHandle
 ) {
-	HANDLE ret;
-	ret = Old_GetStdHandle(nStdHandle);
-	LOQ_handle("com", "i", "StdHandle", nStdHandle);
+	BOOL ret;
+	ret = Old_SetStdHandle(nStdHandle, hHandle);
+	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
 	return ret;
 }
-/* >>> AUTOHOOK_GetStdHandle END <<< */
+/* >>> AUTOHOOK_SetStdHandle END <<< */
 

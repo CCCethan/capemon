@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_GetStdHandle BEGIN <<< */
-HOOK(kernel32, GetStdHandle),
-HOOK(kernelbase, GetStdHandle),
-/* >>> AUTOHOOK_GetStdHandle END <<< */
+/* >>> AUTOHOOK_SetStdHandle BEGIN <<< */
+HOOK(kernel32, SetStdHandle),
+HOOK(kernelbase, SetStdHandle),
+/* >>> AUTOHOOK_SetStdHandle END <<< */
 };
 
 hook_t native_hooks[] = {
