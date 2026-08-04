@@ -2008,22 +2008,16 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetTimeFormatEx BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpTime: 型 const SYSTEMTIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(int, WINAPI, GetTimeFormatEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCWSTR lpLocaleName,
-	_In_ DWORD dwFlags,
-	_In_opt_ const SYSTEMTIME* lpTime,
-	_In_opt_ LPCWSTR lpFormat,
-	_Out_opt_ LPWSTR lpTimeStr,
-	_In_ int cchTime
+/* >>> AUTOHOOK_GetTimeZoneInformation BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Time
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPTIME_ZONE_INFORMATION lpTimeZoneInformation
 ) {
-	int ret;
-	ret = Old_GetTimeFormatEx(lpLocaleName, dwFlags, lpTime, lpFormat, lpTimeStr, cchTime);
-	LOQ_nonzero("misc", "uipuui", "LocaleName", lpLocaleName, "Flags", dwFlags, "Time", lpTime, "Format", lpFormat, "TimeStr", lpTimeStr, "Time", cchTime);
+	DWORD ret;
+	ret = Old_GetTimeZoneInformation(lpTimeZoneInformation);
+	LOQ_nonzero("misc", "P", "TimeZoneInformation", lpTimeZoneInformation);
 	return ret;
 }
-/* >>> AUTOHOOK_GetTimeFormatEx END <<< */
+/* >>> AUTOHOOK_GetTimeZoneInformation END <<< */
 
