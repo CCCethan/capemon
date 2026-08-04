@@ -3930,10 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_GetModuleHandleA BEGIN <<< */
-HOOKDEF(HMODULE, WINAPI, GetModuleHandleA,
-	_In_opt_ LPCSTR lpModuleName
+/* >>> AUTOHOOK_LoadLibraryW BEGIN <<< */
+HOOKDEF(HMODULE, WINAPI, LoadLibraryW,
+	_In_ LPCWSTR lpFileName
 );
 
-/* >>> AUTOHOOK_GetModuleHandleA END <<< */
+/* >>> AUTOHOOK_LoadLibraryW END <<< */
 
