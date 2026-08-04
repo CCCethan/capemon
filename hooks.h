@@ -3930,11 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_SetStdHandle BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, SetStdHandle,
-	_In_ DWORD nStdHandle,
-	_In_ HANDLE hHandle
+/* >>> AUTOHOOK_GetConsoleMode BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, GetConsoleMode,
+	_In_ HANDLE hConsoleHandle,
+	_Out_ LPDWORD lpMode
 );
 
-/* >>> AUTOHOOK_SetStdHandle END <<< */
+/* >>> AUTOHOOK_GetConsoleMode END <<< */
 

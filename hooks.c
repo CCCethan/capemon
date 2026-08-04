@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_SetStdHandle BEGIN <<< */
-HOOK(kernel32, SetStdHandle),
-HOOK(kernelbase, SetStdHandle),
-/* >>> AUTOHOOK_SetStdHandle END <<< */
+/* >>> AUTOHOOK_GetConsoleMode BEGIN <<< */
+HOOK(kernel32, GetConsoleMode),
+HOOK(kernelbase, GetConsoleMode),
+/* >>> AUTOHOOK_GetConsoleMode END <<< */
 };
 
 hook_t native_hooks[] = {

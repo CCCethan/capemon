@@ -72,16 +72,16 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_SetStdHandle BEGIN <<< */
+/* >>> AUTOHOOK_GetConsoleMode BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:Consoles
-HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD nStdHandle,
-	_In_ HANDLE hHandle
+HOOKDEF(BOOL, WINAPI, GetConsoleMode, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hConsoleHandle,
+	_Out_ LPDWORD lpMode
 ) {
 	BOOL ret;
-	ret = Old_SetStdHandle(nStdHandle, hHandle);
-	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
+	ret = Old_GetConsoleMode(hConsoleHandle, lpMode);
+	LOQ_bool("com", "pI", "ConsoleHandle", hConsoleHandle, "Mode", lpMode);
 	return ret;
 }
-/* >>> AUTOHOOK_SetStdHandle END <<< */
+/* >>> AUTOHOOK_GetConsoleMode END <<< */
 
