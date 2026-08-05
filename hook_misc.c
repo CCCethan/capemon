@@ -2007,17 +2007,3 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 		"OutputBuffer", OutputBufferLength, OutputBuffer);
 	return ret;
 }
-
-/* >>> AUTOHOOK_SysStringLen BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
-// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(UINT, WINAPI, SysStringLen, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ BSTR bstr
-) {
-	UINT ret;
-	ret = Old_SysStringLen(bstr);
-	LOQ_nonzero("misc", "u", "Str", bstr);
-	return ret;
-}
-/* >>> AUTOHOOK_SysStringLen END <<< */
-

@@ -71,3 +71,15 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	LOQ_hresult("com", "uu", "NetworkResource", strNetworkResource, "User", strUser);
 	return ret;
 }
+
+/* >>> AUTOHOOK_VariantInit BEGIN <<< */
+// -> hook_com.c に追加 | category="com" | winapi:Conversion and Manipulation
+HOOKDEF(void, WINAPI, VariantInit, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ VARIANTARG* pvarg
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_VariantInit(pvarg);
+	LOQ_void("com", "n", "Varg", pvarg);
+}
+/* >>> AUTOHOOK_VariantInit END <<< */
+

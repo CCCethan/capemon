@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_SysStringLen BEGIN <<< */
-HOOK(combase, SysStringLen),
-HOOK(oleaut32, SysStringLen),
-/* >>> AUTOHOOK_SysStringLen END <<< */
+/* >>> AUTOHOOK_VariantInit BEGIN <<< */
+HOOK(combase, VariantInit),
+HOOK(oleaut32, VariantInit),
+/* >>> AUTOHOOK_VariantInit END <<< */
 };
 
 hook_t native_hooks[] = {
