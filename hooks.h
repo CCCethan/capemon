@@ -3930,10 +3930,14 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_QueryPerformanceFrequency BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, QueryPerformanceFrequency,
-	_Out_ LARGE_INTEGER* lpFrequency
+/* >>> AUTOHOOK_WriteFile BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, WriteFile,
+	_In_ HANDLE hFile,
+	_In_ LPCVOID lpBuffer,
+	_In_ DWORD nNumberOfBytesToWrite,
+	_Out_opt_ LPDWORD lpNumberOfBytesWritten,
+	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_QueryPerformanceFrequency END <<< */
+/* >>> AUTOHOOK_WriteFile END <<< */
 

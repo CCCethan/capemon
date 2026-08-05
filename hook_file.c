@@ -1926,3 +1926,21 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 
 	return ret;
 }
+
+/* >>> AUTOHOOK_WriteFile BEGIN <<< */
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+// REVIEW: 引数 lpBuffer: 入力バッファとして nNumberOfBytesToWrite バイト分を内容ログ('b')。nNumberOfBytesToWrite が実データ長でない/出力用バッファなら 'p'(アドレスのみ)へ戻すこと
+HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hFile,
+	_In_ LPCVOID lpBuffer,
+	_In_ DWORD nNumberOfBytesToWrite,
+	_Out_opt_ LPDWORD lpNumberOfBytesWritten,
+	_Inout_opt_ LPOVERLAPPED lpOverlapped
+) {
+	BOOL ret;
+	ret = Old_WriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
+	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "NumberOfBytesToWrite", nNumberOfBytesToWrite, "NumberOfBytesWritten", lpNumberOfBytesWritten, "Overlapped", lpOverlapped);
+	return ret;
+}
+/* >>> AUTOHOOK_WriteFile END <<< */
+

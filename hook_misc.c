@@ -2007,16 +2007,3 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 		"OutputBuffer", OutputBufferLength, OutputBuffer);
 	return ret;
 }
-
-/* >>> AUTOHOOK_QueryPerformanceFrequency BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Time
-HOOKDEF(BOOL, WINAPI, QueryPerformanceFrequency, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LARGE_INTEGER* lpFrequency
-) {
-	BOOL ret;
-	ret = Old_QueryPerformanceFrequency(lpFrequency);
-	LOQ_bool("misc", "X", "Frequency", lpFrequency);
-	return ret;
-}
-/* >>> AUTOHOOK_QueryPerformanceFrequency END <<< */
-
