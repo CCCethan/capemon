@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_FindClose BEGIN <<< */
-HOOK(kernel32, FindClose),
-HOOK(kernelbase, FindClose),
-/* >>> AUTOHOOK_FindClose END <<< */
+/* >>> AUTOHOOK_FindFirstFileW BEGIN <<< */
+HOOK(kernel32, FindFirstFileW),
+HOOK(kernelbase, FindFirstFileW),
+/* >>> AUTOHOOK_FindFirstFileW END <<< */
 };
 
 hook_t native_hooks[] = {

@@ -1927,15 +1927,16 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_FindClose BEGIN <<< */
+/* >>> AUTOHOOK_FindFirstFileW BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ HANDLE hFindFile
+HOOKDEF(HANDLE, WINAPI, FindFirstFileW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCWSTR lpFileName,
+	_Out_ LPWIN32_FIND_DATAW lpFindFileData
 ) {
-	BOOL ret;
-	ret = Old_FindClose(hFindFile);
-	LOQ_bool("filesystem", "p", "FindFile", hFindFile);
+	HANDLE ret;
+	ret = Old_FindFirstFileW(lpFileName, lpFindFileData);
+	LOQ_handle("filesystem", "FP", "FileName", lpFileName, "FindFileData", lpFindFileData);
 	return ret;
 }
-/* >>> AUTOHOOK_FindClose END <<< */
+/* >>> AUTOHOOK_FindFirstFileW END <<< */
 

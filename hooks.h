@@ -3930,10 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_FindClose BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, FindClose,
-	_Inout_ HANDLE hFindFile
+/* >>> AUTOHOOK_FindFirstFileW BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, FindFirstFileW,
+	_In_ LPCWSTR lpFileName,
+	_Out_ LPWIN32_FIND_DATAW lpFindFileData
 );
 
-/* >>> AUTOHOOK_FindClose END <<< */
+/* >>> AUTOHOOK_FindFirstFileW END <<< */
 
