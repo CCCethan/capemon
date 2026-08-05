@@ -1927,19 +1927,15 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetFileAttributesExW BEGIN <<< */
+/* >>> AUTOHOOK_FindClose BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 引数 fInfoLevelId: 型 GET_FILEEX_INFO_LEVELS を i(int32)で仮記録。要確認
-// REVIEW: 引数 lpFileInformation: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, GetFileAttributesExW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpFileName,
-	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
-	_Out_ LPVOID lpFileInformation
+HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ HANDLE hFindFile
 ) {
 	BOOL ret;
-	ret = Old_GetFileAttributesExW(lpFileName, fInfoLevelId, lpFileInformation);
-	LOQ_bool("filesystem", "Fip", "FileName", lpFileName, "InfoLevelId", fInfoLevelId, "FileInformation", lpFileInformation);
+	ret = Old_FindClose(hFindFile);
+	LOQ_bool("filesystem", "p", "FindFile", hFindFile);
 	return ret;
 }
-/* >>> AUTOHOOK_GetFileAttributesExW END <<< */
+/* >>> AUTOHOOK_FindClose END <<< */
 
