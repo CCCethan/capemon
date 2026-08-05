@@ -1926,3 +1926,19 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 
 	return ret;
 }
+
+/* >>> AUTOHOOK_SetFilePointerEx BEGIN <<< */
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(BOOL, WINAPI, SetFilePointerEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hFile,
+	_In_ LARGE_INTEGER liDistanceToMove,
+	_Out_opt_ PLARGE_INTEGER lpNewFilePointer,
+	_In_ DWORD dwMoveMethod
+) {
+	BOOL ret;
+	ret = Old_SetFilePointerEx(hFile, liDistanceToMove, lpNewFilePointer, dwMoveMethod);
+	LOQ_bool("filesystem", "pxXi", "File", hFile, "LiDistanceToMove", liDistanceToMove, "NewFilePointer", lpNewFilePointer, "MoveMethod", dwMoveMethod);
+	return ret;
+}
+/* >>> AUTOHOOK_SetFilePointerEx END <<< */
+

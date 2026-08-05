@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_CloseHandle BEGIN <<< */
-HOOK(kernel32, CloseHandle),
-HOOK(kernelbase, CloseHandle),
-/* >>> AUTOHOOK_CloseHandle END <<< */
+/* >>> AUTOHOOK_SetFilePointerEx BEGIN <<< */
+HOOK(kernel32, SetFilePointerEx),
+HOOK(kernelbase, SetFilePointerEx),
+/* >>> AUTOHOOK_SetFilePointerEx END <<< */
 };
 
 hook_t native_hooks[] = {

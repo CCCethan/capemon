@@ -3930,10 +3930,13 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_CloseHandle BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, CloseHandle,
-	_In_ HANDLE hObject
+/* >>> AUTOHOOK_SetFilePointerEx BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, SetFilePointerEx,
+	_In_ HANDLE hFile,
+	_In_ LARGE_INTEGER liDistanceToMove,
+	_Out_opt_ PLARGE_INTEGER lpNewFilePointer,
+	_In_ DWORD dwMoveMethod
 );
 
-/* >>> AUTOHOOK_CloseHandle END <<< */
+/* >>> AUTOHOOK_SetFilePointerEx END <<< */
 
