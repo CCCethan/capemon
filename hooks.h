@@ -3930,14 +3930,14 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_WriteFile BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, WriteFile,
+/* >>> AUTOHOOK_ReadFile BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, ReadFile,
 	_In_ HANDLE hFile,
-	_In_ LPCVOID lpBuffer,
-	_In_ DWORD nNumberOfBytesToWrite,
-	_Out_opt_ LPDWORD lpNumberOfBytesWritten,
+	_Out_ LPVOID lpBuffer,
+	_In_ DWORD nNumberOfBytesToRead,
+	_Out_opt_ LPDWORD lpNumberOfBytesRead,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_WriteFile END <<< */
+/* >>> AUTOHOOK_ReadFile END <<< */
 

@@ -1927,20 +1927,20 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_WriteFile BEGIN <<< */
+/* >>> AUTOHOOK_ReadFile BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 引数 lpBuffer: 入力バッファとして nNumberOfBytesToWrite バイト分を内容ログ('b')。nNumberOfBytesToWrite が実データ長でない/出力用バッファなら 'p'(アドレスのみ)へ戻すこと
-HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, ReadFile, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hFile,
-	_In_ LPCVOID lpBuffer,
-	_In_ DWORD nNumberOfBytesToWrite,
-	_Out_opt_ LPDWORD lpNumberOfBytesWritten,
+	_Out_ LPVOID lpBuffer,
+	_In_ DWORD nNumberOfBytesToRead,
+	_Out_opt_ LPDWORD lpNumberOfBytesRead,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 ) {
 	BOOL ret;
-	ret = Old_WriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
-	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "NumberOfBytesToWrite", nNumberOfBytesToWrite, "NumberOfBytesWritten", lpNumberOfBytesWritten, "Overlapped", lpOverlapped);
+	ret = Old_ReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
+	LOQ_bool("filesystem", "ppiIP", "File", hFile, "Buffer", lpBuffer, "NumberOfBytesToRead", nNumberOfBytesToRead, "NumberOfBytesRead", lpNumberOfBytesRead, "Overlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_WriteFile END <<< */
+/* >>> AUTOHOOK_ReadFile END <<< */
 
