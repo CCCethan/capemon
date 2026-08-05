@@ -1927,11 +1927,11 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_CreateFileW BEGIN <<< */
+/* >>> AUTOHOOK_CreateFileA BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 // REVIEW: 引数 lpSecurityAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HANDLE, WINAPI, CreateFileW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpFileName,
+HOOKDEF(HANDLE, WINAPI, CreateFileA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCSTR lpFileName,
 	_In_ DWORD dwDesiredAccess,
 	_In_ DWORD dwShareMode,
 	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
@@ -1940,9 +1940,9 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW, // 呼出規約は WINAPI 仮定(socket/nat
 	_In_opt_ HANDLE hTemplateFile
 ) {
 	HANDLE ret;
-	ret = Old_CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-	LOQ_handle("filesystem", "Fiipiip", "FileName", lpFileName, "DesiredAccess", dwDesiredAccess, "ShareMode", dwShareMode, "SecurityAttributes", lpSecurityAttributes, "CreationDisposition", dwCreationDisposition, "FlagsAndAttributes", dwFlagsAndAttributes, "TemplateFile", hTemplateFile);
+	ret = Old_CreateFileA(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+	LOQ_handle("filesystem", "fiipiip", "FileName", lpFileName, "DesiredAccess", dwDesiredAccess, "ShareMode", dwShareMode, "SecurityAttributes", lpSecurityAttributes, "CreationDisposition", dwCreationDisposition, "FlagsAndAttributes", dwFlagsAndAttributes, "TemplateFile", hTemplateFile);
 	return ret;
 }
-/* >>> AUTOHOOK_CreateFileW END <<< */
+/* >>> AUTOHOOK_CreateFileA END <<< */
 

@@ -3930,9 +3930,9 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_CreateFileW BEGIN <<< */
-HOOKDEF(HANDLE, WINAPI, CreateFileW,
-	_In_ LPCWSTR lpFileName,
+/* >>> AUTOHOOK_CreateFileA BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, CreateFileA,
+	_In_ LPCSTR lpFileName,
 	_In_ DWORD dwDesiredAccess,
 	_In_ DWORD dwShareMode,
 	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
@@ -3941,5 +3941,5 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_opt_ HANDLE hTemplateFile
 );
 
-/* >>> AUTOHOOK_CreateFileW END <<< */
+/* >>> AUTOHOOK_CreateFileA END <<< */
 

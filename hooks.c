@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_CreateFileW BEGIN <<< */
-HOOK(kernel32, CreateFileW),
-HOOK(kernelbase, CreateFileW),
-/* >>> AUTOHOOK_CreateFileW END <<< */
+/* >>> AUTOHOOK_CreateFileA BEGIN <<< */
+HOOK(kernel32, CreateFileA),
+HOOK(kernelbase, CreateFileA),
+/* >>> AUTOHOOK_CreateFileA END <<< */
 };
 
 hook_t native_hooks[] = {
