@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_GetFileAttributesW BEGIN <<< */
-HOOK(kernel32, GetFileAttributesW),
-HOOK(kernelbase, GetFileAttributesW),
-/* >>> AUTOHOOK_GetFileAttributesW END <<< */
+/* >>> AUTOHOOK_GetFileAttributesExA BEGIN <<< */
+HOOK(kernel32, GetFileAttributesExA),
+HOOK(kernelbase, GetFileAttributesExA),
+/* >>> AUTOHOOK_GetFileAttributesExA END <<< */
 };
 
 hook_t native_hooks[] = {
