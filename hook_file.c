@@ -1927,15 +1927,16 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_FlushFileBuffers BEGIN <<< */
+/* >>> AUTOHOOK_GetFileSizeEx BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(BOOL, WINAPI, FlushFileBuffers, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFile
+HOOKDEF(BOOL, WINAPI, GetFileSizeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hFile,
+	_Out_ PLARGE_INTEGER lpFileSize
 ) {
 	BOOL ret;
-	ret = Old_FlushFileBuffers(hFile);
-	LOQ_bool("filesystem", "p", "File", hFile);
+	ret = Old_GetFileSizeEx(hFile, lpFileSize);
+	LOQ_bool("filesystem", "pX", "File", hFile, "FileSize", lpFileSize);
 	return ret;
 }
-/* >>> AUTOHOOK_FlushFileBuffers END <<< */
+/* >>> AUTOHOOK_GetFileSizeEx END <<< */
 

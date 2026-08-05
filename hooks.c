@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_FlushFileBuffers BEGIN <<< */
-HOOK(kernel32, FlushFileBuffers),
-HOOK(kernelbase, FlushFileBuffers),
-/* >>> AUTOHOOK_FlushFileBuffers END <<< */
+/* >>> AUTOHOOK_GetFileSizeEx BEGIN <<< */
+HOOK(kernel32, GetFileSizeEx),
+HOOK(kernelbase, GetFileSizeEx),
+/* >>> AUTOHOOK_GetFileSizeEx END <<< */
 };
 
 hook_t native_hooks[] = {
