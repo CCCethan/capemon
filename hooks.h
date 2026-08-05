@@ -3930,11 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_GetFileSizeEx BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
-	_In_ HANDLE hFile,
-	_Out_ PLARGE_INTEGER lpFileSize
+/* >>> AUTOHOOK_GetFileType BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, GetFileType,
+	_In_ HANDLE hFile
 );
 
-/* >>> AUTOHOOK_GetFileSizeEx END <<< */
+/* >>> AUTOHOOK_GetFileType END <<< */
 
