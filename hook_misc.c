@@ -2008,17 +2008,18 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_SysAllocString BEGIN <<< */
+/* >>> AUTOHOOK_SysAllocStringLen BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
 // REVIEW: 戻り型 BSTR の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 psz: 型 const OLECHAR* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ const OLECHAR* psz
+// REVIEW: 引数 strIn: 型 const OLECHAR* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BSTR, WINAPI, SysAllocStringLen, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const OLECHAR* strIn,
+	_In_ UINT ui
 ) {
 	BSTR ret;
-	ret = Old_SysAllocString(psz);
-	LOQ_nonzero("misc", "p", "Sz", psz);
+	ret = Old_SysAllocStringLen(strIn, ui);
+	LOQ_nonzero("misc", "pi", "StrIn", strIn, "Ui", ui);
 	return ret;
 }
-/* >>> AUTOHOOK_SysAllocString END <<< */
+/* >>> AUTOHOOK_SysAllocStringLen END <<< */
 

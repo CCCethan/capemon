@@ -3930,10 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_SysAllocString BEGIN <<< */
-HOOKDEF(BSTR, WINAPI, SysAllocString,
-	_In_opt_ const OLECHAR* psz
+/* >>> AUTOHOOK_SysAllocStringLen BEGIN <<< */
+HOOKDEF(BSTR, WINAPI, SysAllocStringLen,
+	_In_ const OLECHAR* strIn,
+	_In_ UINT ui
 );
 
-/* >>> AUTOHOOK_SysAllocString END <<< */
+/* >>> AUTOHOOK_SysAllocStringLen END <<< */
 
