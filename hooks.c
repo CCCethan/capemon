@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_FindNextFileA BEGIN <<< */
-HOOK(kernel32, FindNextFileA),
-HOOK(kernelbase, FindNextFileA),
-/* >>> AUTOHOOK_FindNextFileA END <<< */
+/* >>> AUTOHOOK_SysAllocString BEGIN <<< */
+HOOK(combase, SysAllocString),
+HOOK(oleaut32, SysAllocString),
+/* >>> AUTOHOOK_SysAllocString END <<< */
 };
 
 hook_t native_hooks[] = {
