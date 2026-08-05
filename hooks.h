@@ -3930,14 +3930,16 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_ReadFile BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, ReadFile,
-	_In_ HANDLE hFile,
-	_Out_ LPVOID lpBuffer,
-	_In_ DWORD nNumberOfBytesToRead,
-	_Out_opt_ LPDWORD lpNumberOfBytesRead,
-	_Inout_opt_ LPOVERLAPPED lpOverlapped
+/* >>> AUTOHOOK_CreateFileW BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, CreateFileW,
+	_In_ LPCWSTR lpFileName,
+	_In_ DWORD dwDesiredAccess,
+	_In_ DWORD dwShareMode,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+	_In_ DWORD dwCreationDisposition,
+	_In_ DWORD dwFlagsAndAttributes,
+	_In_opt_ HANDLE hTemplateFile
 );
 
-/* >>> AUTOHOOK_ReadFile END <<< */
+/* >>> AUTOHOOK_CreateFileW END <<< */
 
