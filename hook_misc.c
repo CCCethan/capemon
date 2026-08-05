@@ -2008,14 +2008,16 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_SysFreeString BEGIN <<< */
+/* >>> AUTOHOOK_SysStringLen BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
-HOOKDEF(void, WINAPI, SysFreeString, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ BSTR bstrString
+// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(UINT, WINAPI, SysStringLen, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ BSTR bstr
 ) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_SysFreeString(bstrString);
-	LOQ_void("misc", "u", "StrString", bstrString);
+	UINT ret;
+	ret = Old_SysStringLen(bstr);
+	LOQ_nonzero("misc", "u", "Str", bstr);
+	return ret;
 }
-/* >>> AUTOHOOK_SysFreeString END <<< */
+/* >>> AUTOHOOK_SysStringLen END <<< */
 
