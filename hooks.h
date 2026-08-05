@@ -3930,11 +3930,13 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_VariantCopy BEGIN <<< */
-HOOKDEF(HRESULT, WINAPI, VariantCopy,
+/* >>> AUTOHOOK_VariantChangeType BEGIN <<< */
+HOOKDEF(HRESULT, WINAPI, VariantChangeType,
 	_Out_ VARIANTARG* pvargDest,
-	_In_ const VARIANTARG* pvargSrc
+	_In_ const VARIANTARG* pvarSrc,
+	_In_ USHORT wFlags,
+	_In_ VARTYPE vt
 );
 
-/* >>> AUTOHOOK_VariantCopy END <<< */
+/* >>> AUTOHOOK_VariantChangeType END <<< */
 
