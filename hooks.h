@@ -3930,10 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_VariantInit BEGIN <<< */
-HOOKDEF(void, WINAPI, VariantInit,
-	_Out_ VARIANTARG* pvarg
+/* >>> AUTOHOOK_VariantClear BEGIN <<< */
+HOOKDEF(HRESULT, WINAPI, VariantClear,
+	_Inout_ VARIANTARG* pvarg
 );
 
-/* >>> AUTOHOOK_VariantInit END <<< */
+/* >>> AUTOHOOK_VariantClear END <<< */
 
