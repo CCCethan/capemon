@@ -1927,16 +1927,16 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_GetFileType BEGIN <<< */
+/* >>> AUTOHOOK_GetFileAttributesA BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 // REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetFileType, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFile
+HOOKDEF(DWORD, WINAPI, GetFileAttributesA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCSTR lpFileName
 ) {
 	DWORD ret;
-	ret = Old_GetFileType(hFile);
-	LOQ_nonzero("filesystem", "p", "File", hFile);
+	ret = Old_GetFileAttributesA(lpFileName);
+	LOQ_nonzero("filesystem", "f", "FileName", lpFileName);
 	return ret;
 }
-/* >>> AUTOHOOK_GetFileType END <<< */
+/* >>> AUTOHOOK_GetFileAttributesA END <<< */
 
