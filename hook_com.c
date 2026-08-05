@@ -72,15 +72,16 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_VariantClear BEGIN <<< */
+/* >>> AUTOHOOK_VariantCopy BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:Conversion and Manipulation
-HOOKDEF(HRESULT, WINAPI, VariantClear, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ VARIANTARG* pvarg
+HOOKDEF(HRESULT, WINAPI, VariantCopy, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ VARIANTARG* pvargDest,
+	_In_ const VARIANTARG* pvargSrc
 ) {
 	HRESULT ret;
-	ret = Old_VariantClear(pvarg);
-	LOQ_hresult("com", "n", "Varg", pvarg);
+	ret = Old_VariantCopy(pvargDest, pvargSrc);
+	LOQ_hresult("com", "nn", "VargDest", pvargDest, "VargSrc", pvargSrc);
 	return ret;
 }
-/* >>> AUTOHOOK_VariantClear END <<< */
+/* >>> AUTOHOOK_VariantCopy END <<< */
 
