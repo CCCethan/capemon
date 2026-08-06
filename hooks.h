@@ -3930,10 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_DllRegisterServer BEGIN <<< */
-HOOKDEF(HRESULT __stdcall, WINAPI, DllRegisterServer,
+/* >>> AUTOHOOK_DllUnregisterServer BEGIN <<< */
+HOOKDEF(HRESULT __stdcall, WINAPI, DllUnregisterServer,
 	void
 );
 
-/* >>> AUTOHOOK_DllRegisterServer END <<< */
+/* >>> AUTOHOOK_DllUnregisterServer END <<< */
 
