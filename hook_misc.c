@@ -2008,18 +2008,23 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_SLIsGenuineLocal BEGIN <<< */
+/* >>> AUTOHOOK_SLGetLicensingStatusInformation BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Software Licensing
-// REVIEW: 引数 pAppId: 型 const SLID* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HRESULT, WINAPI, SLIsGenuineLocal, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const SLID* pAppId,
-	_Out_ SL_GENUINE_STATE* pGenuineState,
-	_Inout_opt_ SL_NONGENUINE_UI_OPTIONS* pUIOptions
+// REVIEW: 引数 hSLC: 型 HSLC は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 pAppID: 型 const SLID* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 pProductSkuId: 型 const SLID* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HRESULT, WINAPI, SLGetLicensingStatusInformation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HSLC hSLC,
+	_In_opt_ const SLID* pAppID,
+	_In_opt_ const SLID* pProductSkuId,
+	_In_opt_ PCWSTR pwszRightName,
+	_Out_ UINT* pnStatusCount,
+	_Out_ SL_LICENSING_STATUS** ppLicensingStatus
 ) {
 	HRESULT ret;
-	ret = Old_SLIsGenuineLocal(pAppId, pGenuineState, pUIOptions);
-	LOQ_hresult("misc", "pPP", "AppId", pAppId, "GenuineState", pGenuineState, "UIOptions", pUIOptions);
+	ret = Old_SLGetLicensingStatusInformation(hSLC, pAppID, pProductSkuId, pwszRightName, pnStatusCount, ppLicensingStatus);
+	LOQ_hresult("misc", "pppuIP", "SLC", hSLC, "AppID", pAppID, "ProductSkuId", pProductSkuId, "WszRightName", pwszRightName, "NStatusCount", pnStatusCount, "PLicensingStatus", ppLicensingStatus);
 	return ret;
 }
-/* >>> AUTOHOOK_SLIsGenuineLocal END <<< */
+/* >>> AUTOHOOK_SLGetLicensingStatusInformation END <<< */
 

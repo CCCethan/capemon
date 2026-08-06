@@ -818,9 +818,9 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_SLIsGenuineLocal BEGIN <<< */
-HOOK(slwga, SLIsGenuineLocal),
-/* >>> AUTOHOOK_SLIsGenuineLocal END <<< */
+/* >>> AUTOHOOK_SLGetLicensingStatusInformation BEGIN <<< */
+HOOK(slc, SLGetLicensingStatusInformation),
+/* >>> AUTOHOOK_SLGetLicensingStatusInformation END <<< */
 };
 
 hook_t native_hooks[] = {
