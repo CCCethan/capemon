@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_WaitForSingleObjectEx BEGIN <<< */
-HOOK(kernel32, WaitForSingleObjectEx),
-HOOK(kernelbase, WaitForSingleObjectEx),
-/* >>> AUTOHOOK_WaitForSingleObjectEx END <<< */
+/* >>> AUTOHOOK_WaitForMultipleObjects BEGIN <<< */
+HOOK(kernel32, WaitForMultipleObjects),
+HOOK(kernelbase, WaitForMultipleObjects),
+/* >>> AUTOHOOK_WaitForMultipleObjects END <<< */
 };
 
 hook_t native_hooks[] = {

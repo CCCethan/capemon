@@ -178,18 +178,19 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_WaitForSingleObjectEx BEGIN <<< */
+/* >>> AUTOHOOK_WaitForMultipleObjects BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 // REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, WaitForSingleObjectEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hHandle,
-	_In_ DWORD dwMilliseconds,
-	_In_ BOOL bAlertable
+HOOKDEF(DWORD, WINAPI, WaitForMultipleObjects, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD nCount,
+	_In_ const HANDLE* lpHandles,
+	_In_ BOOL bWaitAll,
+	_In_ DWORD dwMilliseconds
 ) {
 	DWORD ret;
-	ret = Old_WaitForSingleObjectEx(hHandle, dwMilliseconds, bAlertable);
-	LOQ_nonzero("sync", "pii", "Handle", hHandle, "Milliseconds", dwMilliseconds, "Alertable", bAlertable);
+	ret = Old_WaitForMultipleObjects(nCount, lpHandles, bWaitAll, dwMilliseconds);
+	LOQ_nonzero("sync", "ipii", "Count", nCount, "Handles", lpHandles, "WaitAll", bWaitAll, "Milliseconds", dwMilliseconds);
 	return ret;
 }
-/* >>> AUTOHOOK_WaitForSingleObjectEx END <<< */
+/* >>> AUTOHOOK_WaitForMultipleObjects END <<< */
 
