@@ -3930,13 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_VariantChangeType BEGIN <<< */
-HOOKDEF(HRESULT, WINAPI, VariantChangeType,
-	_Out_ VARIANTARG* pvargDest,
-	_In_ const VARIANTARG* pvarSrc,
-	_In_ USHORT wFlags,
-	_In_ VARTYPE vt
+/* >>> AUTOHOOK_DllGetClassObject BEGIN <<< */
+HOOKDEF(STDAPI, WINAPI, DllGetClassObject,
+	const CLSID &rclsid,
+	const IID &riid,
+	void** ppv
 );
 
-/* >>> AUTOHOOK_VariantChangeType END <<< */
+/* >>> AUTOHOOK_DllGetClassObject END <<< */
 

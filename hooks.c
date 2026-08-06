@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_VariantChangeType BEGIN <<< */
-HOOK(combase, VariantChangeType),
-HOOK(oleaut32, VariantChangeType),
-/* >>> AUTOHOOK_VariantChangeType END <<< */
+/* >>> AUTOHOOK_DllGetClassObject BEGIN <<< */
+HOOK(kernel32, DllGetClassObject),
+HOOK(kernelbase, DllGetClassObject),
+/* >>> AUTOHOOK_DllGetClassObject END <<< */
 };
 
 hook_t native_hooks[] = {

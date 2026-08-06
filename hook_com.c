@@ -71,20 +71,3 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	LOQ_hresult("com", "uu", "NetworkResource", strNetworkResource, "User", strUser);
 	return ret;
 }
-
-/* >>> AUTOHOOK_VariantChangeType BEGIN <<< */
-// -> hook_com.c に追加 | category="com" | winapi:Conversion and Manipulation
-// REVIEW: 引数 vt: 型 VARTYPE を i(int32)で仮記録。要確認
-HOOKDEF(HRESULT, WINAPI, VariantChangeType, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ VARIANTARG* pvargDest,
-	_In_ const VARIANTARG* pvarSrc,
-	_In_ USHORT wFlags,
-	_In_ VARTYPE vt
-) {
-	HRESULT ret;
-	ret = Old_VariantChangeType(pvargDest, pvarSrc, wFlags, vt);
-	LOQ_hresult("com", "nnii", "VargDest", pvargDest, "VarSrc", pvarSrc, "WFlags", wFlags, "Vt", vt);
-	return ret;
-}
-/* >>> AUTOHOOK_VariantChangeType END <<< */
-
