@@ -3930,16 +3930,16 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_FormatMessageA BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, FormatMessageA,
+/* >>> AUTOHOOK_FormatMessageW BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, FormatMessageW,
 	_In_ DWORD dwFlags,
 	_In_opt_ LPCVOID lpSource,
 	_In_ DWORD dwMessageId,
 	_In_ DWORD dwLanguageId,
-	_Out_ LPSTR lpBuffer,
+	_Out_ LPWSTR lpBuffer,
 	_In_ DWORD nSize,
 	_In_opt_ va_list* Arguments
 );
 
-/* >>> AUTOHOOK_FormatMessageA END <<< */
+/* >>> AUTOHOOK_FormatMessageW END <<< */
 

@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_FormatMessageA BEGIN <<< */
-HOOK(kernel32, FormatMessageA),
-HOOK(kernelbase, FormatMessageA),
-/* >>> AUTOHOOK_FormatMessageA END <<< */
+/* >>> AUTOHOOK_FormatMessageW BEGIN <<< */
+HOOK(kernel32, FormatMessageW),
+HOOK(kernelbase, FormatMessageW),
+/* >>> AUTOHOOK_FormatMessageW END <<< */
 };
 
 hook_t native_hooks[] = {
