@@ -3930,11 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_GetExitCodeProcess BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, GetExitCodeProcess,
-	_In_ HANDLE hProcess,
-	_Out_ LPDWORD lpExitCode
+/* >>> AUTOHOOK_WaitForSingleObject BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, WaitForSingleObject,
+	_In_ HANDLE hHandle,
+	_In_ DWORD dwMilliseconds
 );
 
-/* >>> AUTOHOOK_GetExitCodeProcess END <<< */
+/* >>> AUTOHOOK_WaitForSingleObject END <<< */
 

@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_GetExitCodeProcess BEGIN <<< */
-HOOK(kernel32, GetExitCodeProcess),
-HOOK(kernelbase, GetExitCodeProcess),
-/* >>> AUTOHOOK_GetExitCodeProcess END <<< */
+/* >>> AUTOHOOK_WaitForSingleObject BEGIN <<< */
+HOOK(kernel32, WaitForSingleObject),
+HOOK(kernelbase, WaitForSingleObject),
+/* >>> AUTOHOOK_WaitForSingleObject END <<< */
 };
 
 hook_t native_hooks[] = {
