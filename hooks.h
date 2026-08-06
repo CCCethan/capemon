@@ -3930,12 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_DllGetClassObject BEGIN <<< */
-HOOKDEF(STDAPI, WINAPI, DllGetClassObject,
-	const CLSID &rclsid,
-	const IID &riid,
-	void** ppv
+/* >>> AUTOHOOK_DllRegisterServer BEGIN <<< */
+HOOKDEF(HRESULT __stdcall, WINAPI, DllRegisterServer,
+	void
 );
 
-/* >>> AUTOHOOK_DllGetClassObject END <<< */
+/* >>> AUTOHOOK_DllRegisterServer END <<< */
 
