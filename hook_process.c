@@ -1539,3 +1539,17 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	LOQ_zero("process", "lL", "Attribute", Attribute, "Value", lpValue);
 	return ret;
 }
+
+/* >>> AUTOHOOK_GetExitCodeProcess BEGIN <<< */
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, GetExitCodeProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hProcess,
+	_Out_ LPDWORD lpExitCode
+) {
+	BOOL ret;
+	ret = Old_GetExitCodeProcess(hProcess, lpExitCode);
+	LOQ_bool("process", "pI", "Process", hProcess, "ExitCode", lpExitCode);
+	return ret;
+}
+/* >>> AUTOHOOK_GetExitCodeProcess END <<< */
+

@@ -2007,20 +2007,3 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 		"OutputBuffer", OutputBufferLength, OutputBuffer);
 	return ret;
 }
-
-/* >>> AUTOHOOK_CreatePipe BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Pipes
-// REVIEW: 引数 lpPipeAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, CreatePipe, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ PHANDLE hReadPipe,
-	_Out_ PHANDLE hWritePipe,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpPipeAttributes,
-	_In_ DWORD nSize
-) {
-	BOOL ret;
-	ret = Old_CreatePipe(hReadPipe, hWritePipe, lpPipeAttributes, nSize);
-	LOQ_bool("misc", "PPpi", "ReadPipe", hReadPipe, "WritePipe", hWritePipe, "PipeAttributes", lpPipeAttributes, "Size", nSize);
-	return ret;
-}
-/* >>> AUTOHOOK_CreatePipe END <<< */
-

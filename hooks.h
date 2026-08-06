@@ -3930,13 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_CreatePipe BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, CreatePipe,
-	_Out_ PHANDLE hReadPipe,
-	_Out_ PHANDLE hWritePipe,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpPipeAttributes,
-	_In_ DWORD nSize
+/* >>> AUTOHOOK_GetExitCodeProcess BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, GetExitCodeProcess,
+	_In_ HANDLE hProcess,
+	_Out_ LPDWORD lpExitCode
 );
 
-/* >>> AUTOHOOK_CreatePipe END <<< */
+/* >>> AUTOHOOK_GetExitCodeProcess END <<< */
 

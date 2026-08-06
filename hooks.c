@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_CreatePipe BEGIN <<< */
-HOOK(kernel32, CreatePipe),
-HOOK(kernelbase, CreatePipe),
-/* >>> AUTOHOOK_CreatePipe END <<< */
+/* >>> AUTOHOOK_GetExitCodeProcess BEGIN <<< */
+HOOK(kernel32, GetExitCodeProcess),
+HOOK(kernelbase, GetExitCodeProcess),
+/* >>> AUTOHOOK_GetExitCodeProcess END <<< */
 };
 
 hook_t native_hooks[] = {
