@@ -2007,3 +2007,19 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 		"OutputBuffer", OutputBufferLength, OutputBuffer);
 	return ret;
 }
+
+/* >>> AUTOHOOK_SLIsGenuineLocal BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Software Licensing
+// REVIEW: 引数 pAppId: 型 const SLID* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HRESULT, WINAPI, SLIsGenuineLocal, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const SLID* pAppId,
+	_Out_ SL_GENUINE_STATE* pGenuineState,
+	_Inout_opt_ SL_NONGENUINE_UI_OPTIONS* pUIOptions
+) {
+	HRESULT ret;
+	ret = Old_SLIsGenuineLocal(pAppId, pGenuineState, pUIOptions);
+	LOQ_hresult("misc", "pPP", "AppId", pAppId, "GenuineState", pGenuineState, "UIOptions", pUIOptions);
+	return ret;
+}
+/* >>> AUTOHOOK_SLIsGenuineLocal END <<< */
+

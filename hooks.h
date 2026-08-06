@@ -3930,11 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_DllInstall BEGIN <<< */
-HOOKDEF(HRESULT, WINAPI, DllInstall,
-	BOOL bInstall,
-	_In_opt_ PCWSTR pszCmdLine
+/* >>> AUTOHOOK_SLIsGenuineLocal BEGIN <<< */
+HOOKDEF(HRESULT, WINAPI, SLIsGenuineLocal,
+	_In_ const SLID* pAppId,
+	_Out_ SL_GENUINE_STATE* pGenuineState,
+	_Inout_opt_ SL_NONGENUINE_UI_OPTIONS* pUIOptions
 );
 
-/* >>> AUTOHOOK_DllInstall END <<< */
+/* >>> AUTOHOOK_SLIsGenuineLocal END <<< */
 

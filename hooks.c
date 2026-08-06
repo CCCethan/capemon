@@ -818,10 +818,9 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_DllInstall BEGIN <<< */
-HOOK(kernel32, DllInstall),
-HOOK(kernelbase, DllInstall),
-/* >>> AUTOHOOK_DllInstall END <<< */
+/* >>> AUTOHOOK_SLIsGenuineLocal BEGIN <<< */
+HOOK(slwga, SLIsGenuineLocal),
+/* >>> AUTOHOOK_SLIsGenuineLocal END <<< */
 };
 
 hook_t native_hooks[] = {
