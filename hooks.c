@@ -818,10 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_DllUnregisterServer BEGIN <<< */
-HOOK(kernel32, DllUnregisterServer),
-HOOK(kernelbase, DllUnregisterServer),
-/* >>> AUTOHOOK_DllUnregisterServer END <<< */
+/* >>> AUTOHOOK_DllInstall BEGIN <<< */
+HOOK(kernel32, DllInstall),
+HOOK(kernelbase, DllInstall),
+/* >>> AUTOHOOK_DllInstall END <<< */
 };
 
 hook_t native_hooks[] = {

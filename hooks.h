@@ -3930,10 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_DllUnregisterServer BEGIN <<< */
-HOOKDEF(HRESULT __stdcall, WINAPI, DllUnregisterServer,
-	void
+/* >>> AUTOHOOK_DllInstall BEGIN <<< */
+HOOKDEF(HRESULT, WINAPI, DllInstall,
+	BOOL bInstall,
+	_In_opt_ PCWSTR pszCmdLine
 );
 
-/* >>> AUTOHOOK_DllUnregisterServer END <<< */
+/* >>> AUTOHOOK_DllInstall END <<< */
 

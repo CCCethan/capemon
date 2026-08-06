@@ -71,17 +71,3 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	LOQ_hresult("com", "uu", "NetworkResource", strNetworkResource, "User", strUser);
 	return ret;
 }
-
-/* >>> AUTOHOOK_DllUnregisterServer BEGIN <<< */
-// -> hook_com.c に追加 | category="com" | winapi:COM
-// REVIEW: 戻り型 HRESULT __stdcall の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(HRESULT __stdcall, WINAPI, DllUnregisterServer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	HRESULT __stdcall ret;
-	ret = Old_DllUnregisterServer();
-	LOQ_nonzero("com", "");
-	return ret;
-}
-/* >>> AUTOHOOK_DllUnregisterServer END <<< */
-

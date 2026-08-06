@@ -525,3 +525,17 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
+
+/* >>> AUTOHOOK_DllInstall BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
+HOOKDEF(HRESULT, WINAPI, DllInstall, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	BOOL bInstall,
+	_In_opt_ PCWSTR pszCmdLine
+) {
+	HRESULT ret;
+	ret = Old_DllInstall(bInstall, pszCmdLine);
+	LOQ_hresult("windows", "iu", "Install", bInstall, "SzCmdLine", pszCmdLine);
+	return ret;
+}
+/* >>> AUTOHOOK_DllInstall END <<< */
+
