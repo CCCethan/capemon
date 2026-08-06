@@ -2008,23 +2008,21 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_SLGetLicensingStatusInformation BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Software Licensing
-// REVIEW: 引数 hSLC: 型 HSLC は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 pAppID: 型 const SLID* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 pProductSkuId: 型 const SLID* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HRESULT, WINAPI, SLGetLicensingStatusInformation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HSLC hSLC,
-	_In_opt_ const SLID* pAppID,
-	_In_opt_ const SLID* pProductSkuId,
-	_In_opt_ PCWSTR pwszRightName,
-	_Out_ UINT* pnStatusCount,
-	_Out_ SL_LICENSING_STATUS** ppLicensingStatus
+/* >>> AUTOHOOK_DuplicateHandle BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
+HOOKDEF(BOOL, WINAPI, DuplicateHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hSourceProcessHandle,
+	_In_ HANDLE hSourceHandle,
+	_In_ HANDLE hTargetProcessHandle,
+	_Out_ LPHANDLE lpTargetHandle,
+	_In_ DWORD dwDesiredAccess,
+	_In_ BOOL bInheritHandle,
+	_In_ DWORD dwOptions
 ) {
-	HRESULT ret;
-	ret = Old_SLGetLicensingStatusInformation(hSLC, pAppID, pProductSkuId, pwszRightName, pnStatusCount, ppLicensingStatus);
-	LOQ_hresult("misc", "pppuIP", "SLC", hSLC, "AppID", pAppID, "ProductSkuId", pProductSkuId, "WszRightName", pwszRightName, "NStatusCount", pnStatusCount, "PLicensingStatus", ppLicensingStatus);
+	BOOL ret;
+	ret = Old_DuplicateHandle(hSourceProcessHandle, hSourceHandle, hTargetProcessHandle, lpTargetHandle, dwDesiredAccess, bInheritHandle, dwOptions);
+	LOQ_bool("misc", "pppPiii", "SourceProcessHandle", hSourceProcessHandle, "SourceHandle", hSourceHandle, "TargetProcessHandle", hTargetProcessHandle, "TargetHandle", lpTargetHandle, "DesiredAccess", dwDesiredAccess, "InheritHandle", bInheritHandle, "Options", dwOptions);
 	return ret;
 }
-/* >>> AUTOHOOK_SLGetLicensingStatusInformation END <<< */
+/* >>> AUTOHOOK_DuplicateHandle END <<< */
 

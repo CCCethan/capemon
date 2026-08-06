@@ -3930,15 +3930,16 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_SLGetLicensingStatusInformation BEGIN <<< */
-HOOKDEF(HRESULT, WINAPI, SLGetLicensingStatusInformation,
-	_In_ HSLC hSLC,
-	_In_opt_ const SLID* pAppID,
-	_In_opt_ const SLID* pProductSkuId,
-	_In_opt_ PCWSTR pwszRightName,
-	_Out_ UINT* pnStatusCount,
-	_Out_ SL_LICENSING_STATUS** ppLicensingStatus
+/* >>> AUTOHOOK_DuplicateHandle BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, DuplicateHandle,
+	_In_ HANDLE hSourceProcessHandle,
+	_In_ HANDLE hSourceHandle,
+	_In_ HANDLE hTargetProcessHandle,
+	_Out_ LPHANDLE lpTargetHandle,
+	_In_ DWORD dwDesiredAccess,
+	_In_ BOOL bInheritHandle,
+	_In_ DWORD dwOptions
 );
 
-/* >>> AUTOHOOK_SLGetLicensingStatusInformation END <<< */
+/* >>> AUTOHOOK_DuplicateHandle END <<< */
 

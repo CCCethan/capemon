@@ -818,9 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_SLGetLicensingStatusInformation BEGIN <<< */
-HOOK(slc, SLGetLicensingStatusInformation),
-/* >>> AUTOHOOK_SLGetLicensingStatusInformation END <<< */
+/* >>> AUTOHOOK_DuplicateHandle BEGIN <<< */
+HOOK(kernel32, DuplicateHandle),
+HOOK(kernelbase, DuplicateHandle),
+/* >>> AUTOHOOK_DuplicateHandle END <<< */
 };
 
 hook_t native_hooks[] = {
