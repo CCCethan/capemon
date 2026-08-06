@@ -3930,16 +3930,13 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_DuplicateHandle BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, DuplicateHandle,
-	_In_ HANDLE hSourceProcessHandle,
-	_In_ HANDLE hSourceHandle,
-	_In_ HANDLE hTargetProcessHandle,
-	_Out_ LPHANDLE lpTargetHandle,
-	_In_ DWORD dwDesiredAccess,
-	_In_ BOOL bInheritHandle,
-	_In_ DWORD dwOptions
+/* >>> AUTOHOOK_CreatePipe BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, CreatePipe,
+	_Out_ PHANDLE hReadPipe,
+	_Out_ PHANDLE hWritePipe,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpPipeAttributes,
+	_In_ DWORD nSize
 );
 
-/* >>> AUTOHOOK_DuplicateHandle END <<< */
+/* >>> AUTOHOOK_CreatePipe END <<< */
 
