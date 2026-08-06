@@ -3930,14 +3930,16 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_WaitForMultipleObjectsEx BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, WaitForMultipleObjectsEx,
-	_In_ DWORD nCount,
-	_In_ const HANDLE* lpHandles,
-	_In_ BOOL bWaitAll,
-	_In_ DWORD dwMilliseconds,
-	_In_ BOOL bAlertable
+/* >>> AUTOHOOK_FormatMessageA BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, FormatMessageA,
+	_In_ DWORD dwFlags,
+	_In_opt_ LPCVOID lpSource,
+	_In_ DWORD dwMessageId,
+	_In_ DWORD dwLanguageId,
+	_Out_ LPSTR lpBuffer,
+	_In_ DWORD nSize,
+	_In_opt_ va_list* Arguments
 );
 
-/* >>> AUTOHOOK_WaitForMultipleObjectsEx END <<< */
+/* >>> AUTOHOOK_FormatMessageA END <<< */
 
