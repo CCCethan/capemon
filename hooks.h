@@ -3930,11 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_WaitForSingleObject BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, WaitForSingleObject,
+/* >>> AUTOHOOK_WaitForSingleObjectEx BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, WaitForSingleObjectEx,
 	_In_ HANDLE hHandle,
-	_In_ DWORD dwMilliseconds
+	_In_ DWORD dwMilliseconds,
+	_In_ BOOL bAlertable
 );
 
-/* >>> AUTOHOOK_WaitForSingleObject END <<< */
+/* >>> AUTOHOOK_WaitForSingleObjectEx END <<< */
 

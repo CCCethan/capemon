@@ -178,17 +178,18 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_WaitForSingleObject BEGIN <<< */
+/* >>> AUTOHOOK_WaitForSingleObjectEx BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 // REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, WaitForSingleObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+HOOKDEF(DWORD, WINAPI, WaitForSingleObjectEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hHandle,
-	_In_ DWORD dwMilliseconds
+	_In_ DWORD dwMilliseconds,
+	_In_ BOOL bAlertable
 ) {
 	DWORD ret;
-	ret = Old_WaitForSingleObject(hHandle, dwMilliseconds);
-	LOQ_nonzero("sync", "pi", "Handle", hHandle, "Milliseconds", dwMilliseconds);
+	ret = Old_WaitForSingleObjectEx(hHandle, dwMilliseconds, bAlertable);
+	LOQ_nonzero("sync", "pii", "Handle", hHandle, "Milliseconds", dwMilliseconds, "Alertable", bAlertable);
 	return ret;
 }
-/* >>> AUTOHOOK_WaitForSingleObject END <<< */
+/* >>> AUTOHOOK_WaitForSingleObjectEx END <<< */
 
