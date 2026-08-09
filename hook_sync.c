@@ -178,7 +178,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_093_mac_address_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -228,5 +228,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
 }
-/* >>> AUTOHOOK_pa_alk_093_mac_address_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker END <<< */
 
