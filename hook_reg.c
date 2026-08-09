@@ -700,33 +700,3 @@ HOOKDEF(LONG, WINAPI, RegNotifyChangeKeyValue,
 
 	return ret;
 }
-
-/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker BEGIN <<< */
-// -> hook_reg.c に追加 | category="registry" | winapi:Registry
-// REVIEW: 戻り型 LONG の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 pvData: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(LONG, WINAPI, RegGetValueA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HKEY hkey,
-	_In_opt_ LPCSTR lpSubKey,
-	_In_opt_ LPCSTR lpValue,
-	_In_opt_ DWORD dwFlags,
-	_Out_opt_ LPDWORD pdwType,
-	_Out_opt_ PVOID pvData,
-	_Inout_opt_ LPDWORD pcbData
-) {
-	LONG ret;
-	ret = Old_RegGetValueA(hkey, lpSubKey, lpValue, dwFlags, pdwType, pvData, pcbData);
-	// [7.5] ⑤/単一出力バッファ: desc「a buffer that receives the value's data」。
-	//       pcbData は in/out で、成功時は書き込まれた実バイト数を保持する(実測 165)。
-	//       文字列値の場合はバイトダンプでそのまま読めるので、型に依らない b を使う。
-	//       ★ _LOQ は成否に関わらず値式を評価するため、失敗時・容量問い合わせ
-	//         (pvData=NULL)では 0 バイトになるようガードする。
-	//       REVIEW対応: 本APIは成功時 ERROR_SUCCESS(0) を返す(実測 observed_returns=[0])ため
-	//         LOQ_nonzero → LOQ_zero に是正。
-	LOQ_zero("registry", "pssiIbI", "Key", hkey, "SubKey", lpSubKey, "Value", lpValue, "Flags", dwFlags, "DwType", pdwType, "VData", (size_t)((ret == ERROR_SUCCESS && pvData && pcbData) ? *pcbData : 0), pvData, "CbData", pcbData);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker END <<< */
-

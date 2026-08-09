@@ -286,3 +286,18 @@ HOOKDEF(BOOL, WINAPI, EnumServicesStatusExA,
 	LOQ_void("services", "EnumServicesStatusExA");
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_212_vm_service_checker BEGIN <<< */
+// -> hook_services.c に追加 | category="services" | winapi:Services
+HOOKDEF(BOOL, WINAPI, CloseServiceHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ SC_HANDLE hSCObject
+) {
+	BOOL ret;
+	ret = Old_CloseServiceHandle(hSCObject);
+	LOQ_bool("services", "p", "SCObject", hSCObject);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_pa_alk_212_vm_service_checker END <<< */
+
