@@ -818,9 +818,21 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_051_disk_enum_registry_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker BEGIN <<< */
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
+HOOK(combase, CoInitializeEx),
+HOOK(ole32, CoInitializeEx),
+HOOK(oleaut32, CoInitializeEx),
+HOOK(combase, CoInitializeSecurity),
+HOOK(ole32, CoInitializeSecurity),
+HOOK(oleaut32, CoInitializeSecurity),
+HOOK(combase, CoSetProxyBlanket),
+HOOK(ole32, CoSetProxyBlanket),
+HOOK(oleaut32, CoSetProxyBlanket),
+HOOK(combase, CoUninitialize),
+HOOK(ole32, CoUninitialize),
+HOOK(oleaut32, CoUninitialize),
 HOOK(kernel32, CompareStringW),
 HOOK(kernelbase, CompareStringW),
 HOOK(kernel32, CreateFileW),
@@ -937,6 +949,9 @@ HOOK(kernel32, SetStdHandle),
 HOOK(kernelbase, SetStdHandle),
 HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
+HOOK(combase, SysAllocString),
+HOOK(ole32, SysAllocString),
+HOOK(oleaut32, SysAllocString),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
 HOOK(kernel32, TlsAlloc),
@@ -947,11 +962,14 @@ HOOK(kernel32, TlsGetValue),
 HOOK(kernelbase, TlsGetValue),
 HOOK(kernel32, TlsSetValue),
 HOOK(kernelbase, TlsSetValue),
+HOOK(combase, VariantClear),
+HOOK(ole32, VariantClear),
+HOOK(oleaut32, VariantClear),
 HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_051_disk_enum_registry_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker END <<< */
 };
 
 hook_t native_hooks[] = {
