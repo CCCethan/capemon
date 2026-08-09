@@ -2069,46 +2069,5 @@ HOOKDEF(int, WINAPI, LCMapStringW, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_nonzero("misc", "iiuiui", "Locale", Locale, "MapFlags", dwMapFlags, "SrcStr", lpSrcStr, "Src", cchSrc, "DestStr", lpDestStr, "Dest", cchDest);
 	return ret;
 }
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Time
-HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LARGE_INTEGER* lpPerformanceCount
-) {
-	BOOL ret;
-	ret = Old_QueryPerformanceCounter(lpPerformanceCount);
-	LOQ_bool("misc", "X", "PerformanceCount", lpPerformanceCount);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Time
-HOOKDEF(BOOL, WINAPI, QueryPerformanceFrequency, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LARGE_INTEGER* lpFrequency
-) {
-	BOOL ret;
-	ret = Old_QueryPerformanceFrequency(lpFrequency);
-	LOQ_bool("misc", "X", "Frequency", lpFrequency);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
-HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwExceptionCode,
-	_In_ DWORD dwExceptionFlags,
-	_In_ DWORD nNumberOfArguments,
-	_In_ const ULONG_PTR* lpArguments
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
-	LOQ_void("misc", "iiiI", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
-HOOKDEF(VOID, WINAPI, RtlCaptureContext, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ PCONTEXT ContextRecord
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_RtlCaptureContext(ContextRecord);
-	LOQ_void("misc", "P", "ContextRecord", ContextRecord);
-}
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 
