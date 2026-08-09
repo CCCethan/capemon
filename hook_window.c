@@ -525,3 +525,30 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
+HOOKDEF(HRESULT, WINAPI, SHGetDesktopFolder, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ PVOID** ppshf
+) {
+	HRESULT ret;
+	ret = Old_SHGetDesktopFolder(ppshf);
+	LOQ_hresult("windows", "P", "Pshf", ppshf);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
+HOOKDEF(HRESULT, WINAPI, SHGetSpecialFolderLocation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hwndOwner,
+	_In_ int nFolder,
+	_Out_ PVOID* ppidl
+) {
+	HRESULT ret;
+	ret = Old_SHGetSpecialFolderLocation(hwndOwner, nFolder, ppidl);
+	LOQ_hresult("windows", "piP", "WndOwner", hwndOwner, "Folder", nFolder, "Pidl", ppidl);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker END <<< */
+
