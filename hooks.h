@@ -3930,15 +3930,17 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker BEGIN <<< */
-HOOKDEF(UINT, WINAPI, GetWindowsDirectoryA,
-	_Out_ LPSTR lpBuffer,
-	_In_ UINT uSize
+/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, ExpandEnvironmentStringsA,
+	_In_ LPCSTR lpSrc,
+	_Out_opt_ LPSTR lpDst,
+	_In_ DWORD nSize
 );
-HOOKDEF(LPSTR, WINAPI, PathCombineA,
-	_Out_ LPSTR pszPathOut,
-	_In_opt_ LPCSTR pszPathIn,
-	_In_ LPCSTR pszMore
+HOOKDEF(BOOL, WINAPI, SHGetSpecialFolderPathA,
+	HWND hwndOwner,
+	_Out_ LPSTR lpszPath,
+	_In_ int csidl,
+	_In_ BOOL fCreate
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
@@ -4047,6 +4049,9 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
+);
+HOOKDEF(DWORD, WINAPI, GetFileAttributesA,
+	_In_ LPCSTR lpFileName
 );
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
@@ -4168,6 +4173,10 @@ HOOKDEF(BOOL, WINAPI, IsValidLocale,
 HOOKDEF(BOOL, WINAPI, IsValidLocaleName,
 	_In_ LPCWSTR lpLocaleName
 );
+HOOKDEF(BOOL, WINAPI, IsWow64Process,
+	_In_ HANDLE hProcess,
+	_Out_ PBOOL Wow64Process
+);
 HOOKDEF(int, WINAPI, LCIDToLocaleName,
 	_In_ LCID Locale,
 	_Out_opt_ LPWSTR lpName,
@@ -4200,8 +4209,10 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
-HOOKDEF(BOOL, WINAPI, PathFileExistsA,
-	_In_ LPCSTR pszPath
+HOOKDEF(LPSTR, WINAPI, PathCombineA,
+	_Out_ LPSTR pszPathOut,
+	_In_opt_ LPCSTR pszPathIn,
+	_In_ LPCSTR pszMore
 );
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
@@ -4295,5 +4306,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker END <<< */
 

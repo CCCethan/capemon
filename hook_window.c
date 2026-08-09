@@ -526,27 +526,20 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:System Information Functions
-// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(UINT, WINAPI, GetWindowsDirectoryA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPSTR lpBuffer,
-	_In_ UINT uSize
+/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
+HOOKDEF(BOOL, WINAPI, SHGetSpecialFolderPathA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	HWND hwndOwner,
+	_Out_ LPSTR lpszPath,
+	_In_ int csidl,
+	_In_ BOOL fCreate
 ) {
-	UINT ret;
-	ret = Old_GetWindowsDirectoryA(lpBuffer, uSize);
-	LOQ_nonzero("windows", "si", "Buffer", lpBuffer, "USize", uSize);
+	BOOL ret;
+	ret = Old_SHGetSpecialFolderPathA(hwndOwner, lpszPath, csidl, fCreate);
+	LOQ_bool("windows", "pfii", "WndOwner", hwndOwner, "SzPath", lpszPath, "Csidl", csidl, "Create", fCreate);
 	return ret;
 }
 
-// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
-HOOKDEF(BOOL, WINAPI, PathFileExistsA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR pszPath
-) {
-	BOOL ret;
-	ret = Old_PathFileExistsA(pszPath);
-	LOQ_bool("windows", "f", "SzPath", pszPath);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker END <<< */
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_pa_alk_203_virtualbox_guest_additions_checker END <<< */
 
