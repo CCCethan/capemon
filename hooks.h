@@ -3930,7 +3930,13 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
+	void
+);
+HOOKDEF(BOOL, WINAPI, CloseHandle,
+	_In_ HANDLE hObject
+);
 HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
 	_In_opt_ LPVOID pvReserved,
 	_In_ DWORD dwCoInit
@@ -3958,18 +3964,6 @@ HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
 );
 HOOKDEF(void, WINAPI, CoUninitialize,
 	void
-);
-HOOKDEF(BSTR, WINAPI, SysAllocString,
-	_In_opt_ const OLECHAR* psz
-);
-HOOKDEF(HRESULT, WINAPI, VariantClear,
-	_Inout_ VARIANTARG* pvarg
-);
-HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
-	void
-);
-HOOKDEF(BOOL, WINAPI, CloseHandle,
-	_In_ HANDLE hObject
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4286,6 +4280,9 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle,
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
 );
+HOOKDEF(BSTR, WINAPI, SysAllocString,
+	_In_opt_ const OLECHAR* psz
+);
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
@@ -4303,6 +4300,9 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
+HOOKDEF(HRESULT, WINAPI, VariantClear,
+	_Inout_ VARIANTARG* pvarg
+);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4317,5 +4317,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker END <<< */
 
