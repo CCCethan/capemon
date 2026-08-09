@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_122_pci_device_id_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_127_physical_memory_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4300,9 +4300,6 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
-HOOKDEF(HRESULT, WINAPI, VariantClear,
-	_Inout_ VARIANTARG* pvarg
-);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4317,5 +4314,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_122_pci_device_id_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_127_physical_memory_checker END <<< */
 
