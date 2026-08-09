@@ -111,5 +111,42 @@ HOOKDEF(UINT, WINAPI, GetConsoleOutputCP, // 呼出規約は WINAPI 仮定(socke
 	LOQ_nonzero("com", "");
 	return ret;
 }
+
+// -> hook_com.c に追加 | category="com" | winapi:Consoles
+HOOKDEF(HANDLE, WINAPI, GetStdHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD nStdHandle
+) {
+	HANDLE ret;
+	ret = Old_GetStdHandle(nStdHandle);
+	LOQ_handle("com", "i", "StdHandle", nStdHandle);
+	return ret;
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:Consoles
+// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+// REVIEW: 引数 pInputControl: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, ReadConsoleW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hConsoleInput,
+	_Out_ LPVOID lpBuffer,
+	_In_ DWORD nNumberOfCharsToRead,
+	_Out_ LPDWORD lpNumberOfCharsRead,
+	_In_opt_ LPVOID pInputControl
+) {
+	BOOL ret;
+	ret = Old_ReadConsoleW(hConsoleInput, lpBuffer, nNumberOfCharsToRead, lpNumberOfCharsRead, pInputControl);
+	LOQ_bool("com", "ppiIp", "ConsoleInput", hConsoleInput, "Buffer", lpBuffer, "NumberOfCharsToRead", nNumberOfCharsToRead, "NumberOfCharsRead", lpNumberOfCharsRead, "InputControl", pInputControl);
+	return ret;
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:Consoles
+HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD nStdHandle,
+	_In_ HANDLE hHandle
+) {
+	BOOL ret;
+	ret = Old_SetStdHandle(nStdHandle, hHandle);
+	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
+	return ret;
+}
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 

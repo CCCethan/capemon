@@ -3939,6 +3939,18 @@ HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ LPCWSTR lpString2,
 	_In_ int cchCount2
 );
+HOOKDEF(HANDLE, WINAPI, CreateFileW,
+	_In_ LPCWSTR lpFileName,
+	_In_ DWORD dwDesiredAccess,
+	_In_ DWORD dwShareMode,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+	_In_ DWORD dwCreationDisposition,
+	_In_ DWORD dwFlagsAndAttributes,
+	_In_opt_ HANDLE hTemplateFile
+);
+HOOKDEF(void, WINAPI, DeleteCriticalSection,
+	_Inout_ LPCRITICAL_SECTION lpCriticalSection
+);
 HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables,
 	_In_ DWORD FirmwareTableProviderSignature,
 	_Out_ PVOID pFirmwareTableBuffer,
@@ -3947,6 +3959,21 @@ HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables,
 HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW,
 	_In_ LOCALE_ENUMPROC lpLocaleEnumProc,
 	_In_ DWORD dwFlags
+);
+HOOKDEF(VOID, WINAPI, ExitProcess,
+	_In_ UINT uExitCode
+);
+HOOKDEF(BOOL, WINAPI, FindClose,
+	_Inout_ HANDLE hFindFile
+);
+HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
+	_In_ HANDLE hFile
+);
+HOOKDEF(BOOL, WINAPI, FreeEnvironmentStringsW,
+	_In_ LPWSTR lpszEnvironmentBlock
+);
+HOOKDEF(BOOL, WINAPI, FreeLibrary,
+	_In_ HMODULE hModule
 );
 HOOKDEF(UINT, WINAPI, GetACP,
 	void
@@ -3962,6 +3989,9 @@ HOOKDEF(BOOL, WINAPI, GetConsoleMode,
 HOOKDEF(UINT, WINAPI, GetConsoleOutputCP,
 	void
 );
+HOOKDEF(HANDLE, WINAPI, GetCurrentProcess,
+	void
+);
 HOOKDEF(int, WINAPI, GetDateFormatW,
 	_In_ LCID Locale,
 	_In_ DWORD dwFlags,
@@ -3973,14 +4003,47 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
 );
+HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
+	_In_ HANDLE hFile,
+	_Out_ PLARGE_INTEGER lpFileSize
+);
+HOOKDEF(DWORD, WINAPI, GetFileType,
+	_In_ HANDLE hFile
+);
 HOOKDEF(int, WINAPI, GetLocaleInfoW,
 	_In_ LCID Locale,
 	_In_ LCTYPE LCType,
 	_Out_opt_ LPWSTR lpLCData,
 	_In_ int cchData
 );
+HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
+	_In_opt_ HMODULE hModule,
+	_Out_ LPWSTR lpFilename,
+	_In_ DWORD nSize
+);
+HOOKDEF(BOOL, WINAPI, GetModuleHandleExW,
+	_In_ DWORD dwFlags,
+	_In_opt_ LPCWSTR lpModuleName,
+	_Out_ HMODULE* phModule
+);
+HOOKDEF(HMODULE, WINAPI, GetModuleHandleW,
+	_In_opt_ LPCWSTR lpModuleName
+);
 HOOKDEF(UINT, WINAPI, GetOEMCP,
 	void
+);
+HOOKDEF(FARPROC, WINAPI, GetProcAddress,
+	_In_ HMODULE hModule,
+	_In_ LPCSTR lpProcName
+);
+HOOKDEF(HANDLE, WINAPI, GetProcessHeap,
+	void
+);
+HOOKDEF(VOID, WINAPI, GetStartupInfoW,
+	_Out_ LPSTARTUPINFOW lpStartupInfo
+);
+HOOKDEF(HANDLE, WINAPI, GetStdHandle,
+	_In_ DWORD nStdHandle
 );
 HOOKDEF(BOOL, WINAPI, GetStringTypeW,
 	_In_ DWORD dwInfoType,
@@ -4026,6 +4089,21 @@ HOOKDEF(SIZE_T, WINAPI, HeapSize,
 	_In_ DWORD dwFlags,
 	_In_ LPCVOID lpMem
 );
+HOOKDEF(BOOL, WINAPI, InitializeCriticalSectionAndSpinCount,
+	_Out_ LPCRITICAL_SECTION lpCriticalSection,
+	_In_ DWORD dwSpinCount
+);
+HOOKDEF(BOOL, WINAPI, InitializeCriticalSectionEx,
+	_Out_ LPCRITICAL_SECTION lpCriticalSection,
+	_In_ DWORD dwSpinCount,
+	_In_ DWORD Flags
+);
+HOOKDEF(void, WINAPI, InitializeSListHead,
+	_Inout_ PSLIST_HEADER ListHead
+);
+HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent,
+	_In_ DWORD ProcessorFeature
+);
 HOOKDEF(BOOL, WINAPI, IsValidCodePage,
 	_In_ UINT CodePage
 );
@@ -4064,10 +4142,28 @@ HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD nNumberOfArguments,
 	_In_ const ULONG_PTR* lpArguments
 );
+HOOKDEF(BOOL, WINAPI, ReadConsoleW,
+	_In_ HANDLE hConsoleInput,
+	_Out_ LPVOID lpBuffer,
+	_In_ DWORD nNumberOfCharsToRead,
+	_Out_ LPDWORD lpNumberOfCharsRead,
+	_In_opt_ LPVOID pInputControl
+);
+HOOKDEF(BOOL, WINAPI, ReadFile,
+	_In_ HANDLE hFile,
+	_Out_ LPVOID lpBuffer,
+	_In_ DWORD nNumberOfBytesToRead,
+	_Out_opt_ LPDWORD lpNumberOfBytesRead,
+	_Inout_opt_ LPOVERLAPPED lpOverlapped
+);
 HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
 	_In_ ULONGLONG ControlPc,
 	_Out_ PULONGLONG ImageBase,
 	_Out_ PULONGLONG TargetGp
+);
+HOOKDEF(PVOID, WINAPI, RtlPcToFileHeader,
+	_In_ PVOID PcValue,
+	_Out_ PVOID* BaseOfImage
 );
 HOOKDEF(void, WINAPI, RtlUnwind,
 	_In_opt_ PVOID TargetFrame,
@@ -4079,8 +4175,38 @@ HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
 	_In_opt_ LPCWSTR lpValue
 );
+HOOKDEF(BOOL, WINAPI, SetFilePointerEx,
+	_In_ HANDLE hFile,
+	_In_ LARGE_INTEGER liDistanceToMove,
+	_Out_opt_ PLARGE_INTEGER lpNewFilePointer,
+	_In_ DWORD dwMoveMethod
+);
 HOOKDEF(void, WINAPI, SetLastError,
 	_In_ DWORD dwErrCode
+);
+HOOKDEF(BOOL, WINAPI, SetStdHandle,
+	_In_ DWORD nStdHandle,
+	_In_ HANDLE hHandle
+);
+HOOKDEF(VOID, WINAPI, Sleep,
+	_In_ DWORD dwMilliseconds
+);
+HOOKDEF(BOOL, WINAPI, TerminateProcess,
+	_In_ HANDLE hProcess,
+	_In_ UINT uExitCode
+);
+HOOKDEF(DWORD, WINAPI, TlsAlloc,
+	void
+);
+HOOKDEF(BOOL, WINAPI, TlsFree,
+	_In_ DWORD dwTlsIndex
+);
+HOOKDEF(LPVOID, WINAPI, TlsGetValue,
+	_In_ DWORD dwTlsIndex
+);
+HOOKDEF(BOOL, WINAPI, TlsSetValue,
+	_In_ DWORD dwTlsIndex,
+	_In_opt_ LPVOID lpTlsValue
 );
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
