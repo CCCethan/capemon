@@ -819,10 +819,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
-HOOK(kernel32, QueryPerformanceCounter),
-HOOK(kernelbase, QueryPerformanceCounter),
-HOOK(kernel32, QueryPerformanceFrequency),
-HOOK(kernelbase, QueryPerformanceFrequency),
+HOOK(kernel32, RaiseException),
+HOOK(kernelbase, RaiseException),
+HOOK(kernel32, RtlCaptureContext),
+HOOK(kernelbase, RtlCaptureContext),
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 };
 
