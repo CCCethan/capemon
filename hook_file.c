@@ -1938,7 +1938,11 @@ HOOKDEF(BOOL, WINAPI, FileTimeToLocalFileTime, // 呼出規約は WINAPI 仮定(
 ) {
 	BOOL ret;
 	ret = Old_FileTimeToLocalFileTime(lpFileTime, lpLocalFileTime);
-	LOQ_bool("filesystem", "pP", "FileTime", lpFileTime, "LocalFileTime", lpLocalFileTime);
+	// [7.5] ② 固定サイズ構造体(8バイト): FILETIME は LARGE_INTEGER と同一レイアウト
+	//       (dwLowDateTime/dwHighDateTime = LowPart/HighPart)。log.c の 'X' は
+	//       PLARGE_INTEGER を NULL ガード + __try 保護で参照し 64bit 値を出すので、
+	//       バイトダンプより読める形になる。
+	LOQ_bool("filesystem", "XP", "FileTime", (PLARGE_INTEGER)lpFileTime, "LocalFileTime", lpLocalFileTime);
 	return ret;
 }
 
@@ -1950,7 +1954,9 @@ HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime, // 呼出規約は WINAPI 仮定(soc
 ) {
 	BOOL ret;
 	ret = Old_FileTimeToSystemTime(lpFileTime, lpSystemTime);
-	LOQ_bool("filesystem", "pP", "FileTime", lpFileTime, "SystemTime", lpSystemTime);
+	// [7.5] ② 固定サイズ構造体(8バイト): FileTimeToLocalFileTime と同一の扱い。
+	//       FILETIME を PLARGE_INTEGER として 'X' で 64bit 値化する。
+	LOQ_bool("filesystem", "XP", "FileTime", (PLARGE_INTEGER)lpFileTime, "SystemTime", lpSystemTime);
 	return ret;
 }
 
