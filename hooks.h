@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_006_bios_version_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4283,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_006_bios_version_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker END <<< */
 
