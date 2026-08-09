@@ -819,8 +819,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
-HOOK(kernel32, ReadConsoleW),
-HOOK(kernelbase, ReadConsoleW),
+HOOK(kernel32, ReadFile),
+HOOK(kernelbase, ReadFile),
+HOOK(kernel32, RtlCaptureContext),
+HOOK(kernelbase, RtlCaptureContext),
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 };
 

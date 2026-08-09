@@ -3931,12 +3931,15 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 #include "hook_vbscript.h"
 
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, ReadConsoleW,
-	_In_ HANDLE hConsoleInput,
+HOOKDEF(BOOL, WINAPI, ReadFile,
+	_In_ HANDLE hFile,
 	_Out_ LPVOID lpBuffer,
-	_In_ DWORD nNumberOfCharsToRead,
-	_Out_ LPDWORD lpNumberOfCharsRead,
-	_In_opt_ LPVOID pInputControl
+	_In_ DWORD nNumberOfBytesToRead,
+	_Out_opt_ LPDWORD lpNumberOfBytesRead,
+	_Inout_opt_ LPOVERLAPPED lpOverlapped
+);
+HOOKDEF(VOID, WINAPI, RtlCaptureContext,
+	_Out_ PCONTEXT ContextRecord
 );
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 
