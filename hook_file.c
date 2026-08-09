@@ -1929,7 +1929,21 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker BEGIN <<< */
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(LPSTR, WINAPI, PathCombineA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPSTR pszPathOut,
+	_In_opt_ LPCSTR pszPathIn,
+	_In_ LPCSTR pszMore
+) {
+	LPSTR ret;
+	ret = Old_PathCombineA(pszPathOut, pszPathIn, pszMore);
+	LOQ_nonnull("filesystem", "ffs", "SzPathOut", pszPathOut, "SzPathIn", pszPathIn, "SzMore", pszMore);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -2060,5 +2074,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "NumberOfBytesToWrite", nNumberOfBytesToWrite, "NumberOfBytesWritten", lpNumberOfBytesWritten, "Overlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_202_virtualbox_file_checker END <<< */
 
