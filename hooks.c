@@ -818,9 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_188_vbox_registry_key_checker BEGIN <<< */
-HOOK(kernel32, IsWow64Process),
-HOOK(kernelbase, IsWow64Process),
+/* >>> AUTOHOOK_pa_alk_190_vbox_window_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -879,8 +877,6 @@ HOOK(kernel32, GetLocaleInfoW),
 HOOK(kernelbase, GetLocaleInfoW),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernelbase, GetModuleFileNameW),
-HOOK(kernel32, GetModuleHandleA),
-HOOK(kernelbase, GetModuleHandleA),
 HOOK(kernel32, GetModuleHandleExW),
 HOOK(kernelbase, GetModuleHandleExW),
 HOOK(kernel32, GetModuleHandleW),
@@ -975,7 +971,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_188_vbox_registry_key_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_190_vbox_window_checker END <<< */
 };
 
 hook_t native_hooks[] = {
