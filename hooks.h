@@ -3931,8 +3931,162 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 #include "hook_vbscript.h"
 
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
-HOOKDEF(VOID, WINAPI, RtlCaptureContext,
-	_Out_ PCONTEXT ContextRecord
+HOOKDEF(int, WINAPI, CompareStringW,
+	_In_ LCID Locale,
+	_In_ DWORD dwCmpFlags,
+	_In_ LPCWSTR lpString1,
+	_In_ int cchCount1,
+	_In_ LPCWSTR lpString2,
+	_In_ int cchCount2
+);
+HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables,
+	_In_ DWORD FirmwareTableProviderSignature,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
+);
+HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW,
+	_In_ LOCALE_ENUMPROC lpLocaleEnumProc,
+	_In_ DWORD dwFlags
+);
+HOOKDEF(UINT, WINAPI, GetACP,
+	void
+);
+HOOKDEF(BOOL, WINAPI, GetCPInfo,
+	_In_ UINT CodePage,
+	_Out_ LPCPINFO lpCPInfo
+);
+HOOKDEF(BOOL, WINAPI, GetConsoleMode,
+	_In_ HANDLE hConsoleHandle,
+	_Out_ LPDWORD lpMode
+);
+HOOKDEF(UINT, WINAPI, GetConsoleOutputCP,
+	void
+);
+HOOKDEF(int, WINAPI, GetDateFormatW,
+	_In_ LCID Locale,
+	_In_ DWORD dwFlags,
+	_In_opt_ const SYSTEMTIME* lpDate,
+	_In_opt_ LPCWSTR lpFormat,
+	_Out_opt_ LPWSTR lpDateStr,
+	_In_ int cchDate
+);
+HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
+	void
+);
+HOOKDEF(int, WINAPI, GetLocaleInfoW,
+	_In_ LCID Locale,
+	_In_ LCTYPE LCType,
+	_Out_opt_ LPWSTR lpLCData,
+	_In_ int cchData
+);
+HOOKDEF(UINT, WINAPI, GetOEMCP,
+	void
+);
+HOOKDEF(BOOL, WINAPI, GetStringTypeW,
+	_In_ DWORD dwInfoType,
+	_In_ LPCWSTR lpSrcStr,
+	_In_ int cchSrc,
+	_Out_ LPWORD lpCharType
+);
+HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
+	_In_ DWORD FirmwareTableProviderSignature,
+	_In_ DWORD FirmwareTableID,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
+);
+HOOKDEF(int, WINAPI, GetTimeFormatW,
+	_In_ LCID Locale,
+	_In_ DWORD dwFlags,
+	_In_opt_ const SYSTEMTIME* lpTime,
+	_In_opt_ LPCWSTR lpFormat,
+	_Out_opt_ LPWSTR lpTimeStr,
+	_In_ int cchTime
+);
+HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation,
+	_Out_ LPTIME_ZONE_INFORMATION lpTimeZoneInformation
+);
+HOOKDEF(LPVOID, WINAPI, HeapAlloc,
+	_In_ HANDLE hHeap,
+	_In_ DWORD dwFlags,
+	_In_ SIZE_T dwBytes
+);
+HOOKDEF(BOOL, WINAPI, HeapFree,
+	_In_ HANDLE hHeap,
+	_In_ DWORD dwFlags,
+	_In_ LPVOID lpMem
+);
+HOOKDEF(LPVOID, WINAPI, HeapReAlloc,
+	_In_ HANDLE hHeap,
+	_In_ DWORD dwFlags,
+	_In_ LPVOID lpMem,
+	_In_ SIZE_T dwBytes
+);
+HOOKDEF(SIZE_T, WINAPI, HeapSize,
+	_In_ HANDLE hHeap,
+	_In_ DWORD dwFlags,
+	_In_ LPCVOID lpMem
+);
+HOOKDEF(BOOL, WINAPI, IsValidCodePage,
+	_In_ UINT CodePage
+);
+HOOKDEF(BOOL, WINAPI, IsValidLocale,
+	_In_ LCID Locale,
+	_In_ DWORD dwFlags
+);
+HOOKDEF(int, WINAPI, LCMapStringEx,
+	_In_opt_ LPCWSTR lpLocaleName,
+	_In_ DWORD dwMapFlags,
+	_In_ LPCWSTR lpSrcStr,
+	_In_ int cchSrc,
+	_Out_opt_ LPWSTR lpDestStr,
+	_In_ int cchDest,
+	_In_opt_ LPNLSVERSIONINFO lpVersionInformation,
+	_In_opt_ LPVOID lpReserved,
+	_In_opt_ LPARAM sortHandle
+);
+HOOKDEF(int, WINAPI, LCMapStringW,
+	_In_ LCID Locale,
+	_In_ DWORD dwMapFlags,
+	_In_ LPCWSTR lpSrcStr,
+	_In_ int cchSrc,
+	_Out_opt_ LPWSTR lpDestStr,
+	_In_ int cchDest
+);
+HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
+	_Out_ LARGE_INTEGER* lpPerformanceCount
+);
+HOOKDEF(BOOL, WINAPI, QueryPerformanceFrequency,
+	_Out_ LARGE_INTEGER* lpFrequency
+);
+HOOKDEF(void, WINAPI, RaiseException,
+	_In_ DWORD dwExceptionCode,
+	_In_ DWORD dwExceptionFlags,
+	_In_ DWORD nNumberOfArguments,
+	_In_ const ULONG_PTR* lpArguments
+);
+HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
+	_In_ ULONGLONG ControlPc,
+	_Out_ PULONGLONG ImageBase,
+	_Out_ PULONGLONG TargetGp
+);
+HOOKDEF(void, WINAPI, RtlUnwind,
+	_In_opt_ PVOID TargetFrame,
+	_In_opt_ PVOID TargetIp,
+	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
+	_In_ PVOID ReturnValue
+);
+HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
+	_In_ LPCWSTR lpName,
+	_In_opt_ LPCWSTR lpValue
+);
+HOOKDEF(void, WINAPI, SetLastError,
+	_In_ DWORD dwErrCode
+);
+HOOKDEF(BOOL, WINAPI, VirtualProtect,
+	_In_ LPVOID lpAddress,
+	_In_ SIZE_T dwSize,
+	_In_ DWORD flNewProtect,
+	_Out_ PDWORD lpflOldProtect
 );
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 
