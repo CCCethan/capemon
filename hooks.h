@@ -3930,7 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_184_user_input_activity_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_188_vbox_registry_key_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, IsWow64Process,
+	_In_ HANDLE hProcess,
+	_Out_ PBOOL Wow64Process
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4062,6 +4066,9 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
+);
+HOOKDEF(HMODULE, WINAPI, GetModuleHandleA,
+	_In_opt_ LPCSTR lpModuleName
 );
 HOOKDEF(BOOL, WINAPI, GetModuleHandleExW,
 	_In_ DWORD dwFlags,
@@ -4283,5 +4290,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_184_user_input_activity_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_188_vbox_registry_key_checker END <<< */
 

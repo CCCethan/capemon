@@ -1540,7 +1540,20 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_184_user_input_activity_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_188_vbox_registry_key_checker BEGIN <<< */
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, IsWow64Process, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hProcess,
+	_Out_ PBOOL Wow64Process
+) {
+	BOOL ret;
+	ret = Old_IsWow64Process(hProcess, Wow64Process);
+	LOQ_bool("process", "pI", "Process", hProcess, "Wow64Process", Wow64Process);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1612,6 +1625,16 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW, // 呼出規約は WINAPI 仮定(sock
 	DWORD ret;
 	ret = Old_GetModuleFileNameW(hModule, lpFilename, nSize);
 	LOQ_nonzero("process", "pFi", "Module", hModule, "Filename", lpFilename, "Size", nSize);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
+HOOKDEF(HMODULE, WINAPI, GetModuleHandleA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCSTR lpModuleName
+) {
+	HMODULE ret;
+	ret = Old_GetModuleHandleA(lpModuleName);
+	LOQ_nonnull("process", "f", "ModuleName", lpModuleName);
 	return ret;
 }
 
@@ -1742,5 +1765,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_184_user_input_activity_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_188_vbox_registry_key_checker END <<< */
 
