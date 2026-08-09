@@ -124,7 +124,9 @@ HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket, // 呼出規約は WINAPI 仮定(soc
 ) {
 	HRESULT ret;
 	ret = Old_CoSetProxyBlanket(pProxy, dwAuthnSvc, dwAuthzSvc, pServerPrincName, dwAuthnLevel, dwImpLevel, pAuthInfo, dwCapabilities);
-	LOQ_hresult("com", "piipiiii", "Proxy", pProxy, "AuthnSvc", dwAuthnSvc, "AuthzSvc", dwAuthzSvc, "ServerPrincName", pServerPrincName, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthInfo", pAuthInfo, "Capabilities", dwCapabilities);
+	// [7.5] ServerPrincName は型 OLECHAR* = ワイド文字列(desc「The server principal name」)。
+	//       本解析では NULL(COLE_DEFAULT_PRINCIPAL)だが u は NULL 安全なので内容可読化する。
+	LOQ_hresult("com", "piiuiiii", "Proxy", pProxy, "AuthnSvc", dwAuthnSvc, "AuthzSvc", dwAuthzSvc, "ServerPrincName", pServerPrincName, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthInfo", pAuthInfo, "Capabilities", dwCapabilities);
 	return ret;
 }
 

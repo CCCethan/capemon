@@ -2017,7 +2017,10 @@ HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/na
 ) {
 	BSTR ret;
 	ret = Old_SysAllocString(psz);
-	LOQ_nonzero("misc", "p", "Sz", psz);
+	// [7.5] kind=struct-or-opaque は誤分類。型は const OLECHAR* = ワイド文字列で
+	//       description も "The string to copy."。u で内容を記録する(log.c の u は
+	//       NULL/例外を __try で保護)。観測「戻り値」は BSTR のアドレスであり長さではない。
+	LOQ_nonzero("misc", "u", "Sz", psz);
 	return ret;
 }
 
