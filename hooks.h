@@ -3930,9 +3930,32 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_198_virtual_process_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_200_virtualbox_device_checker BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, CreateFileA,
+	_In_ LPCSTR lpFileName,
+	_In_ DWORD dwDesiredAccess,
+	_In_ DWORD dwShareMode,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+	_In_ DWORD dwCreationDisposition,
+	_In_ DWORD dwFlagsAndAttributes,
+	_In_opt_ HANDLE hTemplateFile
+);
+HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
+	void
+);
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
+);
+HOOKDEF(int, WINAPI, CompareStringEx,
+	_In_opt_ LPCWSTR lpLocaleName,
+	_In_ DWORD dwCmpFlags,
+	_In_ LPCWSTR lpString1,
+	_In_ int cchCount1,
+	_In_ LPCWSTR lpString2,
+	_In_ int cchCount2,
+	_In_opt_ LPNLSVERSIONINFO lpVersionInformation,
+	_In_opt_ LPVOID lpReserved,
+	_In_opt_ LPARAM lParam
 );
 HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ LCID Locale,
@@ -3956,6 +3979,12 @@ HOOKDEF(void, WINAPI, DeleteCriticalSection,
 );
 HOOKDEF(void, WINAPI, EnterCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
+);
+HOOKDEF(BOOL, WINAPI, EnumSystemLocalesEx,
+	_In_ LOCALE_ENUMPROCEX lpLocaleEnumProcEx,
+	_In_ DWORD dwFlags,
+	_In_ LPARAM lParam,
+	_In_opt_ LPVOID lpReserved
 );
 HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW,
 	_In_ LOCALE_ENUMPROC lpLocaleEnumProc,
@@ -3999,6 +4028,15 @@ HOOKDEF(DWORD, WINAPI, GetCurrentProcessId,
 HOOKDEF(DWORD, WINAPI, GetCurrentThreadId,
 	void
 );
+HOOKDEF(int, WINAPI, GetDateFormatEx,
+	_In_opt_ LPCWSTR lpLocaleName,
+	_In_ DWORD dwFlags,
+	_In_opt_ const SYSTEMTIME* lpDate,
+	_In_opt_ LPCWSTR lpFormat,
+	_Out_opt_ LPWSTR lpDateStr,
+	_In_ int cchDate,
+	_In_opt_ LPCWSTR lpCalendar
+);
 HOOKDEF(int, WINAPI, GetDateFormatW,
 	_In_ LCID Locale,
 	_In_ DWORD dwFlags,
@@ -4016,6 +4054,12 @@ HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 );
 HOOKDEF(DWORD, WINAPI, GetFileType,
 	_In_ HANDLE hFile
+);
+HOOKDEF(int, WINAPI, GetLocaleInfoEx,
+	_In_opt_ LPCWSTR lpLocaleName,
+	_In_ LCTYPE LCType,
+	_Out_opt_ LPWSTR lpLCData,
+	_In_ int cchData
 );
 HOOKDEF(int, WINAPI, GetLocaleInfoW,
 	_In_ LCID Locale,
@@ -4058,6 +4102,14 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW,
 	_In_ int cchSrc,
 	_Out_ LPWORD lpCharType
 );
+HOOKDEF(int, WINAPI, GetTimeFormatEx,
+	_In_opt_ LPCWSTR lpLocaleName,
+	_In_ DWORD dwFlags,
+	_In_opt_ const SYSTEMTIME* lpTime,
+	_In_opt_ LPCWSTR lpFormat,
+	_Out_opt_ LPWSTR lpTimeStr,
+	_In_ int cchTime
+);
 HOOKDEF(int, WINAPI, GetTimeFormatW,
 	_In_ LCID Locale,
 	_In_ DWORD dwFlags,
@@ -4068,6 +4120,10 @@ HOOKDEF(int, WINAPI, GetTimeFormatW,
 );
 HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation,
 	_Out_ LPTIME_ZONE_INFORMATION lpTimeZoneInformation
+);
+HOOKDEF(int, WINAPI, GetUserDefaultLocaleName,
+	_Out_ LPWSTR lpLocaleName,
+	_In_ int cchLocaleName
 );
 HOOKDEF(LPVOID, WINAPI, HeapAlloc,
 	_In_ HANDLE hHeap,
@@ -4109,6 +4165,15 @@ HOOKDEF(BOOL, WINAPI, IsValidLocale,
 	_In_ LCID Locale,
 	_In_ DWORD dwFlags
 );
+HOOKDEF(BOOL, WINAPI, IsValidLocaleName,
+	_In_ LPCWSTR lpLocaleName
+);
+HOOKDEF(int, WINAPI, LCIDToLocaleName,
+	_In_ LCID Locale,
+	_Out_opt_ LPWSTR lpName,
+	_In_ int cchName,
+	_In_ DWORD dwFlags
+);
 HOOKDEF(int, WINAPI, LCMapStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
 	_In_ DWORD dwMapFlags,
@@ -4130,6 +4195,10 @@ HOOKDEF(int, WINAPI, LCMapStringW,
 );
 HOOKDEF(void, WINAPI, LeaveCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
+);
+HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
+	_In_ LPCWSTR lpName,
+	_In_ DWORD dwFlags
 );
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
@@ -4223,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_198_virtual_process_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_200_virtualbox_device_checker END <<< */
 
