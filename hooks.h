@@ -3931,21 +3931,6 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 #include "hook_vbscript.h"
 
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
-HOOKDEF(int, WINAPI, CompareStringW,
-	_In_ LCID Locale,
-	_In_ DWORD dwCmpFlags,
-	_In_ LPCWSTR lpString1,
-	_In_ int cchCount1,
-	_In_ LPCWSTR lpString2,
-	_In_ int cchCount2
-);
-HOOKDEF(BOOL, WINAPI, GetConsoleMode,
-	_In_ HANDLE hConsoleHandle,
-	_Out_ LPDWORD lpMode
-);
-HOOKDEF(UINT, WINAPI, GetConsoleOutputCP,
-	void
-);
 HOOKDEF(BOOL, WINAPI, IsValidCodePage,
 	_In_ UINT CodePage
 );
@@ -3986,30 +3971,6 @@ HOOKDEF(void, WINAPI, RaiseException,
 );
 HOOKDEF(VOID, WINAPI, RtlCaptureContext,
 	_Out_ PCONTEXT ContextRecord
-);
-HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
-	_In_ ULONGLONG ControlPc,
-	_Out_ PULONGLONG ImageBase,
-	_Out_ PULONGLONG TargetGp
-);
-HOOKDEF(void, WINAPI, RtlUnwind,
-	_In_opt_ PVOID TargetFrame,
-	_In_opt_ PVOID TargetIp,
-	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
-	_In_ PVOID ReturnValue
-);
-HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
-	_In_ LPCWSTR lpName,
-	_In_opt_ LPCWSTR lpValue
-);
-HOOKDEF(void, WINAPI, SetLastError,
-	_In_ DWORD dwErrCode
-);
-HOOKDEF(BOOL, WINAPI, VirtualProtect,
-	_In_ LPVOID lpAddress,
-	_In_ SIZE_T dwSize,
-	_In_ DWORD flNewProtect,
-	_Out_ PDWORD lpflOldProtect
 );
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 

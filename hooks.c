@@ -819,12 +819,6 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
-HOOK(kernel32, CompareStringW),
-HOOK(kernelbase, CompareStringW),
-HOOK(kernel32, GetConsoleMode),
-HOOK(kernelbase, GetConsoleMode),
-HOOK(kernel32, GetConsoleOutputCP),
-HOOK(kernelbase, GetConsoleOutputCP),
 HOOK(kernel32, IsValidCodePage),
 HOOK(kernelbase, IsValidCodePage),
 HOOK(kernel32, IsValidLocale),
@@ -841,16 +835,6 @@ HOOK(kernel32, RaiseException),
 HOOK(kernelbase, RaiseException),
 HOOK(kernel32, RtlCaptureContext),
 HOOK(kernelbase, RtlCaptureContext),
-HOOK(kernel32, RtlLookupFunctionEntry),
-HOOK(kernelbase, RtlLookupFunctionEntry),
-HOOK(kernel32, RtlUnwind),
-HOOK(kernelbase, RtlUnwind),
-HOOK(kernel32, SetEnvironmentVariableW),
-HOOK(kernelbase, SetEnvironmentVariableW),
-HOOK(kernel32, SetLastError),
-HOOK(kernelbase, SetLastError),
-HOOK(kernel32, VirtualProtect),
-HOOK(kernelbase, VirtualProtect),
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 };
 
