@@ -1953,7 +1953,10 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW, // 呼出規約は WINAPI 仮定(socket/nat
 ) {
 	HANDLE ret;
 	ret = Old_CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-	LOQ_handle("filesystem", "Fiipiip", "FileName", lpFileName, "DesiredAccess", dwDesiredAccess, "ShareMode", dwShareMode, "SecurityAttributes", lpSecurityAttributes, "CreationDisposition", dwCreationDisposition, "FlagsAndAttributes", dwFlagsAndAttributes, "TemplateFile", hTemplateFile);
+	// [7.5] ② 固定サイズ構造体: SECURITY_ATTRIBUTES(引数型が通っている=定義済み)。
+	//       CreatePipe.PipeAttributes と同一の扱い。bInheritHandle が読めるのが要点。
+	//       多くの呼び出しで NULL だが b は NULL 安全。
+	LOQ_handle("filesystem", "Fiibiip", "FileName", lpFileName, "DesiredAccess", dwDesiredAccess, "ShareMode", dwShareMode, "SecurityAttributes", sizeof(SECURITY_ATTRIBUTES), lpSecurityAttributes, "CreationDisposition", dwCreationDisposition, "FlagsAndAttributes", dwFlagsAndAttributes, "TemplateFile", hTemplateFile);
 	return ret;
 }
 
