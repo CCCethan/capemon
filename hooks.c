@@ -823,12 +823,6 @@ HOOK(kernel32, QueryPerformanceFrequency),
 HOOK(kernelbase, QueryPerformanceFrequency),
 HOOK(kernel32, RaiseException),
 HOOK(kernelbase, RaiseException),
-HOOK(kernel32, ReadConsoleW),
-HOOK(kernelbase, ReadConsoleW),
-HOOK(kernel32, ReadFile),
-HOOK(kernelbase, ReadFile),
-HOOK(kernel32, RtlCaptureContext),
-HOOK(kernelbase, RtlCaptureContext),
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 };
 
