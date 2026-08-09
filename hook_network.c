@@ -1120,7 +1120,17 @@ HOOKDEF(DWORD, WINAPI, WNetEnumResourceW, // 呼出規約は WINAPI 仮定(socke
 ) {
 	DWORD ret;
 	ret = Old_WNetEnumResourceW(hEnum, lpcCount, lpBuffer, lpBufferSize);
-	LOQ_nonzero("network", "pIpI", "Enum", hEnum, "CCount", lpcCount, "Buffer", lpBuffer, "BufferSize", lpBufferSize);
+	// [7.5] ⑤/複数要素バッファ: desc どおり lpBuffer は NETRESOURCEW の配列。件数は *lpcCount。
+	//       既定 capemon の WNetUseConnectionW(hook_network.c) と同じ「NULLガード付きメンバ参照」
+	//       イディオムで、各要素の lpRemoteName を u 化する(log.c の u は __try 保護)。
+	//       cap=4: 実測の最大件数は 3(observed_count_max)なので余裕1件。★4件を超える分は記録しない。
+	//       REVIEW対応: 本APIは成功時に NO_ERROR(0) を返すため LOQ_nonzero → LOQ_zero に是正。
+	LOQ_zero("network", "pIuuuuI", "Enum", hEnum, "CCount", lpcCount,
+		"Remote0", ((ret == NO_ERROR && lpcCount && lpBuffer && *lpcCount > 0) ? ((LPNETRESOURCEW)lpBuffer)[0].lpRemoteName : NULL),
+		"Remote1", ((ret == NO_ERROR && lpcCount && lpBuffer && *lpcCount > 1) ? ((LPNETRESOURCEW)lpBuffer)[1].lpRemoteName : NULL),
+		"Remote2", ((ret == NO_ERROR && lpcCount && lpBuffer && *lpcCount > 2) ? ((LPNETRESOURCEW)lpBuffer)[2].lpRemoteName : NULL),
+		"Remote3", ((ret == NO_ERROR && lpcCount && lpBuffer && *lpcCount > 3) ? ((LPNETRESOURCEW)lpBuffer)[3].lpRemoteName : NULL),
+		"BufferSize", lpBufferSize);
 	return ret;
 }
 
@@ -1136,7 +1146,10 @@ HOOKDEF(DWORD, WINAPI, WNetOpenEnumW, // 呼出規約は WINAPI 仮定(socket/na
 ) {
 	DWORD ret;
 	ret = Old_WNetOpenEnumW(dwScope, dwType, dwUsage, lpNetResource, lphEnum);
-	LOQ_nonzero("network", "iiipP", "Scope", dwScope, "Type", dwType, "Usage", dwUsage, "NetResource", lpNetResource, "HEnum", lphEnum);
+	// [7.5] ③ 構造体のメンバ参照: 列挙対象コンテナを示す NETRESOURCE。意味のある内容は
+	//       lpRemoteName なので、既定 capemon の WNetUseConnectionW と同一イディオムで u 化する。
+	//       REVIEW対応: 本APIも成功時 NO_ERROR(0) のため LOQ_nonzero → LOQ_zero に是正。
+	LOQ_zero("network", "iiiuP", "Scope", dwScope, "Type", dwType, "Usage", dwUsage, "NetResource", (lpNetResource ? lpNetResource->lpRemoteName : NULL), "HEnum", lphEnum);
 	return ret;
 }
 
