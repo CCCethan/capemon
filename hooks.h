@@ -3937,8 +3937,5 @@ HOOKDEF(void, WINAPI, RaiseException,
 	_In_ DWORD nNumberOfArguments,
 	_In_ const ULONG_PTR* lpArguments
 );
-HOOKDEF(VOID, WINAPI, RtlCaptureContext,
-	_Out_ PCONTEXT ContextRecord
-);
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 
