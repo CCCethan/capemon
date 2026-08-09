@@ -716,7 +716,14 @@ HOOKDEF(LONG, WINAPI, RegGetValueA, // 呼出規約は WINAPI 仮定(socket/nati
 ) {
 	LONG ret;
 	ret = Old_RegGetValueA(hkey, lpSubKey, lpValue, dwFlags, pdwType, pvData, pcbData);
-	LOQ_nonzero("registry", "pssiIpI", "Key", hkey, "SubKey", lpSubKey, "Value", lpValue, "Flags", dwFlags, "DwType", pdwType, "VData", pvData, "CbData", pcbData);
+	// [7.5] ⑤/単一出力バッファ: desc「a buffer that receives the value's data」。
+	//       pcbData は in/out で、成功時は書き込まれた実バイト数を保持する(実測 165)。
+	//       文字列値の場合はバイトダンプでそのまま読めるので、型に依らない b を使う。
+	//       ★ _LOQ は成否に関わらず値式を評価するため、失敗時・容量問い合わせ
+	//         (pvData=NULL)では 0 バイトになるようガードする。
+	//       REVIEW対応: 本APIは成功時 ERROR_SUCCESS(0) を返す(実測 observed_returns=[0])ため
+	//         LOQ_nonzero → LOQ_zero に是正。
+	LOQ_zero("registry", "pssiIbI", "Key", hkey, "SubKey", lpSubKey, "Value", lpValue, "Flags", dwFlags, "DwType", pdwType, "VData", (size_t)((ret == ERROR_SUCCESS && pvData && pcbData) ? *pcbData : 0), pvData, "CbData", pcbData);
 	return ret;
 }
 
