@@ -670,7 +670,12 @@ HOOKDEF(BOOL, WINAPI, GetUserObjectInformationW, // 呼出規約は WINAPI 仮�
 ) {
 	BOOL ret;
 	ret = Old_GetUserObjectInformationW(hObj, nIndex, pvInfo, nLength, lpnLengthNeeded);
-	LOQ_bool("windows", "pipiI", "Obj", hObj, "Index", nIndex, "VInfo", pvInfo, "Length", nLength, "NLengthNeeded", lpnLengthNeeded);
+	// [7.5] ⑤/単一出力バッファ: desc「a buffer to receive the object information」。
+	//       実書込長は *lpnLengthNeeded(実測16)、容量 nLength で上限を締める。
+	//       nIndex(UOI_NAME/UOI_TYPE/UOI_FLAGS)で内容の型が変わるため、型に依らない b を使う。
+	//       ★ _LOQ は成否に関わらず値式を評価するので、失敗時・長さ問い合わせ(pvInfo=NULL)は
+	//         0 バイトになるようガードする。
+	LOQ_bool("windows", "pibiI", "Obj", hObj, "Index", nIndex, "VInfo", (size_t)((ret && pvInfo && lpnLengthNeeded) ? (*lpnLengthNeeded < nLength ? *lpnLengthNeeded : nLength) : 0), pvInfo, "Length", nLength, "NLengthNeeded", lpnLengthNeeded);
 	return ret;
 }
 
