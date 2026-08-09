@@ -3982,46 +3982,5 @@ HOOKDEF(BOOL, WINAPI, SetFilePointerEx,
 	_Out_opt_ PLARGE_INTEGER lpNewFilePointer,
 	_In_ DWORD dwMoveMethod
 );
-HOOKDEF(void, WINAPI, SetLastError,
-	_In_ DWORD dwErrCode
-);
-HOOKDEF(BOOL, WINAPI, SetStdHandle,
-	_In_ DWORD nStdHandle,
-	_In_ HANDLE hHandle
-);
-HOOKDEF(VOID, WINAPI, Sleep,
-	_In_ DWORD dwMilliseconds
-);
-HOOKDEF(BOOL, WINAPI, TerminateProcess,
-	_In_ HANDLE hProcess,
-	_In_ UINT uExitCode
-);
-HOOKDEF(DWORD, WINAPI, TlsAlloc,
-	void
-);
-HOOKDEF(BOOL, WINAPI, TlsFree,
-	_In_ DWORD dwTlsIndex
-);
-HOOKDEF(LPVOID, WINAPI, TlsGetValue,
-	_In_ DWORD dwTlsIndex
-);
-HOOKDEF(BOOL, WINAPI, TlsSetValue,
-	_In_ DWORD dwTlsIndex,
-	_In_opt_ LPVOID lpTlsValue
-);
-HOOKDEF(BOOL, WINAPI, VirtualProtect,
-	_In_ LPVOID lpAddress,
-	_In_ SIZE_T dwSize,
-	_In_ DWORD flNewProtect,
-	_Out_ PDWORD lpflOldProtect
-);
-HOOKDEF(BOOL, WINAPI, WriteFile,
-	_In_ HANDLE hFile,
-	_In_ LPCVOID lpBuffer,
-	_In_ DWORD nNumberOfBytesToWrite,
-	_Out_opt_ LPDWORD lpNumberOfBytesWritten,
-	_Inout_opt_ LPOVERLAPPED lpOverlapped
-);
-
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 
