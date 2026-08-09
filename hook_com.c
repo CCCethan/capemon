@@ -72,104 +72,7 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker BEGIN <<< */
-// -> hook_com.c に追加 | category="com" | winapi:COM
-// REVIEW: 引数 pvReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(HRESULT, WINAPI, CoInitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPVOID pvReserved
-) {
-	HRESULT ret;
-	ret = Old_CoInitialize(pvReserved);
-	LOQ_hresult("com", "p", "VReserved", pvReserved);
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:COM
-// REVIEW: 引数 pStm: 型 LPSTREAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 riid: 型 REFIID を i(int32)で仮記録。要確認
-// REVIEW: 引数 pUnk: 型 LPUNKNOWN は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 pvDestContext: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(HRESULT, WINAPI, CoMarshalInterface, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPSTREAM pStm,
-	_In_ REFIID riid,
-	_In_ LPUNKNOWN pUnk,
-	_In_ DWORD dwDestContext,
-	_In_opt_ LPVOID pvDestContext,
-	_In_ DWORD mshlflags
-) {
-	HRESULT ret;
-	ret = Old_CoMarshalInterface(pStm, riid, pUnk, dwDestContext, pvDestContext, mshlflags);
-	LOQ_hresult("com", "pipipi", "Stm", pStm, "Riid", riid, "Unk", pUnk, "DestContext", dwDestContext, "VDestContext", pvDestContext, "Mshlflags", mshlflags);
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:COM
-// REVIEW: 引数 pStm: 型 LPSTREAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HRESULT, WINAPI, CoReleaseMarshalData, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPSTREAM pStm
-) {
-	HRESULT ret;
-	ret = Old_CoReleaseMarshalData(pStm);
-	LOQ_hresult("com", "p", "Stm", pStm);
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:COM
-HOOKDEF(LPVOID, WINAPI, CoTaskMemAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ SIZE_T cb
-) {
-	LPVOID ret;
-	ret = Old_CoTaskMemAlloc(cb);
-	LOQ_nonnull("com", "i", "cb", cb);
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:COM
-// REVIEW: 引数 pv: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(void, WINAPI, CoTaskMemFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPVOID pv
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_CoTaskMemFree(pv);
-	LOQ_void("com", "p", "V", pv);
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:COM
-// REVIEW: 引数 pStm: 型 LPSTREAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 riid: 型 REFIID を i(int32)で仮記録。要確認
-// REVIEW: 引数 ppv: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(HRESULT, WINAPI, CoUnmarshalInterface, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPSTREAM pStm,
-	_In_ REFIID riid,
-	_Out_ LPVOID* ppv
-) {
-	HRESULT ret;
-	ret = Old_CoUnmarshalInterface(pStm, riid, ppv);
-	LOQ_hresult("com", "pip", "Stm", pStm, "Riid", riid, "Pv", ppv);
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:COM
-// REVIEW: 引数 rclsid: 型 REFIID を i(int32)で仮記録。要確認
-HOOKDEF(HRESULT, WINAPI, StringFromIID, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ REFIID rclsid,
-	_Out_ LPOLESTR* lplpsz
-) {
-	HRESULT ret;
-	ret = Old_StringFromIID(rclsid, lplpsz);
-	LOQ_hresult("com", "iP", "Rclsid", rclsid, "Lpsz", lplpsz);
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:COM
-HOOKDEF(void, WINAPI, CoUninitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_CoUninitialize();
-	LOQ_void("com", "");
-}
-
+/* >>> AUTOHOOK_pa_alk_155_shell_history_checker BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpVersionInformation: 型 LPNLSVERSIONINFO は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -267,5 +170,5 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_141_recycle_bin_item_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_155_shell_history_checker END <<< */
 
