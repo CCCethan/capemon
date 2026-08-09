@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_105_memory_size_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -971,7 +971,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_105_memory_size_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker END <<< */
 };
 
 hook_t native_hooks[] = {
