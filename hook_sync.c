@@ -178,7 +178,24 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker BEGIN <<< */
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD nCount,
+	_In_ const HANDLE* pHandles,
+	_In_ BOOL bWaitAll,
+	_In_ DWORD dwMilliseconds,
+	_In_ DWORD dwWakeMask
+) {
+	DWORD ret;
+	ret = Old_MsgWaitForMultipleObjects(nCount, pHandles, bWaitAll, dwMilliseconds, dwWakeMask);
+	LOQ_nonzero("sync", "ipiii", "Count", nCount, "Handles", pHandles, "WaitAll", bWaitAll, "Milliseconds", dwMilliseconds, "WakeMask", dwWakeMask);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -228,5 +245,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
 }
-/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker END <<< */
 
