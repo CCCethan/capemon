@@ -2010,15 +2010,12 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
-HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwExceptionCode,
-	_In_ DWORD dwExceptionFlags,
-	_In_ DWORD nNumberOfArguments,
-	_In_ const ULONG_PTR* lpArguments
+HOOKDEF(VOID, WINAPI, RtlCaptureContext, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ PCONTEXT ContextRecord
 ) {
 	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
-	LOQ_void("misc", "iiiI", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
+	Old_RtlCaptureContext(ContextRecord);
+	LOQ_void("misc", "P", "ContextRecord", ContextRecord);
 }
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 
