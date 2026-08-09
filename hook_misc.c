@@ -2019,7 +2019,10 @@ HOOKDEF(BOOL, WINAPI, CreatePipe, // 呼出規約は WINAPI 仮定(socket/native
 ) {
 	BOOL ret;
 	ret = Old_CreatePipe(hReadPipe, hWritePipe, lpPipeAttributes, nSize);
-	LOQ_bool("misc", "PPpi", "ReadPipe", hReadPipe, "WritePipe", hWritePipe, "PipeAttributes", lpPipeAttributes, "Size", nSize);
+	// [7.5] ② 固定サイズ構造体: desc どおり SECURITY_ATTRIBUTES。引数型が通っている=定義済み。
+	//       bInheritHandle(子プロセスへ継承するか)が読めるのが要点。
+	//       ※ 容量候補として出た Size(=1024) はパイプのバッファサイズで構造体長ではない。
+	LOQ_bool("misc", "PPbi", "ReadPipe", hReadPipe, "WritePipe", hWritePipe, "PipeAttributes", sizeof(SECURITY_ATTRIBUTES), lpPipeAttributes, "Size", nSize);
 	return ret;
 }
 

@@ -1951,7 +1951,10 @@ HOOKDEF(BOOL, WINAPI, GetFileAttributesExW, // 呼出規約は WINAPI 仮定(soc
 ) {
 	BOOL ret;
 	ret = Old_GetFileAttributesExW(lpFileName, fInfoLevelId, lpFileInformation);
-	LOQ_bool("filesystem", "Fip", "FileName", lpFileName, "InfoLevelId", fInfoLevelId, "FileInformation", lpFileInformation);
+	// [7.5] ② 固定サイズ構造体: fInfoLevelId が決める型は GetFileExInfoStandard の
+	//       WIN32_FILE_ATTRIBUTE_DATA のみ(他の水準は未定義)。その時だけ sizeof でダンプする。
+	//       ※ 提案の (size_t)ret は誤り — ret は BOOL なので長さ1バイトになってしまう。
+	LOQ_bool("filesystem", "Fib", "FileName", lpFileName, "InfoLevelId", fInfoLevelId, "FileInformation", (size_t)(fInfoLevelId == GetFileExInfoStandard ? sizeof(WIN32_FILE_ATTRIBUTE_DATA) : 0), lpFileInformation);
 	return ret;
 }
 
@@ -2050,7 +2053,10 @@ HOOKDEF(BOOL, WINAPI, ReadFile, // 呼出規約は WINAPI 仮定(socket/native/C
 ) {
 	BOOL ret;
 	ret = Old_ReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
-	LOQ_bool("filesystem", "ppiIP", "File", hFile, "Buffer", lpBuffer, "NumberOfBytesToRead", nNumberOfBytesToRead, "NumberOfBytesRead", lpNumberOfBytesRead, "Overlapped", lpOverlapped);
+	// [7.5] ⑤/単一出力バッファ: 実書込長は *lpNumberOfBytesRead(観測 37)。容量 nNumberOfBytesToRead
+	//       で上限を締め、非同期時に NULL になりうるので三項でガードしてから参照する。
+	//       ※ 提案の (size_t)(ret < NumberOfBytesToRead ? ...) は誤り — ret は BOOL(1)なので1バイトになる。
+	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)(lpNumberOfBytesRead ? (*lpNumberOfBytesRead < nNumberOfBytesToRead ? *lpNumberOfBytesRead : nNumberOfBytesToRead) : 0), lpBuffer, "NumberOfBytesToRead", nNumberOfBytesToRead, "NumberOfBytesRead", lpNumberOfBytesRead, "Overlapped", lpOverlapped);
 	return ret;
 }
 
