@@ -821,8 +821,6 @@ hook_t full_hooks[] = {
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
 HOOK(kernel32, ReadFile),
 HOOK(kernelbase, ReadFile),
-HOOK(kernel32, RtlCaptureContext),
-HOOK(kernelbase, RtlCaptureContext),
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 };
 

@@ -3938,8 +3938,5 @@ HOOKDEF(BOOL, WINAPI, ReadFile,
 	_Out_opt_ LPDWORD lpNumberOfBytesRead,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
-HOOKDEF(VOID, WINAPI, RtlCaptureContext,
-	_Out_ PCONTEXT ContextRecord
-);
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 

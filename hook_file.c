@@ -1944,14 +1944,5 @@ HOOKDEF(BOOL, WINAPI, ReadFile, // 呼出規約は WINAPI 仮定(socket/native/C
 	LOQ_bool("filesystem", "ppiIP", "File", hFile, "Buffer", lpBuffer, "NumberOfBytesToRead", nNumberOfBytesToRead, "NumberOfBytesRead", lpNumberOfBytesRead, "Overlapped", lpOverlapped);
 	return ret;
 }
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
-HOOKDEF(VOID, WINAPI, RtlCaptureContext, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ PCONTEXT ContextRecord
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_RtlCaptureContext(ContextRecord);
-	LOQ_void("misc", "P", "ContextRecord", ContextRecord);
-}
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 
