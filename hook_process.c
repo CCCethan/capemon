@@ -1540,17 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker BEGIN <<< */
-// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
-HOOKDEF(HMODULE, WINAPI, GetModuleHandleA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCSTR lpModuleName
-) {
-	HMODULE ret;
-	ret = Old_GetModuleHandleA(lpModuleName);
-	LOQ_nonnull("process", "f", "ModuleName", lpModuleName);
-	return ret;
-}
-
+/* >>> AUTOHOOK_pa_alk_110_mouse_movement_checker BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1752,5 +1742,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_110_mouse_movement_checker END <<< */
 
