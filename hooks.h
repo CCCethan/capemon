@@ -3931,31 +3931,20 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 #include "hook_vbscript.h"
 
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, IsValidCodePage,
-	_In_ UINT CodePage
+HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
+	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
-HOOKDEF(BOOL, WINAPI, IsValidLocale,
-	_In_ LCID Locale,
-	_In_ DWORD dwFlags
+HOOKDEF(BOOL, WINAPI, QueryPerformanceFrequency,
+	_Out_ LARGE_INTEGER* lpFrequency
 );
-HOOKDEF(int, WINAPI, LCMapStringEx,
-	_In_opt_ LPCWSTR lpLocaleName,
-	_In_ DWORD dwMapFlags,
-	_In_ LPCWSTR lpSrcStr,
-	_In_ int cchSrc,
-	_Out_opt_ LPWSTR lpDestStr,
-	_In_ int cchDest,
-	_In_opt_ LPNLSVERSIONINFO lpVersionInformation,
-	_In_opt_ LPVOID lpReserved,
-	_In_opt_ LPARAM sortHandle
+HOOKDEF(void, WINAPI, RaiseException,
+	_In_ DWORD dwExceptionCode,
+	_In_ DWORD dwExceptionFlags,
+	_In_ DWORD nNumberOfArguments,
+	_In_ const ULONG_PTR* lpArguments
 );
-HOOKDEF(int, WINAPI, LCMapStringW,
-	_In_ LCID Locale,
-	_In_ DWORD dwMapFlags,
-	_In_ LPCWSTR lpSrcStr,
-	_In_ int cchSrc,
-	_Out_opt_ LPWSTR lpDestStr,
-	_In_ int cchDest
+HOOKDEF(VOID, WINAPI, RtlCaptureContext,
+	_Out_ PCONTEXT ContextRecord
 );
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 
