@@ -2018,7 +2018,11 @@ HOOKDEF(HRESULT, WINAPI, SafeArrayGetElement, // 呼出規約は WINAPI 仮定(s
 ) {
 	HRESULT ret;
 	ret = Old_SafeArrayGetElement(psa, rgIndices, pv);
-	LOQ_hresult("misc", "pIP", "Sa", psa, "RgIndices", rgIndices, "V", pv);
+	// [7.5] ② 固定サイズ構造体: SAFEARRAY は capemon のビルドで完全定義(既定フック
+	//       CDocument_write が psa->pvData / psa->rgsabound[0].cElements を参照している)。
+	//       ヘッダを sizeof でダンプすると cDims/cbElements/rgsabound(要素数・下限)が読め、
+	//       WMI から何件・何バイトの配列を取り出したかが追える。
+	LOQ_hresult("misc", "bIP", "Sa", sizeof(SAFEARRAY), psa, "RgIndices", rgIndices, "V", pv);
 	return ret;
 }
 
@@ -2031,7 +2035,8 @@ HOOKDEF(HRESULT, WINAPI, SafeArrayGetLBound, // 呼出規約は WINAPI 仮定(so
 ) {
 	HRESULT ret;
 	ret = Old_SafeArrayGetLBound(psa, nDim, plLbound);
-	LOQ_hresult("misc", "piI", "Sa", psa, "Dim", nDim, "LLbound", plLbound);
+	// [7.5] ② 固定サイズ構造体: SafeArrayGetElement.Sa と同一の扱い。
+	LOQ_hresult("misc", "biI", "Sa", sizeof(SAFEARRAY), psa, "Dim", nDim, "LLbound", plLbound);
 	return ret;
 }
 
@@ -2044,7 +2049,8 @@ HOOKDEF(HRESULT, WINAPI, SafeArrayGetUBound, // 呼出規約は WINAPI 仮定(so
 ) {
 	HRESULT ret;
 	ret = Old_SafeArrayGetUBound(psa, nDim, plUbound);
-	LOQ_hresult("misc", "piI", "Sa", psa, "Dim", nDim, "LUbound", plUbound);
+	// [7.5] ② 固定サイズ構造体: SafeArrayGetElement.Sa と同一の扱い。
+	LOQ_hresult("misc", "biI", "Sa", sizeof(SAFEARRAY), psa, "Dim", nDim, "LUbound", plUbound);
 	return ret;
 }
 
