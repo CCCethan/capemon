@@ -2029,7 +2029,10 @@ HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables, // 呼出規約は WINAPI 仮定
 ) {
 	UINT ret;
 	ret = Old_EnumSystemFirmwareTables(FirmwareTableProviderSignature, pFirmwareTableBuffer, BufferSize);
-	LOQ_nonzero("misc", "ipi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableBuffer", pFirmwareTableBuffer, "BufferSize", BufferSize);
+	// [可読性判断 ⑤/単一出力バッファ] description: "buffer that receives the list of firmware tables"。
+	// 長さ源 = 実書込長(戻り値)。容量 BufferSize で必ずクランプする。
+	// NULL 問い合わせ呼び出し(pBuffer=NULL, BufferSize=0)では ret=必要サイズだが min により 0 バイト = 安全。
+	LOQ_nonzero("misc", "ibi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableBuffer", (size_t)(ret < BufferSize ? ret : BufferSize), pFirmwareTableBuffer, "BufferSize", BufferSize);
 	return ret;
 }
 
@@ -2195,7 +2198,10 @@ HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable, // 呼出規約は WINAPI 仮定(s
 ) {
 	UINT ret;
 	ret = Old_GetSystemFirmwareTable(FirmwareTableProviderSignature, FirmwareTableID, pFirmwareTableBuffer, BufferSize);
-	LOQ_nonzero("misc", "iipi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableID", FirmwareTableID, "FirmwareTableBuffer", pFirmwareTableBuffer, "BufferSize", BufferSize);
+	// [可読性判断 ⑤/単一出力バッファ] description: "buffer that receives the requested firmware table"。
+	// 長さ源 = 実書込長(戻り値。観測値 40/60/144/244)。容量 BufferSize(観測 244) でクランプ。
+	// 本検体のサンドボックス検知の核心データ(ACPI/SMBIOS テーブル本体)なので内容を記録する。
+	LOQ_nonzero("misc", "iibi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableID", FirmwareTableID, "FirmwareTableBuffer", (size_t)(ret < BufferSize ? ret : BufferSize), pFirmwareTableBuffer, "BufferSize", BufferSize);
 	return ret;
 }
 
