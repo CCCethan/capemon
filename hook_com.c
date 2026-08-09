@@ -124,7 +124,10 @@ HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket, // 呼出規約は WINAPI 仮定(soc
 ) {
 	HRESULT ret;
 	ret = Old_CoSetProxyBlanket(pProxy, dwAuthnSvc, dwAuthzSvc, pServerPrincName, dwAuthnLevel, dwImpLevel, pAuthInfo, dwCapabilities);
-	LOQ_hresult("com", "piipiiii", "Proxy", pProxy, "AuthnSvc", dwAuthnSvc, "AuthzSvc", dwAuthzSvc, "ServerPrincName", pServerPrincName, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthInfo", pAuthInfo, "Capabilities", dwCapabilities);
+	// 可読性: pServerPrincName は OLECHAR*(ワイド文字列) → 'u' で中身を記録。
+	// COLE_DEFAULT_PRINCIPAL は (OLECHAR*)-1 という番兵値なので、デリファレンスせず名前で出す。
+	// (log.c の 'u' は __try 保護だが、番兵を毎回 AV させるのは無駄なので明示的に分岐する)
+	LOQ_hresult("com", "piiuiiii", "Proxy", pProxy, "AuthnSvc", dwAuthnSvc, "AuthzSvc", dwAuthzSvc, "ServerPrincName", ((pServerPrincName == (OLECHAR*)-1) ? L"COLE_DEFAULT_PRINCIPAL" : pServerPrincName), "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthInfo", pAuthInfo, "Capabilities", dwCapabilities);
 	return ret;
 }
 

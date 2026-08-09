@@ -2467,7 +2467,9 @@ HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/na
 ) {
 	BSTR ret;
 	ret = Old_SysAllocString(psz);
-	LOQ_nonzero("misc", "p", "Sz", psz);
+	// 可読性: psz は const OLECHAR*(ワイド文字列)。description="The string to copy."
+	// BSTR 生成元の文字列そのものなので 'u' で内容を記録する(log.c の 'u' は NULL/例外を __try 保護)。
+	LOQ_nonzero("misc", "u", "Sz", psz);
 	return ret;
 }
 
