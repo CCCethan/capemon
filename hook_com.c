@@ -86,7 +86,12 @@ HOOKDEF(BOOL, WINAPI, EnumPrintersA, // 呼出規約は WINAPI 仮定(socket/nat
 ) {
 	BOOL ret;
 	ret = Old_EnumPrintersA(Flags, Name, Level, pPrinterEnum, cbBuf, pcbNeeded, pcReturned);
-	LOQ_bool("com", "isipiII", "Flags", Flags, "Name", Name, "Level", Level, "PrinterEnum", pPrinterEnum, "Buf", cbBuf, "CbNeeded", pcbNeeded, "CReturned", pcReturned);
+	// [7.5] ⑤/出力バッファ: EnumPrintersW と同一の扱い(ANSI版)。pPrinterEnum は
+	//       PRINTER_INFO_<Level> の配列で Level が可変=要素型が一意に決まらないため
+	//       バイトダンプで内容を残す。長さ源は実書込長 *pcbNeeded、容量 cbBuf で上限を締める。
+	//       ★ _LOQ は成否に関わらず値式を評価するので、必要バッファ長の問い合わせ呼び出し
+	//         (pPrinterEnum=NULL / cbBuf=0 / ret=FALSE)では 0 バイトになるようガードする。
+	LOQ_bool("com", "isibiII", "Flags", Flags, "Name", Name, "Level", Level, "PrinterEnum", (size_t)((ret && pPrinterEnum && pcbNeeded) ? (*pcbNeeded < cbBuf ? *pcbNeeded : cbBuf) : 0), pPrinterEnum, "Buf", cbBuf, "CbNeeded", pcbNeeded, "CReturned", pcReturned);
 	return ret;
 }
 
