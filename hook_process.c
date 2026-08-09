@@ -1540,18 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker BEGIN <<< */
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, GetExitCodeProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hProcess,
-	_Out_ LPDWORD lpExitCode
-) {
-	BOOL ret;
-	ret = Old_GetExitCodeProcess(hProcess, lpExitCode);
-	LOQ_bool("process", "pI", "Process", hProcess, "ExitCode", lpExitCode);
-	return ret;
-}
-
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1753,5 +1742,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker END <<< */
 
