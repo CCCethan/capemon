@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_173_system_uptime_checker_01 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_174_system_uptime_checker_02 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
 );
@@ -4223,5 +4223,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_173_system_uptime_checker_01 END <<< */
+/* >>> AUTOHOOK_pa_alk_174_system_uptime_checker_02 END <<< */
 
