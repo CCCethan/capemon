@@ -1929,7 +1929,63 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_174_system_uptime_checker_02 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker BEGIN <<< */
+// -> hook_file.c に追加 | category="filesystem" | winapi:Time
+// REVIEW: 引数 lpFileTime: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, FileTimeToLocalFileTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const FILETIME* lpFileTime,
+	_Out_ LPFILETIME lpLocalFileTime
+) {
+	BOOL ret;
+	ret = Old_FileTimeToLocalFileTime(lpFileTime, lpLocalFileTime);
+	LOQ_bool("filesystem", "pP", "FileTime", lpFileTime, "LocalFileTime", lpLocalFileTime);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Time
+// REVIEW: 引数 lpFileTime: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const FILETIME* lpFileTime,
+	_Out_ LPSYSTEMTIME lpSystemTime
+) {
+	BOOL ret;
+	ret = Old_FileTimeToSystemTime(lpFileTime, lpSystemTime);
+	LOQ_bool("filesystem", "pP", "FileTime", lpFileTime, "SystemTime", lpSystemTime);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(HANDLE, WINAPI, FindFirstFileA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCSTR lpFileName,
+	_Out_ LPWIN32_FIND_DATAA lpFindFileData
+) {
+	HANDLE ret;
+	ret = Old_FindFirstFileA(lpFileName, lpFindFileData);
+	LOQ_handle("filesystem", "fP", "FileName", lpFileName, "FindFileData", lpFindFileData);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(BOOL, WINAPI, FindNextFileA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hFindFile,
+	_Out_ LPWIN32_FIND_DATAA lpFindFileData
+) {
+	BOOL ret;
+	ret = Old_FindNextFileA(hFindFile, lpFindFileData);
+	LOQ_bool("filesystem", "pP", "FindFile", hFindFile, "FindFileData", lpFindFileData);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	BOOL ret;
+	ret = Old_AreFileApisANSI();
+	LOQ_bool("filesystem", "");
+	return ret;
+}
+
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 // REVIEW: 引数 lpSecurityAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
 HOOKDEF(HANDLE, WINAPI, CreateFileW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2050,5 +2106,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "NumberOfBytesToWrite", nNumberOfBytesToWrite, "NumberOfBytesWritten", lpNumberOfBytesWritten, "Overlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_174_system_uptime_checker_02 END <<< */
+/* >>> AUTOHOOK_pa_alk_175_taskbar_pinned_checker END <<< */
 
