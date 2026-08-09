@@ -177,3 +177,69 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(VOID, WINAPI, Sleep, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwMilliseconds
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_Sleep(dwMilliseconds);
+	LOQ_void("process", "i", "Milliseconds", dwMilliseconds);
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, TerminateProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hProcess,
+	_In_ UINT uExitCode
+) {
+	BOOL ret;
+	ret = Old_TerminateProcess(hProcess, uExitCode);
+	LOQ_bool("process", "pi", "Process", hProcess, "UExitCode", uExitCode);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, TlsAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	DWORD ret;
+	ret = Old_TlsAlloc();
+	LOQ_nonzero("process", "");
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, TlsFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwTlsIndex
+) {
+	BOOL ret;
+	ret = Old_TlsFree(dwTlsIndex);
+	LOQ_bool("process", "i", "TlsIndex", dwTlsIndex);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(LPVOID, WINAPI, TlsGetValue, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwTlsIndex
+) {
+	LPVOID ret;
+	ret = Old_TlsGetValue(dwTlsIndex);
+	LOQ_nonnull("process", "i", "TlsIndex", dwTlsIndex);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 引数 lpTlsValue: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwTlsIndex,
+	_In_opt_ LPVOID lpTlsValue
+) {
+	BOOL ret;
+	ret = Old_TlsSetValue(dwTlsIndex, lpTlsValue);
+	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
+	return ret;
+}
+/* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
+

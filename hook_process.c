@@ -1539,16 +1539,3 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	LOQ_zero("process", "lL", "Attribute", Attribute, "Value", lpValue);
 	return ret;
 }
-
-/* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
-// -> hook_process.c に追加 | category="process" | winapi:System Information Functions
-HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD ProcessorFeature
-) {
-	BOOL ret;
-	ret = Old_IsProcessorFeaturePresent(ProcessorFeature);
-	LOQ_bool("process", "i", "ProcessorFeature", ProcessorFeature);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
-
