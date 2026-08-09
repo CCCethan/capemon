@@ -2008,7 +2008,48 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_200_virtualbox_device_checker BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 引数 psa: 型 SAFEARRAY* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetElement, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ SAFEARRAY* psa,
+	_In_ LONG* rgIndices,
+	_Out_ void* pv
+) {
+	HRESULT ret;
+	ret = Old_SafeArrayGetElement(psa, rgIndices, pv);
+	LOQ_hresult("misc", "pIP", "Sa", psa, "RgIndices", rgIndices, "V", pv);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 引数 psa: 型 SAFEARRAY* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetLBound, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ SAFEARRAY* psa,
+	_In_ UINT nDim,
+	_Out_ LONG* plLbound
+) {
+	HRESULT ret;
+	ret = Old_SafeArrayGetLBound(psa, nDim, plLbound);
+	LOQ_hresult("misc", "piI", "Sa", psa, "Dim", nDim, "LLbound", plLbound);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 引数 psa: 型 SAFEARRAY* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetUBound, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ SAFEARRAY* psa,
+	_In_ UINT nDim,
+	_Out_ LONG* plUbound
+) {
+	HRESULT ret;
+	ret = Old_SafeArrayGetUBound(psa, nDim, plUbound);
+	LOQ_hresult("misc", "piI", "Sa", psa, "Dim", nDim, "LUbound", plUbound);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2463,6 +2504,21 @@ HOOKDEF(void, WINAPI, SetLastError, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_void("misc", "i", "ErrCode", dwErrCode);
 }
 
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 戻り型 BSTR の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 psz: 型 const OLECHAR* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ const OLECHAR* psz
+) {
+	BSTR ret;
+	ret = Old_SysAllocString(psz);
+	// [7.5] kind=struct-or-opaque は誤分類。型は const OLECHAR* = ワイド文字列で
+	//       description も "The string to copy."。u で内容を記録する(log.c の u は
+	//       NULL/例外を __try で保護)。観測「戻り値」は BSTR のアドレスであり長さではない。
+	LOQ_nonzero("misc", "u", "Sz", psz);
+	return ret;
+}
+
 // -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
 // REVIEW: 引数 lpAddress: 入力バッファとして dwSize バイト分を内容ログ('b')。dwSize が実データ長でない/出力用バッファなら 'p'(アドレスのみ)へ戻すこと
 HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2476,5 +2532,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_200_virtualbox_device_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker END <<< */
 

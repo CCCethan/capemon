@@ -3930,21 +3930,55 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_200_virtualbox_device_checker BEGIN <<< */
-HOOKDEF(HANDLE, WINAPI, CreateFileA,
-	_In_ LPCSTR lpFileName,
-	_In_ DWORD dwDesiredAccess,
-	_In_ DWORD dwShareMode,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-	_In_ DWORD dwCreationDisposition,
-	_In_ DWORD dwFlagsAndAttributes,
-	_In_opt_ HANDLE hTemplateFile
+/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker BEGIN <<< */
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetElement,
+	_In_ SAFEARRAY* psa,
+	_In_ LONG* rgIndices,
+	_Out_ void* pv
+);
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetLBound,
+	_In_ SAFEARRAY* psa,
+	_In_ UINT nDim,
+	_Out_ LONG* plLbound
+);
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetUBound,
+	_In_ SAFEARRAY* psa,
+	_In_ UINT nDim,
+	_Out_ LONG* plUbound
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
+);
+HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
+	_In_opt_ LPVOID pvReserved,
+	_In_ DWORD dwCoInit
+);
+HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity,
+	_In_opt_ PSECURITY_DESCRIPTOR pSecDesc,
+	_In_ LONG cAuthSvc,
+	_In_opt_ SOLE_AUTHENTICATION_SERVICE* asAuthSvc,
+	_In_opt_ void* pReserved1,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ void* pAuthList,
+	_In_ DWORD dwCapabilities,
+	_In_opt_ void* pReserved3
+);
+HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
+	_In_ IUnknown* pProxy,
+	_In_ DWORD dwAuthnSvc,
+	_In_ DWORD dwAuthzSvc,
+	_In_opt_ OLECHAR* pServerPrincName,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ RPC_AUTH_IDENTITY_HANDLE pAuthInfo,
+	_In_ DWORD dwCapabilities
+);
+HOOKDEF(void, WINAPI, CoUninitialize,
+	void
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4261,6 +4295,9 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle,
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
 );
+HOOKDEF(BSTR, WINAPI, SysAllocString,
+	_In_opt_ const OLECHAR* psz
+);
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
@@ -4278,6 +4315,9 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
+HOOKDEF(HRESULT, WINAPI, VariantClear,
+	_Inout_ VARIANTARG* pvarg
+);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4292,5 +4332,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_200_virtualbox_device_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_201_virtualbox_eventlog_checker END <<< */
 
