@@ -2008,17 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_006_bios_version_checker BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
-HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hObject
-) {
-	BOOL ret;
-	ret = Old_CloseHandle(hObject);
-	LOQ_bool("misc", "p", "Object", hObject);
-	return ret;
-}
-
+/* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
 // REVIEW: 引数 lpLocaleEnumProcEx: 型 LOCALE_ENUMPROCEX を i(int32)で仮記録。要確認
 // REVIEW: 引数 lParam: 型 LPARAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -2032,6 +2022,134 @@ HOOKDEF(BOOL, WINAPI, EnumSystemLocalesEx, // 呼出規約は WINAPI 仮定(sock
 	BOOL ret;
 	ret = Old_EnumSystemLocalesEx(lpLocaleEnumProcEx, dwFlags, lParam, lpReserved);
 	LOQ_bool("misc", "iipp", "LocaleEnumProcEx", lpLocaleEnumProcEx, "Flags", dwFlags, "LParam", lParam, "Reserved", lpReserved);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpDate: 型 const SYSTEMTIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(int, WINAPI, GetDateFormatEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCWSTR lpLocaleName,
+	_In_ DWORD dwFlags,
+	_In_opt_ const SYSTEMTIME* lpDate,
+	_In_opt_ LPCWSTR lpFormat,
+	_Out_opt_ LPWSTR lpDateStr,
+	_In_ int cchDate,
+	_In_opt_ LPCWSTR lpCalendar
+) {
+	int ret;
+	ret = Old_GetDateFormatEx(lpLocaleName, dwFlags, lpDate, lpFormat, lpDateStr, cchDate, lpCalendar);
+	LOQ_nonzero("misc", "uipuuiu", "LocaleName", lpLocaleName, "Flags", dwFlags, "Date", lpDate, "Format", lpFormat, "DateStr", lpDateStr, "Date", cchDate, "Calendar", lpCalendar);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 LCType: 型 LCTYPE を i(int32)で仮記録。要確認
+HOOKDEF(int, WINAPI, GetLocaleInfoEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCWSTR lpLocaleName,
+	_In_ LCTYPE LCType,
+	_Out_opt_ LPWSTR lpLCData,
+	_In_ int cchData
+) {
+	int ret;
+	ret = Old_GetLocaleInfoEx(lpLocaleName, LCType, lpLCData, cchData);
+	LOQ_nonzero("misc", "uiui", "LocaleName", lpLocaleName, "LCType", LCType, "LCData", lpLCData, "Data", cchData);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpTime: 型 const SYSTEMTIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(int, WINAPI, GetTimeFormatEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCWSTR lpLocaleName,
+	_In_ DWORD dwFlags,
+	_In_opt_ const SYSTEMTIME* lpTime,
+	_In_opt_ LPCWSTR lpFormat,
+	_Out_opt_ LPWSTR lpTimeStr,
+	_In_ int cchTime
+) {
+	int ret;
+	ret = Old_GetTimeFormatEx(lpLocaleName, dwFlags, lpTime, lpFormat, lpTimeStr, cchTime);
+	LOQ_nonzero("misc", "uipuui", "LocaleName", lpLocaleName, "Flags", dwFlags, "Time", lpTime, "Format", lpFormat, "TimeStr", lpTimeStr, "Time", cchTime);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(int, WINAPI, GetUserDefaultLocaleName, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPWSTR lpLocaleName,
+	_In_ int cchLocaleName
+) {
+	int ret;
+	ret = Old_GetUserDefaultLocaleName(lpLocaleName, cchLocaleName);
+	LOQ_nonzero("misc", "ui", "LocaleName", lpLocaleName, "LocaleName", cchLocaleName);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+HOOKDEF(BOOL, WINAPI, IsValidLocaleName, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCWSTR lpLocaleName
+) {
+	BOOL ret;
+	ret = Old_IsValidLocaleName(lpLocaleName);
+	LOQ_bool("misc", "u", "LocaleName", lpLocaleName);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
+HOOKDEF(int, WINAPI, LCIDToLocaleName, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LCID Locale,
+	_Out_opt_ LPWSTR lpName,
+	_In_ int cchName,
+	_In_ DWORD dwFlags
+) {
+	int ret;
+	ret = Old_LCIDToLocaleName(Locale, lpName, cchName, dwFlags);
+	LOQ_nonzero("misc", "iuii", "Locale", Locale, "Name", lpName, "Name", cchName, "Flags", dwFlags);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 LCID の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(LCID, WINAPI, LocaleNameToLCID, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCWSTR lpName,
+	_In_ DWORD dwFlags
+) {
+	LCID ret;
+	ret = Old_LocaleNameToLCID(lpName, dwFlags);
+	LOQ_nonzero("misc", "ui", "Name", lpName, "Flags", dwFlags);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
+HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hObject
+) {
+	BOOL ret;
+	ret = Old_CloseHandle(hObject);
+	LOQ_bool("misc", "p", "Object", hObject);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
+// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 pFirmwareTableBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD FirmwareTableProviderSignature,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
+) {
+	UINT ret;
+	ret = Old_EnumSystemFirmwareTables(FirmwareTableProviderSignature, pFirmwareTableBuffer, BufferSize);
+	// 可読性(⑤/単一出力バッファ): description="A pointer to a buffer that receives the list of firmware tables"。
+	// 長さ源は実書込長=戻り値(観測 16)、容量ガードは BufferSize。小さい方を採り 'b' で内容を記録する。
+	// NULL 問い合わせ(pFirmwareTableBuffer=NULL, BufferSize=0)のときは長さ0になり log_buffer は何も読まない。
+	LOQ_nonzero("misc", "ibi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableBuffer", (size_t)((ret < BufferSize) ? ret : BufferSize), pFirmwareTableBuffer, "BufferSize", BufferSize);
 	return ret;
 }
 
@@ -2071,24 +2189,6 @@ HOOKDEF(BOOL, WINAPI, GetCPInfo, // 呼出規約は WINAPI 仮定(socket/native/
 
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpDate: 型 const SYSTEMTIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(int, WINAPI, GetDateFormatEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCWSTR lpLocaleName,
-	_In_ DWORD dwFlags,
-	_In_opt_ const SYSTEMTIME* lpDate,
-	_In_opt_ LPCWSTR lpFormat,
-	_Out_opt_ LPWSTR lpDateStr,
-	_In_ int cchDate,
-	_In_opt_ LPCWSTR lpCalendar
-) {
-	int ret;
-	ret = Old_GetDateFormatEx(lpLocaleName, dwFlags, lpDate, lpFormat, lpDateStr, cchDate, lpCalendar);
-	LOQ_nonzero("misc", "uipuuiu", "LocaleName", lpLocaleName, "Flags", dwFlags, "Date", lpDate, "Format", lpFormat, "DateStr", lpDateStr, "Date", cchDate, "Calendar", lpCalendar);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
 // REVIEW: 引数 lpDate: 型 const SYSTEMTIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
 HOOKDEF(int, WINAPI, GetDateFormatW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2112,21 +2212,6 @@ HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW, // 呼出規約は WINAPI 仮定
 	LPWSTR ret;
 	ret = Old_GetEnvironmentStringsW();
 	LOQ_nonnull("misc", "");
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 LCType: 型 LCTYPE を i(int32)で仮記録。要確認
-HOOKDEF(int, WINAPI, GetLocaleInfoEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCWSTR lpLocaleName,
-	_In_ LCTYPE LCType,
-	_Out_opt_ LPWSTR lpLCData,
-	_In_ int cchData
-) {
-	int ret;
-	ret = Old_GetLocaleInfoEx(lpLocaleName, LCType, lpLCData, cchData);
-	LOQ_nonzero("misc", "uiui", "LocaleName", lpLocaleName, "LCType", LCType, "LCData", lpLCData, "Data", cchData);
 	return ret;
 }
 
@@ -2170,20 +2255,21 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW, // 呼出規約は WINAPI 仮定(socket/na
 	return ret;
 }
 
-// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpTime: 型 const SYSTEMTIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(int, WINAPI, GetTimeFormatEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCWSTR lpLocaleName,
-	_In_ DWORD dwFlags,
-	_In_opt_ const SYSTEMTIME* lpTime,
-	_In_opt_ LPCWSTR lpFormat,
-	_Out_opt_ LPWSTR lpTimeStr,
-	_In_ int cchTime
+// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
+// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 pFirmwareTableBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD FirmwareTableProviderSignature,
+	_In_ DWORD FirmwareTableID,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
 ) {
-	int ret;
-	ret = Old_GetTimeFormatEx(lpLocaleName, dwFlags, lpTime, lpFormat, lpTimeStr, cchTime);
-	LOQ_nonzero("misc", "uipuui", "LocaleName", lpLocaleName, "Flags", dwFlags, "Time", lpTime, "Format", lpFormat, "TimeStr", lpTimeStr, "Time", cchTime);
+	UINT ret;
+	ret = Old_GetSystemFirmwareTable(FirmwareTableProviderSignature, FirmwareTableID, pFirmwareTableBuffer, BufferSize);
+	// 可読性(⑤/単一出力バッファ): description="A pointer to a buffer that receives the requested firmware table"。
+	// 長さ源は実書込長=戻り値(観測 40/60/144/244)、容量ガードは BufferSize(観測 max 244)。小さい方を採り 'b' で
+	// ACPI/SMBIOS テーブルの中身を記録する。NULL 問い合わせ時は長さ0になり log_buffer は何も読まない。
+	LOQ_nonzero("misc", "iibi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableID", FirmwareTableID, "FirmwareTableBuffer", (size_t)((ret < BufferSize) ? ret : BufferSize), pFirmwareTableBuffer, "BufferSize", BufferSize);
 	return ret;
 }
 
@@ -2213,18 +2299,6 @@ HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation, // 呼出規約は WINAPI 仮定(
 	DWORD ret;
 	ret = Old_GetTimeZoneInformation(lpTimeZoneInformation);
 	LOQ_nonzero("misc", "P", "TimeZoneInformation", lpTimeZoneInformation);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(int, WINAPI, GetUserDefaultLocaleName, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPWSTR lpLocaleName,
-	_In_ int cchLocaleName
-) {
-	int ret;
-	ret = Old_GetUserDefaultLocaleName(lpLocaleName, cchLocaleName);
-	LOQ_nonzero("misc", "ui", "LocaleName", lpLocaleName, "LocaleName", cchLocaleName);
 	return ret;
 }
 
@@ -2304,31 +2378,6 @@ HOOKDEF(BOOL, WINAPI, IsValidLocale, // 呼出規約は WINAPI 仮定(socket/nat
 }
 
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-HOOKDEF(BOOL, WINAPI, IsValidLocaleName, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpLocaleName
-) {
-	BOOL ret;
-	ret = Old_IsValidLocaleName(lpLocaleName);
-	LOQ_bool("misc", "u", "LocaleName", lpLocaleName);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
-HOOKDEF(int, WINAPI, LCIDToLocaleName, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LCID Locale,
-	_Out_opt_ LPWSTR lpName,
-	_In_ int cchName,
-	_In_ DWORD dwFlags
-) {
-	int ret;
-	ret = Old_LCIDToLocaleName(Locale, lpName, cchName, dwFlags);
-	LOQ_nonzero("misc", "iuii", "Locale", Locale, "Name", lpName, "Name", cchName, "Flags", dwFlags);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpVersionInformation: 型 LPNLSVERSIONINFO は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
 // REVIEW: 引数 lpReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
@@ -2364,18 +2413,6 @@ HOOKDEF(int, WINAPI, LCMapStringW, // 呼出規約は WINAPI 仮定(socket/nativ
 	int ret;
 	ret = Old_LCMapStringW(Locale, dwMapFlags, lpSrcStr, cchSrc, lpDestStr, cchDest);
 	LOQ_nonzero("misc", "iiuiui", "Locale", Locale, "MapFlags", dwMapFlags, "SrcStr", lpSrcStr, "Src", cchSrc, "DestStr", lpDestStr, "Dest", cchDest);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 LCID の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(LCID, WINAPI, LocaleNameToLCID, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpName,
-	_In_ DWORD dwFlags
-) {
-	LCID ret;
-	ret = Old_LocaleNameToLCID(lpName, dwFlags);
-	LOQ_nonzero("misc", "ui", "Name", lpName, "Flags", dwFlags);
 	return ret;
 }
 
@@ -2472,5 +2509,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_006_bios_version_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 
