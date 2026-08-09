@@ -1664,7 +1664,10 @@ HOOKDEF(VOID, WINAPI, GetStartupInfoW, // 呼出規約は WINAPI 仮定(socket/n
 ) {
 	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
 	Old_GetStartupInfoW(lpStartupInfo);
-	LOQ_void("process", "P", "StartupInfo", lpStartupInfo);
+	// [7.5] ② 固定サイズ構造体: STARTUPINFOW は定義済み(引数型が通っている)。
+	//       dwFlags/wShowWindow/dwX/dwY 等が読める。文字列メンバは呼び出し失敗時に
+	//       未初期化ポインタになりうるので u では読まず、バイトダンプに留める。
+	LOQ_void("process", "b", "StartupInfo", sizeof(STARTUPINFOW), lpStartupInfo);
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:System Information Functions

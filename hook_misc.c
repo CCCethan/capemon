@@ -2029,7 +2029,10 @@ HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables, // 呼出規約は WINAPI 仮定
 ) {
 	UINT ret;
 	ret = Old_EnumSystemFirmwareTables(FirmwareTableProviderSignature, pFirmwareTableBuffer, BufferSize);
-	LOQ_nonzero("misc", "ipi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableBuffer", pFirmwareTableBuffer, "BufferSize", BufferSize);
+	// [7.5] ⑤/単一出力バッファ: description "a buffer that receives the list of firmware tables"。
+	//       長さ源は実書込長(戻り値)。容量 BufferSize で上限を締めて過剰読み取りを防ぐ。
+	//       問い合わせ呼び出し(buffer=NULL/BufferSize=0)は 0 バイト=安全。
+	LOQ_nonzero("misc", "ibi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableBuffer", (size_t)(ret < BufferSize ? ret : BufferSize), pFirmwareTableBuffer, "BufferSize", BufferSize);
 	return ret;
 }
 
@@ -2079,7 +2082,9 @@ HOOKDEF(BOOL, WINAPI, GetCPInfo, // 呼出規約は WINAPI 仮定(socket/native/
 ) {
 	BOOL ret;
 	ret = Old_GetCPInfo(CodePage, lpCPInfo);
-	LOQ_bool("misc", "iP", "CodePage", CodePage, "CPInfo", lpCPInfo);
+	// [7.5] ② 固定サイズ構造体: CPINFO は引数型 LPCPINFO が通っている=ビルドで定義済み。
+	//       sizeof を長さにバイトダンプ(MaxCharSize/DefaultChar/LeadByte が読める)。
+	LOQ_bool("misc", "ib", "CodePage", CodePage, "CPInfo", sizeof(CPINFO), lpCPInfo);
 	return ret;
 }
 
@@ -2195,7 +2200,10 @@ HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable, // 呼出規約は WINAPI 仮定(s
 ) {
 	UINT ret;
 	ret = Old_GetSystemFirmwareTable(FirmwareTableProviderSignature, FirmwareTableID, pFirmwareTableBuffer, BufferSize);
-	LOQ_nonzero("misc", "iipi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableID", FirmwareTableID, "FirmwareTableBuffer", pFirmwareTableBuffer, "BufferSize", BufferSize);
+	// [7.5] ⑤/単一出力バッファ: description "a buffer that receives the requested firmware table"。
+	//       本検体の主目的(ACPI テーブル取得)そのものなので内容を必ず残す。
+	//       長さ源は実書込長(戻り値)、容量 BufferSize で上限を締める。
+	LOQ_nonzero("misc", "iibi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableID", FirmwareTableID, "FirmwareTableBuffer", (size_t)(ret < BufferSize ? ret : BufferSize), pFirmwareTableBuffer, "BufferSize", BufferSize);
 	return ret;
 }
 
@@ -2241,7 +2249,9 @@ HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation, // 呼出規約は WINAPI 仮定(
 ) {
 	DWORD ret;
 	ret = Old_GetTimeZoneInformation(lpTimeZoneInformation);
-	LOQ_nonzero("misc", "P", "TimeZoneInformation", lpTimeZoneInformation);
+	// [7.5] ② 固定サイズ構造体: TIME_ZONE_INFORMATION は定義済み(引数型が通っている)。
+	//       Bias/StandardName/DaylightName を含む 172 バイトをダンプ。
+	LOQ_nonzero("misc", "b", "TimeZoneInformation", sizeof(TIME_ZONE_INFORMATION), lpTimeZoneInformation);
 	return ret;
 }
 
