@@ -2009,6 +2009,16 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 }
 
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
+HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hObject
+) {
+	BOOL ret;
+	ret = Old_CloseHandle(hObject);
+	LOQ_bool("misc", "p", "Object", hObject);
+	return ret;
+}
+
 // -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
 // REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 pFirmwareTableBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる

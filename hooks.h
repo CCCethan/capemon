@@ -3931,6 +3931,9 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 #include "hook_vbscript.h"
 
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, CloseHandle,
+	_In_ HANDLE hObject
+);
 HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ LCID Locale,
 	_In_ DWORD dwCmpFlags,
@@ -3949,6 +3952,9 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_opt_ HANDLE hTemplateFile
 );
 HOOKDEF(void, WINAPI, DeleteCriticalSection,
+	_Inout_ LPCRITICAL_SECTION lpCriticalSection
+);
+HOOKDEF(void, WINAPI, EnterCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 );
 HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables,
@@ -3990,6 +3996,12 @@ HOOKDEF(UINT, WINAPI, GetConsoleOutputCP,
 	void
 );
 HOOKDEF(HANDLE, WINAPI, GetCurrentProcess,
+	void
+);
+HOOKDEF(DWORD, WINAPI, GetCurrentProcessId,
+	void
+);
+HOOKDEF(DWORD, WINAPI, GetCurrentThreadId,
 	void
 );
 HOOKDEF(int, WINAPI, GetDateFormatW,
@@ -4130,6 +4142,9 @@ HOOKDEF(int, WINAPI, LCMapStringW,
 	_Out_opt_ LPWSTR lpDestStr,
 	_In_ int cchDest
 );
+HOOKDEF(void, WINAPI, LeaveCriticalSection,
+	_Inout_ LPCRITICAL_SECTION lpCriticalSection
+);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4214,5 +4229,13 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
+HOOKDEF(BOOL, WINAPI, WriteFile,
+	_In_ HANDLE hFile,
+	_In_ LPCVOID lpBuffer,
+	_In_ DWORD nNumberOfBytesToWrite,
+	_Out_opt_ LPDWORD lpNumberOfBytesWritten,
+	_Inout_opt_ LPOVERLAPPED lpOverlapped
+);
+
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 
