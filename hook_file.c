@@ -1930,30 +1930,6 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 }
 
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker BEGIN <<< */
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, ReadFile, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFile,
-	_Out_ LPVOID lpBuffer,
-	_In_ DWORD nNumberOfBytesToRead,
-	_Out_opt_ LPDWORD lpNumberOfBytesRead,
-	_Inout_opt_ LPOVERLAPPED lpOverlapped
-) {
-	BOOL ret;
-	ret = Old_ReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
-	LOQ_bool("filesystem", "ppiIP", "File", hFile, "Buffer", lpBuffer, "NumberOfBytesToRead", nNumberOfBytesToRead, "NumberOfBytesRead", lpNumberOfBytesRead, "Overlapped", lpOverlapped);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
-HOOKDEF(VOID, WINAPI, RtlCaptureContext, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ PCONTEXT ContextRecord
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_RtlCaptureContext(ContextRecord);
-	LOQ_void("misc", "P", "ContextRecord", ContextRecord);
-}
-
 // -> hook_com.c に追加 | category="com" | winapi:Consoles
 // REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
 // REVIEW: 引数 pInputControl: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
