@@ -829,16 +829,6 @@ HOOK(kernel32, ReadFile),
 HOOK(kernelbase, ReadFile),
 HOOK(kernel32, RtlCaptureContext),
 HOOK(kernelbase, RtlCaptureContext),
-HOOK(kernel32, RtlLookupFunctionEntry),
-HOOK(kernelbase, RtlLookupFunctionEntry),
-HOOK(kernel32, RtlPcToFileHeader),
-HOOK(kernelbase, RtlPcToFileHeader),
-HOOK(kernel32, RtlUnwind),
-HOOK(kernelbase, RtlUnwind),
-HOOK(kernel32, SetEnvironmentVariableW),
-HOOK(kernelbase, SetEnvironmentVariableW),
-HOOK(kernel32, SetFilePointerEx),
-HOOK(kernelbase, SetFilePointerEx),
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 };
 

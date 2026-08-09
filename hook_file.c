@@ -1945,32 +1945,6 @@ HOOKDEF(BOOL, WINAPI, ReadFile, // 呼出規約は WINAPI 仮定(socket/native/C
 	return ret;
 }
 
-// -> hook_file.c に追加 | category="filesystem" | winapi:Error Handling
-// REVIEW: 引数 PcValue: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-// REVIEW: 引数 BaseOfImage: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(PVOID, WINAPI, RtlPcToFileHeader, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PVOID PcValue,
-	_Out_ PVOID* BaseOfImage
-) {
-	PVOID ret;
-	ret = Old_RtlPcToFileHeader(PcValue, BaseOfImage);
-	LOQ_nonnull("filesystem", "pp", "PcValue", PcValue, "BaseOfImage", BaseOfImage);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(BOOL, WINAPI, SetFilePointerEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFile,
-	_In_ LARGE_INTEGER liDistanceToMove,
-	_Out_opt_ PLARGE_INTEGER lpNewFilePointer,
-	_In_ DWORD dwMoveMethod
-) {
-	BOOL ret;
-	ret = Old_SetFilePointerEx(hFile, liDistanceToMove, lpNewFilePointer, dwMoveMethod);
-	LOQ_bool("filesystem", "pxXi", "File", hFile, "LiDistanceToMove", liDistanceToMove, "NewFilePointer", lpNewFilePointer, "MoveMethod", dwMoveMethod);
-	return ret;
-}
-
 // -> hook_misc.c に追加 | category="misc" | winapi:Time
 HOOKDEF(BOOL, WINAPI, QueryPerformanceFrequency, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Out_ LARGE_INTEGER* lpFrequency
@@ -2000,45 +1974,6 @@ HOOKDEF(VOID, WINAPI, RtlCaptureContext, // 呼出規約は WINAPI 仮定(socket
 	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
 	Old_RtlCaptureContext(ContextRecord);
 	LOQ_void("misc", "P", "ContextRecord", ContextRecord);
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
-HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ ULONGLONG ControlPc,
-	_Out_ PULONGLONG ImageBase,
-	_Out_ PULONGLONG TargetGp
-) {
-	PVOID ret;
-	ret = Old_RtlLookupFunctionEntry(ControlPc, ImageBase, TargetGp);
-	LOQ_nonnull("misc", "iII", "ControlPc", ControlPc, "ImageBase", ImageBase, "TargetGp", TargetGp);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
-// REVIEW: 引数 TargetFrame: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-// REVIEW: 引数 TargetIp: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-// REVIEW: 引数 ExceptionRecord: 型 PEXCEPTION_RECORD は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 ReturnValue: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(void, WINAPI, RtlUnwind, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ PVOID TargetFrame,
-	_In_opt_ PVOID TargetIp,
-	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
-	_In_ PVOID ReturnValue
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_RtlUnwind(TargetFrame, TargetIp, ExceptionRecord, ReturnValue);
-	LOQ_void("misc", "pppp", "TargetFrame", TargetFrame, "TargetIp", TargetIp, "ExceptionRecord", ExceptionRecord, "ReturnValue", ReturnValue);
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
-HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpName,
-	_In_opt_ LPCWSTR lpValue
-) {
-	BOOL ret;
-	ret = Old_SetEnvironmentVariableW(lpName, lpValue);
-	LOQ_bool("misc", "uu", "Name", lpName, "Value", lpValue);
-	return ret;
 }
 
 // -> hook_com.c に追加 | category="com" | winapi:Consoles

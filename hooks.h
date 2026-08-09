@@ -3957,30 +3957,5 @@ HOOKDEF(BOOL, WINAPI, ReadFile,
 HOOKDEF(VOID, WINAPI, RtlCaptureContext,
 	_Out_ PCONTEXT ContextRecord
 );
-HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
-	_In_ ULONGLONG ControlPc,
-	_Out_ PULONGLONG ImageBase,
-	_Out_ PULONGLONG TargetGp
-);
-HOOKDEF(PVOID, WINAPI, RtlPcToFileHeader,
-	_In_ PVOID PcValue,
-	_Out_ PVOID* BaseOfImage
-);
-HOOKDEF(void, WINAPI, RtlUnwind,
-	_In_opt_ PVOID TargetFrame,
-	_In_opt_ PVOID TargetIp,
-	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
-	_In_ PVOID ReturnValue
-);
-HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
-	_In_ LPCWSTR lpName,
-	_In_opt_ LPCWSTR lpValue
-);
-HOOKDEF(BOOL, WINAPI, SetFilePointerEx,
-	_In_ HANDLE hFile,
-	_In_ LARGE_INTEGER liDistanceToMove,
-	_Out_opt_ PLARGE_INTEGER lpNewFilePointer,
-	_In_ DWORD dwMoveMethod
-);
 /* >>> AUTOHOOK_pa_alk_001_acpi_firmware_checker END <<< */
 
