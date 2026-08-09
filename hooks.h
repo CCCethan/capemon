@@ -3930,9 +3930,15 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_212_vm_service_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, CloseServiceHandle,
-	_In_ SC_HANDLE hSCObject
+/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker BEGIN <<< */
+HOOKDEF(LONG, WINAPI, RegGetValueA,
+	_In_ HKEY hkey,
+	_In_opt_ LPCSTR lpSubKey,
+	_In_opt_ LPCSTR lpValue,
+	_In_opt_ DWORD dwFlags,
+	_Out_opt_ LPDWORD pdwType,
+	_Out_opt_ PVOID pvData,
+	_Inout_opt_ LPDWORD pcbData
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
@@ -4286,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_212_vm_service_checker END <<< */
+/* >>> AUTOHOOK_pa_alk_227_wallpaper_setting_checker END <<< */
 
