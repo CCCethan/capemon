@@ -3930,36 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_006_button_press_detection BEGIN <<< */
-HOOKDEF(VOID, WINAPI, AcquireSRWLockExclusive,
-	_Inout_ PSRWLOCK SRWLock
-);
-HOOKDEF(BOOL, WINAPI, EndDialog,
-	_In_ HWND hDlg,
-	_In_ INT_PTR nResult
-);
-HOOKDEF(VOID, WINAPI, ExitThread,
-	_In_ DWORD dwExitCode
-);
-HOOKDEF(VOID, WINAPI, FreeLibraryAndExitThread,
-	_In_ HMODULE hModule,
-	_In_ DWORD dwExitCode
-);
-HOOKDEF(int, WINAPI, MessageBoxA,
-	_In_opt_ HWND hWnd,
-	_In_opt_ LPCSTR lpText,
-	_In_opt_ LPCSTR lpCaption,
-	_In_ UINT uType
-);
-HOOKDEF(VOID, WINAPI, ReleaseSRWLockExclusive,
-	_Inout_ PSRWLOCK SRWLock
-);
-HOOKDEF(BOOLEAN, WINAPI, TryAcquireSRWLockExclusive,
-	_Inout_ PSRWLOCK SRWLock
-);
-HOOKDEF(VOID, WINAPI, WakeAllConditionVariable,
-	_Inout_ PCONDITION_VARIABLE ConditionVariable
-);
+/* >>> AUTOHOOK_galloro_007_bios_vendor_registry_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4312,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_006_button_press_detection END <<< */
+/* >>> AUTOHOOK_galloro_007_bios_vendor_registry_checker END <<< */
 
