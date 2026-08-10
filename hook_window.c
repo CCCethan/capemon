@@ -525,3 +525,19 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
+
+/* >>> AUTOHOOK_galloro_010_caret_movement_checker BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Windows
+HOOKDEF(BOOL, WINAPI, GetGUIThreadInfo, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD idThread,
+	_Inout_ LPGUITHREADINFO lpgui
+) {
+	BOOL ret;
+	ret = Old_GetGUIThreadInfo(idThread, lpgui);
+	LOQ_bool("windows", "iP", "IdThread", idThread, "Gui", lpgui);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_galloro_010_caret_movement_checker END <<< */
+
