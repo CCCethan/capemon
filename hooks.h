@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_040_screen_resolution_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_041_disk_model_vendor_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4283,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_040_screen_resolution_checker END <<< */
+/* >>> AUTOHOOK_galloro_041_disk_model_vendor_checker END <<< */
 
