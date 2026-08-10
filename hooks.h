@@ -3930,16 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_033_network_delay_timeout_checker BEGIN <<< */
-HOOKDEF(int, WINAPI, WSACleanup,
-	void
-);
-HOOKDEF(int, WINAPI, WSAGetLastError,
-	void
-);
-HOOKDEF(u_short WSAAPI, WINAPI, htons,
-	_In_ u_short hostshort
-);
+/* >>> AUTOHOOK_galloro_034_cursor_movement_analysis BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4292,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_033_network_delay_timeout_checker END <<< */
+/* >>> AUTOHOOK_galloro_034_cursor_movement_analysis END <<< */
 
