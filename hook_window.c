@@ -526,59 +526,24 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_025_keyboard_activity_checker BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:Hooks
-// REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 hhk: 型 HHOOK は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 wParam: 型 WPARAM を i(int32)で仮記録。要確認
-// REVIEW: 引数 lParam: 型 LPARAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(LRESULT, WINAPI, CallNextHookEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ HHOOK hhk,
-	_In_ int nCode,
-	_In_ WPARAM wParam,
-	_In_ LPARAM lParam
+/* >>> AUTOHOOK_galloro_026_large_file_downloads_checker BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Error Handling
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpSource: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+// REVIEW: 引数 Arguments: 型 va_list* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(DWORD, WINAPI, FormatMessageA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwFlags,
+	_In_opt_ LPCVOID lpSource,
+	_In_ DWORD dwMessageId,
+	_In_ DWORD dwLanguageId,
+	_Out_ LPSTR lpBuffer,
+	_In_ DWORD nSize,
+	_In_opt_ va_list* Arguments
 ) {
-	LRESULT ret;
-	ret = Old_CallNextHookEx(hhk, nCode, wParam, lParam);
-	LOQ_nonzero("windows", "piip", "Hk", hhk, "Code", nCode, "WParam", wParam, "LParam", lParam);
+	DWORD ret;
+	ret = Old_FormatMessageA(dwFlags, lpSource, dwMessageId, dwLanguageId, lpBuffer, nSize, Arguments);
+	LOQ_nonzero("windows", "ipiisip", "Flags", dwFlags, "Source", lpSource, "MessageId", dwMessageId, "LanguageId", dwLanguageId, "Buffer", lpBuffer, "Size", nSize, "Arguments", Arguments);
 	return ret;
 }
-
-// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
-// REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpmsg: 型 const MSG* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(LRESULT, WINAPI, DispatchMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const MSG* lpmsg
-) {
-	LRESULT ret;
-	ret = Old_DispatchMessageW(lpmsg);
-	LOQ_nonzero("windows", "p", "Msg", lpmsg);
-	return ret;
-}
-
-// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
-HOOKDEF(BOOL, WINAPI, PeekMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPMSG lpMsg,
-	_In_opt_ HWND hWnd,
-	_In_ UINT wMsgFilterMin,
-	_In_ UINT wMsgFilterMax,
-	_In_ UINT wRemoveMsg
-) {
-	BOOL ret;
-	ret = Old_PeekMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
-	LOQ_bool("windows", "Ppiii", "Msg", lpMsg, "Wnd", hWnd, "WMsgFilterMin", wMsgFilterMin, "WMsgFilterMax", wMsgFilterMax, "WRemoveMsg", wRemoveMsg);
-	return ret;
-}
-
-// -> hook_window.c に追加 | category="windows" | winapi:Keyboard Input
-// REVIEW: 引数 lpMsg: 型 const MSG* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, TranslateMessage, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const MSG* lpMsg
-) {
-	BOOL ret;
-	ret = Old_TranslateMessage(lpMsg);
-	LOQ_bool("windows", "p", "Msg", lpMsg);
-	return ret;
-}
-/* >>> AUTOHOOK_galloro_025_keyboard_activity_checker END <<< */
+/* >>> AUTOHOOK_galloro_026_large_file_downloads_checker END <<< */
 
