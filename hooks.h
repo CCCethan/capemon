@@ -3930,18 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_018_event_log_entry_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, CloseEventLog,
-	_Inout_ HANDLE hEventLog
-);
-HOOKDEF(BOOL, WINAPI, GetNumberOfEventLogRecords,
-	_In_ HANDLE hEventLog,
-	_Out_ PDWORD NumberOfRecords
-);
-HOOKDEF(HANDLE, WINAPI, OpenEventLogW,
-	_In_ LPCWSTR lpUNCServerName,
-	_In_ LPCWSTR lpSourceName
-);
+/* >>> AUTOHOOK_galloro_019_explorer_artifact_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3998,8 +3987,21 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
 );
+HOOKDEF(HANDLE, WINAPI, FindFirstFileW,
+	_In_ LPCWSTR lpFileName,
+	_Out_ LPWIN32_FIND_DATAW lpFindFileData
+);
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
+);
+HOOKDEF(DWORD, WINAPI, FormatMessageA,
+	_In_ DWORD dwFlags,
+	_In_opt_ LPCVOID lpSource,
+	_In_ DWORD dwMessageId,
+	_In_ DWORD dwLanguageId,
+	_Out_ LPSTR lpBuffer,
+	_In_ DWORD nSize,
+	_In_opt_ va_list* Arguments
 );
 HOOKDEF(BOOL, WINAPI, FreeEnvironmentStringsW,
 	_In_ LPWSTR lpszEnvironmentBlock
@@ -4049,6 +4051,22 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
+);
+HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableA,
+	_In_opt_ LPCSTR lpName,
+	_Out_opt_ LPSTR lpBuffer,
+	_In_ DWORD nSize
+);
+HOOKDEF(BOOL, WINAPI, GetFileAttributesExW,
+	_In_ LPCWSTR lpFileName,
+	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	_Out_ LPVOID lpFileInformation
+);
+HOOKDEF(BOOL, WINAPI, GetFileInformationByHandleEx,
+	_In_ HANDLE hFile,
+	_In_ FILE_INFO_BY_HANDLE_CLASS FileInformationClass,
+	_Out_ LPVOID lpFileInformation,
+	_In_ DWORD dwBufferSize
 );
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
@@ -4294,5 +4312,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_018_event_log_entry_checker END <<< */
+/* >>> AUTOHOOK_galloro_019_explorer_artifact_checker END <<< */
 
