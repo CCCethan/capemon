@@ -1540,23 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_018_cpu_walltime_ratio_checker BEGIN <<< */
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, GetProcessTimes, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hProcess,
-	_Out_ LPFILETIME lpCreationTime,
-	_Out_ LPFILETIME lpExitTime,
-	_Out_ LPFILETIME lpKernelTime,
-	_Out_ LPFILETIME lpUserTime
-) {
-	BOOL ret;
-	ret = Old_GetProcessTimes(hProcess, lpCreationTime, lpExitTime, lpKernelTime, lpUserTime);
-	LOQ_bool("process", "pPPPP", "Process", hProcess, "CreationTime", lpCreationTime, "ExitTime", lpExitTime, "KernelTime", lpKernelTime, "UserTime", lpUserTime);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-
+/* >>> AUTOHOOK_galloro_018_event_log_entry_checker BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1758,5 +1742,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_018_cpu_walltime_ratio_checker END <<< */
+/* >>> AUTOHOOK_galloro_018_event_log_entry_checker END <<< */
 

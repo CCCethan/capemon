@@ -3930,13 +3930,17 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_018_cpu_walltime_ratio_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, GetProcessTimes,
-	_In_ HANDLE hProcess,
-	_Out_ LPFILETIME lpCreationTime,
-	_Out_ LPFILETIME lpExitTime,
-	_Out_ LPFILETIME lpKernelTime,
-	_Out_ LPFILETIME lpUserTime
+/* >>> AUTOHOOK_galloro_018_event_log_entry_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, CloseEventLog,
+	_Inout_ HANDLE hEventLog
+);
+HOOKDEF(BOOL, WINAPI, GetNumberOfEventLogRecords,
+	_In_ HANDLE hEventLog,
+	_Out_ PDWORD NumberOfRecords
+);
+HOOKDEF(HANDLE, WINAPI, OpenEventLogW,
+	_In_ LPCWSTR lpUNCServerName,
+	_In_ LPCWSTR lpSourceName
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
@@ -4290,5 +4294,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_018_cpu_walltime_ratio_checker END <<< */
+/* >>> AUTOHOOK_galloro_018_event_log_entry_checker END <<< */
 

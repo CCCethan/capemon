@@ -178,7 +178,41 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_018_cpu_walltime_ratio_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_018_event_log_entry_checker BEGIN <<< */
+// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
+HOOKDEF(BOOL, WINAPI, CloseEventLog, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ HANDLE hEventLog
+) {
+	BOOL ret;
+	ret = Old_CloseEventLog(hEventLog);
+	LOQ_bool("sync", "p", "EventLog", hEventLog);
+	return ret;
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
+HOOKDEF(BOOL, WINAPI, GetNumberOfEventLogRecords, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hEventLog,
+	_Out_ PDWORD NumberOfRecords
+) {
+	BOOL ret;
+	ret = Old_GetNumberOfEventLogRecords(hEventLog, NumberOfRecords);
+	LOQ_bool("sync", "pI", "EventLog", hEventLog, "NumberOfRecords", NumberOfRecords);
+	return ret;
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
+HOOKDEF(HANDLE, WINAPI, OpenEventLogW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCWSTR lpUNCServerName,
+	_In_ LPCWSTR lpSourceName
+) {
+	HANDLE ret;
+	ret = Old_OpenEventLogW(lpUNCServerName, lpSourceName);
+	LOQ_handle("sync", "uu", "UNCServerName", lpUNCServerName, "SourceName", lpSourceName);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -228,5 +262,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
 }
-/* >>> AUTOHOOK_galloro_018_cpu_walltime_ratio_checker END <<< */
+/* >>> AUTOHOOK_galloro_018_event_log_entry_checker END <<< */
 
