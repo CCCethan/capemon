@@ -526,19 +526,18 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_036_picture_folder_item_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_039_recycle_bin_item_checker BEGIN <<< */
 // -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
-HOOKDEF(HRESULT, WINAPI, SHGetFolderPathA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HWND hwndOwner,
-	_In_ int nFolder,
-	_In_ HANDLE hToken,
-	_In_ DWORD dwFlags,
-	_Out_ LPSTR pszPath
+HOOKDEF(HRESULT, WINAPI, SHQueryRecycleBinA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCSTR pszRootPath,
+	_Inout_ LPSHQUERYRBINFO pSHQueryRBInfo
 ) {
 	HRESULT ret;
-	ret = Old_SHGetFolderPathA(hwndOwner, nFolder, hToken, dwFlags, pszPath);
-	LOQ_hresult("windows", "pipif", "WndOwner", hwndOwner, "Folder", nFolder, "Token", hToken, "Flags", dwFlags, "SzPath", pszPath);
+	ret = Old_SHQueryRecycleBinA(pszRootPath, pSHQueryRBInfo);
+	LOQ_hresult("windows", "fP", "SzRootPath", pszRootPath, "SHQueryRBInfo", pSHQueryRBInfo);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_036_picture_folder_item_checker END <<< */
+
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_galloro_039_recycle_bin_item_checker END <<< */
 
