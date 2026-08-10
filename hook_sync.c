@@ -178,7 +178,39 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_012_diagtrack_service_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_013_condition_variable_stall_checker BEGIN <<< */
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(VOID, WINAPI, InitializeConditionVariable, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ PCONDITION_VARIABLE ConditionVariable
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_InitializeConditionVariable(ConditionVariable);
+	LOQ_void("sync", "P", "ConditionVariable", ConditionVariable);
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(void, WINAPI, InitializeCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPCRITICAL_SECTION lpCriticalSection
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_InitializeCriticalSection(lpCriticalSection);
+	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(BOOL, WINAPI, SleepConditionVariableCS, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ PCONDITION_VARIABLE ConditionVariable,
+	_Inout_ PCRITICAL_SECTION CriticalSection,
+	_In_ DWORD dwMilliseconds
+) {
+	BOOL ret;
+	ret = Old_SleepConditionVariableCS(ConditionVariable, CriticalSection, dwMilliseconds);
+	LOQ_bool("sync", "PPi", "ConditionVariable", ConditionVariable, "CriticalSection", CriticalSection, "Milliseconds", dwMilliseconds);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -228,5 +260,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
 }
-/* >>> AUTOHOOK_galloro_012_diagtrack_service_checker END <<< */
+/* >>> AUTOHOOK_galloro_013_condition_variable_stall_checker END <<< */
 
