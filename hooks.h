@@ -3930,10 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_021_hdd_capacity_checker BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, GetLogicalDrives,
-	void
-);
+/* >>> AUTOHOOK_galloro_022_installed_apps_registry_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4286,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_021_hdd_capacity_checker END <<< */
+/* >>> AUTOHOOK_galloro_022_installed_apps_registry_checker END <<< */
 
