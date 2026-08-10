@@ -818,13 +818,23 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_003_battery_status_variability_checker BEGIN <<< */
-HOOK(kernel32, GetSystemPowerStatus),
-HOOK(kernelbase, GetSystemPowerStatus),
+/* >>> AUTOHOOK_galloro_004_av_product_count_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
+HOOK(combase, CoInitializeEx),
+HOOK(ole32, CoInitializeEx),
+HOOK(oleaut32, CoInitializeEx),
+HOOK(combase, CoInitializeSecurity),
+HOOK(ole32, CoInitializeSecurity),
+HOOK(oleaut32, CoInitializeSecurity),
+HOOK(combase, CoSetProxyBlanket),
+HOOK(ole32, CoSetProxyBlanket),
+HOOK(oleaut32, CoSetProxyBlanket),
+HOOK(combase, CoUninitialize),
+HOOK(ole32, CoUninitialize),
+HOOK(oleaut32, CoUninitialize),
 HOOK(kernel32, CompareStringEx),
 HOOK(kernelbase, CompareStringEx),
 HOOK(kernel32, CompareStringW),
@@ -959,6 +969,9 @@ HOOK(kernel32, SetStdHandle),
 HOOK(kernelbase, SetStdHandle),
 HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
+HOOK(combase, SysAllocString),
+HOOK(ole32, SysAllocString),
+HOOK(oleaut32, SysAllocString),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
 HOOK(kernel32, TlsAlloc),
@@ -973,7 +986,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_003_battery_status_variability_checker END <<< */
+/* >>> AUTOHOOK_galloro_004_av_product_count_checker END <<< */
 };
 
 hook_t native_hooks[] = {
