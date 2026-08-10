@@ -1080,3 +1080,42 @@ HOOKDEF(HRESULT, WINAPI, MkParseDisplayNameEx,
 	LOQ_hresult("network", "u", "Name", szName);
 	return ret;
 }
+
+/* >>> AUTOHOOK_galloro_033_network_delay_timeout_checker BEGIN <<< */
+// -> hook_network.c に追加 | category="network" | winapi:Windows Sockets (Winsock)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(int, WINAPI, WSACleanup, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	int ret;
+	ret = Old_WSACleanup();
+	LOQ_nonzero("network", "");
+	return ret;
+}
+
+// -> hook_network.c に追加 | category="network" | winapi:Windows Sockets (Winsock)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(int, WINAPI, WSAGetLastError, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	int ret;
+	ret = Old_WSAGetLastError();
+	LOQ_nonzero("network", "");
+	return ret;
+}
+
+// -> hook_network.c に追加 | category="network" | winapi:Windows Sockets (Winsock)
+// REVIEW: 戻り型 u_short WSAAPI の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 hostshort: 型 u_short を i(int32)で仮記録。要確認
+HOOKDEF(u_short WSAAPI, WINAPI, htons, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ u_short hostshort
+) {
+	u_short WSAAPI ret;
+	ret = Old_htons(hostshort);
+	LOQ_nonzero("network", "i", "Ostshort", hostshort);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_galloro_033_network_delay_timeout_checker END <<< */
+
