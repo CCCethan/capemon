@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_019_explorer_artifact_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_020_file_type_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4051,11 +4051,6 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
-);
-HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableA,
-	_In_opt_ LPCSTR lpName,
-	_Out_opt_ LPSTR lpBuffer,
-	_In_ DWORD nSize
 );
 HOOKDEF(BOOL, WINAPI, GetFileAttributesExW,
 	_In_ LPCWSTR lpFileName,
@@ -4261,6 +4256,13 @@ HOOKDEF(void, WINAPI, RtlUnwind,
 	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
 	_In_ PVOID ReturnValue
 );
+HOOKDEF(HRESULT, WINAPI, SHGetFolderPathA,
+	_In_ HWND hwndOwner,
+	_In_ int nFolder,
+	_In_ HANDLE hToken,
+	_In_ DWORD dwFlags,
+	_Out_ LPSTR pszPath
+);
 HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
 	_In_opt_ LPCWSTR lpValue
@@ -4312,5 +4314,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_019_explorer_artifact_checker END <<< */
+/* >>> AUTOHOOK_galloro_020_file_type_checker END <<< */
 

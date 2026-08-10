@@ -526,7 +526,7 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_019_explorer_artifact_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_020_file_type_checker BEGIN <<< */
 // -> hook_window.c に追加 | category="windows" | winapi:Error Handling
 // REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpSource: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
@@ -545,5 +545,19 @@ HOOKDEF(DWORD, WINAPI, FormatMessageA, // 呼出規約は WINAPI 仮定(socket/n
 	LOQ_nonzero("windows", "ipiisip", "Flags", dwFlags, "Source", lpSource, "MessageId", dwMessageId, "LanguageId", dwLanguageId, "Buffer", lpBuffer, "Size", nSize, "Arguments", Arguments);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_019_explorer_artifact_checker END <<< */
+
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
+HOOKDEF(HRESULT, WINAPI, SHGetFolderPathA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hwndOwner,
+	_In_ int nFolder,
+	_In_ HANDLE hToken,
+	_In_ DWORD dwFlags,
+	_Out_ LPSTR pszPath
+) {
+	HRESULT ret;
+	ret = Old_SHGetFolderPathA(hwndOwner, nFolder, hToken, dwFlags, pszPath);
+	LOQ_hresult("windows", "pipif", "WndOwner", hwndOwner, "Folder", nFolder, "Token", hToken, "Flags", dwFlags, "SzPath", pszPath);
+	return ret;
+}
+/* >>> AUTOHOOK_galloro_020_file_type_checker END <<< */
 

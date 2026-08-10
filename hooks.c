@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_019_explorer_artifact_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_020_file_type_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -871,8 +871,6 @@ HOOK(kernel32, GetDateFormatW),
 HOOK(kernelbase, GetDateFormatW),
 HOOK(kernel32, GetEnvironmentStringsW),
 HOOK(kernelbase, GetEnvironmentStringsW),
-HOOK(kernel32, GetEnvironmentVariableA),
-HOOK(kernelbase, GetEnvironmentVariableA),
 HOOK(kernel32, GetFileAttributesExW),
 HOOK(kernelbase, GetFileAttributesExW),
 HOOK(kernel32, GetFileInformationByHandleEx),
@@ -957,6 +955,9 @@ HOOK(kernel32, RtlPcToFileHeader),
 HOOK(kernelbase, RtlPcToFileHeader),
 HOOK(kernel32, RtlUnwind),
 HOOK(kernelbase, RtlUnwind),
+HOOK(kernel32, SHGetFolderPathA),
+HOOK(kernelbase, SHGetFolderPathA),
+HOOK(shell32, SHGetFolderPathA),
 HOOK(kernel32, SetEnvironmentVariableW),
 HOOK(kernelbase, SetEnvironmentVariableW),
 HOOK(kernel32, SetFilePointerEx),
@@ -981,7 +982,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_019_explorer_artifact_checker END <<< */
+/* >>> AUTOHOOK_galloro_020_file_type_checker END <<< */
 };
 
 hook_t native_hooks[] = {
