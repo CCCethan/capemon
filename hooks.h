@@ -3930,11 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_039_recycle_bin_item_checker BEGIN <<< */
-HOOKDEF(HRESULT, WINAPI, SHQueryRecycleBinA,
-	_In_opt_ LPCSTR pszRootPath,
-	_Inout_ LPSHQUERYRBINFO pSHQueryRBInfo
-);
+/* >>> AUTOHOOK_galloro_040_screen_resolution_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4287,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_039_recycle_bin_item_checker END <<< */
+/* >>> AUTOHOOK_galloro_040_screen_resolution_checker END <<< */
 

@@ -525,19 +525,3 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
-
-/* >>> AUTOHOOK_galloro_039_recycle_bin_item_checker BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
-HOOKDEF(HRESULT, WINAPI, SHQueryRecycleBinA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCSTR pszRootPath,
-	_Inout_ LPSHQUERYRBINFO pSHQueryRBInfo
-) {
-	HRESULT ret;
-	ret = Old_SHQueryRecycleBinA(pszRootPath, pSHQueryRBInfo);
-	LOQ_hresult("windows", "fP", "SzRootPath", pszRootPath, "SHQueryRBInfo", pSHQueryRBInfo);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-/* >>> AUTOHOOK_galloro_039_recycle_bin_item_checker END <<< */
-

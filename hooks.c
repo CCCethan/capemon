@@ -818,10 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_039_recycle_bin_item_checker BEGIN <<< */
-HOOK(kernel32, SHQueryRecycleBinA),
-HOOK(kernelbase, SHQueryRecycleBinA),
-HOOK(shell32, SHQueryRecycleBinA),
+/* >>> AUTOHOOK_galloro_040_screen_resolution_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -974,7 +971,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_039_recycle_bin_item_checker END <<< */
+/* >>> AUTOHOOK_galloro_040_screen_resolution_checker END <<< */
 };
 
 hook_t native_hooks[] = {
