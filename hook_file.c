@@ -2019,7 +2019,10 @@ HOOKDEF(BOOL, WINAPI, GetFileInformationByHandleEx, // 呼出規約は WINAPI �
 ) {
 	BOOL ret;
 	ret = Old_GetFileInformationByHandleEx(hFile, FileInformationClass, lpFileInformation, dwBufferSize);
-	LOQ_bool("filesystem", "pipi", "File", hFile, "FileInformationClass", FileInformationClass, "FileInformation", lpFileInformation, "BufferSize", dwBufferSize);
+	// [7.5-⑤] FileInformation は出力バッファ。出力長を返す引数が無く戻り値も BOOL なので
+	// 長さ源は容量 dwBufferSize のみ。失敗時は未書込の可能性があるので長さ0にして中身を出さない。
+	// 中身の型は FileInformationClass により変わる(多相)ため、解釈はせずバイト列として記録する。
+	LOQ_bool("filesystem", "pibi", "File", hFile, "FileInformationClass", FileInformationClass, "FileInformation", (size_t)(ret ? dwBufferSize : 0), lpFileInformation, "BufferSize", dwBufferSize);
 	return ret;
 }
 
