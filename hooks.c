@@ -818,8 +818,8 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_010_caret_movement_checker BEGIN <<< */
-HOOK(user32, GetGUIThreadInfo),
+/* >>> AUTOHOOK_galloro_011_clipboard_activity_checker BEGIN <<< */
+HOOK(user32, GetClipboardSequenceNumber),
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
 HOOK(kernel32, CompareStringW),
@@ -952,7 +952,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_010_caret_movement_checker END <<< */
+/* >>> AUTOHOOK_galloro_011_clipboard_activity_checker END <<< */
 };
 
 hook_t native_hooks[] = {

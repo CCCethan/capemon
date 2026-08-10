@@ -72,7 +72,7 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_010_caret_movement_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_011_clipboard_activity_checker BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
@@ -148,5 +148,5 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_010_caret_movement_checker END <<< */
+/* >>> AUTOHOOK_galloro_011_clipboard_activity_checker END <<< */
 

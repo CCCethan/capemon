@@ -526,18 +526,18 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_010_caret_movement_checker BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:Windows
-HOOKDEF(BOOL, WINAPI, GetGUIThreadInfo, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD idThread,
-	_Inout_ LPGUITHREADINFO lpgui
+/* >>> AUTOHOOK_galloro_011_clipboard_activity_checker BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Clipboard
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetClipboardSequenceNumber, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
 ) {
-	BOOL ret;
-	ret = Old_GetGUIThreadInfo(idThread, lpgui);
-	LOQ_bool("windows", "iP", "IdThread", idThread, "Gui", lpgui);
+	DWORD ret;
+	ret = Old_GetClipboardSequenceNumber();
+	LOQ_nonzero("windows", "");
 	return ret;
 }
 
 /* >>> restored from hookdb <<< */
-/* >>> AUTOHOOK_galloro_010_caret_movement_checker END <<< */
+/* >>> AUTOHOOK_galloro_011_clipboard_activity_checker END <<< */
 

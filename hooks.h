@@ -3930,10 +3930,9 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_010_caret_movement_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, GetGUIThreadInfo,
-	_In_ DWORD idThread,
-	_Inout_ LPGUITHREADINFO lpgui
+/* >>> AUTOHOOK_galloro_011_clipboard_activity_checker BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, GetClipboardSequenceNumber,
+	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
@@ -4227,5 +4226,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_010_caret_movement_checker END <<< */
+/* >>> AUTOHOOK_galloro_011_clipboard_activity_checker END <<< */
 
