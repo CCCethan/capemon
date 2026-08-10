@@ -178,7 +178,44 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_006_bios_system_product_vm_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection BEGIN <<< */
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(VOID, WINAPI, AcquireSRWLockExclusive, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ PSRWLOCK SRWLock
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_AcquireSRWLockExclusive(SRWLock);
+	LOQ_void("sync", "P", "SRWLock", SRWLock);
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(VOID, WINAPI, ReleaseSRWLockExclusive, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ PSRWLOCK SRWLock
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_ReleaseSRWLockExclusive(SRWLock);
+	LOQ_void("sync", "P", "SRWLock", SRWLock);
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(BOOLEAN, WINAPI, TryAcquireSRWLockExclusive, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ PSRWLOCK SRWLock
+) {
+	BOOLEAN ret;
+	ret = Old_TryAcquireSRWLockExclusive(SRWLock);
+	LOQ_bool("sync", "P", "SRWLock", SRWLock);
+	return ret;
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(VOID, WINAPI, WakeAllConditionVariable, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ PCONDITION_VARIABLE ConditionVariable
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_WakeAllConditionVariable(ConditionVariable);
+	LOQ_void("sync", "P", "ConditionVariable", ConditionVariable);
+}
+
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -228,5 +265,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
 }
-/* >>> AUTOHOOK_galloro_006_bios_system_product_vm_checker END <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection END <<< */
 

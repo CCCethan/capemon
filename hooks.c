@@ -818,7 +818,21 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_006_bios_system_product_vm_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection BEGIN <<< */
+HOOK(kernel32, AcquireSRWLockExclusive),
+HOOK(kernelbase, AcquireSRWLockExclusive),
+HOOK(user32, EndDialog),
+HOOK(kernel32, ExitThread),
+HOOK(kernelbase, ExitThread),
+HOOK(kernel32, FreeLibraryAndExitThread),
+HOOK(kernelbase, FreeLibraryAndExitThread),
+HOOK(user32, MessageBoxA),
+HOOK(kernel32, ReleaseSRWLockExclusive),
+HOOK(kernelbase, ReleaseSRWLockExclusive),
+HOOK(kernel32, TryAcquireSRWLockExclusive),
+HOOK(kernelbase, TryAcquireSRWLockExclusive),
+HOOK(kernel32, WakeAllConditionVariable),
+HOOK(kernelbase, WakeAllConditionVariable),
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -971,7 +985,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_006_bios_system_product_vm_checker END <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection END <<< */
 };
 
 hook_t native_hooks[] = {

@@ -2008,7 +2008,19 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_006_bios_system_product_vm_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Dialog Boxes
+// REVIEW: 引数 nResult: 型 INT_PTR を i(int32)で仮記録。要確認
+HOOKDEF(BOOL, WINAPI, EndDialog, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hDlg,
+	_In_ INT_PTR nResult
+) {
+	BOOL ret;
+	ret = Old_EndDialog(hDlg, nResult);
+	LOQ_bool("misc", "pi", "Dlg", hDlg, "Result", nResult);
+	return ret;
+}
+
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2476,5 +2488,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_006_bios_system_product_vm_checker END <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection END <<< */
 

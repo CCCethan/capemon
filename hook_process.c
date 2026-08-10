@@ -1540,7 +1540,26 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_006_bios_system_product_vm_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection BEGIN <<< */
+// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
+HOOKDEF(VOID, WINAPI, ExitThread, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwExitCode
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_ExitThread(dwExitCode);
+	LOQ_void("process", "i", "ExitCode", dwExitCode);
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
+HOOKDEF(VOID, WINAPI, FreeLibraryAndExitThread, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HMODULE hModule,
+	_In_ DWORD dwExitCode
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_FreeLibraryAndExitThread(hModule, dwExitCode);
+	LOQ_void("process", "pi", "Module", hModule, "ExitCode", dwExitCode);
+}
+
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1742,5 +1761,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_006_bios_system_product_vm_checker END <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection END <<< */
 

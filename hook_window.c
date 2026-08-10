@@ -525,3 +525,22 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
+
+/* >>> AUTOHOOK_galloro_006_button_press_detection BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Dialog Boxes
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(int, WINAPI, MessageBoxA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ HWND hWnd,
+	_In_opt_ LPCSTR lpText,
+	_In_opt_ LPCSTR lpCaption,
+	_In_ UINT uType
+) {
+	int ret;
+	ret = Old_MessageBoxA(hWnd, lpText, lpCaption, uType);
+	LOQ_nonzero("windows", "pssi", "Wnd", hWnd, "Text", lpText, "Caption", lpCaption, "UType", uType);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection END <<< */
+
