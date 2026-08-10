@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_014_documents_item_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_015_cpu_core_count_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3986,14 +3986,6 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
-);
-HOOKDEF(HANDLE, WINAPI, FindFirstFileA,
-	_In_ LPCSTR lpFileName,
-	_Out_ LPWIN32_FIND_DATAA lpFindFileData
-);
-HOOKDEF(BOOL, WINAPI, FindNextFileA,
-	_In_ HANDLE hFindFile,
-	_Out_ LPWIN32_FIND_DATAA lpFindFileData
 );
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
@@ -4240,13 +4232,6 @@ HOOKDEF(void, WINAPI, RtlUnwind,
 	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
 	_In_ PVOID ReturnValue
 );
-HOOKDEF(HRESULT, WINAPI, SHGetFolderPathA,
-	_In_ HWND hwndOwner,
-	_In_ int nFolder,
-	_In_ HANDLE hToken,
-	_In_ DWORD dwFlags,
-	_Out_ LPSTR pszPath
-);
 HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
 	_In_opt_ LPCWSTR lpValue
@@ -4298,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_014_documents_item_checker END <<< */
+/* >>> AUTOHOOK_galloro_015_cpu_core_count_checker END <<< */
 
