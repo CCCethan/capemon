@@ -818,10 +818,9 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_041_scroll_activity_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_042_display_adapter_vendor_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
-HOOK(user32, CallNextHookEx),
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
 HOOK(kernel32, CompareStringEx),
@@ -832,7 +831,6 @@ HOOK(kernel32, CreateFileW),
 HOOK(kernelbase, CreateFileW),
 HOOK(kernel32, DeleteCriticalSection),
 HOOK(kernelbase, DeleteCriticalSection),
-HOOK(user32, DispatchMessageW),
 HOOK(kernel32, EnterCriticalSection),
 HOOK(kernelbase, EnterCriticalSection),
 HOOK(kernel32, EnumSystemLocalesEx),
@@ -933,7 +931,6 @@ HOOK(kernel32, LeaveCriticalSection),
 HOOK(kernelbase, LeaveCriticalSection),
 HOOK(kernel32, LocaleNameToLCID),
 HOOK(kernelbase, LocaleNameToLCID),
-HOOK(user32, PeekMessageW),
 HOOK(kernel32, QueryPerformanceCounter),
 HOOK(kernelbase, QueryPerformanceCounter),
 HOOK(kernel32, QueryPerformanceFrequency),
@@ -970,12 +967,11 @@ HOOK(kernel32, TlsGetValue),
 HOOK(kernelbase, TlsGetValue),
 HOOK(kernel32, TlsSetValue),
 HOOK(kernelbase, TlsSetValue),
-HOOK(user32, TranslateMessage),
 HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_041_scroll_activity_checker END <<< */
+/* >>> AUTOHOOK_galloro_042_display_adapter_vendor_checker END <<< */
 };
 
 hook_t native_hooks[] = {
