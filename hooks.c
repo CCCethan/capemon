@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_031_mouse_activity_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_032_mouse_click_detector BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -971,7 +971,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_031_mouse_activity_checker END <<< */
+/* >>> AUTOHOOK_galloro_032_mouse_click_detector END <<< */
 };
 
 hook_t native_hooks[] = {
