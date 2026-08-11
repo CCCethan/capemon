@@ -525,20 +525,3 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
-
-/* >>> AUTOHOOK_galloro_057_event_log_size_checker BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:System Information Functions
-// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(UINT, WINAPI, GetWindowsDirectoryW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPWSTR lpBuffer,
-	_In_ UINT uSize
-) {
-	UINT ret;
-	ret = Old_GetWindowsDirectoryW(lpBuffer, uSize);
-	LOQ_nonzero("windows", "ui", "Buffer", lpBuffer, "USize", uSize);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-/* >>> AUTOHOOK_galloro_057_event_log_size_checker END <<< */
-
