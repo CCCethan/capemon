@@ -286,3 +286,29 @@ HOOKDEF(BOOL, WINAPI, EnumServicesStatusExA,
 	LOQ_void("services", "EnumServicesStatusExA");
 	return ret;
 }
+
+/* >>> AUTOHOOK_galloro_139_service_binary_path_checker BEGIN <<< */
+// -> hook_services.c に追加 | category="services" | winapi:Services
+HOOKDEF(BOOL, WINAPI, CloseServiceHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ SC_HANDLE hSCObject
+) {
+	BOOL ret;
+	ret = Old_CloseServiceHandle(hSCObject);
+	LOQ_bool("services", "p", "SCObject", hSCObject);
+	return ret;
+}
+
+// -> hook_services.c に追加 | category="services" | winapi:Services
+HOOKDEF(BOOL, WINAPI, QueryServiceConfigA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ SC_HANDLE hService,
+	_Out_opt_ LPQUERY_SERVICE_CONFIG lpServiceConfig,
+	_In_ DWORD cbBufSize,
+	_Out_ LPDWORD pcbBytesNeeded
+) {
+	BOOL ret;
+	ret = Old_QueryServiceConfigA(hService, lpServiceConfig, cbBufSize, pcbBytesNeeded);
+	LOQ_bool("services", "pPiI", "Service", hService, "ServiceConfig", lpServiceConfig, "BufSize", cbBufSize, "CbBytesNeeded", pcbBytesNeeded);
+	return ret;
+}
+/* >>> AUTOHOOK_galloro_139_service_binary_path_checker END <<< */
+

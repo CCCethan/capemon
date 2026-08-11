@@ -3930,7 +3930,20 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_138_seh_exception_timing_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_139_service_binary_path_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, CloseServiceHandle,
+	_In_ SC_HANDLE hSCObject
+);
+HOOKDEF(UINT, WINAPI, GetSystemDirectoryA,
+	_Out_ LPSTR lpBuffer,
+	_In_ UINT uSize
+);
+HOOKDEF(BOOL, WINAPI, QueryServiceConfigA,
+	_In_ SC_HANDLE hService,
+	_Out_opt_ LPQUERY_SERVICE_CONFIG lpServiceConfig,
+	_In_ DWORD cbBufSize,
+	_Out_ LPDWORD pcbBytesNeeded
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4116,6 +4129,10 @@ HOOKDEF(int, WINAPI, GetUserDefaultLocaleName,
 	_Out_ LPWSTR lpLocaleName,
 	_In_ int cchLocaleName
 );
+HOOKDEF(UINT, WINAPI, GetWindowsDirectoryA,
+	_Out_ LPSTR lpBuffer,
+	_In_ UINT uSize
+);
 HOOKDEF(LPVOID, WINAPI, HeapAlloc,
 	_In_ HANDLE hHeap,
 	_In_ DWORD dwFlags,
@@ -4283,5 +4300,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_138_seh_exception_timing_checker END <<< */
+/* >>> AUTOHOOK_galloro_139_service_binary_path_checker END <<< */
 
