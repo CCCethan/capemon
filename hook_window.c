@@ -526,40 +526,72 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_092_mm_timer_stall_checker BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:Windows Multimedia
-// REVIEW: 戻り型 MMRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(MMRESULT, WINAPI, timeBeginPeriod, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	UINT uPeriod
+/* >>> AUTOHOOK_galloro_093_mouse_doubleclick_behavior_checker BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Mouse Input
+// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(UINT, WINAPI, GetDoubleClickTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
 ) {
-	MMRESULT ret;
-	ret = Old_timeBeginPeriod(uPeriod);
-	LOQ_nonzero("windows", "i", "UPeriod", uPeriod);
-	return ret;
-}
-
-// -> hook_window.c に追加 | category="windows" | winapi:Windows Multimedia
-// REVIEW: 戻り型 MMRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(MMRESULT, WINAPI, timeEndPeriod, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	UINT uPeriod
-) {
-	MMRESULT ret;
-	ret = Old_timeEndPeriod(uPeriod);
-	LOQ_nonzero("windows", "i", "UPeriod", uPeriod);
-	return ret;
-}
-
-// -> hook_window.c に追加 | category="windows" | winapi:Windows Multimedia
-// REVIEW: 戻り型 MMRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(MMRESULT, WINAPI, timeKillEvent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	UINT uTimerID
-) {
-	MMRESULT ret;
-	ret = Old_timeKillEvent(uTimerID);
-	LOQ_nonzero("windows", "i", "UTimerID", uTimerID);
+	UINT ret;
+	ret = Old_GetDoubleClickTime();
+	LOQ_nonzero("windows", "");
 	return ret;
 }
 
 /* >>> restored from hookdb <<< */
-/* >>> AUTOHOOK_galloro_092_mm_timer_stall_checker END <<< */
+
+// -> hook_window.c に追加 | category="windows" | winapi:Hooks
+// REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 hhk: 型 HHOOK は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 wParam: 型 WPARAM を i(int32)で仮記録。要確認
+// REVIEW: 引数 lParam: 型 LPARAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(LRESULT, WINAPI, CallNextHookEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ HHOOK hhk,
+	_In_ int nCode,
+	_In_ WPARAM wParam,
+	_In_ LPARAM lParam
+) {
+	LRESULT ret;
+	ret = Old_CallNextHookEx(hhk, nCode, wParam, lParam);
+	LOQ_nonzero("windows", "piip", "Hk", hhk, "Code", nCode, "WParam", wParam, "LParam", lParam);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
+// REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpmsg: 型 const MSG* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(LRESULT, WINAPI, DispatchMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const MSG* lpmsg
+) {
+	LRESULT ret;
+	ret = Old_DispatchMessageW(lpmsg);
+	LOQ_nonzero("windows", "p", "Msg", lpmsg);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
+HOOKDEF(BOOL, WINAPI, PeekMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPMSG lpMsg,
+	_In_opt_ HWND hWnd,
+	_In_ UINT wMsgFilterMin,
+	_In_ UINT wMsgFilterMax,
+	_In_ UINT wRemoveMsg
+) {
+	BOOL ret;
+	ret = Old_PeekMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
+	LOQ_bool("windows", "Ppiii", "Msg", lpMsg, "Wnd", hWnd, "WMsgFilterMin", wMsgFilterMin, "WMsgFilterMax", wMsgFilterMax, "WRemoveMsg", wRemoveMsg);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Keyboard Input
+// REVIEW: 引数 lpMsg: 型 const MSG* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, TranslateMessage, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const MSG* lpMsg
+) {
+	BOOL ret;
+	ret = Old_TranslateMessage(lpMsg);
+	LOQ_bool("windows", "p", "Msg", lpMsg);
+	return ret;
+}
+/* >>> AUTOHOOK_galloro_093_mouse_doubleclick_behavior_checker END <<< */
 
