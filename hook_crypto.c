@@ -618,3 +618,112 @@ HOOKDEF(NTSTATUS, WINAPI, BCryptEncrypt,
 	LOQ_ntstatus("crypto", "bbhpi", "Input", cbInput, pbInput, "IV", cbIV, pbIV, "Flags", dwFlags, "CryptKey", hKey, "Length", cbInput);
 	return ret;
 }
+
+/* >>> AUTOHOOK_galloro_148_service_signer_issuer_analysis BEGIN <<< */
+// -> hook_crypto.c に追加 | category="crypto" | winapi:Cryptography
+// REVIEW: 引数 hCertStore: 型 HCERTSTORE は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, CertCloseStore, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HCERTSTORE hCertStore,
+	_In_ DWORD dwFlags
+) {
+	BOOL ret;
+	ret = Old_CertCloseStore(hCertStore, dwFlags);
+	LOQ_bool("crypto", "pi", "CertStore", hCertStore, "Flags", dwFlags);
+	return ret;
+}
+
+// -> hook_crypto.c に追加 | category="crypto" | winapi:Cryptography
+// REVIEW: 引数 hCertStore: 型 HCERTSTORE は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 pvFindPara: 型 const void* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 pPrevCertContext: 型 PCCERT_CONTEXT は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(PCCERT_CONTEXT, WINAPI, CertFindCertificateInStore, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HCERTSTORE hCertStore,
+	_In_ DWORD dwCertEncodingType,
+	_In_ DWORD dwFindFlags,
+	_In_ DWORD dwFindType,
+	_In_ const void* pvFindPara,
+	_In_ PCCERT_CONTEXT pPrevCertContext
+) {
+	PCCERT_CONTEXT ret;
+	ret = Old_CertFindCertificateInStore(hCertStore, dwCertEncodingType, dwFindFlags, dwFindType, pvFindPara, pPrevCertContext);
+	LOQ_nonnull("crypto", "piiipp", "CertStore", hCertStore, "CertEncodingType", dwCertEncodingType, "FindFlags", dwFindFlags, "FindType", dwFindType, "VFindPara", pvFindPara, "PrevCertContext", pPrevCertContext);
+	return ret;
+}
+
+// -> hook_crypto.c に追加 | category="crypto" | winapi:Cryptography
+// REVIEW: 引数 pCertContext: 型 PCCERT_CONTEXT は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, CertFreeCertificateContext, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ PCCERT_CONTEXT pCertContext
+) {
+	BOOL ret;
+	ret = Old_CertFreeCertificateContext(pCertContext);
+	LOQ_bool("crypto", "p", "CertContext", pCertContext);
+	return ret;
+}
+
+// -> hook_crypto.c に追加 | category="crypto" | winapi:Cryptography
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 pCertContext: 型 PCCERT_CONTEXT は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 pvTypePara: 型 void* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(DWORD, WINAPI, CertGetNameStringW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ PCCERT_CONTEXT pCertContext,
+	_In_ DWORD dwType,
+	_In_ DWORD dwFlags,
+	_In_ void* pvTypePara,
+	_Out_ LPWSTR pszNameString,
+	_In_ DWORD cchNameString
+) {
+	DWORD ret;
+	ret = Old_CertGetNameStringW(pCertContext, dwType, dwFlags, pvTypePara, pszNameString, cchNameString);
+	LOQ_nonzero("crypto", "piipui", "CertContext", pCertContext, "Type", dwType, "Flags", dwFlags, "VTypePara", pvTypePara, "SzNameString", pszNameString, "NameString", cchNameString);
+	return ret;
+}
+
+// -> hook_crypto.c に追加 | category="crypto" | winapi:Cryptography
+// REVIEW: 引数 hCryptMsg: 型 HCRYPTMSG は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, CryptMsgClose, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HCRYPTMSG hCryptMsg
+) {
+	BOOL ret;
+	ret = Old_CryptMsgClose(hCryptMsg);
+	LOQ_bool("crypto", "p", "CryptMsg", hCryptMsg);
+	return ret;
+}
+
+// -> hook_crypto.c に追加 | category="crypto" | winapi:Cryptography
+// REVIEW: 引数 hCryptMsg: 型 HCRYPTMSG は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, CryptMsgGetParam, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HCRYPTMSG hCryptMsg,
+	_In_ DWORD dwParamType,
+	_In_ DWORD dwIndex,
+	_Out_ void* pvData,
+	_Inout_ DWORD* pcbData
+) {
+	BOOL ret;
+	ret = Old_CryptMsgGetParam(hCryptMsg, dwParamType, dwIndex, pvData, pcbData);
+	LOQ_bool("crypto", "piiPI", "CryptMsg", hCryptMsg, "ParamType", dwParamType, "Index", dwIndex, "VData", pvData, "CbData", pcbData);
+	return ret;
+}
+
+// -> hook_crypto.c に追加 | category="crypto" | winapi:Cryptography
+// REVIEW: 引数 pvObject: 型 const void* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, CryptQueryObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwObjectType,
+	_In_ const void* pvObject,
+	_In_ DWORD dwExpectedContentTypeFlags,
+	_In_ DWORD dwExpectedFormatTypeFlags,
+	_In_ DWORD dwFlags,
+	_Out_ DWORD* pdwMsgAndCertEncodingType,
+	_Out_ DWORD* pdwContentType,
+	_Out_ DWORD* pdwFormatType,
+	_Out_ HCERTSTORE* phCertStore,
+	_Out_ HCRYPTMSG* phMsg,
+	_Out_ const void** ppvContext
+) {
+	BOOL ret;
+	ret = Old_CryptQueryObject(dwObjectType, pvObject, dwExpectedContentTypeFlags, dwExpectedFormatTypeFlags, dwFlags, pdwMsgAndCertEncodingType, pdwContentType, pdwFormatType, phCertStore, phMsg, ppvContext);
+	LOQ_bool("crypto", "ipiiiIIIPPP", "ObjectType", dwObjectType, "VObject", pvObject, "ExpectedContentTypeFlags", dwExpectedContentTypeFlags, "ExpectedFormatTypeFlags", dwExpectedFormatTypeFlags, "Flags", dwFlags, "DwMsgAndCertEncodingType", pdwMsgAndCertEncodingType, "DwContentType", pdwContentType, "DwFormatType", pdwFormatType, "HCertStore", phCertStore, "HMsg", phMsg, "PvContext", ppvContext);
+	return ret;
+}
+/* >>> AUTOHOOK_galloro_148_service_signer_issuer_analysis END <<< */
+

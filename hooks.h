@@ -3930,9 +3930,61 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_141_service_density_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_148_service_signer_issuer_analysis BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, CertCloseStore,
+	_In_ HCERTSTORE hCertStore,
+	_In_ DWORD dwFlags
+);
+HOOKDEF(PCCERT_CONTEXT, WINAPI, CertFindCertificateInStore,
+	_In_ HCERTSTORE hCertStore,
+	_In_ DWORD dwCertEncodingType,
+	_In_ DWORD dwFindFlags,
+	_In_ DWORD dwFindType,
+	_In_ const void* pvFindPara,
+	_In_ PCCERT_CONTEXT pPrevCertContext
+);
+HOOKDEF(BOOL, WINAPI, CertFreeCertificateContext,
+	_In_ PCCERT_CONTEXT pCertContext
+);
+HOOKDEF(DWORD, WINAPI, CertGetNameStringW,
+	_In_ PCCERT_CONTEXT pCertContext,
+	_In_ DWORD dwType,
+	_In_ DWORD dwFlags,
+	_In_ void* pvTypePara,
+	_Out_ LPWSTR pszNameString,
+	_In_ DWORD cchNameString
+);
 HOOKDEF(BOOL, WINAPI, CloseServiceHandle,
 	_In_ SC_HANDLE hSCObject
+);
+HOOKDEF(BOOL, WINAPI, CryptMsgClose,
+	_In_ HCRYPTMSG hCryptMsg
+);
+HOOKDEF(BOOL, WINAPI, CryptMsgGetParam,
+	_In_ HCRYPTMSG hCryptMsg,
+	_In_ DWORD dwParamType,
+	_In_ DWORD dwIndex,
+	_Out_ void* pvData,
+	_Inout_ DWORD* pcbData
+);
+HOOKDEF(BOOL, WINAPI, CryptQueryObject,
+	_In_ DWORD dwObjectType,
+	_In_ const void* pvObject,
+	_In_ DWORD dwExpectedContentTypeFlags,
+	_In_ DWORD dwExpectedFormatTypeFlags,
+	_In_ DWORD dwFlags,
+	_Out_ DWORD* pdwMsgAndCertEncodingType,
+	_Out_ DWORD* pdwContentType,
+	_Out_ DWORD* pdwFormatType,
+	_Out_ HCERTSTORE* phCertStore,
+	_Out_ HCRYPTMSG* phMsg,
+	_Out_ const void** ppvContext
+);
+HOOKDEF(BOOL, WINAPI, QueryServiceConfigA,
+	_In_ SC_HANDLE hService,
+	_Out_opt_ LPQUERY_SERVICE_CONFIG lpServiceConfig,
+	_In_ DWORD cbBufSize,
+	_Out_ LPDWORD pcbBytesNeeded
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
@@ -3986,6 +4038,11 @@ HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW,
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
+);
+HOOKDEF(DWORD, WINAPI, ExpandEnvironmentStringsA,
+	_In_ LPCSTR lpSrc,
+	_Out_opt_ LPSTR lpDst,
+	_In_ DWORD nSize
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
@@ -4286,5 +4343,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_141_service_density_checker END <<< */
+/* >>> AUTOHOOK_galloro_148_service_signer_issuer_analysis END <<< */
 

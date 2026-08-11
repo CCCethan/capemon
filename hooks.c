@@ -818,8 +818,16 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_141_service_density_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_148_service_signer_issuer_analysis BEGIN <<< */
+HOOK(crypt32, CertCloseStore),
+HOOK(crypt32, CertFindCertificateInStore),
+HOOK(crypt32, CertFreeCertificateContext),
+HOOK(crypt32, CertGetNameStringW),
 HOOK(advapi32, CloseServiceHandle),
+HOOK(crypt32, CryptMsgClose),
+HOOK(crypt32, CryptMsgGetParam),
+HOOK(crypt32, CryptQueryObject),
+HOOK(advapi32, QueryServiceConfigA),
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -840,6 +848,8 @@ HOOK(kernel32, EnumSystemLocalesW),
 HOOK(kernelbase, EnumSystemLocalesW),
 HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
+HOOK(kernel32, ExpandEnvironmentStringsA),
+HOOK(kernelbase, ExpandEnvironmentStringsA),
 HOOK(kernel32, FindClose),
 HOOK(kernelbase, FindClose),
 HOOK(kernel32, FlushFileBuffers),
@@ -972,7 +982,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_141_service_density_checker END <<< */
+/* >>> AUTOHOOK_galloro_148_service_signer_issuer_analysis END <<< */
 };
 
 hook_t native_hooks[] = {
