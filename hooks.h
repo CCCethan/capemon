@@ -3930,24 +3930,18 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_163_thread_pool_timer_analysis BEGIN <<< */
-HOOKDEF(VOID, WINAPI, CloseThreadpoolTimer,
-	_Inout_ PTP_TIMER pti
+/* >>> AUTOHOOK_galloro_169_timer_queue_skew_checker BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, CreateTimerQueue,
+	void
 );
-HOOKDEF(PTP_TIMER, WINAPI, CreateThreadpoolTimer,
-	_In_ PTP_TIMER_CALLBACK pfnti,
-	_Inout_opt_ PVOID pv,
-	_In_opt_ PTP_CALLBACK_ENVIRON pcbe
+HOOKDEF(BOOL, WINAPI, DeleteTimerQueueEx,
+	_In_ HANDLE TimerQueue,
+	_In_opt_ HANDLE CompletionEvent
 );
-HOOKDEF(VOID, WINAPI, SetThreadpoolTimer,
-	_Inout_ PTP_TIMER pti,
-	_In_opt_ PFILETIME pftDueTime,
-	_In_ DWORD msPeriod,
-	_In_opt_ DWORD msWindowLength
-);
-HOOKDEF(VOID, WINAPI, WaitForThreadpoolTimerCallbacks,
-	_Inout_ PTP_TIMER pti,
-	_In_ BOOL fCancelPendingCallbacks
+HOOKDEF(BOOL, WINAPI, DeleteTimerQueueTimer,
+	_In_opt_ HANDLE TimerQueue,
+	_In_ HANDLE Timer,
+	_In_opt_ HANDLE CompletionEvent
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
@@ -4254,5 +4248,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_163_thread_pool_timer_analysis END <<< */
+/* >>> AUTOHOOK_galloro_169_timer_queue_skew_checker END <<< */
 

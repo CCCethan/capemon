@@ -1540,56 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_163_thread_pool_timer_analysis BEGIN <<< */
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(VOID, WINAPI, CloseThreadpoolTimer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ PTP_TIMER pti
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_CloseThreadpoolTimer(pti);
-	LOQ_void("process", "P", "Ti", pti);
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-// REVIEW: 引数 pfnti: 型 PTP_TIMER_CALLBACK は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 pv: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-// REVIEW: 引数 pcbe: 型 PTP_CALLBACK_ENVIRON は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(PTP_TIMER, WINAPI, CreateThreadpoolTimer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PTP_TIMER_CALLBACK pfnti,
-	_Inout_opt_ PVOID pv,
-	_In_opt_ PTP_CALLBACK_ENVIRON pcbe
-) {
-	PTP_TIMER ret;
-	ret = Old_CreateThreadpoolTimer(pfnti, pv, pcbe);
-	LOQ_nonnull("process", "ppp", "Fnti", pfnti, "V", pv, "Cbe", pcbe);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-// REVIEW: 引数 pftDueTime: 型 PFILETIME は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(VOID, WINAPI, SetThreadpoolTimer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ PTP_TIMER pti,
-	_In_opt_ PFILETIME pftDueTime,
-	_In_ DWORD msPeriod,
-	_In_opt_ DWORD msWindowLength
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_SetThreadpoolTimer(pti, pftDueTime, msPeriod, msWindowLength);
-	LOQ_void("process", "Ppii", "Ti", pti, "FtDueTime", pftDueTime, "MsPeriod", msPeriod, "MsWindowLength", msWindowLength);
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(VOID, WINAPI, WaitForThreadpoolTimerCallbacks, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ PTP_TIMER pti,
-	_In_ BOOL fCancelPendingCallbacks
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_WaitForThreadpoolTimerCallbacks(pti, fCancelPendingCallbacks);
-	LOQ_void("process", "Pi", "Ti", pti, "CancelPendingCallbacks", fCancelPendingCallbacks);
-}
-
-/* >>> restored from hookdb <<< */
-
+/* >>> AUTOHOOK_galloro_169_timer_queue_skew_checker BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1791,5 +1742,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_163_thread_pool_timer_analysis END <<< */
+/* >>> AUTOHOOK_galloro_169_timer_queue_skew_checker END <<< */
 

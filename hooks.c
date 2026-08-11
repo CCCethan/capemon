@@ -818,15 +818,13 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_163_thread_pool_timer_analysis BEGIN <<< */
-HOOK(kernel32, CloseThreadpoolTimer),
-HOOK(kernelbase, CloseThreadpoolTimer),
-HOOK(kernel32, CreateThreadpoolTimer),
-HOOK(kernelbase, CreateThreadpoolTimer),
-HOOK(kernel32, SetThreadpoolTimer),
-HOOK(kernelbase, SetThreadpoolTimer),
-HOOK(kernel32, WaitForThreadpoolTimerCallbacks),
-HOOK(kernelbase, WaitForThreadpoolTimerCallbacks),
+/* >>> AUTOHOOK_galloro_169_timer_queue_skew_checker BEGIN <<< */
+HOOK(kernel32, CreateTimerQueue),
+HOOK(kernelbase, CreateTimerQueue),
+HOOK(kernel32, DeleteTimerQueueEx),
+HOOK(kernelbase, DeleteTimerQueueEx),
+HOOK(kernel32, DeleteTimerQueueTimer),
+HOOK(kernelbase, DeleteTimerQueueTimer),
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
 HOOK(kernel32, CompareStringW),
@@ -965,7 +963,7 @@ HOOK(kernel32, WaitForSingleObject),
 HOOK(kernelbase, WaitForSingleObject),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_163_thread_pool_timer_analysis END <<< */
+/* >>> AUTOHOOK_galloro_169_timer_queue_skew_checker END <<< */
 };
 
 hook_t native_hooks[] = {

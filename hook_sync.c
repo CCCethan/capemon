@@ -178,7 +178,42 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_163_thread_pool_timer_analysis BEGIN <<< */
+/* >>> AUTOHOOK_galloro_169_timer_queue_skew_checker BEGIN <<< */
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(HANDLE, WINAPI, CreateTimerQueue, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	HANDLE ret;
+	ret = Old_CreateTimerQueue();
+	LOQ_handle("sync", "");
+	return ret;
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(BOOL, WINAPI, DeleteTimerQueueEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE TimerQueue,
+	_In_opt_ HANDLE CompletionEvent
+) {
+	BOOL ret;
+	ret = Old_DeleteTimerQueueEx(TimerQueue, CompletionEvent);
+	LOQ_bool("sync", "pp", "TimerQueue", TimerQueue, "CompletionEvent", CompletionEvent);
+	return ret;
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(BOOL, WINAPI, DeleteTimerQueueTimer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ HANDLE TimerQueue,
+	_In_ HANDLE Timer,
+	_In_opt_ HANDLE CompletionEvent
+) {
+	BOOL ret;
+	ret = Old_DeleteTimerQueueTimer(TimerQueue, Timer, CompletionEvent);
+	LOQ_bool("sync", "ppp", "TimerQueue", TimerQueue, "Timer", Timer, "CompletionEvent", CompletionEvent);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 // REVIEW: 引数 lpEventAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
 HOOKDEF(HANDLE, WINAPI, CreateEventA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -264,5 +299,5 @@ HOOKDEF(DWORD, WINAPI, WaitForSingleObject, // 呼出規約は WINAPI 仮定(soc
 	LOQ_nonzero("sync", "pi", "Handle", hHandle, "Milliseconds", dwMilliseconds);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_163_thread_pool_timer_analysis END <<< */
+/* >>> AUTOHOOK_galloro_169_timer_queue_skew_checker END <<< */
 
