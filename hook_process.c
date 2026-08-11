@@ -1540,20 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_070_infinite_wait_thread_checker BEGIN <<< */
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, GetExitCodeThread, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hThread,
-	_Out_ LPDWORD lpExitCode
-) {
-	BOOL ret;
-	ret = Old_GetExitCodeThread(hThread, lpExitCode);
-	LOQ_bool("process", "pI", "Thread", hThread, "ExitCode", lpExitCode);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-
+/* >>> AUTOHOOK_galloro_076_iocp_timeout_behavior_checker BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1755,5 +1742,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_070_infinite_wait_thread_checker END <<< */
+/* >>> AUTOHOOK_galloro_076_iocp_timeout_behavior_checker END <<< */
 

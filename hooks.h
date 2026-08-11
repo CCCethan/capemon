@@ -3930,19 +3930,19 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_070_infinite_wait_thread_checker BEGIN <<< */
-HOOKDEF(HANDLE, WINAPI, CreateEventA,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
-	_In_ BOOL bManualReset,
-	_In_ BOOL bInitialState,
-	_In_opt_ LPCSTR lpName
+/* >>> AUTOHOOK_galloro_076_iocp_timeout_behavior_checker BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, CreateIoCompletionPort,
+	_In_ HANDLE FileHandle,
+	_In_opt_ HANDLE ExistingCompletionPort,
+	_In_ ULONG_PTR CompletionKey,
+	_In_ DWORD NumberOfConcurrentThreads
 );
-HOOKDEF(BOOL, WINAPI, GetExitCodeThread,
-	_In_ HANDLE hThread,
-	_Out_ LPDWORD lpExitCode
-);
-HOOKDEF(BOOL, WINAPI, SetEvent,
-	_In_ HANDLE hEvent
+HOOKDEF(BOOL, WINAPI, GetQueuedCompletionStatus,
+	_In_ HANDLE CompletionPort,
+	_Out_ LPDWORD lpNumberOfBytes,
+	_Out_ PULONG_PTR lpCompletionKey,
+	_Out_ LPOVERLAPPED* lpOverlapped,
+	_In_ DWORD dwMilliseconds
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
@@ -4228,10 +4228,6 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
-HOOKDEF(DWORD, WINAPI, WaitForSingleObject,
-	_In_ HANDLE hHandle,
-	_In_ DWORD dwMilliseconds
-);
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
 	_In_ LPCVOID lpBuffer,
@@ -4240,5 +4236,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_070_infinite_wait_thread_checker END <<< */
+/* >>> AUTOHOOK_galloro_076_iocp_timeout_behavior_checker END <<< */
 

@@ -1929,7 +1929,36 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_070_infinite_wait_thread_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_076_iocp_timeout_behavior_checker BEGIN <<< */
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(HANDLE, WINAPI, CreateIoCompletionPort, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE FileHandle,
+	_In_opt_ HANDLE ExistingCompletionPort,
+	_In_ ULONG_PTR CompletionKey,
+	_In_ DWORD NumberOfConcurrentThreads
+) {
+	HANDLE ret;
+	ret = Old_CreateIoCompletionPort(FileHandle, ExistingCompletionPort, CompletionKey, NumberOfConcurrentThreads);
+	LOQ_handle("filesystem", "ppii", "FileHandle", FileHandle, "ExistingCompletionPort", ExistingCompletionPort, "CompletionKey", CompletionKey, "NumberOfConcurrentThreads", NumberOfConcurrentThreads);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(BOOL, WINAPI, GetQueuedCompletionStatus, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE CompletionPort,
+	_Out_ LPDWORD lpNumberOfBytes,
+	_Out_ PULONG_PTR lpCompletionKey,
+	_Out_ LPOVERLAPPED* lpOverlapped,
+	_In_ DWORD dwMilliseconds
+) {
+	BOOL ret;
+	ret = Old_GetQueuedCompletionStatus(CompletionPort, lpNumberOfBytes, lpCompletionKey, lpOverlapped, dwMilliseconds);
+	LOQ_bool("filesystem", "pIIPi", "CompletionPort", CompletionPort, "NumberOfBytes", lpNumberOfBytes, "CompletionKey", lpCompletionKey, "Overlapped", lpOverlapped, "Milliseconds", dwMilliseconds);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 // REVIEW: 引数 lpSecurityAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
 HOOKDEF(HANDLE, WINAPI, CreateFileW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2050,5 +2079,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "NumberOfBytesToWrite", nNumberOfBytesToWrite, "NumberOfBytesWritten", lpNumberOfBytesWritten, "Overlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_070_infinite_wait_thread_checker END <<< */
+/* >>> AUTOHOOK_galloro_076_iocp_timeout_behavior_checker END <<< */
 
