@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_045_sleep_timer_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_046_sleep_timer_checker_01 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
 );
@@ -4223,5 +4223,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_045_sleep_timer_checker END <<< */
+/* >>> AUTOHOOK_galloro_046_sleep_timer_checker_01 END <<< */
 

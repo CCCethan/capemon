@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_045_sleep_timer_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_046_sleep_timer_checker_01 BEGIN <<< */
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
 HOOK(kernel32, CompareStringW),
@@ -951,7 +951,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_045_sleep_timer_checker END <<< */
+/* >>> AUTOHOOK_galloro_046_sleep_timer_checker_01 END <<< */
 };
 
 hook_t native_hooks[] = {
