@@ -178,22 +178,33 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_096_msgwait_duration_checker BEGIN <<< */
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-// REVIEW: 引数 lpEventAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HANDLE, WINAPI, CreateEventA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
-	_In_ BOOL bManualReset,
-	_In_ BOOL bInitialState,
-	_In_opt_ LPCSTR lpName
+/* >>> AUTOHOOK_galloro_193_window_activity_monitor BEGIN <<< */
+// -> hook_sync.c に追加 | category="sync" | winapi:Client
+// REVIEW: 戻り型 HWINEVENTHOOK の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpfnWinEventProc: 型 WINEVENTPROC を i(int32)で仮記録。要確認
+HOOKDEF(HWINEVENTHOOK, WINAPI, SetWinEventHook, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ UINT eventMin,
+	_In_ UINT eventMax,
+	_In_ HMODULE hmodWinEventProc,
+	_In_ WINEVENTPROC lpfnWinEventProc,
+	_In_ DWORD idProcess,
+	_In_ DWORD idThread,
+	_In_ UINT dwflags
 ) {
-	HANDLE ret;
-	ret = Old_CreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName);
-	// [可読性7.5] EventAttributes は ② 固定サイズ構造体(LPSECURITY_ATTRIBUTES)。
-	// 同ファイルの CreateFileW が既に sizeof(SECURITY_ATTRIBUTES) を長さに 'b' で記録しており
-	// (ビルド実績あり=型は定義済み)、同一イディオムに揃える。_In_opt_ で NULL のことが多いが、
-	// log.c の 'b' は NULL/例外を __try で保護し 0 バイト扱いにするため安全。
-	LOQ_handle("sync", "biis", "EventAttributes", sizeof(SECURITY_ATTRIBUTES), lpEventAttributes, "ManualReset", bManualReset, "InitialState", bInitialState, "Name", lpName);
+	HWINEVENTHOOK ret;
+	ret = Old_SetWinEventHook(eventMin, eventMax, hmodWinEventProc, lpfnWinEventProc, idProcess, idThread, dwflags);
+	LOQ_nonzero("sync", "iipiiii", "EventMin", eventMin, "EventMax", eventMax, "ModWinEventProc", hmodWinEventProc, "FnWinEventProc", lpfnWinEventProc, "IdProcess", idProcess, "IdThread", idThread, "Flags", dwflags);
+	return ret;
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Client
+// REVIEW: 引数 hWinEventHook: 型 HWINEVENTHOOK は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, UnhookWinEvent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWINEVENTHOOK hWinEventHook
+) {
+	BOOL ret;
+	ret = Old_UnhookWinEvent(hWinEventHook);
+	LOQ_bool("sync", "p", "WinEventHook", hWinEventHook);
 	return ret;
 }
 
@@ -248,5 +259,20 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
 }
-/* >>> AUTOHOOK_galloro_096_msgwait_duration_checker END <<< */
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD nCount,
+	_In_ const HANDLE* pHandles,
+	_In_ BOOL bWaitAll,
+	_In_ DWORD dwMilliseconds,
+	_In_ DWORD dwWakeMask
+) {
+	DWORD ret;
+	ret = Old_MsgWaitForMultipleObjects(nCount, pHandles, bWaitAll, dwMilliseconds, dwWakeMask);
+	LOQ_nonzero("sync", "ipiii", "Count", nCount, "Handles", pHandles, "WaitAll", bWaitAll, "Milliseconds", dwMilliseconds, "WakeMask", dwWakeMask);
+	return ret;
+}
+/* >>> AUTOHOOK_galloro_193_window_activity_monitor END <<< */
 

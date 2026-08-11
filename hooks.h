@@ -3930,12 +3930,18 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_096_msgwait_duration_checker BEGIN <<< */
-HOOKDEF(HANDLE, WINAPI, CreateEventA,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
-	_In_ BOOL bManualReset,
-	_In_ BOOL bInitialState,
-	_In_opt_ LPCSTR lpName
+/* >>> AUTOHOOK_galloro_193_window_activity_monitor BEGIN <<< */
+HOOKDEF(HWINEVENTHOOK, WINAPI, SetWinEventHook,
+	_In_ UINT eventMin,
+	_In_ UINT eventMax,
+	_In_ HMODULE hmodWinEventProc,
+	_In_ WINEVENTPROC lpfnWinEventProc,
+	_In_ DWORD idProcess,
+	_In_ DWORD idThread,
+	_In_ UINT dwflags
+);
+HOOKDEF(BOOL, WINAPI, UnhookWinEvent,
+	_In_ HWINEVENTHOOK hWinEventHook
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
@@ -3973,6 +3979,9 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 );
 HOOKDEF(void, WINAPI, DeleteCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
+);
+HOOKDEF(LRESULT, WINAPI, DispatchMessageW,
+	_In_ const MSG* lpmsg
 );
 HOOKDEF(void, WINAPI, EnterCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -4197,6 +4206,20 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
+HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects,
+	_In_ DWORD nCount,
+	_In_ const HANDLE* pHandles,
+	_In_ BOOL bWaitAll,
+	_In_ DWORD dwMilliseconds,
+	_In_ DWORD dwWakeMask
+);
+HOOKDEF(BOOL, WINAPI, PeekMessageW,
+	_Out_ LPMSG lpMsg,
+	_In_opt_ HWND hWnd,
+	_In_ UINT wMsgFilterMin,
+	_In_ UINT wMsgFilterMax,
+	_In_ UINT wRemoveMsg
+);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4275,6 +4298,9 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
+HOOKDEF(BOOL, WINAPI, TranslateMessage,
+	_In_ const MSG* lpMsg
+);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4289,5 +4315,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_096_msgwait_duration_checker END <<< */
+/* >>> AUTOHOOK_galloro_193_window_activity_monitor END <<< */
 
