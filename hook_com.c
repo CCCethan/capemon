@@ -72,7 +72,7 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_195_wmi_disk_model_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_199_wmi_physical_memory_checker BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:COM
 // REVIEW: 引数 pvReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
 HOOKDEF(HRESULT, WINAPI, CoInitializeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -137,6 +137,28 @@ HOOKDEF(void, WINAPI, CoUninitialize, // 呼出規約は WINAPI 仮定(socket/na
 	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
 	Old_CoUninitialize();
 	LOQ_void("com", "");
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:National Language Support (NLS)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpVersionInformation: 型 LPNLSVERSIONINFO は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 lpReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+// REVIEW: 引数 lParam: 型 LPARAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(int, WINAPI, CompareStringEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCWSTR lpLocaleName,
+	_In_ DWORD dwCmpFlags,
+	_In_ LPCWSTR lpString1,
+	_In_ int cchCount1,
+	_In_ LPCWSTR lpString2,
+	_In_ int cchCount2,
+	_In_opt_ LPNLSVERSIONINFO lpVersionInformation,
+	_In_opt_ LPVOID lpReserved,
+	_In_opt_ LPARAM lParam
+) {
+	int ret;
+	ret = Old_CompareStringEx(lpLocaleName, dwCmpFlags, lpString1, cchCount1, lpString2, cchCount2, lpVersionInformation, lpReserved, lParam);
+	LOQ_nonzero("com", "uiuiuippp", "LocaleName", lpLocaleName, "CmpFlags", dwCmpFlags, "String1", lpString1, "Count1", cchCount1, "String2", lpString2, "Count2", cchCount2, "VersionInformation", lpVersionInformation, "Reserved", lpReserved, "LParam", lParam);
+	return ret;
 }
 
 // -> hook_com.c に追加 | category="com" | winapi:National Language Support (NLS)
@@ -233,5 +255,5 @@ HOOKDEF(void, WINAPI, VariantInit, // 呼出規約は WINAPI 仮定(socket/nativ
 	Old_VariantInit(pvarg);
 	LOQ_void("com", "n", "Varg", pvarg);
 }
-/* >>> AUTOHOOK_galloro_195_wmi_disk_model_checker END <<< */
+/* >>> AUTOHOOK_galloro_199_wmi_physical_memory_checker END <<< */
 
