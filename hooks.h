@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_042_display_adapter_vendor_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_043_shutdown_event_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4283,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_042_display_adapter_vendor_checker END <<< */
+/* >>> AUTOHOOK_galloro_043_shutdown_event_checker END <<< */
 
