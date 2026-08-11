@@ -1929,17 +1929,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_093_mouse_doubleclick_behavior_checker BEGIN <<< */
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	BOOL ret;
-	ret = Old_AreFileApisANSI();
-	LOQ_bool("filesystem", "");
-	return ret;
-}
-
+/* >>> AUTOHOOK_galloro_094_mouse_drag_gesture_checker BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 // REVIEW: 引数 lpSecurityAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
 HOOKDEF(HANDLE, WINAPI, CreateFileW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2060,5 +2050,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "NumberOfBytesToWrite", nNumberOfBytesToWrite, "NumberOfBytesWritten", lpNumberOfBytesWritten, "Overlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_093_mouse_doubleclick_behavior_checker END <<< */
+/* >>> AUTOHOOK_galloro_094_mouse_drag_gesture_checker END <<< */
 
