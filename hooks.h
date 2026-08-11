@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_094_mouse_drag_gesture_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_095_mouse_wheel_activity_checker BEGIN <<< */
 HOOKDEF(LRESULT, WINAPI, CallNextHookEx,
 	_In_opt_ HHOOK hhk,
 	_In_ int nCode,
@@ -4143,6 +4143,13 @@ HOOKDEF(int, WINAPI, LCMapStringW,
 HOOKDEF(void, WINAPI, LeaveCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 );
+HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects,
+	_In_ DWORD nCount,
+	_In_ const HANDLE* pHandles,
+	_In_ BOOL bWaitAll,
+	_In_ DWORD dwMilliseconds,
+	_In_ DWORD dwWakeMask
+);
 HOOKDEF(BOOL, WINAPI, PeekMessageA,
 	_Out_ LPMSG lpMsg,
 	_In_opt_ HWND hWnd,
@@ -4245,5 +4252,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_094_mouse_drag_gesture_checker END <<< */
+/* >>> AUTOHOOK_galloro_095_mouse_wheel_activity_checker END <<< */
 

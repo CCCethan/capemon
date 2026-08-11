@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_094_mouse_drag_gesture_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_095_mouse_wheel_activity_checker BEGIN <<< */
 HOOK(user32, CallNextHookEx),
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
@@ -915,6 +915,7 @@ HOOK(kernel32, LCMapStringW),
 HOOK(kernelbase, LCMapStringW),
 HOOK(kernel32, LeaveCriticalSection),
 HOOK(kernelbase, LeaveCriticalSection),
+HOOK(user32, MsgWaitForMultipleObjects),
 HOOK(user32, PeekMessageA),
 HOOK(kernel32, QueryPerformanceCounter),
 HOOK(kernelbase, QueryPerformanceCounter),
@@ -957,7 +958,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_094_mouse_drag_gesture_checker END <<< */
+/* >>> AUTOHOOK_galloro_095_mouse_wheel_activity_checker END <<< */
 };
 
 hook_t native_hooks[] = {

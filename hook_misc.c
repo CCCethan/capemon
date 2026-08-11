@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_094_mouse_drag_gesture_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_095_mouse_wheel_activity_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2361,5 +2361,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_094_mouse_drag_gesture_checker END <<< */
+/* >>> AUTOHOOK_galloro_095_mouse_wheel_activity_checker END <<< */
 

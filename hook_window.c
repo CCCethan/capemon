@@ -526,7 +526,7 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_094_mouse_drag_gesture_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_095_mouse_wheel_activity_checker BEGIN <<< */
 // -> hook_window.c に追加 | category="windows" | winapi:Hooks
 // REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 hhk: 型 HHOOK は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -580,5 +580,5 @@ HOOKDEF(BOOL, WINAPI, TranslateMessage, // 呼出規約は WINAPI 仮定(socket/
 	LOQ_bool("windows", "p", "Msg", lpMsg);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_094_mouse_drag_gesture_checker END <<< */
+/* >>> AUTOHOOK_galloro_095_mouse_wheel_activity_checker END <<< */
 
