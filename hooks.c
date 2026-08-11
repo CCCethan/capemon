@@ -818,11 +818,8 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_076_iocp_timeout_behavior_checker BEGIN <<< */
-HOOK(kernel32, CreateIoCompletionPort),
-HOOK(kernelbase, CreateIoCompletionPort),
-HOOK(kernel32, GetQueuedCompletionStatus),
-HOOK(kernelbase, GetQueuedCompletionStatus),
+/* >>> AUTOHOOK_galloro_080_keyboard_layout_switch_checker BEGIN <<< */
+HOOK(user32, GetWindowThreadProcessId),
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
 HOOK(kernel32, CompareStringW),
@@ -867,6 +864,7 @@ HOOK(kernel32, GetFileSizeEx),
 HOOK(kernelbase, GetFileSizeEx),
 HOOK(kernel32, GetFileType),
 HOOK(kernelbase, GetFileType),
+HOOK(user32, GetForegroundWindow),
 HOOK(kernel32, GetLocaleInfoW),
 HOOK(kernelbase, GetLocaleInfoW),
 HOOK(kernel32, GetModuleFileNameW),
@@ -955,7 +953,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_076_iocp_timeout_behavior_checker END <<< */
+/* >>> AUTOHOOK_galloro_080_keyboard_layout_switch_checker END <<< */
 };
 
 hook_t native_hooks[] = {

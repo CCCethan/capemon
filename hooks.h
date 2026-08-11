@@ -3930,19 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_076_iocp_timeout_behavior_checker BEGIN <<< */
-HOOKDEF(HANDLE, WINAPI, CreateIoCompletionPort,
-	_In_ HANDLE FileHandle,
-	_In_opt_ HANDLE ExistingCompletionPort,
-	_In_ ULONG_PTR CompletionKey,
-	_In_ DWORD NumberOfConcurrentThreads
-);
-HOOKDEF(BOOL, WINAPI, GetQueuedCompletionStatus,
-	_In_ HANDLE CompletionPort,
-	_Out_ LPDWORD lpNumberOfBytes,
-	_Out_ PULONG_PTR lpCompletionKey,
-	_Out_ LPOVERLAPPED* lpOverlapped,
-	_In_ DWORD dwMilliseconds
+/* >>> AUTOHOOK_galloro_080_keyboard_layout_switch_checker BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, GetWindowThreadProcessId,
+	_In_ HWND hWnd,
+	_Out_opt_ LPDWORD lpdwProcessId
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
@@ -4029,6 +4020,9 @@ HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 );
 HOOKDEF(DWORD, WINAPI, GetFileType,
 	_In_ HANDLE hFile
+);
+HOOKDEF(HWND, WINAPI, GetForegroundWindow,
+	void
 );
 HOOKDEF(int, WINAPI, GetLocaleInfoW,
 	_In_ LCID Locale,
@@ -4236,5 +4230,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_076_iocp_timeout_behavior_checker END <<< */
+/* >>> AUTOHOOK_galloro_080_keyboard_layout_switch_checker END <<< */
 
