@@ -72,73 +72,7 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_087_logical_cpu_count_checker BEGIN <<< */
-// -> hook_com.c に追加 | category="com" | winapi:COM
-// REVIEW: 引数 pvReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(HRESULT, WINAPI, CoInitializeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPVOID pvReserved,
-	_In_ DWORD dwCoInit
-) {
-	HRESULT ret;
-	ret = Old_CoInitializeEx(pvReserved, dwCoInit);
-	LOQ_hresult("com", "pi", "VReserved", pvReserved, "CoInit", dwCoInit);
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:COM
-// REVIEW: 引数 pSecDesc: 型 PSECURITY_DESCRIPTOR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 asAuthSvc: 型 SOLE_AUTHENTICATION_SERVICE* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 pReserved1: 型 void* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 pAuthList: 型 void* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 pReserved3: 型 void* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ PSECURITY_DESCRIPTOR pSecDesc,
-	_In_ LONG cAuthSvc,
-	_In_opt_ SOLE_AUTHENTICATION_SERVICE* asAuthSvc,
-	_In_opt_ void* pReserved1,
-	_In_ DWORD dwAuthnLevel,
-	_In_ DWORD dwImpLevel,
-	_In_opt_ void* pAuthList,
-	_In_ DWORD dwCapabilities,
-	_In_opt_ void* pReserved3
-) {
-	HRESULT ret;
-	ret = Old_CoInitializeSecurity(pSecDesc, cAuthSvc, asAuthSvc, pReserved1, dwAuthnLevel, dwImpLevel, pAuthList, dwCapabilities, pReserved3);
-	LOQ_hresult("com", "pippiipip", "SecDesc", pSecDesc, "CAuthSvc", cAuthSvc, "AsAuthSvc", asAuthSvc, "Reserved1", pReserved1, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthList", pAuthList, "Capabilities", dwCapabilities, "Reserved3", pReserved3);
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:COM
-// REVIEW: 引数 pProxy: 型 IUnknown* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 pServerPrincName: 型 OLECHAR* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 pAuthInfo: 型 RPC_AUTH_IDENTITY_HANDLE を i(int32)で仮記録。要確認
-HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ IUnknown* pProxy,
-	_In_ DWORD dwAuthnSvc,
-	_In_ DWORD dwAuthzSvc,
-	_In_opt_ OLECHAR* pServerPrincName,
-	_In_ DWORD dwAuthnLevel,
-	_In_ DWORD dwImpLevel,
-	_In_opt_ RPC_AUTH_IDENTITY_HANDLE pAuthInfo,
-	_In_ DWORD dwCapabilities
-) {
-	HRESULT ret;
-	ret = Old_CoSetProxyBlanket(pProxy, dwAuthnSvc, dwAuthzSvc, pServerPrincName, dwAuthnLevel, dwImpLevel, pAuthInfo, dwCapabilities);
-	// [7.5] ServerPrincName は型 OLECHAR* = ワイド文字列(desc「The server principal name」)。
-	//       本解析では NULL(COLE_DEFAULT_PRINCIPAL)だが u は NULL 安全なので内容可読化する。
-	LOQ_hresult("com", "piiuiiii", "Proxy", pProxy, "AuthnSvc", dwAuthnSvc, "AuthzSvc", dwAuthzSvc, "ServerPrincName", pServerPrincName, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthInfo", pAuthInfo, "Capabilities", dwCapabilities);
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:COM
-HOOKDEF(void, WINAPI, CoUninitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_CoUninitialize();
-	LOQ_void("com", "");
-}
-
+/* >>> AUTOHOOK_galloro_088_logical_processor_checker BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpVersionInformation: 型 LPNLSVERSIONINFO は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -236,24 +170,5 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
 	return ret;
 }
-
-// -> hook_com.c に追加 | category="com" | winapi:Conversion and Manipulation
-HOOKDEF(HRESULT, WINAPI, VariantClear, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ VARIANTARG* pvarg
-) {
-	HRESULT ret;
-	ret = Old_VariantClear(pvarg);
-	LOQ_hresult("com", "n", "Varg", pvarg);
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:Conversion and Manipulation
-HOOKDEF(void, WINAPI, VariantInit, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ VARIANTARG* pvarg
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_VariantInit(pvarg);
-	LOQ_void("com", "n", "Varg", pvarg);
-}
-/* >>> AUTOHOOK_galloro_087_logical_cpu_count_checker END <<< */
+/* >>> AUTOHOOK_galloro_088_logical_processor_checker END <<< */
 
