@@ -3930,7 +3930,16 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_043_shutdown_event_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_044_sleep_time_validation BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, SleepConditionVariableSRW,
+	_Inout_ PCONDITION_VARIABLE ConditionVariable,
+	_Inout_ PSRWLOCK SRWLock,
+	_In_ DWORD dwMilliseconds,
+	_In_ ULONG Flags
+);
+HOOKDEF(VOID, WINAPI, AcquireSRWLockExclusive,
+	_Inout_ PSRWLOCK SRWLock
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4217,6 +4226,9 @@ HOOKDEF(BOOL, WINAPI, ReadFile,
 	_Out_opt_ LPDWORD lpNumberOfBytesRead,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
+HOOKDEF(VOID, WINAPI, ReleaseSRWLockExclusive,
+	_Inout_ PSRWLOCK SRWLock
+);
 HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
 	_In_ ULONGLONG ControlPc,
 	_Out_ PULONGLONG ImageBase,
@@ -4275,6 +4287,9 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
+HOOKDEF(VOID, WINAPI, WakeAllConditionVariable,
+	_Inout_ PCONDITION_VARIABLE ConditionVariable
+);
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
 	_In_ LPCVOID lpBuffer,
@@ -4283,5 +4298,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_043_shutdown_event_checker END <<< */
+/* >>> AUTOHOOK_galloro_044_sleep_time_validation END <<< */
 

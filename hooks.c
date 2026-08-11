@@ -818,7 +818,11 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_043_shutdown_event_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_044_sleep_time_validation BEGIN <<< */
+HOOK(kernel32, SleepConditionVariableSRW),
+HOOK(kernelbase, SleepConditionVariableSRW),
+HOOK(kernel32, AcquireSRWLockExclusive),
+HOOK(kernelbase, AcquireSRWLockExclusive),
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -941,6 +945,8 @@ HOOK(kernel32, ReadConsoleW),
 HOOK(kernelbase, ReadConsoleW),
 HOOK(kernel32, ReadFile),
 HOOK(kernelbase, ReadFile),
+HOOK(kernel32, ReleaseSRWLockExclusive),
+HOOK(kernelbase, ReleaseSRWLockExclusive),
 HOOK(kernel32, RtlLookupFunctionEntry),
 HOOK(kernelbase, RtlLookupFunctionEntry),
 HOOK(kernel32, RtlPcToFileHeader),
@@ -969,9 +975,11 @@ HOOK(kernel32, TlsSetValue),
 HOOK(kernelbase, TlsSetValue),
 HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
+HOOK(kernel32, WakeAllConditionVariable),
+HOOK(kernelbase, WakeAllConditionVariable),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_043_shutdown_event_checker END <<< */
+/* >>> AUTOHOOK_galloro_044_sleep_time_validation END <<< */
 };
 
 hook_t native_hooks[] = {
