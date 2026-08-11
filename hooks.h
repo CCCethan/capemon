@@ -3930,7 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_184_virtual_disk_vendor_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_186_vm_guest_service_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, CloseServiceHandle,
+	_In_ SC_HANDLE hSCObject
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4283,5 +4286,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_184_virtual_disk_vendor_checker END <<< */
+/* >>> AUTOHOOK_galloro_186_vm_guest_service_checker END <<< */
 
