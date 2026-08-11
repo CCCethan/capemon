@@ -1540,7 +1540,37 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_135_recentdocs_registry_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_137_regwait_time_acceleration_check BEGIN <<< */
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 引数 Callback: 型 WAITORTIMERCALLBACK を i(int32)で仮記録。要確認
+// REVIEW: 引数 Context: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, RegisterWaitForSingleObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ PHANDLE phNewWaitObject,
+	_In_ HANDLE hObject,
+	_In_ WAITORTIMERCALLBACK Callback,
+	_In_opt_ PVOID Context,
+	_In_ ULONG dwMilliseconds,
+	_In_ ULONG dwFlags
+) {
+	BOOL ret;
+	ret = Old_RegisterWaitForSingleObject(phNewWaitObject, hObject, Callback, Context, dwMilliseconds, dwFlags);
+	LOQ_bool("process", "Ppipii", "HNewWaitObject", phNewWaitObject, "Object", hObject, "Callback", Callback, "Context", Context, "Milliseconds", dwMilliseconds, "Flags", dwFlags);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, UnregisterWaitEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE WaitHandle,
+	_In_opt_ HANDLE CompletionEvent
+) {
+	BOOL ret;
+	ret = Old_UnregisterWaitEx(WaitHandle, CompletionEvent);
+	LOQ_bool("process", "pp", "WaitHandle", WaitHandle, "CompletionEvent", CompletionEvent);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1742,5 +1772,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_135_recentdocs_registry_checker END <<< */
+/* >>> AUTOHOOK_galloro_137_regwait_time_acceleration_check END <<< */
 
