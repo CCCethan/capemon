@@ -1540,7 +1540,33 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_033_network_delay_timeout_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker BEGIN <<< */
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(HANDLE, WINAPI, OpenProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwDesiredAccess,
+	_In_ BOOL bInheritHandle,
+	_In_ DWORD dwProcessId
+) {
+	HANDLE ret;
+	ret = Old_OpenProcess(dwDesiredAccess, bInheritHandle, dwProcessId);
+	LOQ_handle("process", "iii", "DesiredAccess", dwDesiredAccess, "InheritHandle", bInheritHandle, "ProcessId", dwProcessId);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Authorization
+HOOKDEF(BOOL, WINAPI, OpenProcessToken, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE ProcessHandle,
+	_In_ DWORD DesiredAccess,
+	_Out_ PHANDLE TokenHandle
+) {
+	BOOL ret;
+	ret = Old_OpenProcessToken(ProcessHandle, DesiredAccess, TokenHandle);
+	LOQ_bool("process", "piP", "ProcessHandle", ProcessHandle, "DesiredAccess", DesiredAccess, "TokenHandle", TokenHandle);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1742,5 +1768,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_033_network_delay_timeout_checker END <<< */
+/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker END <<< */
 
