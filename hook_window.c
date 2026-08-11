@@ -525,30 +525,3 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
-
-/* >>> AUTOHOOK_galloro_080_keyboard_layout_switch_checker BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:Windows
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetWindowThreadProcessId, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HWND hWnd,
-	_Out_opt_ LPDWORD lpdwProcessId
-) {
-	DWORD ret;
-	ret = Old_GetWindowThreadProcessId(hWnd, lpdwProcessId);
-	LOQ_nonzero("windows", "pI", "Wnd", hWnd, "DwProcessId", lpdwProcessId);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-
-// -> hook_window.c に追加 | category="windows" | winapi:Windows
-HOOKDEF(HWND, WINAPI, GetForegroundWindow, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	HWND ret;
-	ret = Old_GetForegroundWindow();
-	LOQ_nonnull("windows", "");
-	return ret;
-}
-/* >>> AUTOHOOK_galloro_080_keyboard_layout_switch_checker END <<< */
-
