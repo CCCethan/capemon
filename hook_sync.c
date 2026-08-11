@@ -178,7 +178,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_162_thread_latency_analysis BEGIN <<< */
+/* >>> AUTOHOOK_galloro_163_thread_pool_timer_analysis BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 // REVIEW: 引数 lpEventAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
 HOOKDEF(HANDLE, WINAPI, CreateEventA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -192,18 +192,6 @@ HOOKDEF(HANDLE, WINAPI, CreateEventA, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_handle("sync", "piis", "EventAttributes", lpEventAttributes, "ManualReset", bManualReset, "InitialState", bInitialState, "Name", lpName);
 	return ret;
 }
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(BOOL, WINAPI, SetEvent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hEvent
-) {
-	BOOL ret;
-	ret = Old_SetEvent(hEvent);
-	LOQ_bool("sync", "p", "Event", hEvent);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
 
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -256,6 +244,16 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 }
 
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(BOOL, WINAPI, SetEvent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hEvent
+) {
+	BOOL ret;
+	ret = Old_SetEvent(hEvent);
+	LOQ_bool("sync", "p", "Event", hEvent);
+	return ret;
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 // REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 HOOKDEF(DWORD, WINAPI, WaitForSingleObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hHandle,
@@ -266,5 +264,5 @@ HOOKDEF(DWORD, WINAPI, WaitForSingleObject, // 呼出規約は WINAPI 仮定(soc
 	LOQ_nonzero("sync", "pi", "Handle", hHandle, "Milliseconds", dwMilliseconds);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_162_thread_latency_analysis END <<< */
+/* >>> AUTOHOOK_galloro_163_thread_pool_timer_analysis END <<< */
 
