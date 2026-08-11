@@ -818,9 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_151_settimer_delay_checker BEGIN <<< */
-HOOK(user32, KillTimer),
-HOOK(user32, SetTimer),
+/* >>> AUTOHOOK_galloro_154_sleep_time_skew_checker BEGIN <<< */
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
 HOOK(kernel32, CompareStringW),
@@ -829,7 +827,6 @@ HOOK(kernel32, CreateFileW),
 HOOK(kernelbase, CreateFileW),
 HOOK(kernel32, DeleteCriticalSection),
 HOOK(kernelbase, DeleteCriticalSection),
-HOOK(user32, DispatchMessageW),
 HOOK(kernel32, EnterCriticalSection),
 HOOK(kernelbase, EnterCriticalSection),
 HOOK(kernel32, EnumSystemLocalesW),
@@ -914,8 +911,6 @@ HOOK(kernel32, LCMapStringW),
 HOOK(kernelbase, LCMapStringW),
 HOOK(kernel32, LeaveCriticalSection),
 HOOK(kernelbase, LeaveCriticalSection),
-HOOK(user32, MsgWaitForMultipleObjects),
-HOOK(user32, PeekMessageW),
 HOOK(kernel32, QueryPerformanceCounter),
 HOOK(kernelbase, QueryPerformanceCounter),
 HOOK(kernel32, QueryPerformanceFrequency),
@@ -952,12 +947,11 @@ HOOK(kernel32, TlsGetValue),
 HOOK(kernelbase, TlsGetValue),
 HOOK(kernel32, TlsSetValue),
 HOOK(kernelbase, TlsSetValue),
-HOOK(user32, TranslateMessage),
 HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_151_settimer_delay_checker END <<< */
+/* >>> AUTOHOOK_galloro_154_sleep_time_skew_checker END <<< */
 };
 
 hook_t native_hooks[] = {

@@ -2008,35 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_151_settimer_delay_checker BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Timer
-HOOKDEF(BOOL, WINAPI, KillTimer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ HWND hWnd,
-	_In_ UINT_PTR uIDEvent
-) {
-	BOOL ret;
-	ret = Old_KillTimer(hWnd, uIDEvent);
-	LOQ_bool("misc", "pi", "Wnd", hWnd, "UIDEvent", uIDEvent);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Timer
-// REVIEW: 戻り型 UINT_PTR の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpTimerFunc: 型 TIMERPROC を i(int32)で仮記録。要確認
-HOOKDEF(UINT_PTR, WINAPI, SetTimer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ HWND hWnd,
-	_In_ UINT_PTR nIDEvent,
-	_In_ UINT uElapse,
-	_In_opt_ TIMERPROC lpTimerFunc
-) {
-	UINT_PTR ret;
-	ret = Old_SetTimer(hWnd, nIDEvent, uElapse, lpTimerFunc);
-	LOQ_nonzero("misc", "piii", "Wnd", hWnd, "IDEvent", nIDEvent, "UElapse", uElapse, "TimerFunc", lpTimerFunc);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-
+/* >>> AUTOHOOK_galloro_154_sleep_time_skew_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2389,5 +2361,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_151_settimer_delay_checker END <<< */
+/* >>> AUTOHOOK_galloro_154_sleep_time_skew_checker END <<< */
 
