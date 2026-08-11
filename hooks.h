@@ -3930,7 +3930,16 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_155_system_disk_size_evaluator BEGIN <<< */
+/* >>> AUTOHOOK_galloro_162_thread_latency_analysis BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, CreateEventA,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
+	_In_ BOOL bManualReset,
+	_In_ BOOL bInitialState,
+	_In_opt_ LPCSTR lpName
+);
+HOOKDEF(BOOL, WINAPI, SetEvent,
+	_In_ HANDLE hEvent
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4116,10 +4125,6 @@ HOOKDEF(int, WINAPI, GetUserDefaultLocaleName,
 	_Out_ LPWSTR lpLocaleName,
 	_In_ int cchLocaleName
 );
-HOOKDEF(UINT, WINAPI, GetWindowsDirectoryA,
-	_Out_ LPSTR lpBuffer,
-	_In_ UINT uSize
-);
 HOOKDEF(LPVOID, WINAPI, HeapAlloc,
 	_In_ HANDLE hHeap,
 	_In_ DWORD dwFlags,
@@ -4279,6 +4284,10 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
+HOOKDEF(DWORD, WINAPI, WaitForSingleObject,
+	_In_ HANDLE hHandle,
+	_In_ DWORD dwMilliseconds
+);
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
 	_In_ LPCVOID lpBuffer,
@@ -4287,5 +4296,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_155_system_disk_size_evaluator END <<< */
+/* >>> AUTOHOOK_galloro_162_thread_latency_analysis END <<< */
 

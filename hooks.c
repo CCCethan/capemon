@@ -818,7 +818,11 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_155_system_disk_size_evaluator BEGIN <<< */
+/* >>> AUTOHOOK_galloro_162_thread_latency_analysis BEGIN <<< */
+HOOK(kernel32, CreateEventA),
+HOOK(kernelbase, CreateEventA),
+HOOK(kernel32, SetEvent),
+HOOK(kernelbase, SetEvent),
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -901,8 +905,6 @@ HOOK(kernel32, GetTimeZoneInformation),
 HOOK(kernelbase, GetTimeZoneInformation),
 HOOK(kernel32, GetUserDefaultLocaleName),
 HOOK(kernelbase, GetUserDefaultLocaleName),
-HOOK(kernel32, GetWindowsDirectoryA),
-HOOK(kernelbase, GetWindowsDirectoryA),
 HOOK(kernel32, HeapAlloc),
 HOOK(kernelbase, HeapAlloc),
 HOOK(kernel32, HeapFree),
@@ -971,9 +973,11 @@ HOOK(kernel32, TlsSetValue),
 HOOK(kernelbase, TlsSetValue),
 HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
+HOOK(kernel32, WaitForSingleObject),
+HOOK(kernelbase, WaitForSingleObject),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_155_system_disk_size_evaluator END <<< */
+/* >>> AUTOHOOK_galloro_162_thread_latency_analysis END <<< */
 };
 
 hook_t native_hooks[] = {
