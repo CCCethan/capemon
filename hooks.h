@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_199_wmi_physical_memory_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_201_wmi_startup_command_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4300,12 +4300,6 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
-HOOKDEF(HRESULT, WINAPI, VariantClear,
-	_Inout_ VARIANTARG* pvarg
-);
-HOOKDEF(void, WINAPI, VariantInit,
-	_Out_ VARIANTARG* pvarg
-);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4320,5 +4314,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_199_wmi_physical_memory_checker END <<< */
+/* >>> AUTOHOOK_galloro_201_wmi_startup_command_checker END <<< */
 

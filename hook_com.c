@@ -72,7 +72,7 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_199_wmi_physical_memory_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_201_wmi_startup_command_checker BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:COM
 // REVIEW: 引数 pvReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
 HOOKDEF(HRESULT, WINAPI, CoInitializeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -236,24 +236,5 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
 	return ret;
 }
-
-// -> hook_com.c に追加 | category="com" | winapi:Conversion and Manipulation
-HOOKDEF(HRESULT, WINAPI, VariantClear, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ VARIANTARG* pvarg
-) {
-	HRESULT ret;
-	ret = Old_VariantClear(pvarg);
-	LOQ_hresult("com", "n", "Varg", pvarg);
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:Conversion and Manipulation
-HOOKDEF(void, WINAPI, VariantInit, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ VARIANTARG* pvarg
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_VariantInit(pvarg);
-	LOQ_void("com", "n", "Varg", pvarg);
-}
-/* >>> AUTOHOOK_galloro_199_wmi_physical_memory_checker END <<< */
+/* >>> AUTOHOOK_galloro_201_wmi_startup_command_checker END <<< */
 

@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_199_wmi_physical_memory_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_201_wmi_startup_command_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -982,17 +982,11 @@ HOOK(kernel32, TlsGetValue),
 HOOK(kernelbase, TlsGetValue),
 HOOK(kernel32, TlsSetValue),
 HOOK(kernelbase, TlsSetValue),
-HOOK(combase, VariantClear),
-HOOK(ole32, VariantClear),
-HOOK(oleaut32, VariantClear),
-HOOK(combase, VariantInit),
-HOOK(ole32, VariantInit),
-HOOK(oleaut32, VariantInit),
 HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_199_wmi_physical_memory_checker END <<< */
+/* >>> AUTOHOOK_galloro_201_wmi_startup_command_checker END <<< */
 };
 
 hook_t native_hooks[] = {
