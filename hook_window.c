@@ -525,3 +525,41 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
+
+/* >>> AUTOHOOK_galloro_092_mm_timer_stall_checker BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Multimedia
+// REVIEW: 戻り型 MMRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(MMRESULT, WINAPI, timeBeginPeriod, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	UINT uPeriod
+) {
+	MMRESULT ret;
+	ret = Old_timeBeginPeriod(uPeriod);
+	LOQ_nonzero("windows", "i", "UPeriod", uPeriod);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Multimedia
+// REVIEW: 戻り型 MMRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(MMRESULT, WINAPI, timeEndPeriod, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	UINT uPeriod
+) {
+	MMRESULT ret;
+	ret = Old_timeEndPeriod(uPeriod);
+	LOQ_nonzero("windows", "i", "UPeriod", uPeriod);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Multimedia
+// REVIEW: 戻り型 MMRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(MMRESULT, WINAPI, timeKillEvent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	UINT uTimerID
+) {
+	MMRESULT ret;
+	ret = Old_timeKillEvent(uTimerID);
+	LOQ_nonzero("windows", "i", "UTimerID", uTimerID);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_galloro_092_mm_timer_stall_checker END <<< */
+
