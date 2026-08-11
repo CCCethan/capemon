@@ -3930,13 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_175_unbiased_interrupt_callrate_checker BEGIN <<< */
-HOOKDEF(VOID, WINAPI, QueryUnbiasedInterruptTime,
-	_Out_ PULONGLONG lpUnbiasedInterruptTime
-);
-HOOKDEF(VOID, WINAPI, QueryUnbiasedInterruptTimePrecise,
-	_Out_ PULONGLONG lpUnbiasedInterruptTimePrecise
-);
+/* >>> AUTOHOOK_galloro_181_vbox_acpi_registry_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4068,9 +4062,6 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
-);
-HOOKDEF(HMODULE, WINAPI, GetModuleHandleA,
-	_In_opt_ LPCSTR lpModuleName
 );
 HOOKDEF(BOOL, WINAPI, GetModuleHandleExW,
 	_In_ DWORD dwFlags,
@@ -4292,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_175_unbiased_interrupt_callrate_checker END <<< */
+/* >>> AUTOHOOK_galloro_181_vbox_acpi_registry_checker END <<< */
 

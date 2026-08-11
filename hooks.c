@@ -818,11 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_175_unbiased_interrupt_callrate_checker BEGIN <<< */
-HOOK(kernel32, QueryUnbiasedInterruptTime),
-HOOK(kernelbase, QueryUnbiasedInterruptTime),
-HOOK(kernel32, QueryUnbiasedInterruptTimePrecise),
-HOOK(kernelbase, QueryUnbiasedInterruptTimePrecise),
+/* >>> AUTOHOOK_galloro_181_vbox_acpi_registry_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -881,8 +877,6 @@ HOOK(kernel32, GetLocaleInfoW),
 HOOK(kernelbase, GetLocaleInfoW),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernelbase, GetModuleFileNameW),
-HOOK(kernel32, GetModuleHandleA),
-HOOK(kernelbase, GetModuleHandleA),
 HOOK(kernel32, GetModuleHandleExW),
 HOOK(kernelbase, GetModuleHandleExW),
 HOOK(kernel32, GetModuleHandleW),
@@ -977,7 +971,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_175_unbiased_interrupt_callrate_checker END <<< */
+/* >>> AUTOHOOK_galloro_181_vbox_acpi_registry_checker END <<< */
 };
 
 hook_t native_hooks[] = {
