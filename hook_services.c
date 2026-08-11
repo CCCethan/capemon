@@ -300,7 +300,13 @@ HOOKDEF(BOOL, WINAPI, QueryServiceStatusEx, // 呼出規約は WINAPI 仮定(soc
 ) {
 	BOOL ret;
 	ret = Old_QueryServiceStatusEx(hService, InfoLevel, lpBuffer, cbBufSize, pcbBytesNeeded);
-	LOQ_bool("services", "pipiI", "Service", hService, "InfoLevel", InfoLevel, "Buffer", lpBuffer, "BufSize", cbBufSize, "CbBytesNeeded", pcbBytesNeeded);
+	// [可読性7.5] Buffer は ⑤出力バッファ(desc: "receives the status information")。
+	// InfoLevel=SC_STATUS_PROCESS_INFO のとき SERVICE_STATUS_PROCESS が書き戻され、
+	// dwCurrentState 等この検体の判定材料そのものが入る → p ではなく b で内容を残す。
+	// 長さは戻り値ではなく **容量 cbBufSize**。戻り値は BOOL(観測値 1)であり長さではない
+	// (check_readability の提案 "(size_t)(ret < BufSize ? ret : BufSize)" は誤り)。
+	// pcbBytesNeeded は失敗時のみ意味を持つので長さ源にしない。成功時のみ読む。
+	LOQ_bool("services", "pibiI", "Service", hService, "InfoLevel", InfoLevel, "Buffer", (size_t)(ret && lpBuffer ? cbBufSize : 0), lpBuffer, "BufSize", cbBufSize, "CbBytesNeeded", pcbBytesNeeded);
 	return ret;
 }
 
