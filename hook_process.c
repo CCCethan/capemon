@@ -1540,7 +1540,21 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_090_mac_oui_wmi_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_091_max_process_uptime_checker BEGIN <<< */
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(HANDLE, WINAPI, OpenProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwDesiredAccess,
+	_In_ BOOL bInheritHandle,
+	_In_ DWORD dwProcessId
+) {
+	HANDLE ret;
+	ret = Old_OpenProcess(dwDesiredAccess, bInheritHandle, dwProcessId);
+	LOQ_handle("process", "iii", "DesiredAccess", dwDesiredAccess, "InheritHandle", bInheritHandle, "ProcessId", dwProcessId);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1659,6 +1673,20 @@ HOOKDEF(HANDLE, WINAPI, GetProcessHeap, // 呼出規約は WINAPI 仮定(socket/
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, GetProcessTimes, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hProcess,
+	_Out_ LPFILETIME lpCreationTime,
+	_Out_ LPFILETIME lpExitTime,
+	_Out_ LPFILETIME lpKernelTime,
+	_Out_ LPFILETIME lpUserTime
+) {
+	BOOL ret;
+	ret = Old_GetProcessTimes(hProcess, lpCreationTime, lpExitTime, lpKernelTime, lpUserTime);
+	LOQ_bool("process", "pPPPP", "Process", hProcess, "CreationTime", lpCreationTime, "ExitTime", lpExitTime, "KernelTime", lpKernelTime, "UserTime", lpUserTime);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, GetStartupInfoW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Out_ LPSTARTUPINFOW lpStartupInfo
 ) {
@@ -1742,5 +1770,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_090_mac_oui_wmi_checker END <<< */
+/* >>> AUTOHOOK_galloro_091_max_process_uptime_checker END <<< */
 

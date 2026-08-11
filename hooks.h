@@ -3930,43 +3930,17 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_090_mac_oui_wmi_checker BEGIN <<< */
-HOOKDEF(UINT, WINAPI, SysStringLen,
-	_In_opt_ BSTR bstr
+/* >>> AUTOHOOK_galloro_091_max_process_uptime_checker BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, OpenProcess,
+	_In_ DWORD dwDesiredAccess,
+	_In_ BOOL bInheritHandle,
+	_In_ DWORD dwProcessId
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
-);
-HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
-	_In_opt_ LPVOID pvReserved,
-	_In_ DWORD dwCoInit
-);
-HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity,
-	_In_opt_ PSECURITY_DESCRIPTOR pSecDesc,
-	_In_ LONG cAuthSvc,
-	_In_opt_ SOLE_AUTHENTICATION_SERVICE* asAuthSvc,
-	_In_opt_ void* pReserved1,
-	_In_ DWORD dwAuthnLevel,
-	_In_ DWORD dwImpLevel,
-	_In_opt_ void* pAuthList,
-	_In_ DWORD dwCapabilities,
-	_In_opt_ void* pReserved3
-);
-HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
-	_In_ IUnknown* pProxy,
-	_In_ DWORD dwAuthnSvc,
-	_In_ DWORD dwAuthzSvc,
-	_In_opt_ OLECHAR* pServerPrincName,
-	_In_ DWORD dwAuthnLevel,
-	_In_ DWORD dwImpLevel,
-	_In_opt_ RPC_AUTH_IDENTITY_HANDLE pAuthInfo,
-	_In_ DWORD dwCapabilities
-);
-HOOKDEF(void, WINAPI, CoUninitialize,
-	void
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4111,6 +4085,13 @@ HOOKDEF(FARPROC, WINAPI, GetProcAddress,
 );
 HOOKDEF(HANDLE, WINAPI, GetProcessHeap,
 	void
+);
+HOOKDEF(BOOL, WINAPI, GetProcessTimes,
+	_In_ HANDLE hProcess,
+	_Out_ LPFILETIME lpCreationTime,
+	_Out_ LPFILETIME lpExitTime,
+	_Out_ LPFILETIME lpKernelTime,
+	_Out_ LPFILETIME lpUserTime
 );
 HOOKDEF(VOID, WINAPI, GetStartupInfoW,
 	_Out_ LPSTARTUPINFOW lpStartupInfo
@@ -4283,9 +4264,6 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle,
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
 );
-HOOKDEF(BSTR, WINAPI, SysAllocString,
-	_In_opt_ const OLECHAR* psz
-);
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
@@ -4303,12 +4281,6 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
-HOOKDEF(HRESULT, WINAPI, VariantClear,
-	_Inout_ VARIANTARG* pvarg
-);
-HOOKDEF(void, WINAPI, VariantInit,
-	_Out_ VARIANTARG* pvarg
-);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4323,5 +4295,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_090_mac_oui_wmi_checker END <<< */
+/* >>> AUTOHOOK_galloro_091_max_process_uptime_checker END <<< */
 
