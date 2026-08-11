@@ -3930,7 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_050_usb_device_enumeration_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_057_event_log_size_checker BEGIN <<< */
+HOOKDEF(UINT, WINAPI, GetWindowsDirectoryW,
+	_Out_ LPWSTR lpBuffer,
+	_In_ UINT uSize
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4038,6 +4042,11 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
+);
+HOOKDEF(BOOL, WINAPI, GetFileAttributesExW,
+	_In_ LPCWSTR lpFileName,
+	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	_Out_ LPVOID lpFileInformation
 );
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
@@ -4283,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_050_usb_device_enumeration_checker END <<< */
+/* >>> AUTOHOOK_galloro_057_event_log_size_checker END <<< */
 

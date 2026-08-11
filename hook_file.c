@@ -1929,7 +1929,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_050_usb_device_enumeration_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_057_event_log_size_checker BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1977,6 +1977,23 @@ HOOKDEF(BOOL, WINAPI, FlushFileBuffers, // 呼出規約は WINAPI 仮定(socket/
 	BOOL ret;
 	ret = Old_FlushFileBuffers(hFile);
 	LOQ_bool("filesystem", "p", "File", hFile);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+// REVIEW: 引数 fInfoLevelId: 型 GET_FILEEX_INFO_LEVELS を i(int32)で仮記録。要確認
+// REVIEW: 引数 lpFileInformation: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, GetFileAttributesExW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCWSTR lpFileName,
+	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	_Out_ LPVOID lpFileInformation
+) {
+	BOOL ret;
+	ret = Old_GetFileAttributesExW(lpFileName, fInfoLevelId, lpFileInformation);
+	// [7.5] ② 固定サイズ構造体: fInfoLevelId が決める型は GetFileExInfoStandard の
+	//       WIN32_FILE_ATTRIBUTE_DATA のみ(他の水準は未定義)。その時だけ sizeof でダンプする。
+	//       ※ 提案の (size_t)ret は誤り — ret は BOOL なので長さ1バイトになってしまう。
+	LOQ_bool("filesystem", "Fib", "FileName", lpFileName, "InfoLevelId", fInfoLevelId, "FileInformation", (size_t)(fInfoLevelId == GetFileExInfoStandard ? sizeof(WIN32_FILE_ATTRIBUTE_DATA) : 0), lpFileInformation);
 	return ret;
 }
 
@@ -2060,5 +2077,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "NumberOfBytesToWrite", nNumberOfBytesToWrite, "NumberOfBytesWritten", lpNumberOfBytesWritten, "Overlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_050_usb_device_enumeration_checker END <<< */
+/* >>> AUTOHOOK_galloro_057_event_log_size_checker END <<< */
 
