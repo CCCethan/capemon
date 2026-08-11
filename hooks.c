@@ -818,10 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_082_keystroke_rhythm_analysis BEGIN <<< */
-HOOK(user32, DispatchMessageA),
-HOOK(user32, PeekMessageA),
-HOOK(user32, CallNextHookEx),
+/* >>> AUTOHOOK_galloro_084_last_input_idle_checker BEGIN <<< */
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
 HOOK(kernel32, CompareStringW),
@@ -870,8 +867,6 @@ HOOK(kernel32, GetLocaleInfoW),
 HOOK(kernelbase, GetLocaleInfoW),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernelbase, GetModuleFileNameW),
-HOOK(kernel32, GetModuleHandleA),
-HOOK(kernelbase, GetModuleHandleA),
 HOOK(kernel32, GetModuleHandleExW),
 HOOK(kernelbase, GetModuleHandleExW),
 HOOK(kernel32, GetModuleHandleW),
@@ -952,12 +947,11 @@ HOOK(kernel32, TlsGetValue),
 HOOK(kernelbase, TlsGetValue),
 HOOK(kernel32, TlsSetValue),
 HOOK(kernelbase, TlsSetValue),
-HOOK(user32, TranslateMessage),
 HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_082_keystroke_rhythm_analysis END <<< */
+/* >>> AUTOHOOK_galloro_084_last_input_idle_checker END <<< */
 };
 
 hook_t native_hooks[] = {
