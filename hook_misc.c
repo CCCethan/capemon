@@ -2008,65 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Authorization
-// REVIEW: 引数 pSid: 型 PSID は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(PDWORD, WINAPI, GetSidSubAuthority, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PSID pSid,
-	_In_ DWORD nSubAuthority
-) {
-	PDWORD ret;
-	ret = Old_GetSidSubAuthority(pSid, nSubAuthority);
-	LOQ_nonnull("misc", "pi", "Sid", pSid, "SubAuthority", nSubAuthority);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authorization
-// REVIEW: 引数 pSid: 型 PSID は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(PUCHAR, WINAPI, GetSidSubAuthorityCount, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PSID pSid
-) {
-	PUCHAR ret;
-	ret = Old_GetSidSubAuthorityCount(pSid);
-	LOQ_nonnull("misc", "p", "Sid", pSid);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authorization
-// REVIEW: 引数 TokenInformationClass: 型 TOKEN_INFORMATION_CLASS を i(int32)で仮記録。要確認
-// REVIEW: 引数 TokenInformation: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, GetTokenInformation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE TokenHandle,
-	_In_ TOKEN_INFORMATION_CLASS TokenInformationClass,
-	_Out_opt_ LPVOID TokenInformation,
-	_In_ DWORD TokenInformationLength,
-	_Out_ PDWORD ReturnLength
-) {
-	BOOL ret;
-	ret = Old_GetTokenInformation(TokenHandle, TokenInformationClass, TokenInformation, TokenInformationLength, ReturnLength);
-	// [可読性7.5] TokenInformation は ⑤出力バッファ(desc: "a buffer the function fills with the
-	// requested information")。本検体(low_integrity_process_ratio_checker)は
-	// TokenIntegrityLevel を読んで完全性レベルを判定するので、**この中身が回避ロジックの核心**。
-	// 長さは実書込長 *ReturnLength を容量 TokenInformationLength で上限クリップする。
-	// 戻り値は BOOL(観測値 0/1)で長さではないため check_readability の提案
-	// "(size_t)(ret < TokenInformationLength ? ret : TokenInformationLength)" は誤り。
-	// GetTokenInformation は「まず NULL/0 で必要サイズを問い合わせる」呼び方が定石で、その回は
-	// ret=FALSE・TokenInformation=NULL になる。ret と NULL を見て 0 バイトにするので安全。
-	LOQ_bool("misc", "pibiI", "TokenHandle", TokenHandle, "TokenInformationClass", TokenInformationClass, "TokenInformation", (size_t)(ret && TokenInformation && ReturnLength ? (*ReturnLength < TokenInformationLength ? *ReturnLength : TokenInformationLength) : 0), TokenInformation, "TokenInformationLength", TokenInformationLength, "ReturnLength", ReturnLength);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authorization
-// REVIEW: 引数 pSid: 型 PSID は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, IsValidSid, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PSID pSid
-) {
-	BOOL ret;
-	ret = Old_IsValidSid(pSid);
-	LOQ_bool("misc", "p", "Sid", pSid);
-	return ret;
-}
-
+/* >>> AUTOHOOK_galloro_096_msgwait_duration_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2534,5 +2476,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker END <<< */
+/* >>> AUTOHOOK_galloro_096_msgwait_duration_checker END <<< */
 

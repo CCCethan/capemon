@@ -3930,33 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker BEGIN <<< */
-HOOKDEF(PDWORD, WINAPI, GetSidSubAuthority,
-	_In_ PSID pSid,
-	_In_ DWORD nSubAuthority
-);
-HOOKDEF(PUCHAR, WINAPI, GetSidSubAuthorityCount,
-	_In_ PSID pSid
-);
-HOOKDEF(BOOL, WINAPI, GetTokenInformation,
-	_In_ HANDLE TokenHandle,
-	_In_ TOKEN_INFORMATION_CLASS TokenInformationClass,
-	_Out_opt_ LPVOID TokenInformation,
-	_In_ DWORD TokenInformationLength,
-	_Out_ PDWORD ReturnLength
-);
-HOOKDEF(BOOL, WINAPI, IsValidSid,
-	_In_ PSID pSid
-);
-HOOKDEF(HANDLE, WINAPI, OpenProcess,
-	_In_ DWORD dwDesiredAccess,
-	_In_ BOOL bInheritHandle,
-	_In_ DWORD dwProcessId
-);
-HOOKDEF(BOOL, WINAPI, OpenProcessToken,
-	_In_ HANDLE ProcessHandle,
-	_In_ DWORD DesiredAccess,
-	_Out_ PHANDLE TokenHandle
+/* >>> AUTOHOOK_galloro_096_msgwait_duration_checker BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, CreateEventA,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
+	_In_ BOOL bManualReset,
+	_In_ BOOL bInitialState,
+	_In_opt_ LPCSTR lpName
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
@@ -4310,5 +4289,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker END <<< */
+/* >>> AUTOHOOK_galloro_096_msgwait_duration_checker END <<< */
 
