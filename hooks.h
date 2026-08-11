@@ -3930,13 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_096_msgwait_duration_checker BEGIN <<< */
-HOOKDEF(HANDLE, WINAPI, CreateEventA,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
-	_In_ BOOL bManualReset,
-	_In_ BOOL bInitialState,
-	_In_opt_ LPCSTR lpName
-);
+/* >>> AUTOHOOK_galloro_098_nic_mac_oui_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4289,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_096_msgwait_duration_checker END <<< */
+/* >>> AUTOHOOK_galloro_098_nic_mac_oui_checker END <<< */
 
