@@ -178,27 +178,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_096_msgwait_duration_checker BEGIN <<< */
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-// REVIEW: 引数 lpEventAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HANDLE, WINAPI, CreateEventA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
-	_In_ BOOL bManualReset,
-	_In_ BOOL bInitialState,
-	_In_opt_ LPCSTR lpName
-) {
-	HANDLE ret;
-	ret = Old_CreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName);
-	// [可読性7.5] EventAttributes は ② 固定サイズ構造体(LPSECURITY_ATTRIBUTES)。
-	// 同ファイルの CreateFileW が既に sizeof(SECURITY_ATTRIBUTES) を長さに 'b' で記録しており
-	// (ビルド実績あり=型は定義済み)、同一イディオムに揃える。_In_opt_ で NULL のことが多いが、
-	// log.c の 'b' は NULL/例外を __try で保護し 0 バイト扱いにするため安全。
-	LOQ_handle("sync", "biis", "EventAttributes", sizeof(SECURITY_ATTRIBUTES), lpEventAttributes, "ManualReset", bManualReset, "InitialState", bInitialState, "Name", lpName);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-
+/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -248,5 +228,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
 }
-/* >>> AUTOHOOK_galloro_096_msgwait_duration_checker END <<< */
+/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker END <<< */
 
