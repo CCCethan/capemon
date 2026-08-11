@@ -3930,7 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_120_process_count_heuristic_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_129_programfiles_subdir_checker BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableW,
+	_In_opt_ LPCWSTR lpName,
+	_Out_opt_ LPWSTR lpBuffer,
+	_In_ DWORD nSize
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3986,6 +3991,10 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
+);
+HOOKDEF(HANDLE, WINAPI, FindFirstFileW,
+	_In_ LPCWSTR lpFileName,
+	_Out_ LPWIN32_FIND_DATAW lpFindFileData
 );
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
@@ -4283,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_120_process_count_heuristic_checker END <<< */
+/* >>> AUTOHOOK_galloro_129_programfiles_subdir_checker END <<< */
 
