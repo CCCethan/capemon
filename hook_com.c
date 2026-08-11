@@ -72,7 +72,7 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_088_logical_processor_checker BEGIN <<< */
+/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpVersionInformation: 型 LPNLSVERSIONINFO は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -170,5 +170,5 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_088_logical_processor_checker END <<< */
+/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker END <<< */
 

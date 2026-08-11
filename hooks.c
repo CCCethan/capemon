@@ -818,9 +818,14 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_galloro_088_logical_processor_checker BEGIN <<< */
-HOOK(kernel32, GetNativeSystemInfo),
-HOOK(kernelbase, GetNativeSystemInfo),
+/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker BEGIN <<< */
+HOOK(advapi32, GetSidSubAuthority),
+HOOK(advapi32, GetSidSubAuthorityCount),
+HOOK(advapi32, GetTokenInformation),
+HOOK(advapi32, IsValidSid),
+HOOK(kernel32, OpenProcess),
+HOOK(kernelbase, OpenProcess),
+HOOK(advapi32, OpenProcessToken),
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -973,7 +978,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_galloro_088_logical_processor_checker END <<< */
+/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker END <<< */
 };
 
 hook_t native_hooks[] = {

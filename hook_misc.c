@@ -2008,17 +2008,56 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_088_logical_processor_checker BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
-HOOKDEF(void, WINAPI, GetNativeSystemInfo, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPSYSTEM_INFO lpSystemInfo
+/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Authorization
+// REVIEW: 引数 pSid: 型 PSID は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(PDWORD, WINAPI, GetSidSubAuthority, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ PSID pSid,
+	_In_ DWORD nSubAuthority
 ) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_GetNativeSystemInfo(lpSystemInfo);
-	LOQ_void("misc", "P", "SystemInfo", lpSystemInfo);
+	PDWORD ret;
+	ret = Old_GetSidSubAuthority(pSid, nSubAuthority);
+	LOQ_nonnull("misc", "pi", "Sid", pSid, "SubAuthority", nSubAuthority);
+	return ret;
 }
 
-/* >>> restored from hookdb <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Authorization
+// REVIEW: 引数 pSid: 型 PSID は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(PUCHAR, WINAPI, GetSidSubAuthorityCount, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ PSID pSid
+) {
+	PUCHAR ret;
+	ret = Old_GetSidSubAuthorityCount(pSid);
+	LOQ_nonnull("misc", "p", "Sid", pSid);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Authorization
+// REVIEW: 引数 TokenInformationClass: 型 TOKEN_INFORMATION_CLASS を i(int32)で仮記録。要確認
+// REVIEW: 引数 TokenInformation: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, GetTokenInformation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE TokenHandle,
+	_In_ TOKEN_INFORMATION_CLASS TokenInformationClass,
+	_Out_opt_ LPVOID TokenInformation,
+	_In_ DWORD TokenInformationLength,
+	_Out_ PDWORD ReturnLength
+) {
+	BOOL ret;
+	ret = Old_GetTokenInformation(TokenHandle, TokenInformationClass, TokenInformation, TokenInformationLength, ReturnLength);
+	LOQ_bool("misc", "pipiI", "TokenHandle", TokenHandle, "TokenInformationClass", TokenInformationClass, "TokenInformation", TokenInformation, "TokenInformationLength", TokenInformationLength, "ReturnLength", ReturnLength);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Authorization
+// REVIEW: 引数 pSid: 型 PSID は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, IsValidSid, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ PSID pSid
+) {
+	BOOL ret;
+	ret = Old_IsValidSid(pSid);
+	LOQ_bool("misc", "p", "Sid", pSid);
+	return ret;
+}
 
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2487,5 +2526,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_088_logical_processor_checker END <<< */
+/* >>> AUTOHOOK_galloro_089_low_integrity_process_ratio_checker END <<< */
 
