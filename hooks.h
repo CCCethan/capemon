@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_047_key_interval_variance_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_048_keyboard_diversity_analysis BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4305,5 +4305,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_047_key_interval_variance_checker END <<< */
+/* >>> AUTOHOOK_mitre_048_keyboard_diversity_analysis END <<< */
 
