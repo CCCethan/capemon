@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_090_recycle_bin_item_count_checker_01 BEGIN <<< */
+/* >>> AUTOHOOK_mitre_092_screenshots_folder_activity_checker BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1742,5 +1742,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_090_recycle_bin_item_count_checker_01 END <<< */
+/* >>> AUTOHOOK_mitre_092_screenshots_folder_activity_checker END <<< */
 
