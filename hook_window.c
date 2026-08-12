@@ -525,3 +525,19 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
+
+/* >>> AUTOHOOK_mitre_089_recycle_bin_item_count_checker BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
+HOOKDEF(HRESULT, WINAPI, SHQueryRecycleBinW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCWSTR pszRootPath,
+	_Inout_ LPSHQUERYRBINFO pSHQueryRBInfo
+) {
+	HRESULT ret;
+	ret = Old_SHQueryRecycleBinW(pszRootPath, pSHQueryRBInfo);
+	LOQ_hresult("windows", "FP", "SzRootPath", pszRootPath, "SHQueryRBInfo", pSHQueryRBInfo);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_mitre_089_recycle_bin_item_count_checker END <<< */
+

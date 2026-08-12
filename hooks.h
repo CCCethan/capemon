@@ -3930,10 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_088_recentdocs_registry_checker BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, GetTempPathA,
-	_In_ DWORD nBufferLength,
-	_Out_ LPSTR lpBuffer
+/* >>> AUTOHOOK_mitre_089_recycle_bin_item_count_checker BEGIN <<< */
+HOOKDEF(HRESULT, WINAPI, SHQueryRecycleBinW,
+	_In_opt_ LPCWSTR pszRootPath,
+	_Inout_ LPSHQUERYRBINFO pSHQueryRBInfo
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
@@ -3959,15 +3959,6 @@ HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ int cchCount1,
 	_In_ LPCWSTR lpString2,
 	_In_ int cchCount2
-);
-HOOKDEF(HANDLE, WINAPI, CreateFileA,
-	_In_ LPCSTR lpFileName,
-	_In_ DWORD dwDesiredAccess,
-	_In_ DWORD dwShareMode,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-	_In_ DWORD dwCreationDisposition,
-	_In_ DWORD dwFlagsAndAttributes,
-	_In_opt_ HANDLE hTemplateFile
 );
 HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ LPCWSTR lpFileName,
@@ -4051,9 +4042,6 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
-);
-HOOKDEF(DWORD, WINAPI, GetFileAttributesA,
-	_In_ LPCSTR lpFileName
 );
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
@@ -4299,5 +4287,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_088_recentdocs_registry_checker END <<< */
+/* >>> AUTOHOOK_mitre_089_recycle_bin_item_count_checker END <<< */
 

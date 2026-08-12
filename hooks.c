@@ -818,9 +818,10 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_088_recentdocs_registry_checker BEGIN <<< */
-HOOK(kernel32, GetTempPathA),
-HOOK(kernelbase, GetTempPathA),
+/* >>> AUTOHOOK_mitre_089_recycle_bin_item_count_checker BEGIN <<< */
+HOOK(kernel32, SHQueryRecycleBinW),
+HOOK(kernelbase, SHQueryRecycleBinW),
+HOOK(shell32, SHQueryRecycleBinW),
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -829,8 +830,6 @@ HOOK(kernel32, CompareStringEx),
 HOOK(kernelbase, CompareStringEx),
 HOOK(kernel32, CompareStringW),
 HOOK(kernelbase, CompareStringW),
-HOOK(kernel32, CreateFileA),
-HOOK(kernelbase, CreateFileA),
 HOOK(kernel32, CreateFileW),
 HOOK(kernelbase, CreateFileW),
 HOOK(kernel32, DeleteCriticalSection),
@@ -871,8 +870,6 @@ HOOK(kernel32, GetDateFormatW),
 HOOK(kernelbase, GetDateFormatW),
 HOOK(kernel32, GetEnvironmentStringsW),
 HOOK(kernelbase, GetEnvironmentStringsW),
-HOOK(kernel32, GetFileAttributesA),
-HOOK(kernelbase, GetFileAttributesA),
 HOOK(kernel32, GetFileSizeEx),
 HOOK(kernelbase, GetFileSizeEx),
 HOOK(kernel32, GetFileType),
@@ -977,7 +974,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_088_recentdocs_registry_checker END <<< */
+/* >>> AUTOHOOK_mitre_089_recycle_bin_item_count_checker END <<< */
 };
 
 hook_t native_hooks[] = {
