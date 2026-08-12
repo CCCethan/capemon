@@ -72,7 +72,19 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_085_recent_items_count_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_086_recent_shortcut_count_checker BEGIN <<< */
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pvReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(HRESULT, WINAPI, CoInitializeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPVOID pvReserved,
+	_In_ DWORD dwCoInit
+) {
+	HRESULT ret;
+	ret = Old_CoInitializeEx(pvReserved, dwCoInit);
+	LOQ_hresult("com", "pi", "VReserved", pvReserved, "CoInit", dwCoInit);
+	return ret;
+}
+
 // -> hook_com.c に追加 | category="com" | winapi:COM
 // REVIEW: 引数 pv: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
 HOOKDEF(void, WINAPI, CoTaskMemFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -81,6 +93,15 @@ HOOKDEF(void, WINAPI, CoTaskMemFree, // 呼出規約は WINAPI 仮定(socket/nat
 	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
 	Old_CoTaskMemFree(pv);
 	LOQ_void("com", "p", "V", pv);
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:COM
+HOOKDEF(void, WINAPI, CoUninitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_CoUninitialize();
+	LOQ_void("com", "");
 }
 
 // -> hook_com.c に追加 | category="com" | winapi:National Language Support (NLS)
@@ -180,5 +201,5 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_085_recent_items_count_checker END <<< */
+/* >>> AUTOHOOK_mitre_086_recent_shortcut_count_checker END <<< */
 

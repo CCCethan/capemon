@@ -3930,15 +3930,22 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_085_recent_items_count_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_086_recent_shortcut_count_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
 );
+HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
+	_In_opt_ LPVOID pvReserved,
+	_In_ DWORD dwCoInit
+);
 HOOKDEF(void, WINAPI, CoTaskMemFree,
 	_In_opt_ LPVOID pv
+);
+HOOKDEF(void, WINAPI, CoUninitialize,
+	void
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4294,5 +4301,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_085_recent_items_count_checker END <<< */
+/* >>> AUTOHOOK_mitre_086_recent_shortcut_count_checker END <<< */
 

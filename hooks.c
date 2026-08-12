@@ -818,14 +818,20 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_085_recent_items_count_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_086_recent_shortcut_count_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
+HOOK(combase, CoInitializeEx),
+HOOK(ole32, CoInitializeEx),
+HOOK(oleaut32, CoInitializeEx),
 HOOK(combase, CoTaskMemFree),
 HOOK(ole32, CoTaskMemFree),
 HOOK(oleaut32, CoTaskMemFree),
+HOOK(combase, CoUninitialize),
+HOOK(ole32, CoUninitialize),
+HOOK(oleaut32, CoUninitialize),
 HOOK(kernel32, CompareStringEx),
 HOOK(kernelbase, CompareStringEx),
 HOOK(kernel32, CompareStringW),
@@ -978,7 +984,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_085_recent_items_count_checker END <<< */
+/* >>> AUTOHOOK_mitre_086_recent_shortcut_count_checker END <<< */
 };
 
 hook_t native_hooks[] = {
