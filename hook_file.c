@@ -1929,22 +1929,16 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_046_jumplist_age_evaluator BEGIN <<< */
-// -> hook_file.c に追加 | category="filesystem" | winapi:Time
-// REVIEW: 戻り型 LONG の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpFileTime1: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 lpFileTime2: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(LONG, WINAPI, CompareFileTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const FILETIME* lpFileTime1,
-	_In_ const FILETIME* lpFileTime2
+/* >>> AUTOHOOK_mitre_047_key_interval_variance_checker BEGIN <<< */
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
 ) {
-	LONG ret;
-	ret = Old_CompareFileTime(lpFileTime1, lpFileTime2);
-	LOQ_nonzero("filesystem", "pp", "FileTime1", lpFileTime1, "FileTime2", lpFileTime2);
+	BOOL ret;
+	ret = Old_AreFileApisANSI();
+	LOQ_bool("filesystem", "");
 	return ret;
 }
-
-/* >>> restored from hookdb <<< */
 
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 // REVIEW: 引数 lpSecurityAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -1966,20 +1960,6 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW, // 呼出規約は WINAPI 仮定(socket/nat
 	return ret;
 }
 
-// -> hook_file.c に追加 | category="filesystem" | winapi:Time
-// REVIEW: 引数 lpFileTime: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const FILETIME* lpFileTime,
-	_Out_ LPSYSTEMTIME lpSystemTime
-) {
-	BOOL ret;
-	ret = Old_FileTimeToSystemTime(lpFileTime, lpSystemTime);
-	// [7.5] ② 固定サイズ構造体(8バイト): FileTimeToLocalFileTime と同一の扱い。
-	//       FILETIME を PLARGE_INTEGER として 'X' で 64bit 値化する。
-	LOQ_bool("filesystem", "XP", "FileTime", (PLARGE_INTEGER)lpFileTime, "SystemTime", lpSystemTime);
-	return ret;
-}
-
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ HANDLE hFindFile
@@ -1987,17 +1967,6 @@ HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/
 	BOOL ret;
 	ret = Old_FindClose(hFindFile);
 	LOQ_bool("filesystem", "p", "FindFile", hFindFile);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(HANDLE, WINAPI, FindFirstFileW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpFileName,
-	_Out_ LPWIN32_FIND_DATAW lpFindFileData
-) {
-	HANDLE ret;
-	ret = Old_FindFirstFileW(lpFileName, lpFindFileData);
-	LOQ_handle("filesystem", "FP", "FileName", lpFileName, "FindFileData", lpFindFileData);
 	return ret;
 }
 
@@ -2091,5 +2060,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "NumberOfBytesToWrite", nNumberOfBytesToWrite, "NumberOfBytesWritten", lpNumberOfBytesWritten, "Overlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_046_jumplist_age_evaluator END <<< */
+/* >>> AUTOHOOK_mitre_047_key_interval_variance_checker END <<< */
 
