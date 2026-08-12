@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_082_rdp_server_history_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_083_rdtsc_qpc_ratio_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4283,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_082_rdp_server_history_checker END <<< */
+/* >>> AUTOHOOK_mitre_083_rdtsc_qpc_ratio_checker END <<< */
 
