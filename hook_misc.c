@@ -2008,7 +2008,21 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_013_clipboard_update_activity_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_014_cpu_idle_ratio_checker BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Time
+HOOKDEF(BOOL, WINAPI, GetSystemTimes, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_opt_ LPFILETIME lpIdleTime,
+	_Out_opt_ LPFILETIME lpKernelTime,
+	_Out_opt_ LPFILETIME lpUserTime
+) {
+	BOOL ret;
+	ret = Old_GetSystemTimes(lpIdleTime, lpKernelTime, lpUserTime);
+	LOQ_bool("misc", "PPP", "IdleTime", lpIdleTime, "KernelTime", lpKernelTime, "UserTime", lpUserTime);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2476,5 +2490,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_013_clipboard_update_activity_checker END <<< */
+/* >>> AUTOHOOK_mitre_014_cpu_idle_ratio_checker END <<< */
 
