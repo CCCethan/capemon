@@ -818,13 +818,14 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_016_credential_store_checker BEGIN <<< */
-HOOK(advapi32, CredEnumerateW),
-HOOK(advapi32, CredFree),
+/* >>> AUTOHOOK_mitre_021_desktop_icon_sandbox_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
+HOOK(combase, CoTaskMemFree),
+HOOK(ole32, CoTaskMemFree),
+HOOK(oleaut32, CoTaskMemFree),
 HOOK(kernel32, CompareStringEx),
 HOOK(kernelbase, CompareStringEx),
 HOOK(kernel32, CompareStringW),
@@ -843,6 +844,8 @@ HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
 HOOK(kernel32, FindClose),
 HOOK(kernelbase, FindClose),
+HOOK(kernel32, FindFirstFileW),
+HOOK(kernelbase, FindFirstFileW),
 HOOK(kernel32, FlushFileBuffers),
 HOOK(kernelbase, FlushFileBuffers),
 HOOK(kernel32, FreeEnvironmentStringsW),
@@ -943,6 +946,7 @@ HOOK(kernel32, ReadConsoleW),
 HOOK(kernelbase, ReadConsoleW),
 HOOK(kernel32, ReadFile),
 HOOK(kernelbase, ReadFile),
+HOOK(advapi32, RegGetValueA),
 HOOK(kernel32, RtlLookupFunctionEntry),
 HOOK(kernelbase, RtlLookupFunctionEntry),
 HOOK(kernel32, RtlPcToFileHeader),
@@ -973,7 +977,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_016_credential_store_checker END <<< */
+/* >>> AUTOHOOK_mitre_021_desktop_icon_sandbox_checker END <<< */
 };
 
 hook_t native_hooks[] = {

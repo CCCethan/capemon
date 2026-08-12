@@ -2008,32 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_016_credential_store_checker BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-HOOKDEF(BOOL, WINAPI, CredEnumerateW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR Filter,
-	_In_ DWORD Flags,
-	_Out_ DWORD* Count,
-	_Out_ PCREDENTIAL** Credentials
-) {
-	BOOL ret;
-	ret = Old_CredEnumerateW(Filter, Flags, Count, Credentials);
-	LOQ_bool("misc", "uiIP", "Filter", Filter, "Flags", Flags, "Count", Count, "Credentials", Credentials);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 引数 Buffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(VOID, WINAPI, CredFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PVOID Buffer
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_CredFree(Buffer);
-	LOQ_void("misc", "p", "Buffer", Buffer);
-}
-
-/* >>> restored from hookdb <<< */
-
+/* >>> AUTOHOOK_mitre_021_desktop_icon_sandbox_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2501,5 +2476,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_016_credential_store_checker END <<< */
+/* >>> AUTOHOOK_mitre_021_desktop_icon_sandbox_checker END <<< */
 

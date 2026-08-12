@@ -3930,21 +3930,15 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_016_credential_store_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, CredEnumerateW,
-	_In_ LPCWSTR Filter,
-	_In_ DWORD Flags,
-	_Out_ DWORD* Count,
-	_Out_ PCREDENTIAL** Credentials
-);
-HOOKDEF(VOID, WINAPI, CredFree,
-	_In_ PVOID Buffer
-);
+/* >>> AUTOHOOK_mitre_021_desktop_icon_sandbox_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
+);
+HOOKDEF(void, WINAPI, CoTaskMemFree,
+	_In_opt_ LPVOID pv
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -3995,6 +3989,10 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
+);
+HOOKDEF(HANDLE, WINAPI, FindFirstFileW,
+	_In_ LPCWSTR lpFileName,
+	_Out_ LPWIN32_FIND_DATAW lpFindFileData
 );
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
@@ -4226,6 +4224,15 @@ HOOKDEF(BOOL, WINAPI, ReadFile,
 	_Out_opt_ LPDWORD lpNumberOfBytesRead,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
+HOOKDEF(LONG, WINAPI, RegGetValueA,
+	_In_ HKEY hkey,
+	_In_opt_ LPCSTR lpSubKey,
+	_In_opt_ LPCSTR lpValue,
+	_In_opt_ DWORD dwFlags,
+	_Out_opt_ LPDWORD pdwType,
+	_Out_opt_ PVOID pvData,
+	_Inout_opt_ LPDWORD pcbData
+);
 HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
 	_In_ ULONGLONG ControlPc,
 	_Out_ PULONGLONG ImageBase,
@@ -4292,5 +4299,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_016_credential_store_checker END <<< */
+/* >>> AUTOHOOK_mitre_021_desktop_icon_sandbox_checker END <<< */
 
