@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_076_process_cpu_wall_ratio_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_081_quick_access_size_analysis BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4039,6 +4039,16 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
 );
+HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableW,
+	_In_opt_ LPCWSTR lpName,
+	_Out_opt_ LPWSTR lpBuffer,
+	_In_ DWORD nSize
+);
+HOOKDEF(BOOL, WINAPI, GetFileAttributesExW,
+	_In_ LPCWSTR lpFileName,
+	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	_Out_ LPVOID lpFileInformation
+);
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
 	_Out_ PLARGE_INTEGER lpFileSize
@@ -4080,13 +4090,6 @@ HOOKDEF(FARPROC, WINAPI, GetProcAddress,
 );
 HOOKDEF(HANDLE, WINAPI, GetProcessHeap,
 	void
-);
-HOOKDEF(BOOL, WINAPI, GetProcessTimes,
-	_In_ HANDLE hProcess,
-	_Out_ LPFILETIME lpCreationTime,
-	_Out_ LPFILETIME lpExitTime,
-	_Out_ LPFILETIME lpKernelTime,
-	_Out_ LPFILETIME lpUserTime
 );
 HOOKDEF(VOID, WINAPI, GetStartupInfoW,
 	_Out_ LPSTARTUPINFOW lpStartupInfo
@@ -4290,5 +4293,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_076_process_cpu_wall_ratio_checker END <<< */
+/* >>> AUTOHOOK_mitre_081_quick_access_size_analysis END <<< */
 
