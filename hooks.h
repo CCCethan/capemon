@@ -3930,19 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_galloro_193_window_activity_monitor BEGIN <<< */
-HOOKDEF(HWINEVENTHOOK, WINAPI, SetWinEventHook,
-	_In_ UINT eventMin,
-	_In_ UINT eventMax,
-	_In_ HMODULE hmodWinEventProc,
-	_In_ WINEVENTPROC lpfnWinEventProc,
-	_In_ DWORD idProcess,
-	_In_ DWORD idThread,
-	_In_ UINT dwflags
-);
-HOOKDEF(BOOL, WINAPI, UnhookWinEvent,
-	_In_ HWINEVENTHOOK hWinEventHook
-);
+/* >>> AUTOHOOK_mitre_002_acpi_oemid_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3980,11 +3968,13 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 HOOKDEF(void, WINAPI, DeleteCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 );
-HOOKDEF(LRESULT, WINAPI, DispatchMessageW,
-	_In_ const MSG* lpmsg
-);
 HOOKDEF(void, WINAPI, EnterCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
+);
+HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables,
+	_In_ DWORD FirmwareTableProviderSignature,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
 );
 HOOKDEF(BOOL, WINAPI, EnumSystemLocalesEx,
 	_In_ LOCALE_ENUMPROCEX lpLocaleEnumProcEx,
@@ -4108,6 +4098,12 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW,
 	_In_ int cchSrc,
 	_Out_ LPWORD lpCharType
 );
+HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
+	_In_ DWORD FirmwareTableProviderSignature,
+	_In_ DWORD FirmwareTableID,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
+);
 HOOKDEF(int, WINAPI, GetTimeFormatEx,
 	_In_opt_ LPCWSTR lpLocaleName,
 	_In_ DWORD dwFlags,
@@ -4206,20 +4202,6 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
-HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects,
-	_In_ DWORD nCount,
-	_In_ const HANDLE* pHandles,
-	_In_ BOOL bWaitAll,
-	_In_ DWORD dwMilliseconds,
-	_In_ DWORD dwWakeMask
-);
-HOOKDEF(BOOL, WINAPI, PeekMessageW,
-	_Out_ LPMSG lpMsg,
-	_In_opt_ HWND hWnd,
-	_In_ UINT wMsgFilterMin,
-	_In_ UINT wMsgFilterMax,
-	_In_ UINT wRemoveMsg
-);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4298,9 +4280,6 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
-HOOKDEF(BOOL, WINAPI, TranslateMessage,
-	_In_ const MSG* lpMsg
-);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4315,5 +4294,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_galloro_193_window_activity_monitor END <<< */
+/* >>> AUTOHOOK_mitre_002_acpi_oemid_checker END <<< */
 

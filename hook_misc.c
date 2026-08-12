@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_193_window_activity_monitor BEGIN <<< */
+/* >>> AUTOHOOK_mitre_002_acpi_oemid_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2016,6 +2016,23 @@ HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/nativ
 	BOOL ret;
 	ret = Old_CloseHandle(hObject);
 	LOQ_bool("misc", "p", "Object", hObject);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
+// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 pFirmwareTableBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD FirmwareTableProviderSignature,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
+) {
+	UINT ret;
+	ret = Old_EnumSystemFirmwareTables(FirmwareTableProviderSignature, pFirmwareTableBuffer, BufferSize);
+	// [7.5] ⑤/単一出力バッファ: description "a buffer that receives the list of firmware tables"。
+	//       長さ源は実書込長(戻り値)。容量 BufferSize で上限を締めて過剰読み取りを防ぐ。
+	//       問い合わせ呼び出し(buffer=NULL/BufferSize=0)は 0 バイト=安全。
+	LOQ_nonzero("misc", "ibi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableBuffer", (size_t)(ret < BufferSize ? ret : BufferSize), pFirmwareTableBuffer, "BufferSize", BufferSize);
 	return ret;
 }
 
@@ -2169,6 +2186,24 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW, // 呼出規約は WINAPI 仮定(socket/na
 	BOOL ret;
 	ret = Old_GetStringTypeW(dwInfoType, lpSrcStr, cchSrc, lpCharType);
 	LOQ_bool("misc", "iuiI", "InfoType", dwInfoType, "SrcStr", lpSrcStr, "Src", cchSrc, "CharType", lpCharType);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
+// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 pFirmwareTableBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD FirmwareTableProviderSignature,
+	_In_ DWORD FirmwareTableID,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
+) {
+	UINT ret;
+	ret = Old_GetSystemFirmwareTable(FirmwareTableProviderSignature, FirmwareTableID, pFirmwareTableBuffer, BufferSize);
+	// [7.5] ⑤/単一出力バッファ: description "a buffer that receives the requested firmware table"。
+	//       本検体の主目的(ACPI テーブル取得)そのものなので内容を必ず残す。
+	//       長さ源は実書込長(戻り値)、容量 BufferSize で上限を締める。
+	LOQ_nonzero("misc", "iibi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableID", FirmwareTableID, "FirmwareTableBuffer", (size_t)(ret < BufferSize ? ret : BufferSize), pFirmwareTableBuffer, "BufferSize", BufferSize);
 	return ret;
 }
 
@@ -2476,5 +2511,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_193_window_activity_monitor END <<< */
+/* >>> AUTOHOOK_mitre_002_acpi_oemid_checker END <<< */
 
