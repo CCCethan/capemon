@@ -818,10 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_089_recycle_bin_item_count_checker BEGIN <<< */
-HOOK(kernel32, SHQueryRecycleBinW),
-HOOK(kernelbase, SHQueryRecycleBinW),
-HOOK(shell32, SHQueryRecycleBinW),
+/* >>> AUTOHOOK_mitre_090_recycle_bin_item_count_checker_01 BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -950,6 +947,9 @@ HOOK(kernel32, RtlPcToFileHeader),
 HOOK(kernelbase, RtlPcToFileHeader),
 HOOK(kernel32, RtlUnwind),
 HOOK(kernelbase, RtlUnwind),
+HOOK(kernel32, SHQueryRecycleBinW),
+HOOK(kernelbase, SHQueryRecycleBinW),
+HOOK(shell32, SHQueryRecycleBinW),
 HOOK(kernel32, SetEnvironmentVariableW),
 HOOK(kernelbase, SetEnvironmentVariableW),
 HOOK(kernel32, SetFilePointerEx),
@@ -974,7 +974,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_089_recycle_bin_item_count_checker END <<< */
+/* >>> AUTOHOOK_mitre_090_recycle_bin_item_count_checker_01 END <<< */
 };
 
 hook_t native_hooks[] = {

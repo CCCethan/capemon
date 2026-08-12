@@ -3930,11 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_089_recycle_bin_item_count_checker BEGIN <<< */
-HOOKDEF(HRESULT, WINAPI, SHQueryRecycleBinW,
-	_In_opt_ LPCWSTR pszRootPath,
-	_Inout_ LPSHQUERYRBINFO pSHQueryRBInfo
-);
+/* >>> AUTOHOOK_mitre_090_recycle_bin_item_count_checker_01 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4236,6 +4232,10 @@ HOOKDEF(void, WINAPI, RtlUnwind,
 	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
 	_In_ PVOID ReturnValue
 );
+HOOKDEF(HRESULT, WINAPI, SHQueryRecycleBinW,
+	_In_opt_ LPCWSTR pszRootPath,
+	_Inout_ LPSHQUERYRBINFO pSHQueryRBInfo
+);
 HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
 	_In_opt_ LPCWSTR lpValue
@@ -4287,5 +4287,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_089_recycle_bin_item_count_checker END <<< */
+/* >>> AUTOHOOK_mitre_090_recycle_bin_item_count_checker_01 END <<< */
 
