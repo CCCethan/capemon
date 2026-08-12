@@ -3930,12 +3930,43 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_008_battery_presence_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_009_bios_serial_number_checker BEGIN <<< */
+HOOKDEF(VOID, WINAPI, AcquireSRWLockExclusive,
+	_Inout_ PSRWLOCK SRWLock
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
+);
+HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
+	_In_opt_ LPVOID pvReserved,
+	_In_ DWORD dwCoInit
+);
+HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity,
+	_In_opt_ PSECURITY_DESCRIPTOR pSecDesc,
+	_In_ LONG cAuthSvc,
+	_In_opt_ SOLE_AUTHENTICATION_SERVICE* asAuthSvc,
+	_In_opt_ void* pReserved1,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ void* pAuthList,
+	_In_ DWORD dwCapabilities,
+	_In_opt_ void* pReserved3
+);
+HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
+	_In_ IUnknown* pProxy,
+	_In_ DWORD dwAuthnSvc,
+	_In_ DWORD dwAuthzSvc,
+	_In_opt_ OLECHAR* pServerPrincName,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ RPC_AUTH_IDENTITY_HANDLE pAuthInfo,
+	_In_ DWORD dwCapabilities
+);
+HOOKDEF(void, WINAPI, CoUninitialize,
+	void
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4093,9 +4124,6 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW,
 	_In_ int cchSrc,
 	_Out_ LPWORD lpCharType
 );
-HOOKDEF(BOOL, WINAPI, GetSystemPowerStatus,
-	_Out_ LPSYSTEM_POWER_STATUS lpSystemPowerStatus
-);
 HOOKDEF(int, WINAPI, GetTimeFormatEx,
 	_In_opt_ LPCWSTR lpLocaleName,
 	_In_ DWORD dwFlags,
@@ -4220,6 +4248,9 @@ HOOKDEF(BOOL, WINAPI, ReadFile,
 	_Out_opt_ LPDWORD lpNumberOfBytesRead,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
+HOOKDEF(VOID, WINAPI, ReleaseSRWLockExclusive,
+	_Inout_ PSRWLOCK SRWLock
+);
 HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
 	_In_ ULONGLONG ControlPc,
 	_Out_ PULONGLONG ImageBase,
@@ -4255,6 +4286,15 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle,
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
 );
+HOOKDEF(BOOL, WINAPI, SleepConditionVariableSRW,
+	_Inout_ PCONDITION_VARIABLE ConditionVariable,
+	_Inout_ PSRWLOCK SRWLock,
+	_In_ DWORD dwMilliseconds,
+	_In_ ULONG Flags
+);
+HOOKDEF(BSTR, WINAPI, SysAllocString,
+	_In_opt_ const OLECHAR* psz
+);
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
@@ -4272,11 +4312,20 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
+HOOKDEF(HRESULT, WINAPI, VariantClear,
+	_Inout_ VARIANTARG* pvarg
+);
+HOOKDEF(void, WINAPI, VariantInit,
+	_Out_ VARIANTARG* pvarg
+);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
+);
+HOOKDEF(VOID, WINAPI, WakeAllConditionVariable,
+	_Inout_ PCONDITION_VARIABLE ConditionVariable
 );
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
@@ -4286,5 +4335,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_008_battery_presence_checker END <<< */
+/* >>> AUTOHOOK_mitre_009_bios_serial_number_checker END <<< */
 

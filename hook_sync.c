@@ -178,7 +178,16 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_008_battery_presence_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_009_bios_serial_number_checker BEGIN <<< */
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(VOID, WINAPI, AcquireSRWLockExclusive, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ PSRWLOCK SRWLock
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_AcquireSRWLockExclusive(SRWLock);
+	LOQ_void("sync", "P", "SRWLock", SRWLock);
+}
+
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -228,5 +237,36 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
 }
-/* >>> AUTOHOOK_mitre_008_battery_presence_checker END <<< */
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(VOID, WINAPI, ReleaseSRWLockExclusive, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ PSRWLOCK SRWLock
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_ReleaseSRWLockExclusive(SRWLock);
+	LOQ_void("sync", "P", "SRWLock", SRWLock);
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(BOOL, WINAPI, SleepConditionVariableSRW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ PCONDITION_VARIABLE ConditionVariable,
+	_Inout_ PSRWLOCK SRWLock,
+	_In_ DWORD dwMilliseconds,
+	_In_ ULONG Flags
+) {
+	BOOL ret;
+	ret = Old_SleepConditionVariableSRW(ConditionVariable, SRWLock, dwMilliseconds, Flags);
+	LOQ_bool("sync", "PPii", "ConditionVariable", ConditionVariable, "SRWLock", SRWLock, "Milliseconds", dwMilliseconds, "Flags", Flags);
+	return ret;
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(VOID, WINAPI, WakeAllConditionVariable, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ PCONDITION_VARIABLE ConditionVariable
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_WakeAllConditionVariable(ConditionVariable);
+	LOQ_void("sync", "P", "ConditionVariable", ConditionVariable);
+}
+/* >>> AUTOHOOK_mitre_009_bios_serial_number_checker END <<< */
 
