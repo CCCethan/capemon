@@ -3930,16 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_064_ntp_time_offset_checker BEGIN <<< */
-HOOKDEF(int, WINAPI, WSACleanup,
-	void
-);
-HOOKDEF(int, WINAPI, WSAGetLastError,
-	void
-);
-HOOKDEF(void, WINAPI, freeaddrinfo,
-	_In_ struct addrinfo* ai
-);
+/* >>> AUTOHOOK_mitre_066_opensave_mru_entry_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4292,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_064_ntp_time_offset_checker END <<< */
+/* >>> AUTOHOOK_mitre_066_opensave_mru_entry_checker END <<< */
 
