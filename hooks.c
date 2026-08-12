@@ -818,11 +818,13 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_028_edge_bookmark_url_count_checker BEGIN <<< */
-HOOK(kernel32, GetFileAttributesW),
-HOOK(kernelbase, GetFileAttributesW),
+/* >>> AUTOHOOK_mitre_030_event_log_history_checker BEGIN <<< */
+HOOK(advapi32, GetOldestEventLogRecord),
+HOOK(advapi32, OpenEventLogA),
+HOOK(advapi32, ReadEventLogA),
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
+HOOK(advapi32, CloseEventLog),
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
 HOOK(kernel32, CompareStringEx),
@@ -869,8 +871,6 @@ HOOK(kernel32, GetDateFormatW),
 HOOK(kernelbase, GetDateFormatW),
 HOOK(kernel32, GetEnvironmentStringsW),
 HOOK(kernelbase, GetEnvironmentStringsW),
-HOOK(kernel32, GetEnvironmentVariableW),
-HOOK(kernelbase, GetEnvironmentVariableW),
 HOOK(kernel32, GetFileSizeEx),
 HOOK(kernelbase, GetFileSizeEx),
 HOOK(kernel32, GetFileType),
@@ -951,8 +951,6 @@ HOOK(kernel32, RtlPcToFileHeader),
 HOOK(kernelbase, RtlPcToFileHeader),
 HOOK(kernel32, RtlUnwind),
 HOOK(kernelbase, RtlUnwind),
-HOOK(kernel32, SetEndOfFile),
-HOOK(kernelbase, SetEndOfFile),
 HOOK(kernel32, SetEnvironmentVariableW),
 HOOK(kernelbase, SetEnvironmentVariableW),
 HOOK(kernel32, SetFilePointerEx),
@@ -977,7 +975,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_028_edge_bookmark_url_count_checker END <<< */
+/* >>> AUTOHOOK_mitre_030_event_log_history_checker END <<< */
 };
 
 hook_t native_hooks[] = {

@@ -3930,12 +3930,29 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_028_edge_bookmark_url_count_checker BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, GetFileAttributesW,
-	_In_ LPCWSTR lpFileName
+/* >>> AUTOHOOK_mitre_030_event_log_history_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, GetOldestEventLogRecord,
+	_In_ HANDLE hEventLog,
+	_Out_ PDWORD OldestRecord
+);
+HOOKDEF(HANDLE, WINAPI, OpenEventLogA,
+	_In_ LPCSTR lpUNCServerName,
+	_In_ LPCSTR lpSourceName
+);
+HOOKDEF(BOOL, WINAPI, ReadEventLogA,
+	_In_ HANDLE hEventLog,
+	_In_ DWORD dwReadFlags,
+	_In_ DWORD dwRecordOffset,
+	_Out_ LPVOID lpBuffer,
+	_In_ DWORD nNumberOfBytesToRead,
+	_Out_ DWORD* pnBytesRead,
+	_Out_ DWORD* pnMinNumberOfBytesNeeded
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
+);
+HOOKDEF(BOOL, WINAPI, CloseEventLog,
+	_Inout_ HANDLE hEventLog
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
@@ -4041,11 +4058,6 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
-);
-HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableW,
-	_In_opt_ LPCWSTR lpName,
-	_Out_opt_ LPWSTR lpBuffer,
-	_In_ DWORD nSize
 );
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
@@ -4240,9 +4252,6 @@ HOOKDEF(void, WINAPI, RtlUnwind,
 	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
 	_In_ PVOID ReturnValue
 );
-HOOKDEF(BOOL, WINAPI, SetEndOfFile,
-	_In_ HANDLE hFile
-);
 HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
 	_In_opt_ LPCWSTR lpValue
@@ -4294,5 +4303,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_028_edge_bookmark_url_count_checker END <<< */
+/* >>> AUTOHOOK_mitre_030_event_log_history_checker END <<< */
 
