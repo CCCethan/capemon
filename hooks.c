@@ -818,9 +818,9 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_014_cpu_idle_ratio_checker BEGIN <<< */
-HOOK(kernel32, GetSystemTimes),
-HOOK(kernelbase, GetSystemTimes),
+/* >>> AUTOHOOK_mitre_016_credential_store_checker BEGIN <<< */
+HOOK(advapi32, CredEnumerateW),
+HOOK(advapi32, CredFree),
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -973,7 +973,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_014_cpu_idle_ratio_checker END <<< */
+/* >>> AUTOHOOK_mitre_016_credential_store_checker END <<< */
 };
 
 hook_t native_hooks[] = {

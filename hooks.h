@@ -3930,11 +3930,15 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_014_cpu_idle_ratio_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, GetSystemTimes,
-	_Out_opt_ LPFILETIME lpIdleTime,
-	_Out_opt_ LPFILETIME lpKernelTime,
-	_Out_opt_ LPFILETIME lpUserTime
+/* >>> AUTOHOOK_mitre_016_credential_store_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, CredEnumerateW,
+	_In_ LPCWSTR Filter,
+	_In_ DWORD Flags,
+	_Out_ DWORD* Count,
+	_Out_ PCREDENTIAL** Credentials
+);
+HOOKDEF(VOID, WINAPI, CredFree,
+	_In_ PVOID Buffer
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
@@ -4288,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_014_cpu_idle_ratio_checker END <<< */
+/* >>> AUTOHOOK_mitre_016_credential_store_checker END <<< */
 
