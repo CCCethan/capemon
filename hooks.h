@@ -3930,9 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_002_acpi_oemid_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_005_application_eventlog_count_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
+);
+HOOKDEF(BOOL, WINAPI, CloseEventLog,
+	_Inout_ HANDLE hEventLog
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
@@ -3970,11 +3973,6 @@ HOOKDEF(void, WINAPI, DeleteCriticalSection,
 );
 HOOKDEF(void, WINAPI, EnterCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
-);
-HOOKDEF(UINT, WINAPI, EnumSystemFirmwareTables,
-	_In_ DWORD FirmwareTableProviderSignature,
-	_Out_ PVOID pFirmwareTableBuffer,
-	_In_ DWORD BufferSize
 );
 HOOKDEF(BOOL, WINAPI, EnumSystemLocalesEx,
 	_In_ LOCALE_ENUMPROCEX lpLocaleEnumProcEx,
@@ -4076,6 +4074,10 @@ HOOKDEF(BOOL, WINAPI, GetModuleHandleExW,
 HOOKDEF(HMODULE, WINAPI, GetModuleHandleW,
 	_In_opt_ LPCWSTR lpModuleName
 );
+HOOKDEF(BOOL, WINAPI, GetNumberOfEventLogRecords,
+	_In_ HANDLE hEventLog,
+	_Out_ PDWORD NumberOfRecords
+);
 HOOKDEF(UINT, WINAPI, GetOEMCP,
 	void
 );
@@ -4097,12 +4099,6 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW,
 	_In_ LPCWSTR lpSrcStr,
 	_In_ int cchSrc,
 	_Out_ LPWORD lpCharType
-);
-HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
-	_In_ DWORD FirmwareTableProviderSignature,
-	_In_ DWORD FirmwareTableID,
-	_Out_ PVOID pFirmwareTableBuffer,
-	_In_ DWORD BufferSize
 );
 HOOKDEF(int, WINAPI, GetTimeFormatEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4202,6 +4198,10 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
+HOOKDEF(HANDLE, WINAPI, OpenEventLogW,
+	_In_ LPCWSTR lpUNCServerName,
+	_In_ LPCWSTR lpSourceName
+);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4294,5 +4294,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_002_acpi_oemid_checker END <<< */
+/* >>> AUTOHOOK_mitre_005_application_eventlog_count_checker END <<< */
 
