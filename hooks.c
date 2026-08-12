@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_058_mouse_movement_variance_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_059_mouse_path_curvature_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(user32, CallNextHookEx),
@@ -879,8 +879,6 @@ HOOK(kernel32, GetLocaleInfoW),
 HOOK(kernelbase, GetLocaleInfoW),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernelbase, GetModuleFileNameW),
-HOOK(kernel32, GetModuleHandleA),
-HOOK(kernelbase, GetModuleHandleA),
 HOOK(kernel32, GetModuleHandleExW),
 HOOK(kernelbase, GetModuleHandleExW),
 HOOK(kernel32, GetModuleHandleW),
@@ -935,6 +933,7 @@ HOOK(kernel32, LeaveCriticalSection),
 HOOK(kernelbase, LeaveCriticalSection),
 HOOK(kernel32, LocaleNameToLCID),
 HOOK(kernelbase, LocaleNameToLCID),
+HOOK(user32, MsgWaitForMultipleObjects),
 HOOK(user32, PeekMessageA),
 HOOK(kernel32, QueryPerformanceCounter),
 HOOK(kernelbase, QueryPerformanceCounter),
@@ -977,7 +976,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_058_mouse_movement_variance_checker END <<< */
+/* >>> AUTOHOOK_mitre_059_mouse_path_curvature_checker END <<< */
 };
 
 hook_t native_hooks[] = {

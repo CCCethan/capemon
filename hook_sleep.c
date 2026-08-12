@@ -541,6 +541,8 @@ HOOKDEF(DWORD, WINAPI, GetTickCount,
 	if (sleep_skip_active)
 		ret += (DWORD)(time_skipped.QuadPart / 10000);
 
+	/* AUTOHOOK augment: 既存フックに LOQ を追記(機能は維持) */
+	LOQ_nonzero("misc", "");
 	return ret;
 }
 
@@ -557,8 +559,6 @@ HOOKDEF(ULONGLONG, WINAPI, GetTickCount64,
 	if (sleep_skip_active)
 		ret += (time_skipped.QuadPart / 10000);
 
-	/* AUTOHOOK augment: 既存フックに LOQ を追記(機能は維持) */
-	LOQ_nonzero("misc", "");
 	return ret;
 }
 

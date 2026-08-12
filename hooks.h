@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_058_mouse_movement_variance_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_059_mouse_path_curvature_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4072,9 +4072,6 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
 );
-HOOKDEF(HMODULE, WINAPI, GetModuleHandleA,
-	_In_opt_ LPCSTR lpModuleName
-);
 HOOKDEF(BOOL, WINAPI, GetModuleHandleExW,
 	_In_ DWORD dwFlags,
 	_In_opt_ LPCWSTR lpModuleName,
@@ -4203,6 +4200,13 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
+HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects,
+	_In_ DWORD nCount,
+	_In_ const HANDLE* pHandles,
+	_In_ BOOL bWaitAll,
+	_In_ DWORD dwMilliseconds,
+	_In_ DWORD dwWakeMask
+);
 HOOKDEF(BOOL, WINAPI, PeekMessageA,
 	_Out_ LPMSG lpMsg,
 	_In_opt_ HWND hWnd,
@@ -4305,5 +4309,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_058_mouse_movement_variance_checker END <<< */
+/* >>> AUTOHOOK_mitre_059_mouse_path_curvature_checker END <<< */
 
