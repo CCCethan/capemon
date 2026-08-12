@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_009_bios_serial_number_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_012_chrome_history_size_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2114,6 +2114,19 @@ HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW, // 呼出規約は WINAPI 仮定
 	LPWSTR ret;
 	ret = Old_GetEnvironmentStringsW();
 	LOQ_nonnull("misc", "");
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCWSTR lpName,
+	_Out_opt_ LPWSTR lpBuffer,
+	_In_ DWORD nSize
+) {
+	DWORD ret;
+	ret = Old_GetEnvironmentVariableW(lpName, lpBuffer, nSize);
+	LOQ_nonzero("misc", "uui", "Name", lpName, "Buffer", lpBuffer, "Size", nSize);
 	return ret;
 }
 
@@ -2463,21 +2476,6 @@ HOOKDEF(void, WINAPI, SetLastError, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_void("misc", "i", "ErrCode", dwErrCode);
 }
 
-// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
-// REVIEW: 戻り型 BSTR の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 psz: 型 const OLECHAR* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ const OLECHAR* psz
-) {
-	BSTR ret;
-	ret = Old_SysAllocString(psz);
-	// [7.5] kind=struct-or-opaque は誤分類。型は const OLECHAR* = ワイド文字列で
-	//       description も "The string to copy."。u で内容を記録する(log.c の u は
-	//       NULL/例外を __try で保護)。観測「戻り値」は BSTR のアドレスであり長さではない。
-	LOQ_nonzero("misc", "u", "Sz", psz);
-	return ret;
-}
-
 // -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
 // REVIEW: 引数 lpAddress: 入力バッファとして dwSize バイト分を内容ログ('b')。dwSize が実データ長でない/出力用バッファなら 'p'(アドレスのみ)へ戻すこと
 HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2491,5 +2489,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_009_bios_serial_number_checker END <<< */
+/* >>> AUTOHOOK_mitre_012_chrome_history_size_checker END <<< */
 
