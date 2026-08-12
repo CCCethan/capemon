@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_021_desktop_icon_sandbox_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_025_downloads_file_count_analyzer BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -946,7 +946,6 @@ HOOK(kernel32, ReadConsoleW),
 HOOK(kernelbase, ReadConsoleW),
 HOOK(kernel32, ReadFile),
 HOOK(kernelbase, ReadFile),
-HOOK(advapi32, RegGetValueA),
 HOOK(kernel32, RtlLookupFunctionEntry),
 HOOK(kernelbase, RtlLookupFunctionEntry),
 HOOK(kernel32, RtlPcToFileHeader),
@@ -977,7 +976,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_021_desktop_icon_sandbox_checker END <<< */
+/* >>> AUTOHOOK_mitre_025_downloads_file_count_analyzer END <<< */
 };
 
 hook_t native_hooks[] = {
