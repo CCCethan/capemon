@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_056_mouse_activity_based_environment_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_057_mouse_button_ratio_checker BEGIN <<< */
 HOOK(user32, CallNextHookEx),
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
@@ -955,7 +955,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_056_mouse_activity_based_environment_checker END <<< */
+/* >>> AUTOHOOK_mitre_057_mouse_button_ratio_checker END <<< */
 };
 
 hook_t native_hooks[] = {

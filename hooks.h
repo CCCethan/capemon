@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_056_mouse_activity_based_environment_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_057_mouse_button_ratio_checker BEGIN <<< */
 HOOKDEF(LRESULT, WINAPI, CallNextHookEx,
 	_In_opt_ HHOOK hhk,
 	_In_ int nCode,
@@ -4242,5 +4242,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_056_mouse_activity_based_environment_checker END <<< */
+/* >>> AUTOHOOK_mitre_057_mouse_button_ratio_checker END <<< */
 
