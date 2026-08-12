@@ -1929,7 +1929,51 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_087_recentdocs_lastwrite_time_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_088_recentdocs_registry_checker BEGIN <<< */
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetTempPathA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD nBufferLength,
+	_Out_ LPSTR lpBuffer
+) {
+	DWORD ret;
+	ret = Old_GetTempPathA(nBufferLength, lpBuffer);
+	LOQ_nonzero("filesystem", "is", "BufferLength", nBufferLength, "Buffer", lpBuffer);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	BOOL ret;
+	ret = Old_AreFileApisANSI();
+	LOQ_bool("filesystem", "");
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+// REVIEW: 引数 lpSecurityAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HANDLE, WINAPI, CreateFileA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCSTR lpFileName,
+	_In_ DWORD dwDesiredAccess,
+	_In_ DWORD dwShareMode,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+	_In_ DWORD dwCreationDisposition,
+	_In_ DWORD dwFlagsAndAttributes,
+	_In_opt_ HANDLE hTemplateFile
+) {
+	HANDLE ret;
+	ret = Old_CreateFileA(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+	// [7.5] ② 固定サイズ構造体: CreateFileW.SecurityAttributes と同一の扱い(ANSI版)。
+	//       SECURITY_ATTRIBUTES は定義済み。bInheritHandle が読めるのが要点。
+	//       本解析では常に NULL(nonnull=0)だが b は NULL 安全。
+	LOQ_handle("filesystem", "fiibiip", "FileName", lpFileName, "DesiredAccess", dwDesiredAccess, "ShareMode", dwShareMode, "SecurityAttributes", sizeof(SECURITY_ATTRIBUTES), lpSecurityAttributes, "CreationDisposition", dwCreationDisposition, "FlagsAndAttributes", dwFlagsAndAttributes, "TemplateFile", hTemplateFile);
+	return ret;
+}
+
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 // REVIEW: 引数 lpSecurityAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
 HOOKDEF(HANDLE, WINAPI, CreateFileW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -1950,20 +1994,6 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW, // 呼出規約は WINAPI 仮定(socket/nat
 	return ret;
 }
 
-// -> hook_file.c に追加 | category="filesystem" | winapi:Time
-// REVIEW: 引数 lpFileTime: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const FILETIME* lpFileTime,
-	_Out_ LPSYSTEMTIME lpSystemTime
-) {
-	BOOL ret;
-	ret = Old_FileTimeToSystemTime(lpFileTime, lpSystemTime);
-	// [7.5] ② 固定サイズ構造体(8バイト): FileTimeToLocalFileTime と同一の扱い。
-	//       FILETIME を PLARGE_INTEGER として 'X' で 64bit 値化する。
-	LOQ_bool("filesystem", "XP", "FileTime", (PLARGE_INTEGER)lpFileTime, "SystemTime", lpSystemTime);
-	return ret;
-}
-
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ HANDLE hFindFile
@@ -1981,6 +2011,17 @@ HOOKDEF(BOOL, WINAPI, FlushFileBuffers, // 呼出規約は WINAPI 仮定(socket/
 	BOOL ret;
 	ret = Old_FlushFileBuffers(hFile);
 	LOQ_bool("filesystem", "p", "File", hFile);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetFileAttributesA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCSTR lpFileName
+) {
+	DWORD ret;
+	ret = Old_GetFileAttributesA(lpFileName);
+	LOQ_nonzero("filesystem", "f", "FileName", lpFileName);
 	return ret;
 }
 
@@ -2064,5 +2105,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "NumberOfBytesToWrite", nNumberOfBytesToWrite, "NumberOfBytesWritten", lpNumberOfBytesWritten, "Overlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_087_recentdocs_lastwrite_time_checker END <<< */
+/* >>> AUTOHOOK_mitre_088_recentdocs_registry_checker END <<< */
 
