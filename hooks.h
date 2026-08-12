@@ -3930,22 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_044_internet_cache_age_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_045_jumplist_activity_evaluator BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
-);
-HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
-	_In_opt_ LPVOID pvReserved,
-	_In_ DWORD dwCoInit
-);
-HOOKDEF(void, WINAPI, CoTaskMemFree,
-	_In_opt_ LPVOID pv
-);
-HOOKDEF(void, WINAPI, CoUninitialize,
-	void
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -3993,14 +3983,6 @@ HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW,
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
-);
-HOOKDEF(BOOL, WINAPI, FileTimeToLocalFileTime,
-	_In_ const FILETIME* lpFileTime,
-	_Out_ LPFILETIME lpLocalFileTime
-);
-HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime,
-	_In_ const FILETIME* lpFileTime,
-	_Out_ LPSYSTEMTIME lpSystemTime
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
@@ -4060,6 +4042,11 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
+);
+HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableW,
+	_In_opt_ LPCWSTR lpName,
+	_Out_opt_ LPWSTR lpBuffer,
+	_In_ DWORD nSize
 );
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
@@ -4305,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_044_internet_cache_age_checker END <<< */
+/* >>> AUTOHOOK_mitre_045_jumplist_activity_evaluator END <<< */
 
