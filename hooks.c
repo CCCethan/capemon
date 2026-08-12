@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_042_installed_app_count_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_043_installed_printer_count_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -833,6 +833,7 @@ HOOK(kernel32, DeleteCriticalSection),
 HOOK(kernelbase, DeleteCriticalSection),
 HOOK(kernel32, EnterCriticalSection),
 HOOK(kernelbase, EnterCriticalSection),
+HOOK(winspool, EnumPrintersW),
 HOOK(kernel32, EnumSystemLocalesEx),
 HOOK(kernelbase, EnumSystemLocalesEx),
 HOOK(kernel32, EnumSystemLocalesW),
@@ -971,7 +972,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_042_installed_app_count_checker END <<< */
+/* >>> AUTOHOOK_mitre_043_installed_printer_count_checker END <<< */
 };
 
 hook_t native_hooks[] = {

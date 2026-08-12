@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_042_installed_app_count_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_043_installed_printer_count_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3970,6 +3970,15 @@ HOOKDEF(void, WINAPI, DeleteCriticalSection,
 );
 HOOKDEF(void, WINAPI, EnterCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
+);
+HOOKDEF(BOOL, WINAPI, EnumPrintersW,
+	_In_ DWORD Flags,
+	_In_ LPWSTR Name,
+	_In_ DWORD Level,
+	_Out_ LPBYTE pPrinterEnum,
+	_In_ DWORD cbBuf,
+	_Out_ LPDWORD pcbNeeded,
+	_Out_ LPDWORD pcReturned
 );
 HOOKDEF(BOOL, WINAPI, EnumSystemLocalesEx,
 	_In_ LOCALE_ENUMPROCEX lpLocaleEnumProcEx,
@@ -4283,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_042_installed_app_count_checker END <<< */
+/* >>> AUTOHOOK_mitre_043_installed_printer_count_checker END <<< */
 
