@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_025_downloads_file_count_analyzer BEGIN <<< */
+/* >>> AUTOHOOK_mitre_026_downloads_folder_activity_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4290,5 +4290,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_025_downloads_file_count_analyzer END <<< */
+/* >>> AUTOHOOK_mitre_026_downloads_folder_activity_checker END <<< */
 

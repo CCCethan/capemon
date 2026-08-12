@@ -72,7 +72,7 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_025_downloads_file_count_analyzer BEGIN <<< */
+/* >>> AUTOHOOK_mitre_026_downloads_folder_activity_checker BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:COM
 // REVIEW: 引数 pv: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
 HOOKDEF(void, WINAPI, CoTaskMemFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -180,5 +180,5 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_025_downloads_file_count_analyzer END <<< */
+/* >>> AUTOHOOK_mitre_026_downloads_folder_activity_checker END <<< */
 
