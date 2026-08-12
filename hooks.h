@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_066_opensave_mru_entry_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_070_physical_memory_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4283,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_066_opensave_mru_entry_checker END <<< */
+/* >>> AUTOHOOK_mitre_070_physical_memory_checker END <<< */
 
