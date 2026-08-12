@@ -72,7 +72,38 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_043_installed_printer_count_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_044_internet_cache_age_checker BEGIN <<< */
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pvReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(HRESULT, WINAPI, CoInitializeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPVOID pvReserved,
+	_In_ DWORD dwCoInit
+) {
+	HRESULT ret;
+	ret = Old_CoInitializeEx(pvReserved, dwCoInit);
+	LOQ_hresult("com", "pi", "VReserved", pvReserved, "CoInit", dwCoInit);
+	return ret;
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pv: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(void, WINAPI, CoTaskMemFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPVOID pv
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_CoTaskMemFree(pv);
+	LOQ_void("com", "p", "V", pv);
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:COM
+HOOKDEF(void, WINAPI, CoUninitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_CoUninitialize();
+	LOQ_void("com", "");
+}
+
 // -> hook_com.c に追加 | category="com" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpVersionInformation: 型 LPNLSVERSIONINFO は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -109,28 +140,6 @@ HOOKDEF(int, WINAPI, CompareStringW, // 呼出規約は WINAPI 仮定(socket/nat
 	int ret;
 	ret = Old_CompareStringW(Locale, dwCmpFlags, lpString1, cchCount1, lpString2, cchCount2);
 	LOQ_nonzero("com", "iiuiui", "Locale", Locale, "CmpFlags", dwCmpFlags, "String1", lpString1, "Count1", cchCount1, "String2", lpString2, "Count2", cchCount2);
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:Print Spooler
-// REVIEW: 引数 pPrinterEnum: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, EnumPrintersW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD Flags,
-	_In_ LPWSTR Name,
-	_In_ DWORD Level,
-	_Out_ LPBYTE pPrinterEnum,
-	_In_ DWORD cbBuf,
-	_Out_ LPDWORD pcbNeeded,
-	_Out_ LPDWORD pcReturned
-) {
-	BOOL ret;
-	ret = Old_EnumPrintersW(Flags, Name, Level, pPrinterEnum, cbBuf, pcbNeeded, pcReturned);
-	// [7.5] ⑤/出力バッファ: pPrinterEnum は PRINTER_INFO_<Level> の配列。Level が可変で
-	//       要素型が一意に決まらないため、要素メンバではなくバイトダンプで内容を残す。
-	//       長さ源は実書込長 *pcbNeeded、容量 cbBuf で上限を締める。
-	//       ★ _LOQ は成否に関わらず値式を評価するので、必要バッファ長の問い合わせ呼び出し
-	//         (pPrinterEnum=NULL / cbBuf=0 / ret=FALSE)では 0 バイトになるようガードする。
-	LOQ_bool("com", "iuibiII", "Flags", Flags, "Name", Name, "Level", Level, "PrinterEnum", (size_t)((ret && pPrinterEnum && pcbNeeded) ? (*pcbNeeded < cbBuf ? *pcbNeeded : cbBuf) : 0), pPrinterEnum, "Buf", cbBuf, "CbNeeded", pcbNeeded, "CReturned", pcReturned);
 	return ret;
 }
 
@@ -192,5 +201,5 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_043_installed_printer_count_checker END <<< */
+/* >>> AUTOHOOK_mitre_044_internet_cache_age_checker END <<< */
 
