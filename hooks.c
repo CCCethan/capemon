@@ -818,14 +818,11 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_092_screenshots_folder_activity_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_095_sleep0_latency_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
-HOOK(combase, CoTaskMemFree),
-HOOK(ole32, CoTaskMemFree),
-HOOK(oleaut32, CoTaskMemFree),
 HOOK(kernel32, CompareStringEx),
 HOOK(kernelbase, CompareStringEx),
 HOOK(kernel32, CompareStringW),
@@ -844,8 +841,6 @@ HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
 HOOK(kernel32, FindClose),
 HOOK(kernelbase, FindClose),
-HOOK(kernel32, FindFirstFileW),
-HOOK(kernelbase, FindFirstFileW),
 HOOK(kernel32, FlushFileBuffers),
 HOOK(kernelbase, FlushFileBuffers),
 HOOK(kernel32, FreeEnvironmentStringsW),
@@ -872,8 +867,6 @@ HOOK(kernel32, GetDateFormatW),
 HOOK(kernelbase, GetDateFormatW),
 HOOK(kernel32, GetEnvironmentStringsW),
 HOOK(kernelbase, GetEnvironmentStringsW),
-HOOK(kernel32, GetFileAttributesW),
-HOOK(kernelbase, GetFileAttributesW),
 HOOK(kernel32, GetFileSizeEx),
 HOOK(kernelbase, GetFileSizeEx),
 HOOK(kernel32, GetFileType),
@@ -978,7 +971,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_092_screenshots_folder_activity_checker END <<< */
+/* >>> AUTOHOOK_mitre_095_sleep0_latency_checker END <<< */
 };
 
 hook_t native_hooks[] = {
