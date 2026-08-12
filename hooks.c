@@ -818,7 +818,13 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_064_ntp_time_offset_checker BEGIN <<< */
+HOOK(ws2_32, WSACleanup),
+HOOK(wsock32, WSACleanup),
+HOOK(ws2_32, WSAGetLastError),
+HOOK(wsock32, WSAGetLastError),
+HOOK(ws2_32, freeaddrinfo),
+HOOK(wsock32, freeaddrinfo),
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -971,7 +977,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_061_muicache_entry_count_checker END <<< */
+/* >>> AUTOHOOK_mitre_064_ntp_time_offset_checker END <<< */
 };
 
 hook_t native_hooks[] = {

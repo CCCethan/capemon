@@ -1080,3 +1080,40 @@ HOOKDEF(HRESULT, WINAPI, MkParseDisplayNameEx,
 	LOQ_hresult("network", "u", "Name", szName);
 	return ret;
 }
+
+/* >>> AUTOHOOK_mitre_064_ntp_time_offset_checker BEGIN <<< */
+// -> hook_network.c に追加 | category="network" | winapi:Windows Sockets (Winsock)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(int, WINAPI, WSACleanup, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	int ret;
+	ret = Old_WSACleanup();
+	LOQ_nonzero("network", "");
+	return ret;
+}
+
+// -> hook_network.c に追加 | category="network" | winapi:Windows Sockets (Winsock)
+// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(int, WINAPI, WSAGetLastError, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	int ret;
+	ret = Old_WSAGetLastError();
+	LOQ_nonzero("network", "");
+	return ret;
+}
+
+// -> hook_network.c に追加 | category="network" | winapi:Windows Sockets (Winsock)
+// REVIEW: 引数 ai: 型 struct addrinfo* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(void, WINAPI, freeaddrinfo, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ struct addrinfo* ai
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_freeaddrinfo(ai);
+	LOQ_void("network", "p", "Ai", ai);
+}
+
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_mitre_064_ntp_time_offset_checker END <<< */
+
