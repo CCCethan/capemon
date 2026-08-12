@@ -526,7 +526,7 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_057_mouse_button_ratio_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_058_mouse_movement_variance_checker BEGIN <<< */
 // -> hook_window.c に追加 | category="windows" | winapi:Hooks
 // REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 hhk: 型 HHOOK は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -547,17 +547,17 @@ HOOKDEF(LRESULT, WINAPI, CallNextHookEx, // 呼出規約は WINAPI 仮定(socket
 // -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
 // REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpmsg: 型 const MSG* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(LRESULT, WINAPI, DispatchMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+HOOKDEF(LRESULT, WINAPI, DispatchMessageA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ const MSG* lpmsg
 ) {
 	LRESULT ret;
-	ret = Old_DispatchMessageW(lpmsg);
+	ret = Old_DispatchMessageA(lpmsg);
 	LOQ_nonzero("windows", "p", "Msg", lpmsg);
 	return ret;
 }
 
 // -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
-HOOKDEF(BOOL, WINAPI, PeekMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+HOOKDEF(BOOL, WINAPI, PeekMessageA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Out_ LPMSG lpMsg,
 	_In_opt_ HWND hWnd,
 	_In_ UINT wMsgFilterMin,
@@ -565,7 +565,7 @@ HOOKDEF(BOOL, WINAPI, PeekMessageW, // 呼出規約は WINAPI 仮定(socket/nati
 	_In_ UINT wRemoveMsg
 ) {
 	BOOL ret;
-	ret = Old_PeekMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
+	ret = Old_PeekMessageA(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
 	LOQ_bool("windows", "Ppiii", "Msg", lpMsg, "Wnd", hWnd, "WMsgFilterMin", wMsgFilterMin, "WMsgFilterMax", wMsgFilterMax, "WRemoveMsg", wRemoveMsg);
 	return ret;
 }
@@ -580,5 +580,5 @@ HOOKDEF(BOOL, WINAPI, TranslateMessage, // 呼出規約は WINAPI 仮定(socket/
 	LOQ_bool("windows", "p", "Msg", lpMsg);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_057_mouse_button_ratio_checker END <<< */
+/* >>> AUTOHOOK_mitre_058_mouse_movement_variance_checker END <<< */
 
