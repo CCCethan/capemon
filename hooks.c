@@ -818,10 +818,9 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_005_application_eventlog_count_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_008_battery_presence_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
-HOOK(advapi32, CloseEventLog),
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
 HOOK(kernel32, CompareStringEx),
@@ -882,7 +881,6 @@ HOOK(kernel32, GetModuleHandleExW),
 HOOK(kernelbase, GetModuleHandleExW),
 HOOK(kernel32, GetModuleHandleW),
 HOOK(kernelbase, GetModuleHandleW),
-HOOK(advapi32, GetNumberOfEventLogRecords),
 HOOK(kernel32, GetOEMCP),
 HOOK(kernelbase, GetOEMCP),
 HOOK(kernel32, GetProcAddress),
@@ -895,6 +893,8 @@ HOOK(kernel32, GetStdHandle),
 HOOK(kernelbase, GetStdHandle),
 HOOK(kernel32, GetStringTypeW),
 HOOK(kernelbase, GetStringTypeW),
+HOOK(kernel32, GetSystemPowerStatus),
+HOOK(kernelbase, GetSystemPowerStatus),
 HOOK(kernel32, GetTimeFormatEx),
 HOOK(kernelbase, GetTimeFormatEx),
 HOOK(kernel32, GetTimeFormatW),
@@ -933,7 +933,6 @@ HOOK(kernel32, LeaveCriticalSection),
 HOOK(kernelbase, LeaveCriticalSection),
 HOOK(kernel32, LocaleNameToLCID),
 HOOK(kernelbase, LocaleNameToLCID),
-HOOK(advapi32, OpenEventLogW),
 HOOK(kernel32, QueryPerformanceCounter),
 HOOK(kernelbase, QueryPerformanceCounter),
 HOOK(kernel32, QueryPerformanceFrequency),
@@ -974,7 +973,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_005_application_eventlog_count_checker END <<< */
+/* >>> AUTOHOOK_mitre_008_battery_presence_checker END <<< */
 };
 
 hook_t native_hooks[] = {

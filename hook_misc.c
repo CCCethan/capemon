@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_005_application_eventlog_count_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_008_battery_presence_checker BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2169,6 +2169,16 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW, // 呼出規約は WINAPI 仮定(socket/na
 	BOOL ret;
 	ret = Old_GetStringTypeW(dwInfoType, lpSrcStr, cchSrc, lpCharType);
 	LOQ_bool("misc", "iuiI", "InfoType", dwInfoType, "SrcStr", lpSrcStr, "Src", cchSrc, "CharType", lpCharType);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Power Management
+HOOKDEF(BOOL, WINAPI, GetSystemPowerStatus, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPSYSTEM_POWER_STATUS lpSystemPowerStatus
+) {
+	BOOL ret;
+	ret = Old_GetSystemPowerStatus(lpSystemPowerStatus);
+	LOQ_bool("misc", "P", "SystemPowerStatus", lpSystemPowerStatus);
 	return ret;
 }
 
@@ -2476,5 +2486,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_005_application_eventlog_count_checker END <<< */
+/* >>> AUTOHOOK_mitre_008_battery_presence_checker END <<< */
 
