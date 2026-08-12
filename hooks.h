@@ -3930,29 +3930,9 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_030_event_log_history_checker BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, GetOldestEventLogRecord,
-	_In_ HANDLE hEventLog,
-	_Out_ PDWORD OldestRecord
-);
-HOOKDEF(HANDLE, WINAPI, OpenEventLogA,
-	_In_ LPCSTR lpUNCServerName,
-	_In_ LPCSTR lpSourceName
-);
-HOOKDEF(BOOL, WINAPI, ReadEventLogA,
-	_In_ HANDLE hEventLog,
-	_In_ DWORD dwReadFlags,
-	_In_ DWORD dwRecordOffset,
-	_Out_ LPVOID lpBuffer,
-	_In_ DWORD nNumberOfBytesToRead,
-	_Out_ DWORD* pnBytesRead,
-	_Out_ DWORD* pnMinNumberOfBytesNeeded
-);
+/* >>> AUTOHOOK_mitre_034_feature_usage_appswitched_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
-);
-HOOKDEF(BOOL, WINAPI, CloseEventLog,
-	_Inout_ HANDLE hEventLog
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
@@ -4303,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_030_event_log_history_checker END <<< */
+/* >>> AUTOHOOK_mitre_034_feature_usage_appswitched_checker END <<< */
 

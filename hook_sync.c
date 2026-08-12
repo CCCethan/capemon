@@ -178,58 +178,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_030_event_log_history_checker BEGIN <<< */
-// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
-HOOKDEF(BOOL, WINAPI, GetOldestEventLogRecord, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hEventLog,
-	_Out_ PDWORD OldestRecord
-) {
-	BOOL ret;
-	ret = Old_GetOldestEventLogRecord(hEventLog, OldestRecord);
-	LOQ_bool("sync", "pI", "EventLog", hEventLog, "OldestRecord", OldestRecord);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
-HOOKDEF(HANDLE, WINAPI, OpenEventLogA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lpUNCServerName,
-	_In_ LPCSTR lpSourceName
-) {
-	HANDLE ret;
-	ret = Old_OpenEventLogA(lpUNCServerName, lpSourceName);
-	LOQ_handle("sync", "ss", "UNCServerName", lpUNCServerName, "SourceName", lpSourceName);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
-// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, ReadEventLogA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hEventLog,
-	_In_ DWORD dwReadFlags,
-	_In_ DWORD dwRecordOffset,
-	_Out_ LPVOID lpBuffer,
-	_In_ DWORD nNumberOfBytesToRead,
-	_Out_ DWORD* pnBytesRead,
-	_Out_ DWORD* pnMinNumberOfBytesNeeded
-) {
-	BOOL ret;
-	ret = Old_ReadEventLogA(hEventLog, dwReadFlags, dwRecordOffset, lpBuffer, nNumberOfBytesToRead, pnBytesRead, pnMinNumberOfBytesNeeded);
-	LOQ_bool("sync", "piipiII", "EventLog", hEventLog, "ReadFlags", dwReadFlags, "RecordOffset", dwRecordOffset, "Buffer", lpBuffer, "NumberOfBytesToRead", nNumberOfBytesToRead, "NBytesRead", pnBytesRead, "NMinNumberOfBytesNeeded", pnMinNumberOfBytesNeeded);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
-HOOKDEF(BOOL, WINAPI, CloseEventLog, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ HANDLE hEventLog
-) {
-	BOOL ret;
-	ret = Old_CloseEventLog(hEventLog);
-	LOQ_bool("sync", "p", "EventLog", hEventLog);
-	return ret;
-}
-
+/* >>> AUTOHOOK_mitre_034_feature_usage_appswitched_checker BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -279,5 +228,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
 }
-/* >>> AUTOHOOK_mitre_030_event_log_history_checker END <<< */
+/* >>> AUTOHOOK_mitre_034_feature_usage_appswitched_checker END <<< */
 
