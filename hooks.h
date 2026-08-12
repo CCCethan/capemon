@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_070_physical_memory_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_076_process_cpu_wall_ratio_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4080,6 +4080,13 @@ HOOKDEF(FARPROC, WINAPI, GetProcAddress,
 );
 HOOKDEF(HANDLE, WINAPI, GetProcessHeap,
 	void
+);
+HOOKDEF(BOOL, WINAPI, GetProcessTimes,
+	_In_ HANDLE hProcess,
+	_Out_ LPFILETIME lpCreationTime,
+	_Out_ LPFILETIME lpExitTime,
+	_Out_ LPFILETIME lpKernelTime,
+	_Out_ LPFILETIME lpUserTime
 );
 HOOKDEF(VOID, WINAPI, GetStartupInfoW,
 	_Out_ LPSTARTUPINFOW lpStartupInfo
@@ -4283,5 +4290,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_070_physical_memory_checker END <<< */
+/* >>> AUTOHOOK_mitre_076_process_cpu_wall_ratio_checker END <<< */
 

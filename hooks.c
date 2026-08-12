@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_070_physical_memory_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_076_process_cpu_wall_ratio_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -887,6 +887,8 @@ HOOK(kernel32, GetProcAddress),
 HOOK(kernelbase, GetProcAddress),
 HOOK(kernel32, GetProcessHeap),
 HOOK(kernelbase, GetProcessHeap),
+HOOK(kernel32, GetProcessTimes),
+HOOK(kernelbase, GetProcessTimes),
 HOOK(kernel32, GetStartupInfoW),
 HOOK(kernelbase, GetStartupInfoW),
 HOOK(kernel32, GetStdHandle),
@@ -971,7 +973,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_070_physical_memory_checker END <<< */
+/* >>> AUTOHOOK_mitre_076_process_cpu_wall_ratio_checker END <<< */
 };
 
 hook_t native_hooks[] = {
