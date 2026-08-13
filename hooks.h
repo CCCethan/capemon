@@ -3930,38 +3930,15 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_131_wm_timer_interval_checker BEGIN <<< */
-HOOKDEF(LRESULT, WINAPI, DefWindowProcA,
-	_In_ HWND hWnd,
-	_In_ UINT Msg,
-	_In_ WPARAM wParam,
-	_In_ LPARAM lParam
+/* >>> AUTOHOOK_mitre_016_credential_store_checker BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, CredEnumerateW,
+	_In_ LPCWSTR Filter,
+	_In_ DWORD Flags,
+	_Out_ DWORD* Count,
+	_Out_ PVOID* Credentials
 );
-HOOKDEF(BOOL, WINAPI, DestroyWindow,
-	_In_ HWND hWnd
-);
-HOOKDEF(BOOL, WINAPI, GetMessageA,
-	_Out_ LPMSG lpMsg,
-	_In_opt_ HWND hWnd,
-	_In_ UINT wMsgFilterMin,
-	_In_ UINT wMsgFilterMax
-);
-HOOKDEF(BOOL, WINAPI, KillTimer,
-	_In_opt_ HWND hWnd,
-	_In_ UINT_PTR uIDEvent
-);
-HOOKDEF(ATOM, WINAPI, RegisterClassExA,
-	_In_ const WNDCLASSEXA* lpwcx
-);
-HOOKDEF(UINT_PTR, WINAPI, SetTimer,
-	_In_opt_ HWND hWnd,
-	_In_ UINT_PTR nIDEvent,
-	_In_ UINT uElapse,
-	_In_opt_ TIMERPROC lpTimerFunc
-);
-HOOKDEF(BOOL, WINAPI, UnregisterClassA,
-	_In_ LPCSTR lpClassName,
-	_In_opt_ HINSTANCE hInstance
+HOOKDEF(VOID, WINAPI, CredFree,
+	_In_ PVOID Buffer
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
@@ -3999,9 +3976,6 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 );
 HOOKDEF(void, WINAPI, DeleteCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
-);
-HOOKDEF(LRESULT, WINAPI, DispatchMessageA,
-	_In_ const MSG* lpmsg
 );
 HOOKDEF(void, WINAPI, EnterCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -4097,9 +4071,6 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
-);
-HOOKDEF(HMODULE, WINAPI, GetModuleHandleA,
-	_In_opt_ LPCSTR lpModuleName
 );
 HOOKDEF(BOOL, WINAPI, GetModuleHandleExW,
 	_In_ DWORD dwFlags,
@@ -4229,9 +4200,6 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
-HOOKDEF(VOID, WINAPI, PostQuitMessage,
-	_In_ int nExitCode
-);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4310,9 +4278,6 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
-HOOKDEF(BOOL, WINAPI, TranslateMessage,
-	_In_ const MSG* lpMsg
-);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4327,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_131_wm_timer_interval_checker END <<< */
+/* >>> AUTOHOOK_mitre_016_credential_store_checker END <<< */
 

@@ -2008,31 +2008,36 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_131_wm_timer_interval_checker BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Timer
-HOOKDEF(BOOL, WINAPI, KillTimer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ HWND hWnd,
-	_In_ UINT_PTR uIDEvent
+/* >>> AUTOHOOK_mitre_016_credential_store_checker BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
+// [build修正] 生成器が MSDN の型 PCREDENTIALW をそのまま使い `PCREDENTIAL** Credentials` を
+// 出力したが、この型は wincred.h のもので **capemon のビルドには取り込まれていない**
+// (capemon 内に wincred.h の include は0件)。結果 C2081 'PCREDENTIAL': name in formal
+// parameter list illegal → C2054/C2059/C2143 が連鎖し、hooks.c 側も
+// New_/Old_CredEnumerateW 未定義(C2065)で落ちる。
+// 型は「ポインタの配列へのポインタ」なので ABI 互換の不透明ポインタ PVOID* に置換する。
+// (スキルの「未定義型は触らない」= 定義済みの型だけを使う、に従う)
+// 本検体が見るのは資格情報の**件数**であり、それは Count を 'I' で記録済み。
+HOOKDEF(BOOL, WINAPI, CredEnumerateW,
+	_In_ LPCWSTR Filter,
+	_In_ DWORD Flags,
+	_Out_ DWORD* Count,
+	_Out_ PVOID* Credentials
 ) {
 	BOOL ret;
-	ret = Old_KillTimer(hWnd, uIDEvent);
-	LOQ_bool("misc", "pi", "Wnd", hWnd, "UIDEvent", uIDEvent);
+	ret = Old_CredEnumerateW(Filter, Flags, Count, Credentials);
+	LOQ_bool("misc", "uiIP", "Filter", Filter, "Flags", Flags, "Count", Count, "Credentials", Credentials);
 	return ret;
 }
 
-// -> hook_misc.c に追加 | category="misc" | winapi:Timer
-// REVIEW: 戻り型 UINT_PTR の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpTimerFunc: 型 TIMERPROC を i(int32)で仮記録。要確認
-HOOKDEF(UINT_PTR, WINAPI, SetTimer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ HWND hWnd,
-	_In_ UINT_PTR nIDEvent,
-	_In_ UINT uElapse,
-	_In_opt_ TIMERPROC lpTimerFunc
+// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
+// REVIEW: 引数 Buffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(VOID, WINAPI, CredFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ PVOID Buffer
 ) {
-	UINT_PTR ret;
-	ret = Old_SetTimer(hWnd, nIDEvent, uElapse, lpTimerFunc);
-	LOQ_nonzero("misc", "piii", "Wnd", hWnd, "IDEvent", nIDEvent, "UElapse", uElapse, "TimerFunc", lpTimerFunc);
-	return ret;
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_CredFree(Buffer);
+	LOQ_void("misc", "p", "Buffer", Buffer);
 }
 
 /* >>> restored from hookdb <<< */
@@ -2504,5 +2509,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_131_wm_timer_interval_checker END <<< */
+/* >>> AUTOHOOK_mitre_016_credential_store_checker END <<< */
 
