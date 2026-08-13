@@ -818,15 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_mitre_129_window_interaction_monitor BEGIN <<< */
-HOOK(user32, DefWindowProcW),
-HOOK(user32, DestroyWindow),
-HOOK(user32, GetWindowLongPtrW),
-HOOK(user32, LoadCursorW),
-HOOK(user32, LoadIconW),
-HOOK(user32, RegisterClassExW),
-HOOK(user32, ShowWindow),
-HOOK(user32, UpdateWindow),
+/* >>> AUTOHOOK_mitre_082_rdp_server_history_checker BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -839,7 +831,6 @@ HOOK(kernel32, CreateFileW),
 HOOK(kernelbase, CreateFileW),
 HOOK(kernel32, DeleteCriticalSection),
 HOOK(kernelbase, DeleteCriticalSection),
-HOOK(user32, DispatchMessageW),
 HOOK(kernel32, EnterCriticalSection),
 HOOK(kernelbase, EnterCriticalSection),
 HOOK(kernel32, EnumSystemLocalesEx),
@@ -940,8 +931,6 @@ HOOK(kernel32, LeaveCriticalSection),
 HOOK(kernelbase, LeaveCriticalSection),
 HOOK(kernel32, LocaleNameToLCID),
 HOOK(kernelbase, LocaleNameToLCID),
-HOOK(user32, PeekMessageW),
-HOOK(user32, PostQuitMessage),
 HOOK(kernel32, QueryPerformanceCounter),
 HOOK(kernelbase, QueryPerformanceCounter),
 HOOK(kernel32, QueryPerformanceFrequency),
@@ -978,12 +967,11 @@ HOOK(kernel32, TlsGetValue),
 HOOK(kernelbase, TlsGetValue),
 HOOK(kernel32, TlsSetValue),
 HOOK(kernelbase, TlsSetValue),
-HOOK(user32, TranslateMessage),
 HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_mitre_129_window_interaction_monitor END <<< */
+/* >>> AUTOHOOK_mitre_082_rdp_server_history_checker END <<< */
 };
 
 hook_t native_hooks[] = {
