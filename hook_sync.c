@@ -178,7 +178,66 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_016_credential_store_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_030_event_log_history_checker BEGIN <<< */
+// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
+HOOKDEF(BOOL, WINAPI, GetOldestEventLogRecord, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hEventLog,
+	_Out_ PDWORD OldestRecord
+) {
+	BOOL ret;
+	ret = Old_GetOldestEventLogRecord(hEventLog, OldestRecord);
+	LOQ_bool("sync", "pI", "EventLog", hEventLog, "OldestRecord", OldestRecord);
+	return ret;
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
+HOOKDEF(HANDLE, WINAPI, OpenEventLogA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCSTR lpUNCServerName,
+	_In_ LPCSTR lpSourceName
+) {
+	HANDLE ret;
+	ret = Old_OpenEventLogA(lpUNCServerName, lpSourceName);
+	LOQ_handle("sync", "ss", "UNCServerName", lpUNCServerName, "SourceName", lpSourceName);
+	return ret;
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
+// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, ReadEventLogA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hEventLog,
+	_In_ DWORD dwReadFlags,
+	_In_ DWORD dwRecordOffset,
+	_Out_ LPVOID lpBuffer,
+	_In_ DWORD nNumberOfBytesToRead,
+	_Out_ DWORD* pnBytesRead,
+	_Out_ DWORD* pnMinNumberOfBytesNeeded
+) {
+	BOOL ret;
+	ret = Old_ReadEventLogA(hEventLog, dwReadFlags, dwRecordOffset, lpBuffer, nNumberOfBytesToRead, pnBytesRead, pnMinNumberOfBytesNeeded);
+	// [可読性7.5] Buffer は ⑤出力バッファ(desc: "will receive one or more EVENTLOGRECORD structures")。
+	// 本検体(event_log_history_checker)は**最古レコードの生成時刻**で環境を判定するので、
+	// 先頭 EVENTLOGRECORD の RecordNumber / TimeGenerated / TimeWritten / EventID が判定材料そのもの。
+	// 長さは実書込長 *pnBytesRead を容量 nNumberOfBytesToRead でクリップする。
+	// 戻り値は BOOL(観測値 1)で長さではないため check_readability の提案
+	// "(size_t)(ret < NumberOfBytesToRead ? ret : NumberOfBytesToRead)" は誤り(1バイトになる)。
+	// 観測 *pnBytesRead は最大 65400 だが log.c の 'b' は buffer_log_max=256 で truncate される
+	// (log.c:454)。レポート肥大の心配は無く、先頭レコードのヘッダは 256B に収まる。
+	LOQ_bool("sync", "piibiII", "EventLog", hEventLog, "ReadFlags", dwReadFlags, "RecordOffset", dwRecordOffset, "Buffer", (size_t)(ret && pnBytesRead ? (*pnBytesRead < nNumberOfBytesToRead ? *pnBytesRead : nNumberOfBytesToRead) : 0), lpBuffer, "NumberOfBytesToRead", nNumberOfBytesToRead, "NBytesRead", pnBytesRead, "NMinNumberOfBytesNeeded", pnMinNumberOfBytesNeeded);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
+HOOKDEF(BOOL, WINAPI, CloseEventLog, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ HANDLE hEventLog
+) {
+	BOOL ret;
+	ret = Old_CloseEventLog(hEventLog);
+	LOQ_bool("sync", "p", "EventLog", hEventLog);
+	return ret;
+}
+
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -228,5 +287,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
 }
-/* >>> AUTOHOOK_mitre_016_credential_store_checker END <<< */
+/* >>> AUTOHOOK_mitre_030_event_log_history_checker END <<< */
 
