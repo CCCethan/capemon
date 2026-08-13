@@ -3930,19 +3930,43 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_126_webcam_device_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_129_window_interaction_monitor BEGIN <<< */
+HOOKDEF(LRESULT, WINAPI, DefWindowProcW,
+	_In_ HWND hWnd,
+	_In_ UINT Msg,
+	_In_ WPARAM wParam,
+	_In_ LPARAM lParam
+);
+HOOKDEF(BOOL, WINAPI, DestroyWindow,
+	_In_ HWND hWnd
+);
+HOOKDEF(LONG_PTR, WINAPI, GetWindowLongPtrW,
+	_In_ HWND hWnd,
+	_In_ int nIndex
+);
+HOOKDEF(HCURSOR, WINAPI, LoadCursorW,
+	_In_opt_ HINSTANCE hInstance,
+	_In_ LPCWSTR lpCursorName
+);
+HOOKDEF(HICON, WINAPI, LoadIconW,
+	_In_opt_ HINSTANCE hInstance,
+	_In_ LPCWSTR lpIconName
+);
+HOOKDEF(ATOM, WINAPI, RegisterClassExW,
+	_In_ const WNDCLASSEXW* lpwcx
+);
+HOOKDEF(BOOL, WINAPI, ShowWindow,
+	_In_ HWND hWnd,
+	_In_ int nCmdShow
+);
+HOOKDEF(BOOL, WINAPI, UpdateWindow,
+	_In_ HWND hWnd
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
-);
-HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
-	_In_opt_ LPVOID pvReserved,
-	_In_ DWORD dwCoInit
-);
-HOOKDEF(void, WINAPI, CoUninitialize,
-	void
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -3974,6 +3998,9 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 );
 HOOKDEF(void, WINAPI, DeleteCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
+);
+HOOKDEF(LRESULT, WINAPI, DispatchMessageW,
+	_In_ const MSG* lpmsg
 );
 HOOKDEF(void, WINAPI, EnterCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -4198,6 +4225,16 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
+HOOKDEF(BOOL, WINAPI, PeekMessageW,
+	_Out_ LPMSG lpMsg,
+	_In_opt_ HWND hWnd,
+	_In_ UINT wMsgFilterMin,
+	_In_ UINT wMsgFilterMax,
+	_In_ UINT wRemoveMsg
+);
+HOOKDEF(VOID, WINAPI, PostQuitMessage,
+	_In_ int nExitCode
+);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4276,6 +4313,9 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
+HOOKDEF(BOOL, WINAPI, TranslateMessage,
+	_In_ const MSG* lpMsg
+);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4290,5 +4330,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_126_webcam_device_checker END <<< */
+/* >>> AUTOHOOK_mitre_129_window_interaction_monitor END <<< */
 

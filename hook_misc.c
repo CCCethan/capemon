@@ -2008,7 +2008,20 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_126_webcam_device_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_129_window_interaction_monitor BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Icons
+HOOKDEF(HICON, WINAPI, LoadIconW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ HINSTANCE hInstance,
+	_In_ LPCWSTR lpIconName
+) {
+	HICON ret;
+	ret = Old_LoadIconW(hInstance, lpIconName);
+	LOQ_nonnull("misc", "pu", "Instance", hInstance, "IconName", lpIconName);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2476,5 +2489,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_126_webcam_device_checker END <<< */
+/* >>> AUTOHOOK_mitre_129_window_interaction_monitor END <<< */
 
