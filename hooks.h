@@ -3930,8 +3930,8 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_129_window_interaction_monitor BEGIN <<< */
-HOOKDEF(LRESULT, WINAPI, DefWindowProcW,
+/* >>> AUTOHOOK_mitre_131_wm_timer_interval_checker BEGIN <<< */
+HOOKDEF(LRESULT, WINAPI, DefWindowProcA,
 	_In_ HWND hWnd,
 	_In_ UINT Msg,
 	_In_ WPARAM wParam,
@@ -3940,27 +3940,28 @@ HOOKDEF(LRESULT, WINAPI, DefWindowProcW,
 HOOKDEF(BOOL, WINAPI, DestroyWindow,
 	_In_ HWND hWnd
 );
-HOOKDEF(LONG_PTR, WINAPI, GetWindowLongPtrW,
-	_In_ HWND hWnd,
-	_In_ int nIndex
+HOOKDEF(BOOL, WINAPI, GetMessageA,
+	_Out_ LPMSG lpMsg,
+	_In_opt_ HWND hWnd,
+	_In_ UINT wMsgFilterMin,
+	_In_ UINT wMsgFilterMax
 );
-HOOKDEF(HCURSOR, WINAPI, LoadCursorW,
-	_In_opt_ HINSTANCE hInstance,
-	_In_ LPCWSTR lpCursorName
+HOOKDEF(BOOL, WINAPI, KillTimer,
+	_In_opt_ HWND hWnd,
+	_In_ UINT_PTR uIDEvent
 );
-HOOKDEF(HICON, WINAPI, LoadIconW,
-	_In_opt_ HINSTANCE hInstance,
-	_In_ LPCWSTR lpIconName
+HOOKDEF(ATOM, WINAPI, RegisterClassExA,
+	_In_ const WNDCLASSEXA* lpwcx
 );
-HOOKDEF(ATOM, WINAPI, RegisterClassExW,
-	_In_ const WNDCLASSEXW* lpwcx
+HOOKDEF(UINT_PTR, WINAPI, SetTimer,
+	_In_opt_ HWND hWnd,
+	_In_ UINT_PTR nIDEvent,
+	_In_ UINT uElapse,
+	_In_opt_ TIMERPROC lpTimerFunc
 );
-HOOKDEF(BOOL, WINAPI, ShowWindow,
-	_In_ HWND hWnd,
-	_In_ int nCmdShow
-);
-HOOKDEF(BOOL, WINAPI, UpdateWindow,
-	_In_ HWND hWnd
+HOOKDEF(BOOL, WINAPI, UnregisterClassA,
+	_In_ LPCSTR lpClassName,
+	_In_opt_ HINSTANCE hInstance
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
@@ -3999,7 +4000,7 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 HOOKDEF(void, WINAPI, DeleteCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 );
-HOOKDEF(LRESULT, WINAPI, DispatchMessageW,
+HOOKDEF(LRESULT, WINAPI, DispatchMessageA,
 	_In_ const MSG* lpmsg
 );
 HOOKDEF(void, WINAPI, EnterCriticalSection,
@@ -4096,6 +4097,9 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
+);
+HOOKDEF(HMODULE, WINAPI, GetModuleHandleA,
+	_In_opt_ LPCSTR lpModuleName
 );
 HOOKDEF(BOOL, WINAPI, GetModuleHandleExW,
 	_In_ DWORD dwFlags,
@@ -4225,13 +4229,6 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
-HOOKDEF(BOOL, WINAPI, PeekMessageW,
-	_Out_ LPMSG lpMsg,
-	_In_opt_ HWND hWnd,
-	_In_ UINT wMsgFilterMin,
-	_In_ UINT wMsgFilterMax,
-	_In_ UINT wRemoveMsg
-);
 HOOKDEF(VOID, WINAPI, PostQuitMessage,
 	_In_ int nExitCode
 );
@@ -4330,5 +4327,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_129_window_interaction_monitor END <<< */
+/* >>> AUTOHOOK_mitre_131_wm_timer_interval_checker END <<< */
 
