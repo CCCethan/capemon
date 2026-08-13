@@ -525,3 +525,146 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
+
+/* >>> AUTOHOOK_mitre_129_window_interaction_monitor BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Window Procedures
+// REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 wParam: 型 WPARAM を i(int32)で仮記録。要確認
+// REVIEW: 引数 lParam: 型 LPARAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(LRESULT, WINAPI, DefWindowProcW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hWnd,
+	_In_ UINT Msg,
+	_In_ WPARAM wParam,
+	_In_ LPARAM lParam
+) {
+	LRESULT ret;
+	ret = Old_DefWindowProcW(hWnd, Msg, wParam, lParam);
+	LOQ_nonzero("windows", "piip", "Wnd", hWnd, "Msg", Msg, "WParam", wParam, "LParam", lParam);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Windows
+HOOKDEF(BOOL, WINAPI, DestroyWindow, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hWnd
+) {
+	BOOL ret;
+	ret = Old_DestroyWindow(hWnd);
+	LOQ_bool("windows", "p", "Wnd", hWnd);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Window Classes
+// REVIEW: 戻り型 LONG_PTR の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(LONG_PTR, WINAPI, GetWindowLongPtrW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hWnd,
+	_In_ int nIndex
+) {
+	LONG_PTR ret;
+	ret = Old_GetWindowLongPtrW(hWnd, nIndex);
+	LOQ_nonzero("windows", "pi", "Wnd", hWnd, "Index", nIndex);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Cursors
+// REVIEW: 戻り型 HCURSOR の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(HCURSOR, WINAPI, LoadCursorW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ HINSTANCE hInstance,
+	_In_ LPCWSTR lpCursorName
+) {
+	HCURSOR ret;
+	ret = Old_LoadCursorW(hInstance, lpCursorName);
+	LOQ_nonzero("windows", "pu", "Instance", hInstance, "CursorName", lpCursorName);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Window Classes
+// REVIEW: 戻り型 ATOM の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpwcx: 型 const WNDCLASSEXW* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(ATOM, WINAPI, RegisterClassExW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const WNDCLASSEXW* lpwcx
+) {
+	ATOM ret;
+	ret = Old_RegisterClassExW(lpwcx);
+	// [可読性7.5] Wcx は ②固定サイズ構造体 WNDCLASSEXW だが、バイトダンプでは中身が
+	// ポインタ列になり可読でない。人間が読める実体は **lpszClassName**(ウィンドウクラス名)
+	// なので、そのメンバを u(wide文字列)で追加記録する。NULL は log.c 側で L"" に落ちる。
+	LOQ_nonzero("windows", "pu", "Wcx", lpwcx, "ClassName", lpwcx ? lpwcx->lpszClassName : L"");
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Windows
+HOOKDEF(BOOL, WINAPI, ShowWindow, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hWnd,
+	_In_ int nCmdShow
+) {
+	BOOL ret;
+	ret = Old_ShowWindow(hWnd, nCmdShow);
+	LOQ_bool("windows", "pi", "Wnd", hWnd, "CmdShow", nCmdShow);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Painting and Drawing
+HOOKDEF(BOOL, WINAPI, UpdateWindow, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hWnd
+) {
+	BOOL ret;
+	ret = Old_UpdateWindow(hWnd);
+	LOQ_bool("windows", "p", "Wnd", hWnd);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
+// REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpmsg: 型 const MSG* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(LRESULT, WINAPI, DispatchMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const MSG* lpmsg
+) {
+	LRESULT ret;
+	ret = Old_DispatchMessageW(lpmsg);
+	// [可読性7.5] ② 固定サイズ構造体 MSG(入力)。PeekMessageW/TranslateMessage と同一の扱いで、
+	// どのメッセージをディスパッチしたかを追えるようバイト内容を残す。
+	// NULL は log.c の 'b' が 0 バイト扱いにする。
+	LOQ_nonzero("windows", "b", "Msg", (size_t)(lpmsg ? sizeof(MSG) : 0), lpmsg);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
+HOOKDEF(BOOL, WINAPI, PeekMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPMSG lpMsg,
+	_In_opt_ HWND hWnd,
+	_In_ UINT wMsgFilterMin,
+	_In_ UINT wMsgFilterMax,
+	_In_ UINT wRemoveMsg
+) {
+	BOOL ret;
+	ret = Old_PeekMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
+	// [可読性7.5] Msg は ⑤出力構造体 MSG(windows.h 定義済み)。本検体(window_interaction_monitor)は
+	// **受信したウィンドウメッセージ**で環境を判定するので message/wParam/lParam が核心。
+	// 戻り値が 0 のときはメッセージを取得しておらず中身が無いので成功時のみ読む。
+	LOQ_bool("windows", "bpiii", "Msg", (size_t)(ret && lpMsg ? sizeof(MSG) : 0), lpMsg, "Wnd", hWnd, "WMsgFilterMin", wMsgFilterMin, "WMsgFilterMax", wMsgFilterMax, "WRemoveMsg", wRemoveMsg);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
+HOOKDEF(VOID, WINAPI, PostQuitMessage, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ int nExitCode
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_PostQuitMessage(nExitCode);
+	LOQ_void("windows", "i", "ExitCode", nExitCode);
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Keyboard Input
+// REVIEW: 引数 lpMsg: 型 const MSG* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, TranslateMessage, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const MSG* lpMsg
+) {
+	BOOL ret;
+	ret = Old_TranslateMessage(lpMsg);
+	// [可読性7.5] ② 固定サイズ構造体 MSG(入力)。PeekMessageW と対で、どのメッセージを
+	// 翻訳したかが分かるようバイト内容を残す。NULL は log.c の b が 0 バイト扱いにする。
+	LOQ_bool("windows", "b", "Msg", (size_t)(lpMsg ? sizeof(MSG) : 0), lpMsg);
+	return ret;
+}
+/* >>> AUTOHOOK_mitre_129_window_interaction_monitor END <<< */
+

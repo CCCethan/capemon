@@ -1929,26 +1929,16 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_046_jumplist_age_evaluator BEGIN <<< */
-// -> hook_file.c に追加 | category="filesystem" | winapi:Time
-// REVIEW: 戻り型 LONG の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpFileTime1: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 lpFileTime2: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(LONG, WINAPI, CompareFileTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const FILETIME* lpFileTime1,
-	_In_ const FILETIME* lpFileTime2
+/* >>> AUTOHOOK_mitre_129_window_interaction_monitor BEGIN <<< */
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
 ) {
-	LONG ret;
-	ret = Old_CompareFileTime(lpFileTime1, lpFileTime2);
-	// [可読性7.5] ② 固定サイズ構造体(FILETIME=8バイト)。同ファイルの FileTimeToSystemTime /
-	// FileTimeToLocalFileTime が既に 'X'(PLARGE_INTEGER として64bit値) で記録しており前例がある。
-	// 本検体(jumplist_age_evaluator)は**ジャンプリストの新しさを file time の比較で判定**するので、
-	// 比較される2つの時刻そのものが判定材料。アドレスのみでは何と何を比べたか追えない。
-	LOQ_nonzero("filesystem", "XX", "FileTime1", (PLARGE_INTEGER)lpFileTime1, "FileTime2", (PLARGE_INTEGER)lpFileTime2);
+	BOOL ret;
+	ret = Old_AreFileApisANSI();
+	LOQ_bool("filesystem", "");
 	return ret;
 }
-
-/* >>> restored from hookdb <<< */
 
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 // REVIEW: 引数 lpSecurityAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -1970,23 +1960,6 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW, // 呼出規約は WINAPI 仮定(socket/nat
 	return ret;
 }
 
-// -> hook_file.c に追加 | category="filesystem" | winapi:Time
-// REVIEW: 引数 lpFileTime: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const FILETIME* lpFileTime,
-	_Out_ LPSYSTEMTIME lpSystemTime
-) {
-	BOOL ret;
-	ret = Old_FileTimeToSystemTime(lpFileTime, lpSystemTime);
-	// [7.5] ② 固定サイズ構造体(8バイト): FileTimeToLocalFileTime と同一の扱い。
-	//       FILETIME を PLARGE_INTEGER として 'X' で 64bit 値化する。
-	// [可読性7.5] SystemTime は ②固定サイズ構造体(SYSTEMTIME=16バイト、windows.h 定義済み)。
-	// FileTime を X で出したうえで、その**デコード結果**(年月日時分秒を WORD x8)も残す。
-	// 失敗時は書き戻されないので成功時のみ読む。
-	LOQ_bool("filesystem", "Xb", "FileTime", (PLARGE_INTEGER)lpFileTime, "SystemTime", (size_t)(ret && lpSystemTime ? sizeof(SYSTEMTIME) : 0), lpSystemTime);
-	return ret;
-}
-
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ HANDLE hFindFile
@@ -1994,23 +1967,6 @@ HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/
 	BOOL ret;
 	ret = Old_FindClose(hFindFile);
 	LOQ_bool("filesystem", "p", "FindFile", hFindFile);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(HANDLE, WINAPI, FindFirstFileW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpFileName,
-	_Out_ LPWIN32_FIND_DATAW lpFindFileData
-) {
-	HANDLE ret;
-	ret = Old_FindFirstFileW(lpFileName, lpFindFileData);
-	// [可読性7.5] FindFileData は ⑤出力構造体(WIN32_FIND_DATAW)。中身のうち人間可読で
-	// 価値があるのは **cFileName**(見つかったファイル名)なので、構造体ダンプではなく
-	// そのメンバを 'u'(wide文字列, log.c は NULL を L"" に落として安全)で記録する。
-	// ★exp5 では同種の FindNextFileW.FindFileData を「既定 capemon 所有で編集できない」として
-	//   keep-p にしたが、FindFirstFileW は**本パイプラインの生成物**なので改善できる。
-	// 失敗時(INVALID_HANDLE_VALUE)は構造体が埋まらないのでガードする。
-	LOQ_handle("filesystem", "Fpu", "FileName", lpFileName, "FindFileData", lpFindFileData, "FoundName", (ret != INVALID_HANDLE_VALUE && lpFindFileData) ? lpFindFileData->cFileName : L"");
 	return ret;
 }
 
@@ -2104,5 +2060,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "NumberOfBytesToWrite", nNumberOfBytesToWrite, "NumberOfBytesWritten", lpNumberOfBytesWritten, "Overlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_046_jumplist_age_evaluator END <<< */
+/* >>> AUTOHOOK_mitre_129_window_interaction_monitor END <<< */
 
