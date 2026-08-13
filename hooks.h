@@ -3930,12 +3930,19 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_123_vnic_mac_oui_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_126_webcam_device_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
+);
+HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
+	_In_opt_ LPVOID pvReserved,
+	_In_ DWORD dwCoInit
+);
+HOOKDEF(void, WINAPI, CoUninitialize,
+	void
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4283,5 +4290,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_123_vnic_mac_oui_checker END <<< */
+/* >>> AUTOHOOK_mitre_126_webcam_device_checker END <<< */
 

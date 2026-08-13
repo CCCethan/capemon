@@ -72,7 +72,28 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_123_vnic_mac_oui_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_126_webcam_device_checker BEGIN <<< */
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pvReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(HRESULT, WINAPI, CoInitializeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPVOID pvReserved,
+	_In_ DWORD dwCoInit
+) {
+	HRESULT ret;
+	ret = Old_CoInitializeEx(pvReserved, dwCoInit);
+	LOQ_hresult("com", "pi", "VReserved", pvReserved, "CoInit", dwCoInit);
+	return ret;
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:COM
+HOOKDEF(void, WINAPI, CoUninitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_CoUninitialize();
+	LOQ_void("com", "");
+}
+
 // -> hook_com.c に追加 | category="com" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpVersionInformation: 型 LPNLSVERSIONINFO は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -170,5 +191,5 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_123_vnic_mac_oui_checker END <<< */
+/* >>> AUTOHOOK_mitre_126_webcam_device_checker END <<< */
 
