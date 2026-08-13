@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_mitre_122_vm_guest_process_checker BEGIN <<< */
+/* >>> AUTOHOOK_mitre_123_vnic_mac_oui_checker BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4283,5 +4283,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_mitre_122_vm_guest_process_checker END <<< */
+/* >>> AUTOHOOK_mitre_123_vnic_mac_oui_checker END <<< */
 
