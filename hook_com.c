@@ -72,103 +72,213 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_082_rdp_server_history_checker BEGIN <<< */
-// -> hook_com.c に追加 | category="com" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpVersionInformation: 型 LPNLSVERSIONINFO は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 lpReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-// REVIEW: 引数 lParam: 型 LPARAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(int, WINAPI, CompareStringEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCWSTR lpLocaleName,
-	_In_ DWORD dwCmpFlags,
-	_In_ LPCWSTR lpString1,
-	_In_ int cchCount1,
-	_In_ LPCWSTR lpString2,
-	_In_ int cchCount2,
-	_In_opt_ LPNLSVERSIONINFO lpVersionInformation,
-	_In_opt_ LPVOID lpReserved,
-	_In_opt_ LPARAM lParam
+/* >>> AUTOHOOK_hookverify_exp5 BEGIN <<< */
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pvReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(HRESULT, WINAPI, CoInitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPVOID pvReserved
 ) {
-	int ret;
-	ret = Old_CompareStringEx(lpLocaleName, dwCmpFlags, lpString1, cchCount1, lpString2, cchCount2, lpVersionInformation, lpReserved, lParam);
-	LOQ_nonzero("com", "uiuiuippp", "LocaleName", lpLocaleName, "CmpFlags", dwCmpFlags, "String1", lpString1, "Count1", cchCount1, "String2", lpString2, "Count2", cchCount2, "VersionInformation", lpVersionInformation, "Reserved", lpReserved, "LParam", lParam);
+	HRESULT ret;
+	ret = Old_CoInitialize(pvReserved);
+	LOQ_hresult("com", "p", "VReserved", pvReserved);
 	return ret;
 }
 
-// -> hook_com.c に追加 | category="com" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
-HOOKDEF(int, WINAPI, CompareStringW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LCID Locale,
-	_In_ DWORD dwCmpFlags,
-	_In_ LPCWSTR lpString1,
-	_In_ int cchCount1,
-	_In_ LPCWSTR lpString2,
-	_In_ int cchCount2
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pvReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(HRESULT, WINAPI, CoInitializeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPVOID pvReserved,
+	_In_ DWORD dwCoInit
 ) {
-	int ret;
-	ret = Old_CompareStringW(Locale, dwCmpFlags, lpString1, cchCount1, lpString2, cchCount2);
-	LOQ_nonzero("com", "iiuiui", "Locale", Locale, "CmpFlags", dwCmpFlags, "String1", lpString1, "Count1", cchCount1, "String2", lpString2, "Count2", cchCount2);
+	HRESULT ret;
+	ret = Old_CoInitializeEx(pvReserved, dwCoInit);
+	LOQ_hresult("com", "pi", "VReserved", pvReserved, "CoInit", dwCoInit);
 	return ret;
 }
 
-// -> hook_com.c に追加 | category="com" | winapi:Consoles
-HOOKDEF(BOOL, WINAPI, GetConsoleMode, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hConsoleHandle,
-	_Out_ LPDWORD lpMode
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pSecDesc: 型 PSECURITY_DESCRIPTOR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 asAuthSvc: 型 SOLE_AUTHENTICATION_SERVICE* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 pReserved1: 型 void* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 pAuthList: 型 void* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 pReserved3: 型 void* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ PSECURITY_DESCRIPTOR pSecDesc,
+	_In_ LONG cAuthSvc,
+	_In_opt_ SOLE_AUTHENTICATION_SERVICE* asAuthSvc,
+	_In_opt_ void* pReserved1,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ void* pAuthList,
+	_In_ DWORD dwCapabilities,
+	_In_opt_ void* pReserved3
 ) {
-	BOOL ret;
-	ret = Old_GetConsoleMode(hConsoleHandle, lpMode);
-	LOQ_bool("com", "pI", "ConsoleHandle", hConsoleHandle, "Mode", lpMode);
+	HRESULT ret;
+	ret = Old_CoInitializeSecurity(pSecDesc, cAuthSvc, asAuthSvc, pReserved1, dwAuthnLevel, dwImpLevel, pAuthList, dwCapabilities, pReserved3);
+	LOQ_hresult("com", "pippiipip", "SecDesc", pSecDesc, "CAuthSvc", cAuthSvc, "AsAuthSvc", asAuthSvc, "Reserved1", pReserved1, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthList", pAuthList, "Capabilities", dwCapabilities, "Reserved3", pReserved3);
 	return ret;
 }
 
-// -> hook_com.c に追加 | category="com" | winapi:Consoles
-// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(UINT, WINAPI, GetConsoleOutputCP, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pStm: 型 LPSTREAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 riid: 型 REFIID を i(int32)で仮記録。要確認
+// REVIEW: 引数 pUnk: 型 LPUNKNOWN は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 pvDestContext: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(HRESULT, WINAPI, CoMarshalInterface, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPSTREAM pStm,
+	_In_ REFIID riid,
+	_In_ LPUNKNOWN pUnk,
+	_In_ DWORD dwDestContext,
+	_In_opt_ LPVOID pvDestContext,
+	_In_ DWORD mshlflags
+) {
+	HRESULT ret;
+	ret = Old_CoMarshalInterface(pStm, riid, pUnk, dwDestContext, pvDestContext, mshlflags);
+	LOQ_hresult("com", "pipipi", "Stm", pStm, "Riid", riid, "Unk", pUnk, "DestContext", dwDestContext, "VDestContext", pvDestContext, "Mshlflags", mshlflags);
+	return ret;
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pStm: 型 LPSTREAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HRESULT, WINAPI, CoReleaseMarshalData, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPSTREAM pStm
+) {
+	HRESULT ret;
+	ret = Old_CoReleaseMarshalData(pStm);
+	LOQ_hresult("com", "p", "Stm", pStm);
+	return ret;
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pProxy: 型 IUnknown* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 pServerPrincName: 型 OLECHAR* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 pAuthInfo: 型 RPC_AUTH_IDENTITY_HANDLE を i(int32)で仮記録。要確認
+HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ IUnknown* pProxy,
+	_In_ DWORD dwAuthnSvc,
+	_In_ DWORD dwAuthzSvc,
+	_In_opt_ OLECHAR* pServerPrincName,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ RPC_AUTH_IDENTITY_HANDLE pAuthInfo,
+	_In_ DWORD dwCapabilities
+) {
+	HRESULT ret;
+	ret = Old_CoSetProxyBlanket(pProxy, dwAuthnSvc, dwAuthzSvc, pServerPrincName, dwAuthnLevel, dwImpLevel, pAuthInfo, dwCapabilities);
+	// [7.5] ServerPrincName は型 OLECHAR* = ワイド文字列(desc「The server principal name」)。
+	//       本解析では NULL(COLE_DEFAULT_PRINCIPAL)だが u は NULL 安全なので内容可読化する。
+	LOQ_hresult("com", "piiuiiii", "Proxy", pProxy, "AuthnSvc", dwAuthnSvc, "AuthzSvc", dwAuthzSvc, "ServerPrincName", pServerPrincName, "AuthnLevel", dwAuthnLevel, "ImpLevel", dwImpLevel, "AuthInfo", pAuthInfo, "Capabilities", dwCapabilities);
+	return ret;
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:COM
+HOOKDEF(LPVOID, WINAPI, CoTaskMemAlloc, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ SIZE_T cb
+) {
+	LPVOID ret;
+	ret = Old_CoTaskMemAlloc(cb);
+	LOQ_nonnull("com", "i", "cb", cb);
+	return ret;
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pv: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(void, WINAPI, CoTaskMemFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPVOID pv
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_CoTaskMemFree(pv);
+	LOQ_void("com", "p", "V", pv);
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:COM
+HOOKDEF(void, WINAPI, CoUninitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
 ) {
-	UINT ret;
-	ret = Old_GetConsoleOutputCP();
-	LOQ_nonzero("com", "");
-	return ret;
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_CoUninitialize();
+	LOQ_void("com", "");
 }
 
-// -> hook_com.c に追加 | category="com" | winapi:Consoles
-HOOKDEF(HANDLE, WINAPI, GetStdHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD nStdHandle
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 pStm: 型 LPSTREAM は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 riid: 型 REFIID を i(int32)で仮記録。要確認
+// REVIEW: 引数 ppv: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(HRESULT, WINAPI, CoUnmarshalInterface, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPSTREAM pStm,
+	_In_ REFIID riid,
+	_Out_ LPVOID* ppv
 ) {
-	HANDLE ret;
-	ret = Old_GetStdHandle(nStdHandle);
-	LOQ_handle("com", "i", "StdHandle", nStdHandle);
+	HRESULT ret;
+	ret = Old_CoUnmarshalInterface(pStm, riid, ppv);
+	LOQ_hresult("com", "pip", "Stm", pStm, "Riid", riid, "Pv", ppv);
 	return ret;
 }
 
-// -> hook_com.c に追加 | category="com" | winapi:Consoles
-// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-// REVIEW: 引数 pInputControl: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, ReadConsoleW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hConsoleInput,
-	_Out_ LPVOID lpBuffer,
-	_In_ DWORD nNumberOfCharsToRead,
-	_Out_ LPDWORD lpNumberOfCharsRead,
-	_In_opt_ LPVOID pInputControl
+// -> hook_com.c に追加 | category="com" | winapi:Device Context
+HOOKDEF(HDC, WINAPI, CreateCompatibleDC, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HDC hdc
+) {
+	HDC ret;
+	ret = Old_CreateCompatibleDC(hdc);
+	LOQ_nonnull("com", "p", "Dc", hdc);
+	return ret;
+}
+
+// -> hook_com.c に追加 | category="com" | winapi:Print Spooler
+// REVIEW: 引数 pPrinterEnum: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, EnumPrintersA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD Flags,
+	_In_ LPSTR Name,
+	_In_ DWORD Level,
+	_Out_ LPBYTE pPrinterEnum,
+	_In_ DWORD cbBuf,
+	_Out_ LPDWORD pcbNeeded,
+	_Out_ LPDWORD pcReturned
 ) {
 	BOOL ret;
-	ret = Old_ReadConsoleW(hConsoleInput, lpBuffer, nNumberOfCharsToRead, lpNumberOfCharsRead, pInputControl);
-	LOQ_bool("com", "ppiIp", "ConsoleInput", hConsoleInput, "Buffer", lpBuffer, "NumberOfCharsToRead", nNumberOfCharsToRead, "NumberOfCharsRead", lpNumberOfCharsRead, "InputControl", pInputControl);
+	ret = Old_EnumPrintersA(Flags, Name, Level, pPrinterEnum, cbBuf, pcbNeeded, pcReturned);
+	// [7.5] ⑤/出力バッファ: EnumPrintersW と同一の扱い(ANSI版)。pPrinterEnum は
+	//       PRINTER_INFO_<Level> の配列で Level が可変=要素型が一意に決まらないため
+	//       バイトダンプで内容を残す。長さ源は実書込長 *pcbNeeded、容量 cbBuf で上限を締める。
+	//       ★ _LOQ は成否に関わらず値式を評価するので、必要バッファ長の問い合わせ呼び出し
+	//         (pPrinterEnum=NULL / cbBuf=0 / ret=FALSE)では 0 バイトになるようガードする。
+	LOQ_bool("com", "isibiII", "Flags", Flags, "Name", Name, "Level", Level, "PrinterEnum", (size_t)((ret && pPrinterEnum && pcbNeeded) ? (*pcbNeeded < cbBuf ? *pcbNeeded : cbBuf) : 0), pPrinterEnum, "Buf", cbBuf, "CbNeeded", pcbNeeded, "CReturned", pcReturned);
 	return ret;
 }
 
-// -> hook_com.c に追加 | category="com" | winapi:Consoles
-HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD nStdHandle,
-	_In_ HANDLE hHandle
+// -> hook_com.c に追加 | category="com" | winapi:Print Spooler
+// REVIEW: 引数 pPrinterEnum: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, EnumPrintersW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD Flags,
+	_In_ LPWSTR Name,
+	_In_ DWORD Level,
+	_Out_ LPBYTE pPrinterEnum,
+	_In_ DWORD cbBuf,
+	_Out_ LPDWORD pcbNeeded,
+	_Out_ LPDWORD pcReturned
 ) {
 	BOOL ret;
-	ret = Old_SetStdHandle(nStdHandle, hHandle);
-	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
+	ret = Old_EnumPrintersW(Flags, Name, Level, pPrinterEnum, cbBuf, pcbNeeded, pcReturned);
+	// [7.5] ⑤/出力バッファ: pPrinterEnum は PRINTER_INFO_<Level> の配列。Level が可変で
+	//       要素型が一意に決まらないため、要素メンバではなくバイトダンプで内容を残す。
+	//       長さ源は実書込長 *pcbNeeded、容量 cbBuf で上限を締める。
+	//       ★ _LOQ は成否に関わらず値式を評価するので、必要バッファ長の問い合わせ呼び出し
+	//         (pPrinterEnum=NULL / cbBuf=0 / ret=FALSE)では 0 バイトになるようガードする。
+	LOQ_bool("com", "iuibiII", "Flags", Flags, "Name", Name, "Level", Level, "PrinterEnum", (size_t)((ret && pPrinterEnum && pcbNeeded) ? (*pcbNeeded < cbBuf ? *pcbNeeded : cbBuf) : 0), pPrinterEnum, "Buf", cbBuf, "CbNeeded", pcbNeeded, "CReturned", pcReturned);
 	return ret;
 }
-/* >>> AUTOHOOK_mitre_082_rdp_server_history_checker END <<< */
+
+// -> hook_com.c に追加 | category="com" | winapi:COM
+// REVIEW: 引数 rclsid: 型 REFIID を i(int32)で仮記録。要確認
+HOOKDEF(HRESULT, WINAPI, StringFromIID, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ REFIID rclsid,
+	_Out_ LPOLESTR* lplpsz
+) {
+	HRESULT ret;
+	ret = Old_StringFromIID(rclsid, lplpsz);
+	LOQ_hresult("com", "iP", "Rclsid", rclsid, "Lpsz", lplpsz);
+	return ret;
+}
+/* >>> AUTOHOOK_hookverify_exp5 END <<< */
 

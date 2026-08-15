@@ -1496,8 +1496,6 @@ HOOKDEF(BOOL, WINAPI, FindNextFileW,
 
 	// not logging this due to the flood of logs it would cause
 
-	/* AUTOHOOK augment: 既存フックに LOQ を追記(機能は維持) */
-	LOQ_bool("filesystem", "pp", "FindFile", hFindFile, "FindFileData", lpFindFileData);
 	return ret;
 }
 
@@ -1929,7 +1927,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_082_rdp_server_history_checker BEGIN <<< */
+/* >>> AUTOHOOK_hookverify_exp5 BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1940,125 +1938,77 @@ HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/n
 	return ret;
 }
 
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 引数 lpSecurityAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HANDLE, WINAPI, CreateFileW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpFileName,
-	_In_ DWORD dwDesiredAccess,
-	_In_ DWORD dwShareMode,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-	_In_ DWORD dwCreationDisposition,
-	_In_ DWORD dwFlagsAndAttributes,
-	_In_opt_ HANDLE hTemplateFile
-) {
-	HANDLE ret;
-	ret = Old_CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-	// [7.5] ② 固定サイズ構造体: SECURITY_ATTRIBUTES(引数型が通っている=定義済み)。
-	//       CreatePipe.PipeAttributes と同一の扱い。bInheritHandle が読めるのが要点。
-	//       多くの呼び出しで NULL だが b は NULL 安全。
-	LOQ_handle("filesystem", "Fiibiip", "FileName", lpFileName, "DesiredAccess", dwDesiredAccess, "ShareMode", dwShareMode, "SecurityAttributes", sizeof(SECURITY_ATTRIBUTES), lpSecurityAttributes, "CreationDisposition", dwCreationDisposition, "FlagsAndAttributes", dwFlagsAndAttributes, "TemplateFile", hTemplateFile);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ HANDLE hFindFile
+// -> hook_file.c に追加 | category="filesystem" | winapi:Time
+// REVIEW: 引数 lpFileTime: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, FileTimeToLocalFileTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const FILETIME* lpFileTime,
+	_Out_ LPFILETIME lpLocalFileTime
 ) {
 	BOOL ret;
-	ret = Old_FindClose(hFindFile);
-	LOQ_bool("filesystem", "p", "FindFile", hFindFile);
+	ret = Old_FileTimeToLocalFileTime(lpFileTime, lpLocalFileTime);
+	// [7.5] ② 固定サイズ構造体(8バイト): FILETIME は LARGE_INTEGER と同一レイアウト
+	//       (dwLowDateTime/dwHighDateTime = LowPart/HighPart)。log.c の 'X' は
+	//       PLARGE_INTEGER を NULL ガード + __try 保護で参照し 64bit 値を出すので、
+	//       バイトダンプより読める形になる。
+	LOQ_bool("filesystem", "XP", "FileTime", (PLARGE_INTEGER)lpFileTime, "LocalFileTime", lpLocalFileTime);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Time
+// REVIEW: 引数 lpFileTime: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const FILETIME* lpFileTime,
+	_Out_ LPSYSTEMTIME lpSystemTime
+) {
+	BOOL ret;
+	ret = Old_FileTimeToSystemTime(lpFileTime, lpSystemTime);
+	// [7.5] ② 固定サイズ構造体(8バイト): FileTimeToLocalFileTime と同一の扱い。
+	//       FILETIME を PLARGE_INTEGER として 'X' で 64bit 値化する。
+	LOQ_bool("filesystem", "XP", "FileTime", (PLARGE_INTEGER)lpFileTime, "SystemTime", lpSystemTime);
 	return ret;
 }
 
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(BOOL, WINAPI, FlushFileBuffers, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+// REVIEW: 引数 FileInformationClass: 型 FILE_INFO_BY_HANDLE_CLASS を i(int32)で仮記録。要確認
+// REVIEW: 引数 lpFileInformation: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, GetFileInformationByHandleEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hFile,
+	_In_ FILE_INFO_BY_HANDLE_CLASS FileInformationClass,
+	_Out_ LPVOID lpFileInformation,
+	_In_ DWORD dwBufferSize
+) {
+	BOOL ret;
+	ret = Old_GetFileInformationByHandleEx(hFile, FileInformationClass, lpFileInformation, dwBufferSize);
+	// [可読性7.5] FileInformation は ⑤出力バッファ(desc: "receives the requested file information")。
+	// 中身は FileInformationClass 依存の構造体(本検体では BufferSize=40)。LPVOID でクラス依存の
+	// ため特定メンバを選べない → sizeof ではなく **容量 dwBufferSize** を長さにバイト内容を残す。
+	// 戻り値は BOOL(観測値 1)で長さではないため、check_readability の提案
+	// "(size_t)(ret < BufferSize ? ret : BufferSize)" は誤り(1バイトしか出ない)。
+	// 失敗時は書き戻されないので成功時のみ読む。
+	LOQ_bool("filesystem", "pibi", "File", hFile, "FileInformationClass", FileInformationClass, "FileInformation", (size_t)(ret && lpFileInformation ? dwBufferSize : 0), lpFileInformation, "BufferSize", dwBufferSize);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(LPSTR, WINAPI, PathCombineA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPSTR pszPathOut,
+	_In_opt_ LPCSTR pszPathIn,
+	_In_ LPCSTR pszMore
+) {
+	LPSTR ret;
+	ret = Old_PathCombineA(pszPathOut, pszPathIn, pszMore);
+	LOQ_nonnull("filesystem", "ffs", "SzPathOut", pszPathOut, "SzPathIn", pszPathIn, "SzMore", pszMore);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(BOOL, WINAPI, SetEndOfFile, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hFile
 ) {
 	BOOL ret;
-	ret = Old_FlushFileBuffers(hFile);
+	ret = Old_SetEndOfFile(hFile);
 	LOQ_bool("filesystem", "p", "File", hFile);
 	return ret;
 }
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(BOOL, WINAPI, GetFileSizeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFile,
-	_Out_ PLARGE_INTEGER lpFileSize
-) {
-	BOOL ret;
-	ret = Old_GetFileSizeEx(hFile, lpFileSize);
-	LOQ_bool("filesystem", "pX", "File", hFile, "FileSize", lpFileSize);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetFileType, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFile
-) {
-	DWORD ret;
-	ret = Old_GetFileType(hFile);
-	LOQ_nonzero("filesystem", "p", "File", hFile);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, ReadFile, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFile,
-	_Out_ LPVOID lpBuffer,
-	_In_ DWORD nNumberOfBytesToRead,
-	_Out_opt_ LPDWORD lpNumberOfBytesRead,
-	_Inout_opt_ LPOVERLAPPED lpOverlapped
-) {
-	BOOL ret;
-	ret = Old_ReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
-	// [7.5] ⑤/単一出力バッファ: 実書込長は *lpNumberOfBytesRead(観測 37)。容量 nNumberOfBytesToRead
-	//       で上限を締め、非同期時に NULL になりうるので三項でガードしてから参照する。
-	//       ※ 提案の (size_t)(ret < NumberOfBytesToRead ? ...) は誤り — ret は BOOL(1)なので1バイトになる。
-	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)(lpNumberOfBytesRead ? (*lpNumberOfBytesRead < nNumberOfBytesToRead ? *lpNumberOfBytesRead : nNumberOfBytesToRead) : 0), lpBuffer, "NumberOfBytesToRead", nNumberOfBytesToRead, "NumberOfBytesRead", lpNumberOfBytesRead, "Overlapped", lpOverlapped);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Error Handling
-// REVIEW: 引数 PcValue: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-// REVIEW: 引数 BaseOfImage: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(PVOID, WINAPI, RtlPcToFileHeader, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PVOID PcValue,
-	_Out_ PVOID* BaseOfImage
-) {
-	PVOID ret;
-	ret = Old_RtlPcToFileHeader(PcValue, BaseOfImage);
-	LOQ_nonnull("filesystem", "pp", "PcValue", PcValue, "BaseOfImage", BaseOfImage);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(BOOL, WINAPI, SetFilePointerEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFile,
-	_In_ LARGE_INTEGER liDistanceToMove,
-	_Out_opt_ PLARGE_INTEGER lpNewFilePointer,
-	_In_ DWORD dwMoveMethod
-) {
-	BOOL ret;
-	ret = Old_SetFilePointerEx(hFile, liDistanceToMove, lpNewFilePointer, dwMoveMethod);
-	LOQ_bool("filesystem", "pxXi", "File", hFile, "LiDistanceToMove", liDistanceToMove, "NewFilePointer", lpNewFilePointer, "MoveMethod", dwMoveMethod);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 引数 lpBuffer: 入力バッファとして nNumberOfBytesToWrite バイト分を内容ログ('b')。nNumberOfBytesToWrite が実データ長でない/出力用バッファなら 'p'(アドレスのみ)へ戻すこと
-HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFile,
-	_In_ LPCVOID lpBuffer,
-	_In_ DWORD nNumberOfBytesToWrite,
-	_Out_opt_ LPDWORD lpNumberOfBytesWritten,
-	_Inout_opt_ LPOVERLAPPED lpOverlapped
-) {
-	BOOL ret;
-	ret = Old_WriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
-	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "NumberOfBytesToWrite", nNumberOfBytesToWrite, "NumberOfBytesWritten", lpNumberOfBytesWritten, "Overlapped", lpOverlapped);
-	return ret;
-}
-/* >>> AUTOHOOK_mitre_082_rdp_server_history_checker END <<< */
+/* >>> AUTOHOOK_hookverify_exp5 END <<< */
 

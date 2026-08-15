@@ -178,55 +178,20 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_mitre_082_rdp_server_history_checker BEGIN <<< */
+/* >>> AUTOHOOK_hookverify_exp5 BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ LPCRITICAL_SECTION lpCriticalSection
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD nCount,
+	_In_ const HANDLE* pHandles,
+	_In_ BOOL bWaitAll,
+	_In_ DWORD dwMilliseconds,
+	_In_ DWORD dwWakeMask
 ) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_DeleteCriticalSection(lpCriticalSection);
-	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(void, WINAPI, EnterCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ LPCRITICAL_SECTION lpCriticalSection
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_EnterCriticalSection(lpCriticalSection);
-	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(BOOL, WINAPI, InitializeCriticalSectionAndSpinCount, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPCRITICAL_SECTION lpCriticalSection,
-	_In_ DWORD dwSpinCount
-) {
-	BOOL ret;
-	ret = Old_InitializeCriticalSectionAndSpinCount(lpCriticalSection, dwSpinCount);
-	LOQ_bool("sync", "Pi", "CriticalSection", lpCriticalSection, "SpinCount", dwSpinCount);
+	DWORD ret;
+	ret = Old_MsgWaitForMultipleObjects(nCount, pHandles, bWaitAll, dwMilliseconds, dwWakeMask);
+	LOQ_nonzero("sync", "ipiii", "Count", nCount, "Handles", pHandles, "WaitAll", bWaitAll, "Milliseconds", dwMilliseconds, "WakeMask", dwWakeMask);
 	return ret;
 }
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(BOOL, WINAPI, InitializeCriticalSectionEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPCRITICAL_SECTION lpCriticalSection,
-	_In_ DWORD dwSpinCount,
-	_In_ DWORD Flags
-) {
-	BOOL ret;
-	ret = Old_InitializeCriticalSectionEx(lpCriticalSection, dwSpinCount, Flags);
-	LOQ_bool("sync", "Pii", "CriticalSection", lpCriticalSection, "SpinCount", dwSpinCount, "Flags", Flags);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ LPCRITICAL_SECTION lpCriticalSection
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_LeaveCriticalSection(lpCriticalSection);
-	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
-}
-/* >>> AUTOHOOK_mitre_082_rdp_server_history_checker END <<< */
+/* >>> AUTOHOOK_hookverify_exp5 END <<< */
 
