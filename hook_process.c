@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_hookverify_uncovered BEGIN <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
 HOOKDEF(VOID, WINAPI, ExitThread, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwExitCode
@@ -1548,6 +1548,25 @@ HOOKDEF(VOID, WINAPI, ExitThread, // 呼出規約は WINAPI 仮定(socket/native
 	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
 	Old_ExitThread(dwExitCode);
 	LOQ_void("process", "i", "ExitCode", dwExitCode);
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
+HOOKDEF(VOID, WINAPI, FreeLibraryAndExitThread, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HMODULE hModule,
+	_In_ DWORD dwExitCode
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_FreeLibraryAndExitThread(hModule, dwExitCode);
+	LOQ_void("process", "pi", "Module", hModule, "ExitCode", dwExitCode);
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ UINT uExitCode
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_ExitProcess(uExitCode);
+	LOQ_void("process", "i", "UExitCode", uExitCode);
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Processes
@@ -1561,13 +1580,13 @@ HOOKDEF(BOOL, WINAPI, FreeEnvironmentStringsW, // 呼出規約は WINAPI 仮定(
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
-HOOKDEF(VOID, WINAPI, FreeLibraryAndExitThread, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HMODULE hModule,
-	_In_ DWORD dwExitCode
+HOOKDEF(BOOL, WINAPI, FreeLibrary, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HMODULE hModule
 ) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_FreeLibraryAndExitThread(hModule, dwExitCode);
-	LOQ_void("process", "pi", "Module", hModule, "ExitCode", dwExitCode);
+	BOOL ret;
+	ret = Old_FreeLibrary(hModule);
+	LOQ_bool("process", "p", "Module", hModule);
+	return ret;
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Processes
@@ -1602,24 +1621,16 @@ HOOKDEF(DWORD, WINAPI, GetCurrentThreadId, // 呼出規約は WINAPI 仮定(sock
 	return ret;
 }
 
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, GetExitCodeProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hProcess,
-	_Out_ LPDWORD lpExitCode
-) {
-	BOOL ret;
-	ret = Old_GetExitCodeProcess(hProcess, lpExitCode);
-	LOQ_bool("process", "pI", "Process", hProcess, "ExitCode", lpExitCode);
-	return ret;
-}
-
 // -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
-HOOKDEF(HMODULE, WINAPI, GetModuleHandleA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCSTR lpModuleName
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetModuleFileNameW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ HMODULE hModule,
+	_Out_ LPWSTR lpFilename,
+	_In_ DWORD nSize
 ) {
-	HMODULE ret;
-	ret = Old_GetModuleHandleA(lpModuleName);
-	LOQ_nonnull("process", "f", "ModuleName", lpModuleName);
+	DWORD ret;
+	ret = Old_GetModuleFileNameW(hModule, lpFilename, nSize);
+	LOQ_nonzero("process", "pFi", "Module", hModule, "Filename", lpFilename, "Size", nSize);
 	return ret;
 }
 
@@ -1667,20 +1678,6 @@ HOOKDEF(HANDLE, WINAPI, GetProcessHeap, // 呼出規約は WINAPI 仮定(socket/
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, GetProcessTimes, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hProcess,
-	_Out_ LPFILETIME lpCreationTime,
-	_Out_ LPFILETIME lpExitTime,
-	_Out_ LPFILETIME lpKernelTime,
-	_Out_ LPFILETIME lpUserTime
-) {
-	BOOL ret;
-	ret = Old_GetProcessTimes(hProcess, lpCreationTime, lpExitTime, lpKernelTime, lpUserTime);
-	LOQ_bool("process", "pPPPP", "Process", hProcess, "CreationTime", lpCreationTime, "ExitTime", lpExitTime, "KernelTime", lpKernelTime, "UserTime", lpUserTime);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, GetStartupInfoW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Out_ LPSTARTUPINFOW lpStartupInfo
 ) {
@@ -1692,37 +1689,33 @@ HOOKDEF(VOID, WINAPI, GetStartupInfoW, // 呼出規約は WINAPI 仮定(socket/n
 	LOQ_void("process", "b", "StartupInfo", sizeof(STARTUPINFOW), lpStartupInfo);
 }
 
-// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
-HOOKDEF(HMODULE, WINAPI, LoadLibraryW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpFileName
+// -> hook_process.c に追加 | category="process" | winapi:System Information Functions
+HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD ProcessorFeature
 ) {
-	HMODULE ret;
-	ret = Old_LoadLibraryW(lpFileName);
-	LOQ_nonnull("process", "F", "FileName", lpFileName);
+	BOOL ret;
+	ret = Old_IsProcessorFeaturePresent(ProcessorFeature);
+	LOQ_bool("process", "i", "ProcessorFeature", ProcessorFeature);
 	return ret;
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(HANDLE, WINAPI, OpenProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwDesiredAccess,
-	_In_ BOOL bInheritHandle,
-	_In_ DWORD dwProcessId
+HOOKDEF(VOID, WINAPI, Sleep, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwMilliseconds
 ) {
-	HANDLE ret;
-	ret = Old_OpenProcess(dwDesiredAccess, bInheritHandle, dwProcessId);
-	LOQ_handle("process", "iii", "DesiredAccess", dwDesiredAccess, "InheritHandle", bInheritHandle, "ProcessId", dwProcessId);
-	return ret;
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_Sleep(dwMilliseconds);
+	LOQ_void("process", "i", "Milliseconds", dwMilliseconds);
 }
 
-// -> hook_process.c に追加 | category="process" | winapi:Authorization
-HOOKDEF(BOOL, WINAPI, OpenProcessToken, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE ProcessHandle,
-	_In_ DWORD DesiredAccess,
-	_Out_ PHANDLE TokenHandle
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, TerminateProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hProcess,
+	_In_ UINT uExitCode
 ) {
 	BOOL ret;
-	ret = Old_OpenProcessToken(ProcessHandle, DesiredAccess, TokenHandle);
-	LOQ_bool("process", "piP", "ProcessHandle", ProcessHandle, "DesiredAccess", DesiredAccess, "TokenHandle", TokenHandle);
+	ret = Old_TerminateProcess(hProcess, uExitCode);
+	LOQ_bool("process", "pi", "Process", hProcess, "UExitCode", uExitCode);
 	return ret;
 }
 
@@ -1768,5 +1761,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "TlsIndex", dwTlsIndex, "TlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_hookverify_uncovered END <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection END <<< */
 

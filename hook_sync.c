@@ -178,7 +178,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_hookverify_uncovered BEGIN <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(VOID, WINAPI, AcquireSRWLockExclusive, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ PSRWLOCK SRWLock
@@ -188,32 +188,32 @@ HOOKDEF(VOID, WINAPI, AcquireSRWLockExclusive, // 呼出規約は WINAPI 仮定(
 	LOQ_void("sync", "P", "SRWLock", SRWLock);
 }
 
-// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
-HOOKDEF(BOOL, WINAPI, CloseEventLog, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ HANDLE hEventLog
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(VOID, WINAPI, ReleaseSRWLockExclusive, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ PSRWLOCK SRWLock
 ) {
-	BOOL ret;
-	ret = Old_CloseEventLog(hEventLog);
-	LOQ_bool("sync", "p", "EventLog", hEventLog);
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_ReleaseSRWLockExclusive(SRWLock);
+	LOQ_void("sync", "P", "SRWLock", SRWLock);
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(BOOLEAN, WINAPI, TryAcquireSRWLockExclusive, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ PSRWLOCK SRWLock
+) {
+	BOOLEAN ret;
+	ret = Old_TryAcquireSRWLockExclusive(SRWLock);
+	LOQ_bool("sync", "P", "SRWLock", SRWLock);
 	return ret;
 }
 
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-// REVIEW: 引数 lpEventAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HANDLE, WINAPI, CreateEventA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
-	_In_ BOOL bManualReset,
-	_In_ BOOL bInitialState,
-	_In_opt_ LPCSTR lpName
+HOOKDEF(VOID, WINAPI, WakeAllConditionVariable, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Inout_ PCONDITION_VARIABLE ConditionVariable
 ) {
-	HANDLE ret;
-	ret = Old_CreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName);
-	// [可読性7.5] EventAttributes は ② 固定サイズ構造体(LPSECURITY_ATTRIBUTES)。
-	// 同ファイルの CreateFileW が既に sizeof(SECURITY_ATTRIBUTES) を長さに 'b' で記録しており
-	// (ビルド実績あり=型は定義済み)、同一イディオムに揃える。_In_opt_ で NULL のことが多いが、
-	// log.c の 'b' は NULL/例外を __try で保護し 0 バイト扱いにするため安全。
-	LOQ_handle("sync", "biis", "EventAttributes", sizeof(SECURITY_ATTRIBUTES), lpEventAttributes, "ManualReset", bManualReset, "InitialState", bInitialState, "Name", lpName);
-	return ret;
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_WakeAllConditionVariable(ConditionVariable);
+	LOQ_void("sync", "P", "ConditionVariable", ConditionVariable);
 }
 
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
@@ -232,17 +232,6 @@ HOOKDEF(void, WINAPI, EnterCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
 	Old_EnterCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
-HOOKDEF(BOOL, WINAPI, GetNumberOfEventLogRecords, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hEventLog,
-	_Out_ PDWORD NumberOfRecords
-) {
-	BOOL ret;
-	ret = Old_GetNumberOfEventLogRecords(hEventLog, NumberOfRecords);
-	LOQ_bool("sync", "pI", "EventLog", hEventLog, "NumberOfRecords", NumberOfRecords);
-	return ret;
 }
 
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
@@ -276,108 +265,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "CriticalSection", lpCriticalSection);
 }
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Event Logging
-HOOKDEF(HANDLE, WINAPI, OpenEventLogW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpUNCServerName,
-	_In_ LPCWSTR lpSourceName
-) {
-	HANDLE ret;
-	ret = Old_OpenEventLogW(lpUNCServerName, lpSourceName);
-	LOQ_handle("sync", "uu", "UNCServerName", lpUNCServerName, "SourceName", lpSourceName);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(VOID, WINAPI, ReleaseSRWLockExclusive, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ PSRWLOCK SRWLock
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_ReleaseSRWLockExclusive(SRWLock);
-	LOQ_void("sync", "P", "SRWLock", SRWLock);
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(BOOL, WINAPI, SetEvent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hEvent
-) {
-	BOOL ret;
-	ret = Old_SetEvent(hEvent);
-	LOQ_bool("sync", "p", "Event", hEvent);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Client
-// REVIEW: 戻り型 HWINEVENTHOOK の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpfnWinEventProc: 型 WINEVENTPROC を i(int32)で仮記録。要確認
-HOOKDEF(HWINEVENTHOOK, WINAPI, SetWinEventHook, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ UINT eventMin,
-	_In_ UINT eventMax,
-	_In_ HMODULE hmodWinEventProc,
-	_In_ WINEVENTPROC lpfnWinEventProc,
-	_In_ DWORD idProcess,
-	_In_ DWORD idThread,
-	_In_ UINT dwflags
-) {
-	HWINEVENTHOOK ret;
-	ret = Old_SetWinEventHook(eventMin, eventMax, hmodWinEventProc, lpfnWinEventProc, idProcess, idThread, dwflags);
-	LOQ_nonzero("sync", "iipiiii", "EventMin", eventMin, "EventMax", eventMax, "ModWinEventProc", hmodWinEventProc, "FnWinEventProc", lpfnWinEventProc, "IdProcess", idProcess, "IdThread", idThread, "Flags", dwflags);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(BOOL, WINAPI, SleepConditionVariableSRW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ PCONDITION_VARIABLE ConditionVariable,
-	_Inout_ PSRWLOCK SRWLock,
-	_In_ DWORD dwMilliseconds,
-	_In_ ULONG Flags
-) {
-	BOOL ret;
-	ret = Old_SleepConditionVariableSRW(ConditionVariable, SRWLock, dwMilliseconds, Flags);
-	LOQ_bool("sync", "PPii", "ConditionVariable", ConditionVariable, "SRWLock", SRWLock, "Milliseconds", dwMilliseconds, "Flags", Flags);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(BOOLEAN, WINAPI, TryAcquireSRWLockExclusive, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ PSRWLOCK SRWLock
-) {
-	BOOLEAN ret;
-	ret = Old_TryAcquireSRWLockExclusive(SRWLock);
-	LOQ_bool("sync", "P", "SRWLock", SRWLock);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Client
-// REVIEW: 引数 hWinEventHook: 型 HWINEVENTHOOK は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, UnhookWinEvent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HWINEVENTHOOK hWinEventHook
-) {
-	BOOL ret;
-	ret = Old_UnhookWinEvent(hWinEventHook);
-	LOQ_bool("sync", "p", "WinEventHook", hWinEventHook);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, WaitForSingleObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hHandle,
-	_In_ DWORD dwMilliseconds
-) {
-	DWORD ret;
-	ret = Old_WaitForSingleObject(hHandle, dwMilliseconds);
-	LOQ_nonzero("sync", "pi", "Handle", hHandle, "Milliseconds", dwMilliseconds);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(VOID, WINAPI, WakeAllConditionVariable, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ PCONDITION_VARIABLE ConditionVariable
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_WakeAllConditionVariable(ConditionVariable);
-	LOQ_void("sync", "P", "ConditionVariable", ConditionVariable);
-}
-/* >>> AUTOHOOK_hookverify_uncovered END <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection END <<< */
 

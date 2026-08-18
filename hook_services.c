@@ -286,38 +286,3 @@ HOOKDEF(BOOL, WINAPI, EnumServicesStatusExA,
 	LOQ_void("services", "EnumServicesStatusExA");
 	return ret;
 }
-
-/* >>> AUTOHOOK_hookverify_uncovered BEGIN <<< */
-// -> hook_services.c に追加 | category="services" | winapi:Services
-HOOKDEF(BOOL, WINAPI, CloseServiceHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ SC_HANDLE hSCObject
-) {
-	BOOL ret;
-	ret = Old_CloseServiceHandle(hSCObject);
-	LOQ_bool("services", "p", "SCObject", hSCObject);
-	return ret;
-}
-
-// -> hook_services.c に追加 | category="services" | winapi:Services
-// REVIEW: 引数 InfoLevel: 型 SC_STATUS_TYPE を i(int32)で仮記録。要確認
-// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, QueryServiceStatusEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ SC_HANDLE hService,
-	_In_ SC_STATUS_TYPE InfoLevel,
-	_Out_opt_ LPBYTE lpBuffer,
-	_In_ DWORD cbBufSize,
-	_Out_ LPDWORD pcbBytesNeeded
-) {
-	BOOL ret;
-	ret = Old_QueryServiceStatusEx(hService, InfoLevel, lpBuffer, cbBufSize, pcbBytesNeeded);
-	// [可読性7.5] Buffer は ⑤出力バッファ(desc: "receives the status information")。
-	// InfoLevel=SC_STATUS_PROCESS_INFO のとき SERVICE_STATUS_PROCESS が書き戻され、
-	// dwCurrentState 等この検体の判定材料そのものが入る → p ではなく b で内容を残す。
-	// 長さは戻り値ではなく **容量 cbBufSize**。戻り値は BOOL(観測値 1)であり長さではない
-	// (check_readability の提案 "(size_t)(ret < BufSize ? ret : BufSize)" は誤り)。
-	// pcbBytesNeeded は失敗時のみ意味を持つので長さ源にしない。成功時のみ読む。
-	LOQ_bool("services", "pibiI", "Service", hService, "InfoLevel", InfoLevel, "Buffer", (size_t)(ret && lpBuffer ? cbBufSize : 0), lpBuffer, "BufSize", cbBufSize, "CbBytesNeeded", pcbBytesNeeded);
-	return ret;
-}
-/* >>> AUTOHOOK_hookverify_uncovered END <<< */
-

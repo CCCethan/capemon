@@ -72,7 +72,7 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_hookverify_uncovered BEGIN <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpVersionInformation: 型 LPNLSVERSIONINFO は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -170,24 +170,5 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_bool("com", "ip", "StdHandle", nStdHandle, "Handle", hHandle);
 	return ret;
 }
-
-// -> hook_com.c に追加 | category="com" | winapi:Conversion and Manipulation
-HOOKDEF(HRESULT, WINAPI, VariantClear, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Inout_ VARIANTARG* pvarg
-) {
-	HRESULT ret;
-	ret = Old_VariantClear(pvarg);
-	LOQ_hresult("com", "n", "Varg", pvarg);
-	return ret;
-}
-
-// -> hook_com.c に追加 | category="com" | winapi:Conversion and Manipulation
-HOOKDEF(void, WINAPI, VariantInit, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ VARIANTARG* pvarg
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_VariantInit(pvarg);
-	LOQ_void("com", "n", "Varg", pvarg);
-}
-/* >>> AUTOHOOK_hookverify_uncovered END <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection END <<< */
 

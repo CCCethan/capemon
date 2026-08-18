@@ -2008,50 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_hookverify_uncovered BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
-HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hObject
-) {
-	BOOL ret;
-	ret = Old_CloseHandle(hObject);
-	LOQ_bool("misc", "p", "Object", hObject);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Pipes
-// REVIEW: 引数 lpPipeAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, CreatePipe, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ PHANDLE hReadPipe,
-	_Out_ PHANDLE hWritePipe,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpPipeAttributes,
-	_In_ DWORD nSize
-) {
-	BOOL ret;
-	ret = Old_CreatePipe(hReadPipe, hWritePipe, lpPipeAttributes, nSize);
-	// [7.5] ② 固定サイズ構造体: desc どおり SECURITY_ATTRIBUTES。引数型が通っている=定義済み。
-	//       bInheritHandle(子プロセスへ継承するか)が読めるのが要点。
-	//       ※ 容量候補として出た Size(=1024) はパイプのバッファサイズで構造体長ではない。
-	LOQ_bool("misc", "PPbi", "ReadPipe", hReadPipe, "WritePipe", hWritePipe, "PipeAttributes", sizeof(SECURITY_ATTRIBUTES), lpPipeAttributes, "Size", nSize);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
-HOOKDEF(BOOL, WINAPI, DuplicateHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hSourceProcessHandle,
-	_In_ HANDLE hSourceHandle,
-	_In_ HANDLE hTargetProcessHandle,
-	_Out_ LPHANDLE lpTargetHandle,
-	_In_ DWORD dwDesiredAccess,
-	_In_ BOOL bInheritHandle,
-	_In_ DWORD dwOptions
-) {
-	BOOL ret;
-	ret = Old_DuplicateHandle(hSourceProcessHandle, hSourceHandle, hTargetProcessHandle, lpTargetHandle, dwDesiredAccess, bInheritHandle, dwOptions);
-	LOQ_bool("misc", "pppPiii", "SourceProcessHandle", hSourceProcessHandle, "SourceHandle", hSourceHandle, "TargetProcessHandle", hTargetProcessHandle, "TargetHandle", lpTargetHandle, "DesiredAccess", dwDesiredAccess, "InheritHandle", bInheritHandle, "Options", dwOptions);
-	return ret;
-}
-
+/* >>> AUTOHOOK_galloro_006_button_press_detection BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Dialog Boxes
 // REVIEW: 引数 nResult: 型 INT_PTR を i(int32)で仮記録。要確認
 HOOKDEF(BOOL, WINAPI, EndDialog, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2061,6 +2018,16 @@ HOOKDEF(BOOL, WINAPI, EndDialog, // 呼出規約は WINAPI 仮定(socket/native/
 	BOOL ret;
 	ret = Old_EndDialog(hDlg, nResult);
 	LOQ_bool("misc", "pi", "Dlg", hDlg, "Result", nResult);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
+HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hObject
+) {
+	BOOL ret;
+	ret = Old_CloseHandle(hObject);
+	LOQ_bool("misc", "p", "Object", hObject);
 	return ret;
 }
 
@@ -2162,19 +2129,6 @@ HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW, // 呼出規約は WINAPI 仮定
 	return ret;
 }
 
-// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCWSTR lpName,
-	_Out_opt_ LPWSTR lpBuffer,
-	_In_ DWORD nSize
-) {
-	DWORD ret;
-	ret = Old_GetEnvironmentVariableW(lpName, lpBuffer, nSize);
-	LOQ_nonzero("misc", "uui", "Name", lpName, "Buffer", lpBuffer, "Size", nSize);
-	return ret;
-}
-
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 LCType: 型 LCTYPE を i(int32)で仮記録。要確認
@@ -2206,15 +2160,6 @@ HOOKDEF(int, WINAPI, GetLocaleInfoW, // 呼出規約は WINAPI 仮定(socket/nat
 	return ret;
 }
 
-// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
-HOOKDEF(void, WINAPI, GetNativeSystemInfo, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPSYSTEM_INFO lpSystemInfo
-) {
-	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
-	Old_GetNativeSystemInfo(lpSystemInfo);
-	LOQ_void("misc", "P", "SystemInfo", lpSystemInfo);
-}
-
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 HOOKDEF(UINT, WINAPI, GetOEMCP, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2223,29 +2168,6 @@ HOOKDEF(UINT, WINAPI, GetOEMCP, // 呼出規約は WINAPI 仮定(socket/native/C
 	UINT ret;
 	ret = Old_GetOEMCP();
 	LOQ_nonzero("misc", "");
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authorization
-// REVIEW: 引数 pSid: 型 PSID は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(PDWORD, WINAPI, GetSidSubAuthority, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PSID pSid,
-	_In_ DWORD nSubAuthority
-) {
-	PDWORD ret;
-	ret = Old_GetSidSubAuthority(pSid, nSubAuthority);
-	LOQ_nonnull("misc", "pi", "Sid", pSid, "SubAuthority", nSubAuthority);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authorization
-// REVIEW: 引数 pSid: 型 PSID は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(PUCHAR, WINAPI, GetSidSubAuthorityCount, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PSID pSid
-) {
-	PUCHAR ret;
-	ret = Old_GetSidSubAuthorityCount(pSid);
-	LOQ_nonnull("misc", "p", "Sid", pSid);
 	return ret;
 }
 
@@ -2259,16 +2181,6 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW, // 呼出規約は WINAPI 仮定(socket/na
 	BOOL ret;
 	ret = Old_GetStringTypeW(dwInfoType, lpSrcStr, cchSrc, lpCharType);
 	LOQ_bool("misc", "iuiI", "InfoType", dwInfoType, "SrcStr", lpSrcStr, "Src", cchSrc, "CharType", lpCharType);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Power Management
-HOOKDEF(BOOL, WINAPI, GetSystemPowerStatus, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPSYSTEM_POWER_STATUS lpSystemPowerStatus
-) {
-	BOOL ret;
-	ret = Old_GetSystemPowerStatus(lpSystemPowerStatus);
-	LOQ_bool("misc", "P", "SystemPowerStatus", lpSystemPowerStatus);
 	return ret;
 }
 
@@ -2317,30 +2229,6 @@ HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation, // 呼出規約は WINAPI 仮定(
 	// [7.5] ② 固定サイズ構造体: TIME_ZONE_INFORMATION は定義済み(引数型が通っている)。
 	//       Bias/StandardName/DaylightName を含む 172 バイトをダンプ。
 	LOQ_nonzero("misc", "b", "TimeZoneInformation", sizeof(TIME_ZONE_INFORMATION), lpTimeZoneInformation);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authorization
-// REVIEW: 引数 TokenInformationClass: 型 TOKEN_INFORMATION_CLASS を i(int32)で仮記録。要確認
-// REVIEW: 引数 TokenInformation: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, GetTokenInformation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE TokenHandle,
-	_In_ TOKEN_INFORMATION_CLASS TokenInformationClass,
-	_Out_opt_ LPVOID TokenInformation,
-	_In_ DWORD TokenInformationLength,
-	_Out_ PDWORD ReturnLength
-) {
-	BOOL ret;
-	ret = Old_GetTokenInformation(TokenHandle, TokenInformationClass, TokenInformation, TokenInformationLength, ReturnLength);
-	// [可読性7.5] TokenInformation は ⑤出力バッファ(desc: "a buffer the function fills with the
-	// requested information")。本検体(low_integrity_process_ratio_checker)は
-	// TokenIntegrityLevel を読んで完全性レベルを判定するので、**この中身が回避ロジックの核心**。
-	// 長さは実書込長 *ReturnLength を容量 TokenInformationLength で上限クリップする。
-	// 戻り値は BOOL(観測値 0/1)で長さではないため check_readability の提案
-	// "(size_t)(ret < TokenInformationLength ? ret : TokenInformationLength)" は誤り。
-	// GetTokenInformation は「まず NULL/0 で必要サイズを問い合わせる」呼び方が定石で、その回は
-	// ret=FALSE・TokenInformation=NULL になる。ret と NULL を見て 0 バイトにするので安全。
-	LOQ_bool("misc", "pibiI", "TokenHandle", TokenHandle, "TokenInformationClass", TokenInformationClass, "TokenInformation", (size_t)(ret && TokenInformation && ReturnLength ? (*ReturnLength < TokenInformationLength ? *ReturnLength : TokenInformationLength) : 0), TokenInformation, "TokenInformationLength", TokenInformationLength, "ReturnLength", ReturnLength);
 	return ret;
 }
 
@@ -2441,17 +2329,6 @@ HOOKDEF(BOOL, WINAPI, IsValidLocaleName, // 呼出規約は WINAPI 仮定(socket
 	return ret;
 }
 
-// -> hook_misc.c に追加 | category="misc" | winapi:Authorization
-// REVIEW: 引数 pSid: 型 PSID は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, IsValidSid, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PSID pSid
-) {
-	BOOL ret;
-	ret = Old_IsValidSid(pSid);
-	LOQ_bool("misc", "p", "Sid", pSid);
-	return ret;
-}
-
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 Locale: 型 LCID を i(int32)で仮記録。要確認
@@ -2538,6 +2415,18 @@ HOOKDEF(BOOL, WINAPI, QueryPerformanceFrequency, // 呼出規約は WINAPI 仮�
 	return ret;
 }
 
+// -> hook_misc.c に追加 | category="misc" | winapi:Structured Exception Handling
+HOOKDEF(void, WINAPI, RaiseException, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwExceptionCode,
+	_In_ DWORD dwExceptionFlags,
+	_In_ DWORD nNumberOfArguments,
+	_In_ const ULONG_PTR* lpArguments
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_RaiseException(dwExceptionCode, dwExceptionFlags, nNumberOfArguments, lpArguments);
+	LOQ_void("misc", "iiiI", "ExceptionCode", dwExceptionCode, "ExceptionFlags", dwExceptionFlags, "NumberOfArguments", nNumberOfArguments, "Arguments", lpArguments);
+}
+
 // -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
 HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ ULONGLONG ControlPc,
@@ -2586,32 +2475,6 @@ HOOKDEF(void, WINAPI, SetLastError, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_void("misc", "i", "ErrCode", dwErrCode);
 }
 
-// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
-// REVIEW: 戻り型 BSTR の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 psz: 型 const OLECHAR* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ const OLECHAR* psz
-) {
-	BSTR ret;
-	ret = Old_SysAllocString(psz);
-	// [7.5] kind=struct-or-opaque は誤分類。型は const OLECHAR* = ワイド文字列で
-	//       description も "The string to copy."。u で内容を記録する(log.c の u は
-	//       NULL/例外を __try で保護)。観測「戻り値」は BSTR のアドレスであり長さではない。
-	LOQ_nonzero("misc", "u", "Sz", psz);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
-// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(UINT, WINAPI, SysStringLen, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ BSTR bstr
-) {
-	UINT ret;
-	ret = Old_SysStringLen(bstr);
-	LOQ_nonzero("misc", "u", "Str", bstr);
-	return ret;
-}
-
 // -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
 // REVIEW: 引数 lpAddress: 入力バッファとして dwSize バイト分を内容ログ('b')。dwSize が実データ長でない/出力用バッファなら 'p'(アドレスのみ)へ戻すこと
 HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2625,16 +2488,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "Address", (size_t)dwSize, lpAddress, "Size", dwSize, "LNewProtect", flNewProtect, "FlOldProtect", lpflOldProtect);
 	return ret;
 }
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Strings
-// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(int, WINAPI, lstrlenW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpString
-) {
-	int ret;
-	ret = Old_lstrlenW(lpString);
-	LOQ_nonzero("misc", "u", "String", lpString);
-	return ret;
-}
-/* >>> AUTOHOOK_hookverify_uncovered END <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection END <<< */
 

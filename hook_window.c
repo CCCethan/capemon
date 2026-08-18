@@ -526,61 +526,7 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_hookverify_uncovered BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
-// REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpmsg: 型 const MSG* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(LRESULT, WINAPI, DispatchMessageA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ const MSG* lpmsg
-) {
-	LRESULT ret;
-	ret = Old_DispatchMessageA(lpmsg);
-	LOQ_nonzero("windows", "p", "Msg", lpmsg);
-	return ret;
-}
-
-// -> hook_window.c に追加 | category="windows" | winapi:Error Handling
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpSource: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-// REVIEW: 引数 Arguments: 型 va_list* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(DWORD, WINAPI, FormatMessageA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwFlags,
-	_In_opt_ LPCVOID lpSource,
-	_In_ DWORD dwMessageId,
-	_In_ DWORD dwLanguageId,
-	_Out_ LPSTR lpBuffer,
-	_In_ DWORD nSize,
-	_In_opt_ va_list* Arguments
-) {
-	DWORD ret;
-	ret = Old_FormatMessageA(dwFlags, lpSource, dwMessageId, dwLanguageId, lpBuffer, nSize, Arguments);
-	LOQ_nonzero("windows", "ipiisip", "Flags", dwFlags, "Source", lpSource, "MessageId", dwMessageId, "LanguageId", dwLanguageId, "Buffer", lpBuffer, "Size", nSize, "Arguments", Arguments);
-	return ret;
-}
-
-// -> hook_window.c に追加 | category="windows" | winapi:Keyboard Input
-// REVIEW: 戻り型 SHORT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(SHORT, WINAPI, GetKeyState, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ int nVirtKey
-) {
-	SHORT ret;
-	ret = Old_GetKeyState(nVirtKey);
-	LOQ_nonzero("windows", "i", "VirtKey", nVirtKey);
-	return ret;
-}
-
-// -> hook_window.c に追加 | category="windows" | winapi:System Information Functions
-// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(UINT, WINAPI, GetWindowsDirectoryW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPWSTR lpBuffer,
-	_In_ UINT uSize
-) {
-	UINT ret;
-	ret = Old_GetWindowsDirectoryW(lpBuffer, uSize);
-	LOQ_nonzero("windows", "ui", "Buffer", lpBuffer, "USize", uSize);
-	return ret;
-}
-
+/* >>> AUTOHOOK_galloro_006_button_press_detection BEGIN <<< */
 // -> hook_window.c に追加 | category="windows" | winapi:Dialog Boxes
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 HOOKDEF(int, WINAPI, MessageBoxA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -595,29 +541,6 @@ HOOKDEF(int, WINAPI, MessageBoxA, // 呼出規約は WINAPI 仮定(socket/native
 	return ret;
 }
 
-// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
-HOOKDEF(BOOL, WINAPI, PeekMessageA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPMSG lpMsg,
-	_In_opt_ HWND hWnd,
-	_In_ UINT wMsgFilterMin,
-	_In_ UINT wMsgFilterMax,
-	_In_ UINT wRemoveMsg
-) {
-	BOOL ret;
-	ret = Old_PeekMessageA(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
-	LOQ_bool("windows", "Ppiii", "Msg", lpMsg, "Wnd", hWnd, "WMsgFilterMin", wMsgFilterMin, "WMsgFilterMax", wMsgFilterMax, "WRemoveMsg", wRemoveMsg);
-	return ret;
-}
-
-// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
-HOOKDEF(HRESULT, WINAPI, SHQueryRecycleBinA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCSTR pszRootPath,
-	_Inout_ LPSHQUERYRBINFO pSHQueryRBInfo
-) {
-	HRESULT ret;
-	ret = Old_SHQueryRecycleBinA(pszRootPath, pSHQueryRBInfo);
-	LOQ_hresult("windows", "fP", "SzRootPath", pszRootPath, "SHQueryRBInfo", pSHQueryRBInfo);
-	return ret;
-}
-/* >>> AUTOHOOK_hookverify_uncovered END <<< */
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_galloro_006_button_press_detection END <<< */
 
