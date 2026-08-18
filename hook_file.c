@@ -1929,7 +1929,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_galloro_006_button_press_detection BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1953,10 +1953,7 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW, // 呼出規約は WINAPI 仮定(socket/nat
 ) {
 	HANDLE ret;
 	ret = Old_CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-	// [7.5] ② 固定サイズ構造体: SECURITY_ATTRIBUTES(引数型が通っている=定義済み)。
-	//       CreatePipe.PipeAttributes と同一の扱い。bInheritHandle が読めるのが要点。
-	//       多くの呼び出しで NULL だが b は NULL 安全。
-	LOQ_handle("filesystem", "Fiibiip", "FileName", lpFileName, "DesiredAccess", dwDesiredAccess, "ShareMode", dwShareMode, "SecurityAttributes", sizeof(SECURITY_ATTRIBUTES), lpSecurityAttributes, "CreationDisposition", dwCreationDisposition, "FlagsAndAttributes", dwFlagsAndAttributes, "TemplateFile", hTemplateFile);
+	LOQ_handle("filesystem", "Fiipiip", "FileName", lpFileName, "DesiredAccess", dwDesiredAccess, "ShareMode", dwShareMode, "SecurityAttributes", lpSecurityAttributes, "CreationDisposition", dwCreationDisposition, "FlagsAndAttributes", dwFlagsAndAttributes, "TemplateFile", hTemplateFile);
 	return ret;
 }
 
@@ -2060,5 +2057,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "File", hFile, "Buffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "NumberOfBytesToWrite", nNumberOfBytesToWrite, "NumberOfBytesWritten", lpNumberOfBytesWritten, "Overlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_galloro_006_button_press_detection END <<< */
+/* >>> AUTOHOOK_pa_alk_109_mouse_event_checker END <<< */
 
