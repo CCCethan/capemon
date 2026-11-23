@@ -994,7 +994,11 @@ int hook_api(hook_t *h, int type)
 		if (hmod == NULL)
 			return 0;
 
-		if (!wcscmp(h->library, L"kernel32") && GetProcAddress(GetModuleHandle("KernelBase"), h->funcname))
+		// GetTickCount/GetTickCount64 are implemented independently in both kernel32 and KernelBase
+		// (neither copy jumps to the other), so a program importing them from kernel32 never reaches
+		// the KernelBase copy. Keep these two hooks on kernel32 as registered.
+		if (!wcscmp(h->library, L"kernel32") && strcmp(h->funcname, "GetTickCount") && strcmp(h->funcname, "GetTickCount64")
+			&& GetProcAddress(GetModuleHandle("KernelBase"), h->funcname))
 			hmod = GetModuleHandle("KernelBase");
 
 		if (!strcmp(h->funcname, "RtlDispatchException")) {
