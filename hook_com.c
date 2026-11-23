@@ -71,24 +71,3 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	LOQ_hresult("com", "uu", "NetworkResource", strNetworkResource, "User", strUser);
 	return ret;
 }
-
-/* >>> AUTOHOOK_badspec BEGIN <<< */
-/* [FAULT-A] 型不一致・同arity: "iiuiui" -> "uuiuiu"
- * 整数(LCID/DWORD/int)を wide 文字列として、文字列(LPCWSTR)を int32 として読む。
- * 指定子の個数・値の個数は一致しているので va_arg のずれは起きない。
- * 'u' は最終的に lstrlenW() を通るため不正ポインタでも落ちないと予測される。 */
-HOOKDEF(int, WINAPI, CompareStringW,
-	_In_ LCID Locale,
-	_In_ DWORD dwCmpFlags,
-	_In_ LPCWSTR lpString1,
-	_In_ int cchCount1,
-	_In_ LPCWSTR lpString2,
-	_In_ int cchCount2
-) {
-	int ret;
-	ret = Old_CompareStringW(Locale, dwCmpFlags, lpString1, cchCount1, lpString2, cchCount2);
-	LOQ_nonzero("com", "uuiuiu", "Locale", Locale, "CmpFlags", dwCmpFlags, "String1", lpString1, "Count1", cchCount1, "String2", lpString2, "Count2", cchCount2);
-	return ret;
-}
-/* >>> AUTOHOOK_badspec END <<< */
-

@@ -817,17 +817,6 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsMonthName),
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
-
-/* >>> AUTOHOOK_badspec BEGIN <<< */
-HOOK(kernel32, GetLocaleInfoW),
-HOOK(kernelbase, GetLocaleInfoW),
-HOOK(kernel32, GetCPInfo),
-HOOK(kernelbase, GetCPInfo),
-HOOK(kernel32, LCMapStringW),
-HOOK(kernelbase, LCMapStringW),
-HOOK(kernel32, CompareStringW),
-HOOK(kernelbase, CompareStringW),
-/* >>> AUTOHOOK_badspec END <<< */
 };
 
 hook_t native_hooks[] = {

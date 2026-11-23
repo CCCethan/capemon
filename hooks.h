@@ -3929,33 +3929,3 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 );
 
 #include "hook_vbscript.h"
-
-/* >>> AUTOHOOK_badspec BEGIN <<< */
-HOOKDEF(int, WINAPI, GetLocaleInfoW,
-	_In_ LCID Locale,
-	_In_ LCTYPE LCType,
-	_Out_opt_ LPWSTR lpLCData,
-	_In_ int cchData
-);
-HOOKDEF(BOOL, WINAPI, GetCPInfo,
-	_In_ UINT CodePage,
-	_Out_ LPCPINFO lpCPInfo
-);
-HOOKDEF(int, WINAPI, LCMapStringW,
-	_In_ LCID Locale,
-	_In_ DWORD dwMapFlags,
-	_In_ LPCWSTR lpSrcStr,
-	_In_ int cchSrc,
-	_Out_opt_ LPWSTR lpDestStr,
-	_In_ int cchDest
-);
-HOOKDEF(int, WINAPI, CompareStringW,
-	_In_ LCID Locale,
-	_In_ DWORD dwCmpFlags,
-	_In_ LPCWSTR lpString1,
-	_In_ int cchCount1,
-	_In_ LPCWSTR lpString2,
-	_In_ int cchCount2
-);
-/* >>> AUTOHOOK_badspec END <<< */
-
