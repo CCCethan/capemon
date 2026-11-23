@@ -645,7 +645,7 @@ HOOKDEF(BOOL, WINAPI, GetLastInputInfo,
 ) {
 	BOOL ret = Old_GetLastInputInfo(plii);
 
-	LOQ_bool("system", "");
+	LOQ_bool("system", "P", "Lii", plii);
 
 	lastinput_called++;
 
@@ -655,6 +655,7 @@ HOOKDEF(BOOL, WINAPI, GetLastInputInfo,
 
 	return ret;
 }
+/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 void init_sleep_skip(int first_process)
 {

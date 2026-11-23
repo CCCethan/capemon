@@ -517,9 +517,10 @@ HOOKDEF(BOOL, WINAPI, SaferIdentifyLevel,
 ) {
 	BOOL ret;
 	ret = Old_SaferIdentifyLevel(dwNumProperties, pCodeProperties, pLevelHandle, lpReserved);
-	LOQ_bool("misc", "");
+	LOQ_bool("misc", "ippp", "NumProperties", dwNumProperties, "CodeProperties", pCodeProperties, "LevelHandle", pLevelHandle, "Reserved", lpReserved);
 	return ret;
 }
+/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 
 HOOKDEF(NTSTATUS, WINAPI, NtMakeTemporaryObject,
@@ -796,10 +797,11 @@ HOOKDEF(void, WINAPI, GetSystemInfo,
 	if (!g_config.no_stealth && lpSystemInfo->dwNumberOfProcessors < SPOOFED_CPU_CORE_NUM)
 		lpSystemInfo->dwNumberOfProcessors = SPOOFED_CPU_CORE_NUM;
 
-	LOQ_void("misc", "");
+	LOQ_void("misc", "p", "SystemInfo", lpSystemInfo);
 
 	return;
 }
+/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(NTSTATUS, WINAPI, NtSetInformationProcess,
 	__in HANDLE ProcessHandle,
@@ -1058,9 +1060,10 @@ HOOKDEF(BOOL, WINAPI, SetupDiBuildDriverInfoList,
 ) {
 	BOOL ret;
 	ret = Old_SetupDiBuildDriverInfoList(DeviceInfoSet, DeviceInfoData, DriverType);
-	LOQ_bool("misc", "");
+	LOQ_bool("misc", "pPi", "DeviceInfoSet", DeviceInfoSet, "DeviceInfoData", DeviceInfoData, "DriverType", DriverType);
 	return ret;
 }
+/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(HRESULT, WINAPI, DecodeImageEx,
 	__in PVOID pStream, // IStream *
@@ -1069,9 +1072,10 @@ HOOKDEF(HRESULT, WINAPI, DecodeImageEx,
 	__in_opt LPCWSTR pszMIMETypeParam
 ) {
 	HRESULT ret = Old_DecodeImageEx(pStream, pMap, pEventSink, pszMIMETypeParam);
-	LOQ_hresult("misc", "");
+	LOQ_hresult("misc", "pppu", "Stream", pStream, "Map", pMap, "EventSink", pEventSink, "SzMIMETypeParam", pszMIMETypeParam);
 	return ret;
 }
+/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(HRESULT, WINAPI, DecodeImage,
 	__in PVOID pStream, // IStream *
@@ -1079,9 +1083,10 @@ HOOKDEF(HRESULT, WINAPI, DecodeImage,
 	__in PVOID pEventSink // IUnknown *
 ) {
 	HRESULT ret = Old_DecodeImage(pStream, pMap, pEventSink);
-	LOQ_hresult("misc", "");
+	LOQ_hresult("misc", "ppp", "Stream", pStream, "Map", pMap, "EventSink", pEventSink);
 	return ret;
 }
+/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(NTSTATUS, WINAPI, LsaOpenPolicy,
 	PLSA_UNICODE_STRING SystemName,
@@ -1090,9 +1095,10 @@ HOOKDEF(NTSTATUS, WINAPI, LsaOpenPolicy,
 	PVOID PolicyHandle
 ) {
 	NTSTATUS ret = Old_LsaOpenPolicy(SystemName, ObjectAttributes, DesiredAccess, PolicyHandle);
-	LOQ_ntstatus("misc", "");
+	LOQ_ntstatus("misc", "ppip", "SystemName", SystemName, "ObjectAttributes", ObjectAttributes, "DesiredAccess", DesiredAccess, "PolicyHandle", PolicyHandle);
 	return ret;
 }
+/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(DWORD, WINAPI, WNetGetProviderNameW,
 	__in DWORD dwNetType,
@@ -1142,9 +1148,10 @@ HOOKDEF(DWORD, WINAPI, RasConnectionNotificationW,
 	_In_ DWORD	dwFlags
 ) {
 	DWORD ret = Old_RasConnectionNotificationW(hrasconn, hEvent, dwFlags);
-	LOQ_zero("misc", "");
+	LOQ_zero("misc", "ppi", "Rasconn", hrasconn, "Event", hEvent, "Flags", dwFlags);
 	return ret;
 }
+/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(BOOL, WINAPI, SystemTimeToTzSpecificLocalTime,
 	_In_opt_ LPTIME_ZONE_INFORMATION lpTimeZone,
@@ -1152,9 +1159,10 @@ HOOKDEF(BOOL, WINAPI, SystemTimeToTzSpecificLocalTime,
 	_Out_	LPSYSTEMTIME			lpLocalTime
 ) {
 	BOOL ret = Old_SystemTimeToTzSpecificLocalTime(lpTimeZone, lpUniversalTime, lpLocalTime);
-	LOQ_bool("misc", "");
+	LOQ_bool("misc", "ppP", "TimeZone", lpTimeZone, "UniversalTime", lpUniversalTime, "LocalTime", lpLocalTime);
 	return ret;
 }
+/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(HRESULT, WINAPI, CLSIDFromProgID,
 	_In_ LPCOLESTR lpszProgID,

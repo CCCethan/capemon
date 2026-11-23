@@ -136,10 +136,11 @@ HOOKDEF(BOOL, WINAPI, WTSEnumerateProcessesW,
 ) {
 	BOOL ret = Old_WTSEnumerateProcessesW(hServer, Reserved, Version, ppProcessInfo, pCount);
 
-	LOQ_bool("process", "");
+	LOQ_bool("process", "piiPI", "Server", hServer, "Reserved", Reserved, "Version", Version, "PProcessInfo", ppProcessInfo, "Count", pCount);
 
 	return ret;
 }
+/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(BOOL, WINAPI, WTSEnumerateProcessesExW,
 	_In_	HANDLE	hServer,
@@ -150,10 +151,11 @@ HOOKDEF(BOOL, WINAPI, WTSEnumerateProcessesExW,
 ) {
 	BOOL ret = Old_WTSEnumerateProcessesExW(hServer, pLevel, SessionId, ppProcessInfo, pCount);
 
-	LOQ_bool("process", "");
+	LOQ_bool("process", "pIiuI", "Server", hServer, "Level", pLevel, "SessionId", SessionId, "PProcessInfo", ppProcessInfo, "Count", pCount);
 
 	return ret;
 }
+/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(BOOL, WINAPI, K32EnumProcesses,
 	_Out_writes_bytes_(cb)	DWORD*	lpidProcess,
@@ -162,10 +164,11 @@ HOOKDEF(BOOL, WINAPI, K32EnumProcesses,
 ) {
 	BOOL ret = Old_K32EnumProcesses(lpidProcess, cb, lpcbNeeded);
 
-	LOQ_bool("process", "");
+	LOQ_bool("process", "IiI", "IdProcess", lpidProcess, "cb", cb, "CbNeeded", lpcbNeeded);
 
 	return ret;
 }
+/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(UINT, WINAPI, WinExec,
 	__in LPCSTR lpCmdLine,
