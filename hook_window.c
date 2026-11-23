@@ -453,10 +453,9 @@ HOOKDEF(BOOL, WINAPI, EnumWindows,
 ) {
 
 	BOOL ret = Old_EnumWindows(lpEnumFunc, lParam);
-	LOQ_bool("windows", "ip", "EnumFunc", lpEnumFunc, "LParam", lParam);
+	LOQ_bool("windows", "");
 	return ret;
 }
-/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF_NOTAIL(WINAPI, CreateWindowExA,
 	__in DWORD dwExStyle,

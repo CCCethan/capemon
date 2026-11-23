@@ -116,10 +116,9 @@ HOOKDEF(BOOL, WINAPI, WinHttpGetIEProxyConfigForCurrentUser,
 	_Inout_ LPVOID pProxyConfig // WINHTTP_CURRENT_USER_IE_PROXY_CONFIG *
 ) {
 	BOOL ret = Old_WinHttpGetIEProxyConfigForCurrentUser(pProxyConfig);
-	LOQ_bool("network", "p", "ProxyConfig", pProxyConfig);
+	LOQ_bool("network", "");
 	return ret;
 }
-/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(BOOL, WINAPI, WinHttpGetProxyForUrl,
 	_In_ HINTERNET hSession,
@@ -305,10 +304,9 @@ HOOKDEF(BOOL, WINAPI, InternetGetConnectedState,
 	_In_ DWORD dwReserved
 ) {
 	BOOL ret = Old_InternetGetConnectedState(lpdwFlags, dwReserved);
-	LOQ_bool("network", "Ii", "DwFlags", lpdwFlags, "Reserved", dwReserved);
+	LOQ_bool("network", "");
 	return ret;
 }
-/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(HINTERNET, WINAPI, InternetOpenA,
 	_In_  LPCTSTR lpszAgent,
@@ -699,10 +697,9 @@ HOOKDEF(int, WINAPI, NSPStartup,
 	__out PVOID lpnspRoutines
 ) {
 	int ret = Old_NSPStartup(lpProviderId, lpnspRoutines);
-	LOQ_zero("network", "pp", "ProviderId", lpProviderId, "NspRoutines", lpnspRoutines);
+	LOQ_zero("network", "");
 	return ret;
 }
-/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 HOOKDEF(BOOL, WINAPI, InternetReadFile,
 	_In_   HINTERNET hFile,
 	_Out_  LPVOID lpBuffer,
@@ -988,10 +985,9 @@ HOOKDEF(DWORD, WINAPI, GetAdaptersInfo,
 	_Inout_ PULONG		   pOutBufLen
 ) {
 	DWORD ret = Old_GetAdaptersInfo(pAdapterInfo, pOutBufLen);
-	LOQ_zero("network", "pI", "AdapterInfo", pAdapterInfo, "OutBufLen", pOutBufLen);
+	LOQ_zero("network", "");
 	return ret;
 }
-/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(ULONG, WINAPI, NetGetJoinInformation,
 	_In_  LPCWSTR			   lpServer,

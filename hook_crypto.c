@@ -347,19 +347,17 @@ HOOKDEF(HRESULT, WINAPI, HTTPSCertificateTrust,
 	PVOID data // PCRYPT_PROVIDER_DATA
 ) {
 	BOOL ret = Old_HTTPSCertificateTrust(data);
-	LOQ_hresult("crypto", "p", "Data", data);
+	LOQ_hresult("crypto", "");
 	return ret;
 }
-/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(HRESULT, WINAPI, HTTPSFinalProv,
 	PVOID data // PCRYPT_PROVIDER_DATA
 ) {
 	BOOL ret = Old_HTTPSFinalProv(data);
-	LOQ_hresult("crypto", "p", "Data", data);
+	LOQ_hresult("crypto", "");
 	return ret;
 }
-/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(NTSTATUS, WINAPI, WTGetSignatureInfo,
 	_In_	LPWSTR	pszFile,
