@@ -112,6 +112,8 @@ struct _g_config {
 
 	// do we force flushing of each log?
 	int force_flush;
+	// 1: include the API index in the duplicate-log comparison
+	int dedup_compare_api;
 
 	// Debugging level (1 = display exceptions, 2 = display all exceptions)
 	int debug;

@@ -1070,7 +1070,7 @@ buffer_log:
 	else {
 		if (lastlog.buf) {
 			unsigned int our_len = bson_size(g_bson) - compare_offset;
-			if (lastlog.compare_len == our_len && !memcmp(lastlog.compare_ptr, bson_data(g_bson) + compare_offset, our_len)) {
+			if (lastlog.compare_len == our_len && (!g_config.dedup_compare_api || lastlog.index == index) && !memcmp(lastlog.compare_ptr, bson_data(g_bson) + compare_offset, our_len)) {
 				// we're about to log a duplicate of the last log message, just increment the previous log's repeated count
 				(*lastlog.repeated_ptr)++;
 			}
@@ -1092,6 +1092,7 @@ buffer_log:
 			lastlog.compare_len = lastlog.len - compare_offset;
 			lastlog.compare_ptr = lastlog.buf + compare_offset;
 			lastlog.repeated_ptr = (int *)(lastlog.buf + repeat_offset);
+			lastlog.index = index;
 		}
 	}
 

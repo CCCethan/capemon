@@ -975,10 +975,9 @@ HOOKDEF(ULONG, WINAPI, GetAdaptersAddresses,
 	_Inout_ PULONG				SizePointer
 ) {
 	ULONG ret = Old_GetAdaptersAddresses(Family, Flags, Reserved, AdapterAddresses, SizePointer);
-	LOQ_zero("network", "iippI", "Family", Family, "Flags", Flags, "Reserved", Reserved, "AdapterAddresses", AdapterAddresses, "SizePointer", SizePointer);
+	LOQ_zero("network", "");
 	return ret;
 }
-/* AUTOHOOK augment: 空の LOQ に引数の記録を追記(種類・カテゴリは維持) */
 
 HOOKDEF(DWORD, WINAPI, GetAdaptersInfo,
 	_Out_   PVOID pAdapterInfo, // PIP_ADAPTER_INFO
