@@ -178,5 +178,4 @@ typedef struct _lastlog_t {
 	unsigned int compare_len;
 	int *repeated_ptr;
 	unsigned char *compare_ptr;
-	int index;
 } lastlog_t;
