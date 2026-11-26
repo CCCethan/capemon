@@ -700,3 +700,26 @@ HOOKDEF(LONG, WINAPI, RegNotifyChangeKeyValue,
 
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_1 BEGIN <<< */
+// -> hook_reg.c に追加 | category="registry" | winapi:Registry
+// REVIEW: 戻り型 LONG の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 pvData: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(LONG, WINAPI, RegGetValueW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HKEY hkey,
+	_In_opt_ LPCWSTR lpSubKey,
+	_In_opt_ LPCWSTR lpValue,
+	_In_opt_ DWORD dwFlags,
+	_Out_opt_ LPDWORD pdwType,
+	_Out_opt_ PVOID pvData,
+	_Inout_opt_ LPDWORD pcbData
+) {
+	LONG ret;
+	ret = Old_RegGetValueW(hkey, lpSubKey, lpValue, dwFlags, pdwType, pvData, pcbData);
+	LOQ_nonzero("registry", "puuiIbI", "hkey", hkey, "lpSubKey", lpSubKey, "lpValue", lpValue, "dwFlags", dwFlags, "pdwType", pdwType, "pvData", (size_t)((ret == ERROR_SUCCESS && pvData && pcbData) ? *pcbData : 0), pvData, "pcbData", pcbData);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_1 END <<< */
+
