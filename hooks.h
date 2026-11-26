@@ -3930,24 +3930,24 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_1 BEGIN <<< */
-HOOKDEF(LONG, WINAPI, RegGetValueW,
-	_In_ HKEY hkey,
-	_In_opt_ LPCWSTR lpSubKey,
-	_In_opt_ LPCWSTR lpValue,
-	_In_opt_ DWORD dwFlags,
-	_Out_opt_ LPDWORD pdwType,
-	_Out_opt_ PVOID pvData,
-	_Inout_opt_ LPDWORD pcbData
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, NetApiBufferFree,
+	_In_ LPVOID Buffer
+);
+HOOKDEF(DWORD, WINAPI, NetUseEnum,
+	_In_ LPWSTR UncServerName,
+	_In_ DWORD Level,
+	_Out_ LPBYTE* BufPtr,
+	_In_ DWORD PreferedMaximumSize,
+	_Out_ LPDWORD EntriesRead,
+	_Out_ LPDWORD TotalEntries,
+	_Inout_ LPDWORD ResumeHandle
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
-);
-HOOKDEF(void, WINAPI, CoTaskMemFree,
-	_In_opt_ LPVOID pv
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4006,15 +4006,6 @@ HOOKDEF(HANDLE, WINAPI, FindFirstFileW,
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
 );
-HOOKDEF(DWORD, WINAPI, FormatMessageA,
-	_In_ DWORD dwFlags,
-	_In_opt_ LPCVOID lpSource,
-	_In_ DWORD dwMessageId,
-	_In_ DWORD dwLanguageId,
-	_Out_ LPSTR lpBuffer,
-	_In_ DWORD nSize,
-	_In_opt_ va_list* Arguments
-);
 HOOKDEF(SECURITY_STATUS, WINAPI, FreeContextBuffer,
 	_In_ PVOID pvContextBuffer
 );
@@ -4067,16 +4058,13 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
 );
-HOOKDEF(BOOL, WINAPI, GetFileAttributesExW,
-	_In_ LPCWSTR lpFileName,
-	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
-	_Out_ LPVOID lpFileInformation
+HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableW,
+	_In_opt_ LPCWSTR lpName,
+	_Out_opt_ LPWSTR lpBuffer,
+	_In_ DWORD nSize
 );
-HOOKDEF(BOOL, WINAPI, GetFileInformationByHandleEx,
-	_In_ HANDLE hFile,
-	_In_ FILE_INFO_BY_HANDLE_CLASS FileInformationClass,
-	_Out_ LPVOID lpFileInformation,
-	_In_ DWORD dwBufferSize
+HOOKDEF(DWORD, WINAPI, GetFileAttributesW,
+	_In_ LPCWSTR lpFileName
 );
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
@@ -4230,85 +4218,6 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
-HOOKDEF(DWORD, WINAPI, NPAddConnection,
-	_In_ LPNETRESOURCE lpNetResource,
-	_In_ LPTSTR lpPassword,
-	_In_ LPTSTR lpUserName
-);
-HOOKDEF(DWORD, WINAPI, NPAddConnection3,
-	_In_ HWND hwndOwner,
-	_In_ LPNETRESOURCE lpNetResource,
-	_In_ LPTSTR lpPassword,
-	_In_ LPTSTR lpUserName,
-	_In_ DWORD dwFlags
-);
-HOOKDEF(DWORD, WINAPI, NPCancelConnection,
-	_In_ LPTSTR lpName,
-	_In_ BOOL fForce
-);
-HOOKDEF(DWORD, WINAPI, NPCloseEnum,
-	_In_ HANDLE hEnum
-);
-HOOKDEF(DWORD, WINAPI, NPEnumResource,
-	_In_ HANDLE hEnum,
-	_Inout_ LPDWORD lpcCount,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpBufferSize
-);
-HOOKDEF(DWORD, WINAPI, NPFormatNetworkName,
-	_In_ LPTSTR lpRemoteName,
-	_Out_ LPTSTR lpFormattedName,
-	_Inout_ LPDWORD lpnLength,
-	_In_ DWORD dwFlags,
-	_In_ DWORD dwAveCharPerLine
-);
-HOOKDEF(DWORD, WINAPI, NPGetCaps,
-	_In_ DWORD nIndex
-);
-HOOKDEF(DWORD, WINAPI, NPGetConnection,
-	_In_ LPTSTR lpLocalName,
-	_Out_ LPTSTR lpRemoteName,
-	_Inout_ LPDWORD lpBufferSize
-);
-HOOKDEF(DWORD, WINAPI, NPGetConnection3,
-	_In_ LPCWSTR lpLocalName,
-	_In_ DWORD dwLevel,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpBufferSize
-);
-HOOKDEF(DWORD, WINAPI, NPGetConnectionPerformance,
-	_In_ LPTSTR lpRemoteName,
-	_Out_ LPNETCONNECTINFOSTRUCT lpNetConnectInfo
-);
-HOOKDEF(DWORD, WINAPI, NPGetResourceInformation,
-	_In_ LPNETRESOURCE lpNetResource,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpcbBuffer,
-	_Out_ LPTSTR* lplpSystem
-);
-HOOKDEF(DWORD, WINAPI, NPGetResourceParent,
-	_In_ LPNETRESOURCE lpNetResource,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpcbBuffer
-);
-HOOKDEF(DWORD, WINAPI, NPGetUniversalName,
-	_In_ LPCTSTR lpLocalPath,
-	_In_ DWORD dwInfoLevel,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpBufferSize
-);
-HOOKDEF(DWORD, WINAPI, NPGetUser,
-	_In_ LPTSTR lpName,
-	_Out_ LPTSTR lpUserName,
-	_Inout_ LPDWORD lpBufferSize
-);
-HOOKDEF(DWORD, WINAPI, NPOpenEnum,
-	_In_ DWORD dwScope,
-	_In_ DWORD dwType,
-	_In_ DWORD dwUsage,
-	_In_ LPNETRESOURCE lpNetResource,
-	_Out_ LPHANDLE lphEnum
-);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4399,22 +4308,6 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
-HOOKDEF(DWORD, WINAPI, WNetCloseEnum,
-	_In_ HANDLE hEnum
-);
-HOOKDEF(DWORD, WINAPI, WNetEnumResourceW,
-	_In_ HANDLE hEnum,
-	_Inout_ LPDWORD lpcCount,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpBufferSize
-);
-HOOKDEF(DWORD, WINAPI, WNetOpenEnumW,
-	_In_ DWORD dwScope,
-	_In_ DWORD dwType,
-	_In_ DWORD dwUsage,
-	_In_ LPNETRESOURCE lpNetResource,
-	_Out_ LPHANDLE lphEnum
-);
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
 	_In_ LPCVOID lpBuffer,
@@ -4423,5 +4316,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 END <<< */
 

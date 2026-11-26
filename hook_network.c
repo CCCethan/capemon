@@ -1081,71 +1081,38 @@ HOOKDEF(HRESULT, WINAPI, MkParseDisplayNameEx,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_1 BEGIN <<< */
-// -> hook_network.c に追加 | category="network" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpRemoteName: 型 LPTSTR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(DWORD, WINAPI, NPFormatNetworkName, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPTSTR lpRemoteName,
-	_Out_ LPTSTR lpFormattedName,
-	_Inout_ LPDWORD lpnLength,
-	_In_ DWORD dwFlags,
-	_In_ DWORD dwAveCharPerLine
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 BEGIN <<< */
+// -> hook_network.c に追加 | category="network" | winapi:Network Management
+// REVIEW: 戻り型 NET_API_STATUS の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 Buffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(DWORD, WINAPI, NetApiBufferFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPVOID Buffer
 ) {
 	DWORD ret;
-	ret = Old_NPFormatNetworkName(lpRemoteName, lpFormattedName, lpnLength, dwFlags, dwAveCharPerLine);
-	LOQ_nonzero("network", "pPIii", "lpRemoteName", lpRemoteName, "lpFormattedName", lpFormattedName, "lpnLength", lpnLength, "dwFlags", dwFlags, "dwAveCharPerLine", dwAveCharPerLine);
+	ret = Old_NetApiBufferFree(Buffer);
+	LOQ_nonzero("network", "p", "Buffer", Buffer);
 	return ret;
 }
 
-// -> hook_network.c に追加 | category="network" | winapi:Windows Networking (WNet)
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, WNetCloseEnum, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hEnum
+// -> hook_network.c に追加 | category="network" | winapi:Network Management
+// REVIEW: 戻り型 NET_API_STATUS の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 UncServerName: 型 LMSTR を i(int32)で仮記録。要確認
+// REVIEW: 引数 BufPtr: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(DWORD, WINAPI, NetUseEnum, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPWSTR UncServerName,
+	_In_ DWORD Level,
+	_Out_ LPBYTE* BufPtr,
+	_In_ DWORD PreferedMaximumSize,
+	_Out_ LPDWORD EntriesRead,
+	_Out_ LPDWORD TotalEntries,
+	_Inout_ LPDWORD ResumeHandle
 ) {
 	DWORD ret;
-	ret = Old_WNetCloseEnum(hEnum);
-	LOQ_nonzero("network", "p", "hEnum", hEnum);
+	ret = Old_NetUseEnum(UncServerName, Level, BufPtr, PreferedMaximumSize, EntriesRead, TotalEntries, ResumeHandle);
+	LOQ_nonzero("network", "uipiIII", "UncServerName", UncServerName, "Level", Level, "BufPtr", BufPtr, "PreferedMaximumSize", PreferedMaximumSize, "EntriesRead", EntriesRead, "TotalEntries", TotalEntries, "ResumeHandle", ResumeHandle);
 	return ret;
 }
 
-// -> hook_network.c に追加 | category="network" | winapi:Windows Networking (WNet)
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(DWORD, WINAPI, WNetEnumResourceW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hEnum,
-	_Inout_ LPDWORD lpcCount,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpBufferSize
-) {
-	DWORD ret;
-	ret = Old_WNetEnumResourceW(hEnum, lpcCount, lpBuffer, lpBufferSize);
-	// [7.5] ⑤/複数要素バッファ: desc どおり lpBuffer は NETRESOURCEW の配列。件数は *lpcCount。
-	//       既定 capemon の WNetUseConnectionW(hook_network.c) と同じ「NULLガード付きメンバ参照」
-	//       イディオムで、各要素の lpRemoteName を u 化する(log.c の u は __try 保護)。
-	//       cap=4: 実測の最大件数は 3(observed_count_max)なので余裕1件。★4件を超える分は記録しない。
-	//       REVIEW対応: 本APIは成功時に NO_ERROR(0) を返すため LOQ_nonzero → LOQ_zero に是正。
-	LOQ_zero("network", "pIuuuuI", "hEnum", hEnum, "lpcCount", lpcCount, "Remote0", ((ret == NO_ERROR && lpcCount && lpBuffer && *lpcCount > 0) ? ((LPNETRESOURCEW)lpBuffer)[0].lpRemoteName : NULL), "Remote1", ((ret == NO_ERROR && lpcCount && lpBuffer && *lpcCount > 1) ? ((LPNETRESOURCEW)lpBuffer)[1].lpRemoteName : NULL), "Remote2", ((ret == NO_ERROR && lpcCount && lpBuffer && *lpcCount > 2) ? ((LPNETRESOURCEW)lpBuffer)[2].lpRemoteName : NULL), "Remote3", ((ret == NO_ERROR && lpcCount && lpBuffer && *lpcCount > 3) ? ((LPNETRESOURCEW)lpBuffer)[3].lpRemoteName : NULL), "lpBufferSize", lpBufferSize);
-	return ret;
-}
-
-// -> hook_network.c に追加 | category="network" | winapi:Windows Networking (WNet)
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpNetResource: 型 LPNETRESOURCE は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(DWORD, WINAPI, WNetOpenEnumW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwScope,
-	_In_ DWORD dwType,
-	_In_ DWORD dwUsage,
-	_In_ LPNETRESOURCE lpNetResource,
-	_Out_ LPHANDLE lphEnum
-) {
-	DWORD ret;
-	ret = Old_WNetOpenEnumW(dwScope, dwType, dwUsage, lpNetResource, lphEnum);
-	// [7.5] ③ 構造体のメンバ参照: 列挙対象コンテナを示す NETRESOURCE。意味のある内容は
-	//       lpRemoteName なので、既定 capemon の WNetUseConnectionW と同一イディオムで u 化する。
-	//       REVIEW対応: 本APIも成功時 NO_ERROR(0) のため LOQ_nonzero → LOQ_zero に是正。
-	LOQ_zero("network", "iiiuP", "dwScope", dwScope, "dwType", dwType, "dwUsage", dwUsage, "NetResource", (lpNetResource ? lpNetResource->lpRemoteName : NULL), "lphEnum", lphEnum);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_1 END <<< */
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 END <<< */
 
