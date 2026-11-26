@@ -2010,26 +2010,26 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 
 /* >>> AUTOHOOK_pa_alk_072_function_hook_checker_rewrites_1 BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 SECURITY_STATUS SEC_Entry の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 戻り型 SECURITY_STATUS の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 pvContextBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(SECURITY_STATUS SEC_Entry, WINAPI, FreeContextBuffer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+HOOKDEF(SECURITY_STATUS, WINAPI, FreeContextBuffer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ PVOID pvContextBuffer
 ) {
-	SECURITY_STATUS SEC_Entry ret;
+	SECURITY_STATUS ret;
 	ret = Old_FreeContextBuffer(pvContextBuffer);
 	LOQ_nonzero("misc", "p", "pvContextBuffer", pvContextBuffer);
 	return ret;
 }
 
 // -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 NTSTATUS SEC_ENTRY の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(NTSTATUS SEC_ENTRY, WINAPI, SpUserModeInitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+// REVIEW: 戻り型 NTSTATUS の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ ULONG LsaVersion,
 	_Out_ PULONG PackageVersion,
-	_Out_ PSECPKG_USER_FUNCTION_TABLE* ppTables,
+	_Out_ PVOID* ppTables,
 	_Out_ PULONG pcTables
 ) {
-	NTSTATUS SEC_ENTRY ret;
+	NTSTATUS ret;
 	ret = Old_SpUserModeInitialize(LsaVersion, PackageVersion, ppTables, pcTables);
 	LOQ_nonzero("misc", "iIPI", "LsaVersion", LsaVersion, "PackageVersion", PackageVersion, "ppTables", ppTables, "pcTables", pcTables);
 	return ret;

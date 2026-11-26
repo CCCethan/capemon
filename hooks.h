@@ -3931,7 +3931,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 #include "hook_vbscript.h"
 
 /* >>> AUTOHOOK_pa_alk_072_function_hook_checker_rewrites_1 BEGIN <<< */
-HOOKDEF(SECURITY_STATUS SEC_Entry, WINAPI, FreeContextBuffer,
+HOOKDEF(SECURITY_STATUS, WINAPI, FreeContextBuffer,
 	_In_ PVOID pvContextBuffer
 );
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameA,
@@ -3939,10 +3939,10 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameA,
 	_Out_ LPSTR lpFilename,
 	_In_ DWORD nSize
 );
-HOOKDEF(NTSTATUS SEC_ENTRY, WINAPI, SpUserModeInitialize,
+HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize,
 	_In_ ULONG LsaVersion,
 	_Out_ PULONG PackageVersion,
-	_Out_ PSECPKG_USER_FUNCTION_TABLE* ppTables,
+	_Out_ PVOID* ppTables,
 	_Out_ PULONG pcTables
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
