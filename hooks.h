@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker_rewrites_4 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker_rewrites_7 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4317,5 +4317,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker_rewrites_4 END <<< */
+/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker_rewrites_7 END <<< */
 
