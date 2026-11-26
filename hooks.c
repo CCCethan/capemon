@@ -818,7 +818,12 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker_rewrites_7 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_006_bios_version_checker_rewrites_1 BEGIN <<< */
+HOOK(secur32, FreeContextBuffer),
+HOOK(sspicli, FreeContextBuffer),
+HOOK(kernel32, SpUserModeInitialize),
+HOOK(kernelbase, SpUserModeInitialize),
+HOOK(schannel, SpUserModeInitialize),
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -959,6 +964,15 @@ HOOK(kernel32, RtlPcToFileHeader),
 HOOK(kernelbase, RtlPcToFileHeader),
 HOOK(kernel32, RtlUnwind),
 HOOK(kernelbase, RtlUnwind),
+HOOK(combase, SafeArrayGetElement),
+HOOK(ole32, SafeArrayGetElement),
+HOOK(oleaut32, SafeArrayGetElement),
+HOOK(combase, SafeArrayGetLBound),
+HOOK(ole32, SafeArrayGetLBound),
+HOOK(oleaut32, SafeArrayGetLBound),
+HOOK(combase, SafeArrayGetUBound),
+HOOK(ole32, SafeArrayGetUBound),
+HOOK(oleaut32, SafeArrayGetUBound),
 HOOK(kernel32, SetEnvironmentVariableW),
 HOOK(kernelbase, SetEnvironmentVariableW),
 HOOK(kernel32, SetFilePointerEx),
@@ -985,11 +999,14 @@ HOOK(kernelbase, TlsSetValue),
 HOOK(combase, VariantClear),
 HOOK(ole32, VariantClear),
 HOOK(oleaut32, VariantClear),
+HOOK(combase, VariantInit),
+HOOK(ole32, VariantInit),
+HOOK(oleaut32, VariantInit),
 HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker_rewrites_7 END <<< */
+/* >>> AUTOHOOK_pa_alk_006_bios_version_checker_rewrites_1 END <<< */
 };
 
 hook_t native_hooks[] = {

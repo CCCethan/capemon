@@ -72,7 +72,7 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker_rewrites_7 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_006_bios_version_checker_rewrites_1 BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:COM
 // REVIEW: 引数 pvReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
 HOOKDEF(HRESULT, WINAPI, CoInitializeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -246,5 +246,14 @@ HOOKDEF(HRESULT, WINAPI, VariantClear, // 呼出規約は WINAPI 仮定(socket/n
 	LOQ_hresult("com", "n", "pvarg", pvarg);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker_rewrites_7 END <<< */
+
+// -> hook_com.c に追加 | category="com" | winapi:Conversion and Manipulation
+HOOKDEF(void, WINAPI, VariantInit, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ VARIANTARG* pvarg
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_VariantInit(pvarg);
+	LOQ_void("com", "n", "pvarg", pvarg);
+}
+/* >>> AUTOHOOK_pa_alk_006_bios_version_checker_rewrites_1 END <<< */
 
