@@ -526,7 +526,7 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_5 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_8 BEGIN <<< */
 // -> hook_window.c に追加 | category="windows" | winapi:Error Handling
 // REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpSource: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
@@ -545,5 +545,5 @@ HOOKDEF(DWORD, WINAPI, FormatMessageA, // 呼出規約は WINAPI 仮定(socket/n
 	LOQ_nonzero("windows", "ipiisip", "dwFlags", dwFlags, "lpSource", lpSource, "dwMessageId", dwMessageId, "dwLanguageId", dwLanguageId, "lpBuffer", lpBuffer, "nSize", nSize, "Arguments", Arguments);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_5 END <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_8 END <<< */
 
