@@ -818,12 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker_rewrites_3 BEGIN <<< */
-HOOK(secur32, FreeContextBuffer),
-HOOK(sspicli, FreeContextBuffer),
-HOOK(kernel32, SpUserModeInitialize),
-HOOK(kernelbase, SpUserModeInitialize),
-HOOK(schannel, SpUserModeInitialize),
+/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker_rewrites_4 BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -994,7 +989,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker_rewrites_3 END <<< */
+/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker_rewrites_4 END <<< */
 };
 
 hook_t native_hooks[] = {

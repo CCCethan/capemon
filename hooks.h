@@ -3930,16 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker_rewrites_3 BEGIN <<< */
-HOOKDEF(SECURITY_STATUS, WINAPI, FreeContextBuffer,
-	_In_ PVOID pvContextBuffer
-);
-HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize,
-	_In_ ULONG LsaVersion,
-	_Out_ PULONG PackageVersion,
-	_Out_ PSECPKG_USER_FUNCTION_TABLE* ppTables,
-	_Out_ PULONG pcTables
-);
+/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker_rewrites_4 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4326,5 +4317,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker_rewrites_3 END <<< */
+/* >>> AUTOHOOK_pa_alk_005_bios_serial_checker_rewrites_4 END <<< */
 
