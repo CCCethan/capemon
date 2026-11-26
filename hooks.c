@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_10 BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -851,6 +851,8 @@ HOOK(kernel32, EnumSystemLocalesW),
 HOOK(kernelbase, EnumSystemLocalesW),
 HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
+HOOK(kernel32, ExpandEnvironmentStringsA),
+HOOK(kernelbase, ExpandEnvironmentStringsA),
 HOOK(kernel32, FindClose),
 HOOK(kernelbase, FindClose),
 HOOK(kernel32, FindFirstFileW),
@@ -985,6 +987,9 @@ HOOK(schannel, SpUserModeInitialize),
 HOOK(combase, SysAllocString),
 HOOK(ole32, SysAllocString),
 HOOK(oleaut32, SysAllocString),
+HOOK(combase, SysStringLen),
+HOOK(ole32, SysStringLen),
+HOOK(oleaut32, SysStringLen),
 HOOK(kernel32, TerminateProcess),
 HOOK(kernelbase, TerminateProcess),
 HOOK(kernel32, TlsAlloc),
@@ -998,11 +1003,14 @@ HOOK(kernelbase, TlsSetValue),
 HOOK(combase, VariantClear),
 HOOK(ole32, VariantClear),
 HOOK(oleaut32, VariantClear),
+HOOK(combase, VariantInit),
+HOOK(ole32, VariantInit),
+HOOK(oleaut32, VariantInit),
 HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_10 END <<< */
 };
 
 hook_t native_hooks[] = {

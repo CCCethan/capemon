@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_10 BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2044,6 +2044,19 @@ HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW, // 呼出規約は WINAPI 仮定(socke
 	BOOL ret;
 	ret = Old_EnumSystemLocalesW(lpLocaleEnumProc, dwFlags);
 	LOQ_bool("misc", "ii", "lpLocaleEnumProc", lpLocaleEnumProc, "dwFlags", dwFlags);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, ExpandEnvironmentStringsA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCSTR lpSrc,
+	_Out_opt_ LPSTR lpDst,
+	_In_ DWORD nSize
+) {
+	DWORD ret;
+	ret = Old_ExpandEnvironmentStringsA(lpSrc, lpDst, nSize);
+	LOQ_nonzero("misc", "ssi", "lpSrc", lpSrc, "lpDst", lpDst, "nSize", nSize);
 	return ret;
 }
 
@@ -2503,6 +2516,17 @@ HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/na
 	return ret;
 }
 
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(UINT, WINAPI, SysStringLen, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ BSTR bstr
+) {
+	UINT ret;
+	ret = Old_SysStringLen(bstr);
+	LOQ_nonzero("misc", "u", "bstr", bstr);
+	return ret;
+}
+
 // -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
 // REVIEW: 引数 lpAddress: 入力バッファとして dwSize バイト分を内容ログ('b')。dwSize が実データ長でない/出力用バッファなら 'p'(アドレスのみ)へ戻すこと
 HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2516,5 +2540,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_10 END <<< */
 

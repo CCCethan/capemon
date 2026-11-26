@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_10 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4011,6 +4011,11 @@ HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW,
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
+);
+HOOKDEF(DWORD, WINAPI, ExpandEnvironmentStringsA,
+	_In_ LPCSTR lpSrc,
+	_Out_opt_ LPSTR lpDst,
+	_In_ DWORD nSize
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
@@ -4316,6 +4321,9 @@ HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize,
 HOOKDEF(BSTR, WINAPI, SysAllocString,
 	_In_opt_ const OLECHAR* psz
 );
+HOOKDEF(UINT, WINAPI, SysStringLen,
+	_In_opt_ BSTR bstr
+);
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
@@ -4336,6 +4344,9 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 HOOKDEF(HRESULT, WINAPI, VariantClear,
 	_Inout_ VARIANTARG* pvarg
 );
+HOOKDEF(void, WINAPI, VariantInit,
+	_Out_ VARIANTARG* pvarg
+);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4350,5 +4361,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_10 END <<< */
 
