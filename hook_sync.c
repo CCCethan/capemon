@@ -178,7 +178,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker_rewrites_3_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_014_cim_slot_checker_rewrites_4 BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -228,5 +228,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "lpCriticalSection", lpCriticalSection);
 }
-/* >>> AUTOHOOK_pa_alk_008_bluetooth_device_checker_rewrites_3_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_014_cim_slot_checker_rewrites_4 END <<< */
 
