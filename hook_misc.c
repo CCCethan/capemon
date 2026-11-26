@@ -2008,7 +2008,34 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker_rewrites_3 BEGIN <<< */
+// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
+// REVIEW: 戻り型 SECURITY_STATUS の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 pvContextBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(SECURITY_STATUS, WINAPI, FreeContextBuffer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ PVOID pvContextBuffer
+) {
+	SECURITY_STATUS ret;
+	ret = Old_FreeContextBuffer(pvContextBuffer);
+	LOQ_nonzero("misc", "p", "pvContextBuffer", pvContextBuffer);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
+HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ ULONG LsaVersion,
+	_Out_ PULONG PackageVersion,
+	_Out_ PVOID* ppTables,
+	_Out_ PULONG pcTables
+) {
+	NTSTATUS ret;
+	ret = Old_SpUserModeInitialize(LsaVersion, PackageVersion, ppTables, pcTables);
+	LOQ_ntstatus("misc", "iIPI", "LsaVersion", LsaVersion, "PackageVersion", PackageVersion, "ppTables", ppTables, "pcTables", pcTables);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2044,18 +2071,6 @@ HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW, // 呼出規約は WINAPI 仮定(socke
 	BOOL ret;
 	ret = Old_EnumSystemLocalesW(lpLocaleEnumProc, dwFlags);
 	LOQ_bool("misc", "ii", "lpLocaleEnumProc", lpLocaleEnumProc, "dwFlags", dwFlags);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 SECURITY_STATUS の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 pvContextBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(SECURITY_STATUS, WINAPI, FreeContextBuffer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PVOID pvContextBuffer
-) {
-	SECURITY_STATUS ret;
-	ret = Old_FreeContextBuffer(pvContextBuffer);
-	LOQ_nonzero("misc", "p", "pvContextBuffer", pvContextBuffer);
 	return ret;
 }
 
@@ -2126,19 +2141,6 @@ HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW, // 呼出規約は WINAPI 仮定
 	LPWSTR ret;
 	ret = Old_GetEnvironmentStringsW();
 	LOQ_nonnull("misc", "");
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCWSTR lpName,
-	_Out_opt_ LPWSTR lpBuffer,
-	_In_ DWORD nSize
-) {
-	DWORD ret;
-	ret = Old_GetEnvironmentVariableW(lpName, lpBuffer, nSize);
-	LOQ_nonzero("misc", "uui", "lpName", lpName, "lpBuffer", lpBuffer, "nSize", nSize);
 	return ret;
 }
 
@@ -2488,16 +2490,18 @@ HOOKDEF(void, WINAPI, SetLastError, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_void("misc", "i", "dwErrCode", dwErrCode);
 }
 
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ ULONG LsaVersion,
-	_Out_ PULONG PackageVersion,
-	_Out_ PVOID* ppTables,
-	_Out_ PULONG pcTables
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 戻り型 BSTR の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 psz: 型 const OLECHAR* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ const OLECHAR* psz
 ) {
-	NTSTATUS ret;
-	ret = Old_SpUserModeInitialize(LsaVersion, PackageVersion, ppTables, pcTables);
-	LOQ_ntstatus("misc", "iIPI", "LsaVersion", LsaVersion, "PackageVersion", PackageVersion, "ppTables", ppTables, "pcTables", pcTables);
+	BSTR ret;
+	ret = Old_SysAllocString(psz);
+	// [7.5] kind=struct-or-opaque は誤分類。型は const OLECHAR* = ワイド文字列で
+	//       description も "The string to copy."。u で内容を記録する(log.c の u は
+	//       NULL/例外を __try で保護)。観測「戻り値」は BSTR のアドレスであり長さではない。
+	LOQ_nonzero("misc", "u", "psz", psz);
 	return ret;
 }
 
@@ -2514,5 +2518,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 END <<< */
+/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker_rewrites_3 END <<< */
 

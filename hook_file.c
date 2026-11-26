@@ -1929,7 +1929,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker_rewrites_3 BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1971,40 +1971,12 @@ HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/
 }
 
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(HANDLE, WINAPI, FindFirstFileW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpFileName,
-	_Out_ LPWIN32_FIND_DATAW lpFindFileData
-) {
-	HANDLE ret;
-	ret = Old_FindFirstFileW(lpFileName, lpFindFileData);
-	// [可読性7.5] FindFileData は ⑤出力構造体(WIN32_FIND_DATAW)。中身のうち人間可読で
-	// 価値があるのは **cFileName**(見つかったファイル名)なので、構造体ダンプではなく
-	// そのメンバを 'u'(wide文字列, log.c は NULL を L"" に落として安全)で記録する。
-	// ★exp5 では同種の FindNextFileW.FindFileData を「既定 capemon 所有で編集できない」として
-	//   keep-p にしたが、FindFirstFileW は**本パイプラインの生成物**なので改善できる。
-	// 失敗時(INVALID_HANDLE_VALUE)は構造体が埋まらないのでガードする。
-	LOQ_handle("filesystem", "Fpu", "lpFileName", lpFileName, "lpFindFileData", lpFindFileData, "FoundName", (ret != INVALID_HANDLE_VALUE && lpFindFileData) ? lpFindFileData->cFileName : L"");
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hFile
 ) {
 	BOOL ret;
 	ret = Old_FlushFileBuffers(hFile);
 	LOQ_bool("filesystem", "p", "hFile", hFile);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetFileAttributesW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpFileName
-) {
-	DWORD ret;
-	ret = Old_GetFileAttributesW(lpFileName);
-	LOQ_nonzero("filesystem", "F", "lpFileName", lpFileName);
 	return ret;
 }
 
@@ -2088,5 +2060,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "hFile", hFile, "lpBuffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "nNumberOfBytesToWrite", nNumberOfBytesToWrite, "lpNumberOfBytesWritten", lpNumberOfBytesWritten, "lpOverlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 END <<< */
+/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker_rewrites_3 END <<< */
 
