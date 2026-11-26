@@ -1080,39 +1080,3 @@ HOOKDEF(HRESULT, WINAPI, MkParseDisplayNameEx,
 	LOQ_hresult("network", "u", "Name", szName);
 	return ret;
 }
-
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 BEGIN <<< */
-// -> hook_network.c に追加 | category="network" | winapi:Network Management
-// REVIEW: 戻り型 NET_API_STATUS の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 Buffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(DWORD, WINAPI, NetApiBufferFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPVOID Buffer
-) {
-	DWORD ret;
-	ret = Old_NetApiBufferFree(Buffer);
-	LOQ_nonzero("network", "p", "Buffer", Buffer);
-	return ret;
-}
-
-// -> hook_network.c に追加 | category="network" | winapi:Network Management
-// REVIEW: 戻り型 NET_API_STATUS の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 UncServerName: 型 LMSTR を i(int32)で仮記録。要確認
-// REVIEW: 引数 BufPtr: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(DWORD, WINAPI, NetUseEnum, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPWSTR UncServerName,
-	_In_ DWORD Level,
-	_Out_ LPBYTE* BufPtr,
-	_In_ DWORD PreferedMaximumSize,
-	_Out_ LPDWORD EntriesRead,
-	_Out_ LPDWORD TotalEntries,
-	_Inout_ LPDWORD ResumeHandle
-) {
-	DWORD ret;
-	ret = Old_NetUseEnum(UncServerName, Level, BufPtr, PreferedMaximumSize, EntriesRead, TotalEntries, ResumeHandle);
-	LOQ_nonzero("network", "uipiIII", "UncServerName", UncServerName, "Level", Level, "BufPtr", BufPtr, "PreferedMaximumSize", PreferedMaximumSize, "EntriesRead", EntriesRead, "TotalEntries", TotalEntries, "ResumeHandle", ResumeHandle);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 END <<< */
-

@@ -3930,24 +3930,43 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, NetApiBufferFree,
-	_In_ LPVOID Buffer
-);
-HOOKDEF(DWORD, WINAPI, NetUseEnum,
-	_In_ LPWSTR UncServerName,
-	_In_ DWORD Level,
-	_Out_ LPBYTE* BufPtr,
-	_In_ DWORD PreferedMaximumSize,
-	_Out_ LPDWORD EntriesRead,
-	_Out_ LPDWORD TotalEntries,
-	_Inout_ LPDWORD ResumeHandle
-);
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_4 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
+);
+HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
+	_In_opt_ LPVOID pvReserved,
+	_In_ DWORD dwCoInit
+);
+HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity,
+	_In_opt_ PSECURITY_DESCRIPTOR pSecDesc,
+	_In_ LONG cAuthSvc,
+	_In_opt_ SOLE_AUTHENTICATION_SERVICE* asAuthSvc,
+	_In_opt_ void* pReserved1,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ void* pAuthList,
+	_In_ DWORD dwCapabilities,
+	_In_opt_ void* pReserved3
+);
+HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
+	_In_ IUnknown* pProxy,
+	_In_ DWORD dwAuthnSvc,
+	_In_ DWORD dwAuthzSvc,
+	_In_opt_ OLECHAR* pServerPrincName,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ RPC_AUTH_IDENTITY_HANDLE pAuthInfo,
+	_In_ DWORD dwCapabilities
+);
+HOOKDEF(void, WINAPI, CoTaskMemFree,
+	_In_opt_ LPVOID pv
+);
+HOOKDEF(void, WINAPI, CoUninitialize,
+	void
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4057,11 +4076,6 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
-);
-HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableW,
-	_In_opt_ LPCWSTR lpName,
-	_Out_opt_ LPWSTR lpBuffer,
-	_In_ DWORD nSize
 );
 HOOKDEF(DWORD, WINAPI, GetFileAttributesW,
 	_In_ LPCWSTR lpFileName
@@ -4244,6 +4258,15 @@ HOOKDEF(BOOL, WINAPI, ReadFile,
 	_Out_opt_ LPDWORD lpNumberOfBytesRead,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
+HOOKDEF(LONG, WINAPI, RegGetValueW,
+	_In_ HKEY hkey,
+	_In_opt_ LPCWSTR lpSubKey,
+	_In_opt_ LPCWSTR lpValue,
+	_In_opt_ DWORD dwFlags,
+	_Out_opt_ LPDWORD pdwType,
+	_Out_opt_ PVOID pvData,
+	_Inout_opt_ LPDWORD pcbData
+);
 HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
 	_In_ ULONGLONG ControlPc,
 	_Out_ PULONGLONG ImageBase,
@@ -4285,6 +4308,9 @@ HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize,
 	_Out_ PVOID* ppTables,
 	_Out_ PULONG pcTables
 );
+HOOKDEF(BSTR, WINAPI, SysAllocString,
+	_In_opt_ const OLECHAR* psz
+);
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
@@ -4302,6 +4328,9 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
+HOOKDEF(HRESULT, WINAPI, VariantClear,
+	_Inout_ VARIANTARG* pvarg
+);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4316,5 +4345,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 END <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_4 END <<< */
 
