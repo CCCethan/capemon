@@ -3930,9 +3930,14 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_006_bios_version_checker_rewrites_1 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_006_bios_version_checker_rewrites_7_debug BEGIN <<< */
 HOOKDEF(SECURITY_STATUS, WINAPI, FreeContextBuffer,
 	_In_ PVOID pvContextBuffer
+);
+HOOKDEF(BOOL, WINAPI, SetHandleInformation,
+	_In_ HANDLE hObject,
+	_In_ DWORD dwMask,
+	_In_ DWORD dwFlags
 );
 HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize,
 	_In_ ULONG LsaVersion,
@@ -3945,34 +3950,6 @@ HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
-);
-HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
-	_In_opt_ LPVOID pvReserved,
-	_In_ DWORD dwCoInit
-);
-HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity,
-	_In_opt_ PSECURITY_DESCRIPTOR pSecDesc,
-	_In_ LONG cAuthSvc,
-	_In_opt_ SOLE_AUTHENTICATION_SERVICE* asAuthSvc,
-	_In_opt_ void* pReserved1,
-	_In_ DWORD dwAuthnLevel,
-	_In_ DWORD dwImpLevel,
-	_In_opt_ void* pAuthList,
-	_In_ DWORD dwCapabilities,
-	_In_opt_ void* pReserved3
-);
-HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
-	_In_ IUnknown* pProxy,
-	_In_ DWORD dwAuthnSvc,
-	_In_ DWORD dwAuthzSvc,
-	_In_opt_ OLECHAR* pServerPrincName,
-	_In_ DWORD dwAuthnLevel,
-	_In_ DWORD dwImpLevel,
-	_In_opt_ RPC_AUTH_IDENTITY_HANDLE pAuthInfo,
-	_In_ DWORD dwCapabilities
-);
-HOOKDEF(void, WINAPI, CoUninitialize,
-	void
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4001,6 +3978,12 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ DWORD dwCreationDisposition,
 	_In_ DWORD dwFlagsAndAttributes,
 	_In_opt_ HANDLE hTemplateFile
+);
+HOOKDEF(BOOL, WINAPI, CreatePipe,
+	_Out_ PHANDLE hReadPipe,
+	_Out_ PHANDLE hWritePipe,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpPipeAttributes,
+	_In_ DWORD nSize
 );
 HOOKDEF(void, WINAPI, DeleteCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -4269,21 +4252,6 @@ HOOKDEF(void, WINAPI, RtlUnwind,
 	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
 	_In_ PVOID ReturnValue
 );
-HOOKDEF(HRESULT, WINAPI, SafeArrayGetElement,
-	_In_ SAFEARRAY* psa,
-	_In_ LONG* rgIndices,
-	_Out_ void* pv
-);
-HOOKDEF(HRESULT, WINAPI, SafeArrayGetLBound,
-	_In_ SAFEARRAY* psa,
-	_In_ UINT nDim,
-	_Out_ LONG* plLbound
-);
-HOOKDEF(HRESULT, WINAPI, SafeArrayGetUBound,
-	_In_ SAFEARRAY* psa,
-	_In_ UINT nDim,
-	_Out_ LONG* plUbound
-);
 HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
 	_In_opt_ LPCWSTR lpValue
@@ -4304,9 +4272,6 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle,
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
 );
-HOOKDEF(BSTR, WINAPI, SysAllocString,
-	_In_opt_ const OLECHAR* psz
-);
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
@@ -4324,17 +4289,15 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
-HOOKDEF(HRESULT, WINAPI, VariantClear,
-	_Inout_ VARIANTARG* pvarg
-);
-HOOKDEF(void, WINAPI, VariantInit,
-	_Out_ VARIANTARG* pvarg
-);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
+);
+HOOKDEF(DWORD, WINAPI, WaitForSingleObject,
+	_In_ HANDLE hHandle,
+	_In_ DWORD dwMilliseconds
 );
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
@@ -4344,5 +4307,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_006_bios_version_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_006_bios_version_checker_rewrites_7_debug END <<< */
 
