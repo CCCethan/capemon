@@ -959,46 +959,6 @@ out:
 	return addr;
 }
 
-// Returns 1 when the kernel32 export does nothing but jump to the KernelBase export of the same name.
-// Returns 0 when kernel32 has its own code, jumps somewhere else, or the shape cannot be determined.
-static int k32_export_jumps_to_kernelbase(const char *funcname, unsigned char *kbaddr)
-{
-	HMODULE k32 = GetModuleHandle("kernel32");
-	unsigned char *p;
-	ULONG_PTR base, end;
-	int i;
-
-	if (k32 == NULL || kbaddr == NULL)
-		return 0;
-
-	p = (unsigned char *)GetProcAddress(k32, funcname);
-	// not exported by kernel32: keep the hook on KernelBase as before
-	if (p == NULL)
-		return 1;
-
-	base = (ULONG_PTR)k32;
-	end = base + get_image_size(base);
-
-	for (i = 0; i < 4; i++) {
-		if (p == kbaddr)
-			return 1;
-		// left kernel32, or fewer than 7 readable bytes (longest instruction decoded below)
-		if ((ULONG_PTR)p < base || (ULONG_PTR)p + 7 > end)
-			return 0;
-		if (p[0] == 0x48 && p[1] == 0xff && p[2] == 0x25)	// jmp qword [rip+disp32]
-			p = (unsigned char *)get_indirect_target(p + 1);
-		else if (p[0] == 0xff && p[1] == 0x25)				// same, without REX
-			p = (unsigned char *)get_indirect_target(p);
-		else if (p[0] == 0xe9)								// jmp rel32
-			p = (unsigned char *)get_near_rel_target(p);
-		else if (p[0] == 0xeb)								// jmp rel8
-			p = (unsigned char *)get_short_rel_target(p);
-		else
-			return 0;										// own code
-	}
-	return 0;
-}
-
 int hook_api(hook_t *h, int type)
 {
 	DWORD old_protect;
@@ -1034,15 +994,8 @@ int hook_api(hook_t *h, int type)
 		if (hmod == NULL)
 			return 0;
 
-		if (!wcscmp(h->library, L"kernel32")) {
-			unsigned char *kbaddr = (unsigned char *)GetProcAddress(GetModuleHandle("KernelBase"), h->funcname);
-			if (kbaddr) {
-				if (!g_config.k32_redirect_check || k32_export_jumps_to_kernelbase(h->funcname, kbaddr))
-					hmod = GetModuleHandle("KernelBase");
-				else
-					DebugOutput("hook_api: %s is implemented in kernel32 itself, keeping the hook on kernel32\n", h->funcname);
-			}
-		}
+		if (!wcscmp(h->library, L"kernel32") && GetProcAddress(GetModuleHandle("KernelBase"), h->funcname))
+			hmod = GetModuleHandle("KernelBase");
 
 		if (!strcmp(h->funcname, "RtlDispatchException")) {
 			// RtlDispatchException is the first relative call in KiUserExceptionDispatcher
