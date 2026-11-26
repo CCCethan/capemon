@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker_rewrites_3 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_006_bios_version_checker_rewrites_1 BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Authentication
 // REVIEW: 戻り型 SECURITY_STATUS の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 pvContextBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
@@ -2470,6 +2470,51 @@ HOOKDEF(void, WINAPI, RtlUnwind, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_void("misc", "pppp", "TargetFrame", TargetFrame, "TargetIp", TargetIp, "ExceptionRecord", ExceptionRecord, "ReturnValue", ReturnValue);
 }
 
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 引数 psa: 型 SAFEARRAY* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetElement, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ SAFEARRAY* psa,
+	_In_ LONG* rgIndices,
+	_Out_ void* pv
+) {
+	HRESULT ret;
+	ret = Old_SafeArrayGetElement(psa, rgIndices, pv);
+	// [7.5] ② 固定サイズ構造体: SAFEARRAY は capemon のビルドで完全定義(既定フック
+	//       CDocument_write が psa->pvData / psa->rgsabound[0].cElements を参照している)。
+	//       ヘッダを sizeof でダンプすると cDims/cbElements/rgsabound(要素数・下限)が読め、
+	//       WMI から何件・何バイトの配列を取り出したかが追える。
+	LOQ_hresult("misc", "bIP", "psa", sizeof(SAFEARRAY), psa, "rgIndices", rgIndices, "pv", pv);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 引数 psa: 型 SAFEARRAY* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetLBound, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ SAFEARRAY* psa,
+	_In_ UINT nDim,
+	_Out_ LONG* plLbound
+) {
+	HRESULT ret;
+	ret = Old_SafeArrayGetLBound(psa, nDim, plLbound);
+	// [7.5] ② 固定サイズ構造体: SafeArrayGetElement.Sa と同一の扱い。
+	LOQ_hresult("misc", "biI", "psa", sizeof(SAFEARRAY), psa, "nDim", nDim, "plLbound", plLbound);
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 引数 psa: 型 SAFEARRAY* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetUBound, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ SAFEARRAY* psa,
+	_In_ UINT nDim,
+	_Out_ LONG* plUbound
+) {
+	HRESULT ret;
+	ret = Old_SafeArrayGetUBound(psa, nDim, plUbound);
+	// [7.5] ② 固定サイズ構造体: SafeArrayGetElement.Sa と同一の扱い。
+	LOQ_hresult("misc", "biI", "psa", sizeof(SAFEARRAY), psa, "nDim", nDim, "plUbound", plUbound);
+	return ret;
+}
+
 // -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
 HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ LPCWSTR lpName,
@@ -2518,5 +2563,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker_rewrites_3 END <<< */
+/* >>> AUTOHOOK_pa_alk_006_bios_version_checker_rewrites_1 END <<< */
 

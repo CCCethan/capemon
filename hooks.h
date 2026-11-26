@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker_rewrites_3 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_006_bios_version_checker_rewrites_1 BEGIN <<< */
 HOOKDEF(SECURITY_STATUS, WINAPI, FreeContextBuffer,
 	_In_ PVOID pvContextBuffer
 );
@@ -4269,6 +4269,21 @@ HOOKDEF(void, WINAPI, RtlUnwind,
 	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
 	_In_ PVOID ReturnValue
 );
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetElement,
+	_In_ SAFEARRAY* psa,
+	_In_ LONG* rgIndices,
+	_Out_ void* pv
+);
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetLBound,
+	_In_ SAFEARRAY* psa,
+	_In_ UINT nDim,
+	_Out_ LONG* plLbound
+);
+HOOKDEF(HRESULT, WINAPI, SafeArrayGetUBound,
+	_In_ SAFEARRAY* psa,
+	_In_ UINT nDim,
+	_Out_ LONG* plUbound
+);
 HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
 	_In_opt_ LPCWSTR lpValue
@@ -4312,6 +4327,9 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 HOOKDEF(HRESULT, WINAPI, VariantClear,
 	_Inout_ VARIANTARG* pvarg
 );
+HOOKDEF(void, WINAPI, VariantInit,
+	_Out_ VARIANTARG* pvarg
+);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4326,5 +4344,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_004_baseboard_info_checker_rewrites_3 END <<< */
+/* >>> AUTOHOOK_pa_alk_006_bios_version_checker_rewrites_1 END <<< */
 
