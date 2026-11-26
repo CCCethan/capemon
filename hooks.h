@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_014_cim_slot_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_10 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4015,8 +4015,21 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
 );
+HOOKDEF(HANDLE, WINAPI, FindFirstFileW,
+	_In_ LPCWSTR lpFileName,
+	_Out_ LPWIN32_FIND_DATAW lpFindFileData
+);
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
+);
+HOOKDEF(DWORD, WINAPI, FormatMessageA,
+	_In_ DWORD dwFlags,
+	_In_opt_ LPCVOID lpSource,
+	_In_ DWORD dwMessageId,
+	_In_ DWORD dwLanguageId,
+	_Out_ LPSTR lpBuffer,
+	_In_ DWORD nSize,
+	_In_opt_ va_list* Arguments
 );
 HOOKDEF(SECURITY_STATUS, WINAPI, FreeContextBuffer,
 	_In_ PVOID pvContextBuffer
@@ -4069,6 +4082,17 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
+);
+HOOKDEF(BOOL, WINAPI, GetFileAttributesExW,
+	_In_ LPCWSTR lpFileName,
+	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	_Out_ LPVOID lpFileInformation
+);
+HOOKDEF(BOOL, WINAPI, GetFileInformationByHandleEx,
+	_In_ HANDLE hFile,
+	_In_ FILE_INFO_BY_HANDLE_CLASS FileInformationClass,
+	_Out_ LPVOID lpFileInformation,
+	_In_ DWORD dwBufferSize
 );
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
@@ -4263,6 +4287,9 @@ HOOKDEF(void, WINAPI, RtlUnwind,
 	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
 	_In_ PVOID ReturnValue
 );
+HOOKDEF(BOOL, WINAPI, SetEndOfFile,
+	_In_ HANDLE hFile
+);
 HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
 	_In_opt_ LPCWSTR lpValue
@@ -4312,9 +4339,6 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 HOOKDEF(HRESULT, WINAPI, VariantClear,
 	_Inout_ VARIANTARG* pvarg
 );
-HOOKDEF(void, WINAPI, VariantInit,
-	_Out_ VARIANTARG* pvarg
-);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4329,5 +4353,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_014_cim_slot_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_10 END <<< */
 
