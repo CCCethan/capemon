@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_1 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2126,6 +2126,19 @@ HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW, // 呼出規約は WINAPI 仮定
 	LPWSTR ret;
 	ret = Old_GetEnvironmentStringsW();
 	LOQ_nonnull("misc", "");
+	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetEnvironmentVariableW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCWSTR lpName,
+	_Out_opt_ LPWSTR lpBuffer,
+	_In_ DWORD nSize
+) {
+	DWORD ret;
+	ret = Old_GetEnvironmentVariableW(lpName, lpBuffer, nSize);
+	LOQ_nonzero("misc", "uui", "lpName", lpName, "lpBuffer", lpBuffer, "nSize", nSize);
 	return ret;
 }
 
@@ -2395,209 +2408,6 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID, // 呼出規約は WINAPI 仮定(socket/
 	return ret;
 }
 
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpNetResource: 型 LPNETRESOURCE は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 lpPassword: 型 LPTSTR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 lpUserName: 型 LPTSTR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(DWORD, WINAPI, NPAddConnection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPNETRESOURCE lpNetResource,
-	_In_ LPTSTR lpPassword,
-	_In_ LPTSTR lpUserName
-) {
-	DWORD ret;
-	ret = Old_NPAddConnection(lpNetResource, lpPassword, lpUserName);
-	LOQ_nonzero("misc", "ppp", "lpNetResource", lpNetResource, "lpPassword", lpPassword, "lpUserName", lpUserName);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpNetResource: 型 LPNETRESOURCE は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 lpPassword: 型 LPTSTR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 lpUserName: 型 LPTSTR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(DWORD, WINAPI, NPAddConnection3, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HWND hwndOwner,
-	_In_ LPNETRESOURCE lpNetResource,
-	_In_ LPTSTR lpPassword,
-	_In_ LPTSTR lpUserName,
-	_In_ DWORD dwFlags
-) {
-	DWORD ret;
-	ret = Old_NPAddConnection3(hwndOwner, lpNetResource, lpPassword, lpUserName, dwFlags);
-	LOQ_nonzero("misc", "ppppi", "hwndOwner", hwndOwner, "lpNetResource", lpNetResource, "lpPassword", lpPassword, "lpUserName", lpUserName, "dwFlags", dwFlags);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpName: 型 LPTSTR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(DWORD, WINAPI, NPCancelConnection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPTSTR lpName,
-	_In_ BOOL fForce
-) {
-	DWORD ret;
-	ret = Old_NPCancelConnection(lpName, fForce);
-	LOQ_nonzero("misc", "pi", "lpName", lpName, "fForce", fForce);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, NPCloseEnum, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hEnum
-) {
-	DWORD ret;
-	ret = Old_NPCloseEnum(hEnum);
-	LOQ_nonzero("misc", "p", "hEnum", hEnum);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(DWORD, WINAPI, NPEnumResource, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hEnum,
-	_Inout_ LPDWORD lpcCount,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpBufferSize
-) {
-	DWORD ret;
-	ret = Old_NPEnumResource(hEnum, lpcCount, lpBuffer, lpBufferSize);
-	LOQ_nonzero("misc", "pIpI", "hEnum", hEnum, "lpcCount", lpcCount, "lpBuffer", lpBuffer, "lpBufferSize", lpBufferSize);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, NPGetCaps, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD nIndex
-) {
-	DWORD ret;
-	ret = Old_NPGetCaps(nIndex);
-	LOQ_nonzero("misc", "i", "nIndex", nIndex);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpLocalName: 型 LPTSTR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(DWORD, WINAPI, NPGetConnection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPTSTR lpLocalName,
-	_Out_ LPTSTR lpRemoteName,
-	_Inout_ LPDWORD lpBufferSize
-) {
-	DWORD ret;
-	ret = Old_NPGetConnection(lpLocalName, lpRemoteName, lpBufferSize);
-	LOQ_nonzero("misc", "pPI", "lpLocalName", lpLocalName, "lpRemoteName", lpRemoteName, "lpBufferSize", lpBufferSize);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(DWORD, WINAPI, NPGetConnection3, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpLocalName,
-	_In_ DWORD dwLevel,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpBufferSize
-) {
-	DWORD ret;
-	ret = Old_NPGetConnection3(lpLocalName, dwLevel, lpBuffer, lpBufferSize);
-	LOQ_nonzero("misc", "uipI", "lpLocalName", lpLocalName, "dwLevel", dwLevel, "lpBuffer", lpBuffer, "lpBufferSize", lpBufferSize);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpRemoteName: 型 LPTSTR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(DWORD, WINAPI, NPGetConnectionPerformance, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPTSTR lpRemoteName,
-	_Out_ LPNETCONNECTINFOSTRUCT lpNetConnectInfo
-) {
-	DWORD ret;
-	ret = Old_NPGetConnectionPerformance(lpRemoteName, lpNetConnectInfo);
-	LOQ_nonzero("misc", "pP", "lpRemoteName", lpRemoteName, "lpNetConnectInfo", lpNetConnectInfo);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpNetResource: 型 LPNETRESOURCE は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(DWORD, WINAPI, NPGetResourceInformation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPNETRESOURCE lpNetResource,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpcbBuffer,
-	_Out_ LPTSTR* lplpSystem
-) {
-	DWORD ret;
-	ret = Old_NPGetResourceInformation(lpNetResource, lpBuffer, lpcbBuffer, lplpSystem);
-	LOQ_nonzero("misc", "ppIP", "lpNetResource", lpNetResource, "lpBuffer", lpBuffer, "lpcbBuffer", lpcbBuffer, "lplpSystem", lplpSystem);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpNetResource: 型 LPNETRESOURCE は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(DWORD, WINAPI, NPGetResourceParent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPNETRESOURCE lpNetResource,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpcbBuffer
-) {
-	DWORD ret;
-	ret = Old_NPGetResourceParent(lpNetResource, lpBuffer, lpcbBuffer);
-	LOQ_nonzero("misc", "ppI", "lpNetResource", lpNetResource, "lpBuffer", lpBuffer, "lpcbBuffer", lpcbBuffer);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpLocalPath: 型 LPCTSTR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(DWORD, WINAPI, NPGetUniversalName, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCTSTR lpLocalPath,
-	_In_ DWORD dwInfoLevel,
-	_Out_ LPVOID lpBuffer,
-	_Inout_ LPDWORD lpBufferSize
-) {
-	DWORD ret;
-	ret = Old_NPGetUniversalName(lpLocalPath, dwInfoLevel, lpBuffer, lpBufferSize);
-	LOQ_nonzero("misc", "pipI", "lpLocalPath", lpLocalPath, "dwInfoLevel", dwInfoLevel, "lpBuffer", lpBuffer, "lpBufferSize", lpBufferSize);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpName: 型 LPTSTR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(DWORD, WINAPI, NPGetUser, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPTSTR lpName,
-	_Out_ LPTSTR lpUserName,
-	_Inout_ LPDWORD lpBufferSize
-) {
-	DWORD ret;
-	ret = Old_NPGetUser(lpName, lpUserName, lpBufferSize);
-	LOQ_nonzero("misc", "pPI", "lpName", lpName, "lpUserName", lpUserName, "lpBufferSize", lpBufferSize);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpNetResource: 型 LPNETRESOURCE は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(DWORD, WINAPI, NPOpenEnum, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwScope,
-	_In_ DWORD dwType,
-	_In_ DWORD dwUsage,
-	_In_ LPNETRESOURCE lpNetResource,
-	_Out_ LPHANDLE lphEnum
-) {
-	DWORD ret;
-	ret = Old_NPOpenEnum(dwScope, dwType, dwUsage, lpNetResource, lphEnum);
-	LOQ_nonzero("misc", "iiipP", "dwScope", dwScope, "dwType", dwType, "dwUsage", dwUsage, "lpNetResource", lpNetResource, "lphEnum", lphEnum);
-	return ret;
-}
-
 // -> hook_misc.c に追加 | category="misc" | winapi:Time
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Out_ LARGE_INTEGER* lpPerformanceCount
@@ -2704,5 +2514,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_015_cloud_storage_environment_checker_rewrites_3 END <<< */
 
