@@ -3930,7 +3930,22 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_051_disk_enum_registry_checker_rewrites_9_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_10 BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, FindFirstVolumeW,
+	_Out_ LPWSTR lpszVolumeName,
+	_In_ DWORD cchBufferLength
+);
+HOOKDEF(BOOL, WINAPI, FindNextVolumeW,
+	_In_ HANDLE hFindVolume,
+	_Out_ LPWSTR lpszVolumeName,
+	_In_ DWORD cchBufferLength
+);
+HOOKDEF(BOOL, WINAPI, GetVolumePathNamesForVolumeNameW,
+	_In_ LPCWSTR lpszVolumeName,
+	_Out_ LPWSTR lpszVolumePathNames,
+	_In_ DWORD cchBufferLength,
+	_Out_ PDWORD lpcchReturnLength
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3955,15 +3970,6 @@ HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ int cchCount1,
 	_In_ LPCWSTR lpString2,
 	_In_ int cchCount2
-);
-HOOKDEF(HANDLE, WINAPI, CreateFileA,
-	_In_ LPCSTR lpFileName,
-	_In_ DWORD dwDesiredAccess,
-	_In_ DWORD dwShareMode,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-	_In_ DWORD dwCreationDisposition,
-	_In_ DWORD dwFlagsAndAttributes,
-	_In_opt_ HANDLE hTemplateFile
 );
 HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ LPCWSTR lpFileName,
@@ -3995,6 +4001,9 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
+);
+HOOKDEF(BOOL, WINAPI, FindVolumeClose,
+	_In_ HANDLE hFindVolume
 );
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
@@ -4301,5 +4310,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_051_disk_enum_registry_checker_rewrites_9_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_10 END <<< */
 
