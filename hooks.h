@@ -3930,7 +3930,31 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_5 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_6 BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, FindFirstVolumeA,
+	_Out_ LPSTR lpszVolumeName,
+	_In_ DWORD cchBufferLength
+);
+HOOKDEF(BOOL, WINAPI, FindNextVolumeA,
+	_In_ HANDLE hFindVolume,
+	_Out_ LPSTR lpszVolumeName,
+	_In_ DWORD cchBufferLength
+);
+HOOKDEF(BOOL, WINAPI, FindVolumeClose,
+	_In_ HANDLE hFindVolume
+);
+HOOKDEF(DWORD, WINAPI, GetActiveProcessorCount,
+	_In_ WORD GroupNumber
+);
+HOOKDEF(WORD, WINAPI, GetActiveProcessorGroupCount,
+	void
+);
+HOOKDEF(BOOL, WINAPI, GetVolumePathNamesForVolumeNameA,
+	_In_ LPCSTR lpszVolumeName,
+	_Out_ LPSTR lpszVolumePathNames,
+	_In_ DWORD cchBufferLength,
+	_Out_ PDWORD lpcchReturnLength
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4063,9 +4087,6 @@ HOOKDEF(int, WINAPI, GetLocaleInfoW,
 	_In_ LCTYPE LCType,
 	_Out_opt_ LPWSTR lpLCData,
 	_In_ int cchData
-);
-HOOKDEF(DWORD, WINAPI, GetLogicalDrives,
-	void
 );
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
@@ -4298,5 +4319,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_5 END <<< */
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_6 END <<< */
 
