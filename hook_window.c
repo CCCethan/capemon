@@ -526,7 +526,7 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_1_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_2 BEGIN <<< */
 // -> hook_window.c に追加 | category="windows" | winapi:Error Handling
 // REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpSource: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
@@ -559,5 +559,5 @@ HOOKDEF(HRESULT, WINAPI, SHGetFolderPathA, // 呼出規約は WINAPI 仮定(sock
 	LOQ_hresult("windows", "pipif", "hwndOwner", hwndOwner, "nFolder", nFolder, "hToken", hToken, "dwFlags", dwFlags, "pszPath", pszPath);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_1_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_2 END <<< */
 
