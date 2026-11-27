@@ -3930,40 +3930,24 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_020_computer_system_manufacturer_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_3_debug BEGIN <<< */
+HOOKDEF(UINT, WINAPI, GetDriveTypeA,
+	_In_opt_ LPCSTR lpRootPathName
+);
+HOOKDEF(DWORD, WINAPI, GetLogicalDriveStringsA,
+	_In_ DWORD nBufferLength,
+	_Out_ LPSTR lpBuffer
+);
+HOOKDEF(BOOL, WINAPI, GetProcessAffinityMask,
+	_In_ HANDLE hProcess,
+	_Out_ PDWORD_PTR lpProcessAffinityMask,
+	_Out_ PDWORD_PTR lpSystemAffinityMask
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
-);
-HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
-	_In_opt_ LPVOID pvReserved,
-	_In_ DWORD dwCoInit
-);
-HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity,
-	_In_opt_ PSECURITY_DESCRIPTOR pSecDesc,
-	_In_ LONG cAuthSvc,
-	_In_opt_ SOLE_AUTHENTICATION_SERVICE* asAuthSvc,
-	_In_opt_ void* pReserved1,
-	_In_ DWORD dwAuthnLevel,
-	_In_ DWORD dwImpLevel,
-	_In_opt_ void* pAuthList,
-	_In_ DWORD dwCapabilities,
-	_In_opt_ void* pReserved3
-);
-HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
-	_In_ IUnknown* pProxy,
-	_In_ DWORD dwAuthnSvc,
-	_In_ DWORD dwAuthzSvc,
-	_In_opt_ OLECHAR* pServerPrincName,
-	_In_ DWORD dwAuthnLevel,
-	_In_ DWORD dwImpLevel,
-	_In_opt_ RPC_AUTH_IDENTITY_HANDLE pAuthInfo,
-	_In_ DWORD dwCapabilities
-);
-HOOKDEF(void, WINAPI, CoUninitialize,
-	void
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4289,9 +4273,6 @@ HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize,
 	_Out_ PVOID* ppTables,
 	_Out_ PULONG pcTables
 );
-HOOKDEF(BSTR, WINAPI, SysAllocString,
-	_In_opt_ const OLECHAR* psz
-);
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
@@ -4309,9 +4290,6 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
-HOOKDEF(HRESULT, WINAPI, VariantClear,
-	_Inout_ VARIANTARG* pvarg
-);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4326,5 +4304,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_020_computer_system_manufacturer_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_3_debug END <<< */
 

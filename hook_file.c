@@ -1929,7 +1929,30 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_020_computer_system_manufacturer_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_3_debug BEGIN <<< */
+// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
+// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(UINT, WINAPI, GetDriveTypeA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCSTR lpRootPathName
+) {
+	UINT ret;
+	ret = Old_GetDriveTypeA(lpRootPathName);
+	LOQ_nonzero("filesystem", "f", "lpRootPathName", lpRootPathName);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetLogicalDriveStringsA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD nBufferLength,
+	_Out_ LPSTR lpBuffer
+) {
+	DWORD ret;
+	ret = Old_GetLogicalDriveStringsA(nBufferLength, lpBuffer);
+	LOQ_nonzero("filesystem", "is", "nBufferLength", nBufferLength, "lpBuffer", lpBuffer);
+	return ret;
+}
+
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -2060,5 +2083,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "hFile", hFile, "lpBuffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "nNumberOfBytesToWrite", nNumberOfBytesToWrite, "lpNumberOfBytesWritten", lpNumberOfBytesWritten, "lpOverlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_020_computer_system_manufacturer_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_3_debug END <<< */
 
