@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_3_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_4_debug BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3986,6 +3986,14 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
+);
+HOOKDEF(HANDLE, WINAPI, FindFirstFileA,
+	_In_ LPCSTR lpFileName,
+	_Out_ LPWIN32_FIND_DATAA lpFindFileData
+);
+HOOKDEF(BOOL, WINAPI, FindNextFileA,
+	_In_ HANDLE hFindFile,
+	_Out_ LPWIN32_FIND_DATAA lpFindFileData
 );
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
@@ -4238,14 +4246,6 @@ HOOKDEF(void, WINAPI, RtlUnwind,
 	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
 	_In_ PVOID ReturnValue
 );
-HOOKDEF(DWORD, WINAPI, SearchPathA,
-	_In_opt_ LPCSTR lpPath,
-	_In_ LPCSTR lpFileName,
-	_In_opt_ LPCSTR lpExtension,
-	_In_ DWORD nBufferLength,
-	_Out_ LPSTR lpBuffer,
-	_Out_opt_ LPSTR* lpFilePart
-);
 HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
 	_In_opt_ LPCWSTR lpValue
@@ -4303,5 +4303,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_3_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_4_debug END <<< */
 

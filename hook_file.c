@@ -1929,7 +1929,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_3_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_4_debug BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1967,6 +1967,28 @@ HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/
 	BOOL ret;
 	ret = Old_FindClose(hFindFile);
 	LOQ_bool("filesystem", "p", "hFindFile", hFindFile);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(HANDLE, WINAPI, FindFirstFileA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCSTR lpFileName,
+	_Out_ LPWIN32_FIND_DATAA lpFindFileData
+) {
+	HANDLE ret;
+	ret = Old_FindFirstFileA(lpFileName, lpFindFileData);
+	LOQ_handle("filesystem", "fP", "lpFileName", lpFileName, "lpFindFileData", lpFindFileData);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(BOOL, WINAPI, FindNextFileA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hFindFile,
+	_Out_ LPWIN32_FIND_DATAA lpFindFileData
+) {
+	BOOL ret;
+	ret = Old_FindNextFileA(hFindFile, lpFindFileData);
+	LOQ_bool("filesystem", "pP", "hFindFile", hFindFile, "lpFindFileData", lpFindFileData);
 	return ret;
 }
 
@@ -2034,22 +2056,6 @@ HOOKDEF(PVOID, WINAPI, RtlPcToFileHeader, // 呼出規約は WINAPI 仮定(socke
 }
 
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, SearchPathA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCSTR lpPath,
-	_In_ LPCSTR lpFileName,
-	_In_opt_ LPCSTR lpExtension,
-	_In_ DWORD nBufferLength,
-	_Out_ LPSTR lpBuffer,
-	_Out_opt_ LPSTR* lpFilePart
-) {
-	DWORD ret;
-	ret = Old_SearchPathA(lpPath, lpFileName, lpExtension, nBufferLength, lpBuffer, lpFilePart);
-	LOQ_nonzero("filesystem", "ffsisf", "lpPath", lpPath, "lpFileName", lpFileName, "lpExtension", lpExtension, "nBufferLength", nBufferLength, "lpBuffer", lpBuffer, "lpFilePart", lpFilePart);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, SetFilePointerEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hFile,
 	_In_ LARGE_INTEGER liDistanceToMove,
@@ -2076,5 +2082,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "hFile", hFile, "lpBuffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "nNumberOfBytesToWrite", nNumberOfBytesToWrite, "lpNumberOfBytesWritten", lpNumberOfBytesWritten, "lpOverlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_3_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_4_debug END <<< */
 
