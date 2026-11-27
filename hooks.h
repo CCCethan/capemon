@@ -3930,15 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_6 BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, SearchPathA,
-	_In_opt_ LPCSTR lpPath,
-	_In_ LPCSTR lpFileName,
-	_In_opt_ LPCSTR lpExtension,
-	_In_ DWORD nBufferLength,
-	_Out_ LPSTR lpBuffer,
-	_Out_opt_ LPSTR* lpFilePart
-);
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_3_debug BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3991,11 +3983,6 @@ HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW,
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
-);
-HOOKDEF(DWORD, WINAPI, ExpandEnvironmentStringsA,
-	_In_ LPCSTR lpSrc,
-	_Out_opt_ LPSTR lpDst,
-	_In_ DWORD nSize
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
@@ -4054,9 +4041,6 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
-);
-HOOKDEF(DWORD, WINAPI, GetFileAttributesA,
-	_In_ LPCSTR lpFileName
 );
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
@@ -4210,6 +4194,9 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
+HOOKDEF(BOOL, WINAPI, PathFileExistsA,
+	_In_ LPCSTR pszPath
+);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4250,6 +4237,14 @@ HOOKDEF(void, WINAPI, RtlUnwind,
 	_In_opt_ PVOID TargetIp,
 	_In_opt_ PEXCEPTION_RECORD ExceptionRecord,
 	_In_ PVOID ReturnValue
+);
+HOOKDEF(DWORD, WINAPI, SearchPathA,
+	_In_opt_ LPCSTR lpPath,
+	_In_ LPCSTR lpFileName,
+	_In_opt_ LPCSTR lpExtension,
+	_In_ DWORD nBufferLength,
+	_Out_ LPSTR lpBuffer,
+	_Out_opt_ LPSTR* lpFilePart
 );
 HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
@@ -4308,5 +4303,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_6 END <<< */
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_3_debug END <<< */
 

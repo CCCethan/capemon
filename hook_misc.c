@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_6 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_3_debug BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2044,19 +2044,6 @@ HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW, // 呼出規約は WINAPI 仮定(socke
 	BOOL ret;
 	ret = Old_EnumSystemLocalesW(lpLocaleEnumProc, dwFlags);
 	LOQ_bool("misc", "ii", "lpLocaleEnumProc", lpLocaleEnumProc, "dwFlags", dwFlags);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, ExpandEnvironmentStringsA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lpSrc,
-	_Out_opt_ LPSTR lpDst,
-	_In_ DWORD nSize
-) {
-	DWORD ret;
-	ret = Old_ExpandEnvironmentStringsA(lpSrc, lpDst, nSize);
-	LOQ_nonzero("misc", "ssi", "lpSrc", lpSrc, "lpDst", lpDst, "nSize", nSize);
 	return ret;
 }
 
@@ -2514,5 +2501,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_016_collaboration_tool_checker_rewrites_6 END <<< */
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_3_debug END <<< */
 
