@@ -72,7 +72,7 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_076_hdd_vendor_id_checker_rewrites_1 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_076_hdd_vendor_id_checker_rewrites_4 BEGIN <<< */
 // -> hook_com.c に追加 | category="com" | winapi:COM
 // REVIEW: 引数 pvReserved: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
 HOOKDEF(HRESULT, WINAPI, CoInitializeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -255,5 +255,5 @@ HOOKDEF(void, WINAPI, VariantInit, // 呼出規約は WINAPI 仮定(socket/nativ
 	Old_VariantInit(pvarg);
 	LOQ_void("com", "n", "pvarg", pvarg);
 }
-/* >>> AUTOHOOK_pa_alk_076_hdd_vendor_id_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_076_hdd_vendor_id_checker_rewrites_4 END <<< */
 
