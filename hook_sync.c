@@ -178,7 +178,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_8_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_6 BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -228,34 +228,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "lpCriticalSection", lpCriticalSection);
 }
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Client
-// REVIEW: 戻り型 HWINEVENTHOOK の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpfnWinEventProc: 型 WINEVENTPROC を i(int32)で仮記録。要確認
-HOOKDEF(HWINEVENTHOOK, WINAPI, SetWinEventHook, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ UINT eventMin,
-	_In_ UINT eventMax,
-	_In_ HMODULE hmodWinEventProc,
-	_In_ WINEVENTPROC lpfnWinEventProc,
-	_In_ DWORD idProcess,
-	_In_ DWORD idThread,
-	_In_ UINT dwflags
-) {
-	HWINEVENTHOOK ret;
-	ret = Old_SetWinEventHook(eventMin, eventMax, hmodWinEventProc, lpfnWinEventProc, idProcess, idThread, dwflags);
-	LOQ_nonzero("sync", "iipiiii", "eventMin", eventMin, "eventMax", eventMax, "hmodWinEventProc", hmodWinEventProc, "lpfnWinEventProc", lpfnWinEventProc, "idProcess", idProcess, "idThread", idThread, "dwflags", dwflags);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Client
-// REVIEW: 引数 hWinEventHook: 型 HWINEVENTHOOK は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, UnhookWinEvent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HWINEVENTHOOK hWinEventHook
-) {
-	BOOL ret;
-	ret = Old_UnhookWinEvent(hWinEventHook);
-	LOQ_bool("sync", "p", "hWinEventHook", hWinEventHook);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_8_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_6 END <<< */
 
