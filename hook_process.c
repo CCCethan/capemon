@@ -1540,30 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_027_cpu_cycle_ratio_checker_rewrites_4 BEGIN <<< */
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(HANDLE, WINAPI, GetCurrentThread, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	HANDLE ret;
-	ret = Old_GetCurrentThread();
-	LOQ_handle("process", "");
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, QueryThreadCycleTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE ThreadHandle,
-	_Out_ PULONG64 CycleTime
-) {
-	BOOL ret;
-	ret = Old_QueryThreadCycleTime(ThreadHandle, CycleTime);
-	LOQ_bool("process", "pP", "ThreadHandle", ThreadHandle, "CycleTime", CycleTime);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-
+/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_10 BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1765,5 +1742,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "dwTlsIndex", dwTlsIndex, "lpTlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_027_cpu_cycle_ratio_checker_rewrites_4 END <<< */
+/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_10 END <<< */
 
