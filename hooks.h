@@ -3930,14 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker_rewrites_1 BEGIN <<< */
-HOOKDEF(UINT, WINAPI, GetDriveTypeW,
-	_In_opt_ LPCWSTR lpRootPathName
-);
-HOOKDEF(DWORD, WINAPI, GetLogicalDriveStringsW,
-	_In_ DWORD nBufferLength,
-	_Out_ LPWSTR lpBuffer
-);
+/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker_rewrites_2 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3962,6 +3955,15 @@ HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ int cchCount1,
 	_In_ LPCWSTR lpString2,
 	_In_ int cchCount2
+);
+HOOKDEF(HANDLE, WINAPI, CreateFileA,
+	_In_ LPCSTR lpFileName,
+	_In_ DWORD dwDesiredAccess,
+	_In_ DWORD dwShareMode,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+	_In_ DWORD dwCreationDisposition,
+	_In_ DWORD dwFlagsAndAttributes,
+	_In_opt_ HANDLE hTemplateFile
 );
 HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ LPCWSTR lpFileName,
@@ -4299,5 +4301,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker_rewrites_2 END <<< */
 
