@@ -3930,22 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_10 BEGIN <<< */
-HOOKDEF(HANDLE, WINAPI, FindFirstVolumeW,
-	_Out_ LPWSTR lpszVolumeName,
-	_In_ DWORD cchBufferLength
-);
-HOOKDEF(BOOL, WINAPI, FindNextVolumeW,
-	_In_ HANDLE hFindVolume,
-	_Out_ LPWSTR lpszVolumeName,
-	_In_ DWORD cchBufferLength
-);
-HOOKDEF(BOOL, WINAPI, GetVolumePathNamesForVolumeNameW,
-	_In_ LPCWSTR lpszVolumeName,
-	_Out_ LPWSTR lpszVolumePathNames,
-	_In_ DWORD cchBufferLength,
-	_Out_ PDWORD lpcchReturnLength
-);
+/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_1_debug BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4001,9 +3986,6 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
-);
-HOOKDEF(BOOL, WINAPI, FindVolumeClose,
-	_In_ HANDLE hFindVolume
 );
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
@@ -4310,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_10 END <<< */
+/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_1_debug END <<< */
 

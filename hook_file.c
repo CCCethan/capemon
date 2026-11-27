@@ -1929,45 +1929,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_10 BEGIN <<< */
-// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-HOOKDEF(HANDLE, WINAPI, FindFirstVolumeW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPWSTR lpszVolumeName,
-	_In_ DWORD cchBufferLength
-) {
-	HANDLE ret;
-	ret = Old_FindFirstVolumeW(lpszVolumeName, cchBufferLength);
-	LOQ_handle("filesystem", "ui", "lpszVolumeName", lpszVolumeName, "cchBufferLength", cchBufferLength);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-HOOKDEF(BOOL, WINAPI, FindNextVolumeW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFindVolume,
-	_Out_ LPWSTR lpszVolumeName,
-	_In_ DWORD cchBufferLength
-) {
-	BOOL ret;
-	ret = Old_FindNextVolumeW(hFindVolume, lpszVolumeName, cchBufferLength);
-	LOQ_bool("filesystem", "pui", "hFindVolume", hFindVolume, "lpszVolumeName", lpszVolumeName, "cchBufferLength", cchBufferLength);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-HOOKDEF(BOOL, WINAPI, GetVolumePathNamesForVolumeNameW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpszVolumeName,
-	_Out_ LPWSTR lpszVolumePathNames,
-	_In_ DWORD cchBufferLength,
-	_Out_ PDWORD lpcchReturnLength
-) {
-	BOOL ret;
-	ret = Old_GetVolumePathNamesForVolumeNameW(lpszVolumeName, lpszVolumePathNames, cchBufferLength, lpcchReturnLength);
-	LOQ_bool("filesystem", "uFiI", "lpszVolumeName", lpszVolumeName, "lpszVolumePathNames", lpszVolumePathNames, "cchBufferLength", cchBufferLength, "lpcchReturnLength", lpcchReturnLength);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-
+/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_1_debug BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -2005,16 +1967,6 @@ HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/
 	BOOL ret;
 	ret = Old_FindClose(hFindFile);
 	LOQ_bool("filesystem", "p", "hFindFile", hFindFile);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-HOOKDEF(BOOL, WINAPI, FindVolumeClose, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFindVolume
-) {
-	BOOL ret;
-	ret = Old_FindVolumeClose(hFindVolume);
-	LOQ_bool("filesystem", "p", "hFindVolume", hFindVolume);
 	return ret;
 }
 
@@ -2108,5 +2060,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "hFile", hFile, "lpBuffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "nNumberOfBytesToWrite", nNumberOfBytesToWrite, "lpNumberOfBytesWritten", lpNumberOfBytesWritten, "lpOverlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_10 END <<< */
+/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_1_debug END <<< */
 

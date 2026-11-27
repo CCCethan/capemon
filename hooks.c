@@ -818,13 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_10 BEGIN <<< */
-HOOK(kernel32, FindFirstVolumeW),
-HOOK(kernelbase, FindFirstVolumeW),
-HOOK(kernel32, FindNextVolumeW),
-HOOK(kernelbase, FindNextVolumeW),
-HOOK(kernel32, GetVolumePathNamesForVolumeNameW),
-HOOK(kernelbase, GetVolumePathNamesForVolumeNameW),
+/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_1_debug BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -847,8 +841,6 @@ HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
 HOOK(kernel32, FindClose),
 HOOK(kernelbase, FindClose),
-HOOK(kernel32, FindVolumeClose),
-HOOK(kernelbase, FindVolumeClose),
 HOOK(kernel32, FlushFileBuffers),
 HOOK(kernelbase, FlushFileBuffers),
 HOOK(secur32, FreeContextBuffer),
@@ -984,7 +976,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_10 END <<< */
+/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_1_debug END <<< */
 };
 
 hook_t native_hooks[] = {
