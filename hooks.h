@@ -3930,17 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_5_debug BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, NetWkstaGetInfo,
-	_In_ LPWSTR servername,
-	_In_ DWORD level,
-	_Out_ LPBYTE* bufptr
-);
-HOOKDEF(DWORD, WINAPI, NetWkstaUserGetInfo,
-	LPWSTR reserved,
-	_In_ DWORD level,
-	_Out_ LPBYTE* bufptr
-);
+/* >>> AUTOHOOK_pa_alk_057_drive_size_checker_rewrites_5_debug BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3965,6 +3955,15 @@ HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ int cchCount1,
 	_In_ LPCWSTR lpString2,
 	_In_ int cchCount2
+);
+HOOKDEF(HANDLE, WINAPI, CreateFileA,
+	_In_ LPCSTR lpFileName,
+	_In_ DWORD dwDesiredAccess,
+	_In_ DWORD dwShareMode,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+	_In_ DWORD dwCreationDisposition,
+	_In_ DWORD dwFlagsAndAttributes,
+	_In_opt_ HANDLE hTemplateFile
 );
 HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ LPCWSTR lpFileName,
@@ -4204,9 +4203,6 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
-HOOKDEF(DWORD, WINAPI, NetApiBufferFree,
-	_In_ LPVOID Buffer
-);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4305,5 +4301,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_5_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_057_drive_size_checker_rewrites_5_debug END <<< */
 
