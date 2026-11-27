@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_9 BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2016,23 +2016,6 @@ HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/nativ
 	BOOL ret;
 	ret = Old_CloseHandle(hObject);
 	LOQ_bool("misc", "p", "hObject", hObject);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Pipes
-// REVIEW: 引数 lpPipeAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, CreatePipe, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ PHANDLE hReadPipe,
-	_Out_ PHANDLE hWritePipe,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpPipeAttributes,
-	_In_ DWORD nSize
-) {
-	BOOL ret;
-	ret = Old_CreatePipe(hReadPipe, hWritePipe, lpPipeAttributes, nSize);
-	// [7.5] ② 固定サイズ構造体: desc どおり SECURITY_ATTRIBUTES。引数型が通っている=定義済み。
-	//       bInheritHandle(子プロセスへ継承するか)が読めるのが要点。
-	//       ※ 容量候補として出た Size(=1024) はパイプのバッファサイズで構造体長ではない。
-	LOQ_bool("misc", "PPbi", "hReadPipe", hReadPipe, "hWritePipe", hWritePipe, "lpPipeAttributes", sizeof(SECURITY_ATTRIBUTES), lpPipeAttributes, "nSize", nSize);
 	return ret;
 }
 
@@ -2483,18 +2466,6 @@ HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW, // 呼出規約は WINAPI 仮定(
 	return ret;
 }
 
-// -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
-HOOKDEF(BOOL, WINAPI, SetHandleInformation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hObject,
-	_In_ DWORD dwMask,
-	_In_ DWORD dwFlags
-) {
-	BOOL ret;
-	ret = Old_SetHandleInformation(hObject, dwMask, dwFlags);
-	LOQ_bool("misc", "pii", "hObject", hObject, "dwMask", dwMask, "dwFlags", dwFlags);
-	return ret;
-}
-
 // -> hook_misc.c に追加 | category="misc" | winapi:Error Handling
 HOOKDEF(void, WINAPI, SetLastError, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwErrCode
@@ -2530,5 +2501,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_9 END <<< */
 

@@ -3930,9 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_9 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
+);
+HOOKDEF(BOOL, WINAPI, CloseEventLog,
+	_Inout_ HANDLE hEventLog
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
@@ -3965,12 +3968,6 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ DWORD dwFlagsAndAttributes,
 	_In_opt_ HANDLE hTemplateFile
 );
-HOOKDEF(BOOL, WINAPI, CreatePipe,
-	_Out_ PHANDLE hReadPipe,
-	_Out_ PHANDLE hWritePipe,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpPipeAttributes,
-	_In_ DWORD nSize
-);
 HOOKDEF(void, WINAPI, DeleteCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 );
@@ -3992,6 +3989,14 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
+);
+HOOKDEF(HANDLE, WINAPI, FindFirstFileA,
+	_In_ LPCSTR lpFileName,
+	_Out_ LPWIN32_FIND_DATAA lpFindFileData
+);
+HOOKDEF(BOOL, WINAPI, FindNextFileA,
+	_In_ HANDLE hFindFile,
+	_Out_ LPWIN32_FIND_DATAA lpFindFileData
 );
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
@@ -4200,6 +4205,10 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
+HOOKDEF(HANDLE, WINAPI, OpenEventLogA,
+	_In_ LPCSTR lpUNCServerName,
+	_In_ LPCSTR lpSourceName
+);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4218,6 +4227,15 @@ HOOKDEF(BOOL, WINAPI, ReadConsoleW,
 	_In_ DWORD nNumberOfCharsToRead,
 	_Out_ LPDWORD lpNumberOfCharsRead,
 	_In_opt_ LPVOID pInputControl
+);
+HOOKDEF(BOOL, WINAPI, ReadEventLogA,
+	_In_ HANDLE hEventLog,
+	_In_ DWORD dwReadFlags,
+	_In_ DWORD dwRecordOffset,
+	_Out_ LPVOID lpBuffer,
+	_In_ DWORD nNumberOfBytesToRead,
+	_Out_ DWORD* pnBytesRead,
+	_Out_ DWORD* pnMinNumberOfBytesNeeded
 );
 HOOKDEF(BOOL, WINAPI, ReadFile,
 	_In_ HANDLE hFile,
@@ -4250,11 +4268,6 @@ HOOKDEF(BOOL, WINAPI, SetFilePointerEx,
 	_In_ LARGE_INTEGER liDistanceToMove,
 	_Out_opt_ PLARGE_INTEGER lpNewFilePointer,
 	_In_ DWORD dwMoveMethod
-);
-HOOKDEF(BOOL, WINAPI, SetHandleInformation,
-	_In_ HANDLE hObject,
-	_In_ DWORD dwMask,
-	_In_ DWORD dwFlags
 );
 HOOKDEF(void, WINAPI, SetLastError,
 	_In_ DWORD dwErrCode
@@ -4295,10 +4308,6 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
-HOOKDEF(DWORD, WINAPI, WaitForSingleObject,
-	_In_ HANDLE hHandle,
-	_In_ DWORD dwMilliseconds
-);
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
 	_In_ LPCVOID lpBuffer,
@@ -4307,5 +4316,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_9 END <<< */
 

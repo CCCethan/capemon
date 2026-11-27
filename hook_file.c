@@ -1929,7 +1929,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_9 BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1967,6 +1967,28 @@ HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/
 	BOOL ret;
 	ret = Old_FindClose(hFindFile);
 	LOQ_bool("filesystem", "p", "hFindFile", hFindFile);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(HANDLE, WINAPI, FindFirstFileA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCSTR lpFileName,
+	_Out_ LPWIN32_FIND_DATAA lpFindFileData
+) {
+	HANDLE ret;
+	ret = Old_FindFirstFileA(lpFileName, lpFindFileData);
+	LOQ_handle("filesystem", "fP", "lpFileName", lpFileName, "lpFindFileData", lpFindFileData);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(BOOL, WINAPI, FindNextFileA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hFindFile,
+	_Out_ LPWIN32_FIND_DATAA lpFindFileData
+) {
+	BOOL ret;
+	ret = Old_FindNextFileA(hFindFile, lpFindFileData);
+	LOQ_bool("filesystem", "pP", "hFindFile", hFindFile, "lpFindFileData", lpFindFileData);
 	return ret;
 }
 
@@ -2060,5 +2082,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "hFile", hFile, "lpBuffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "nNumberOfBytesToWrite", nNumberOfBytesToWrite, "lpNumberOfBytesWritten", lpNumberOfBytesWritten, "lpOverlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_9 END <<< */
 
