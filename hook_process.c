@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_9_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_034_cpu_info_checker_02_rewrites_10 BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1567,6 +1567,17 @@ HOOKDEF(BOOL, WINAPI, FreeLibrary, // 呼出規約は WINAPI 仮定(socket/nativ
 	BOOL ret;
 	ret = Old_FreeLibrary(hModule);
 	LOQ_bool("process", "p", "hModule", hModule);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetActiveProcessorCount, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ WORD GroupNumber
+) {
+	DWORD ret;
+	ret = Old_GetActiveProcessorCount(GroupNumber);
+	LOQ_nonzero("process", "i", "GroupNumber", GroupNumber);
 	return ret;
 }
 
@@ -1612,16 +1623,6 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW, // 呼出規約は WINAPI 仮定(sock
 	DWORD ret;
 	ret = Old_GetModuleFileNameW(hModule, lpFilename, nSize);
 	LOQ_nonzero("process", "pFi", "hModule", hModule, "lpFilename", lpFilename, "nSize", nSize);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
-HOOKDEF(HMODULE, WINAPI, GetModuleHandleA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCSTR lpModuleName
-) {
-	HMODULE ret;
-	ret = Old_GetModuleHandleA(lpModuleName);
-	LOQ_nonnull("process", "f", "lpModuleName", lpModuleName);
 	return ret;
 }
 
@@ -1752,5 +1753,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "dwTlsIndex", dwTlsIndex, "lpTlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_9_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_034_cpu_info_checker_02_rewrites_10 END <<< */
 
