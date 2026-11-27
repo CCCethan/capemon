@@ -3930,12 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_2 BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, WNetGetConnectionA,
-	_In_ LPCSTR lpLocalName,
-	_Out_ LPSTR lpRemoteName,
-	_Inout_ LPDWORD lpnLength
-);
+/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_3_debug BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3960,15 +3955,6 @@ HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ int cchCount1,
 	_In_ LPCWSTR lpString2,
 	_In_ int cchCount2
-);
-HOOKDEF(HANDLE, WINAPI, CreateFileA,
-	_In_ LPCSTR lpFileName,
-	_In_ DWORD dwDesiredAccess,
-	_In_ DWORD dwShareMode,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-	_In_ DWORD dwCreationDisposition,
-	_In_ DWORD dwFlagsAndAttributes,
-	_In_opt_ HANDLE hTemplateFile
 );
 HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ LPCWSTR lpFileName,
@@ -4000,6 +3986,18 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
+);
+HOOKDEF(HANDLE, WINAPI, FindFirstVolumeW,
+	_Out_ LPWSTR lpszVolumeName,
+	_In_ DWORD cchBufferLength
+);
+HOOKDEF(BOOL, WINAPI, FindNextVolumeW,
+	_In_ HANDLE hFindVolume,
+	_Out_ LPWSTR lpszVolumeName,
+	_In_ DWORD cchBufferLength
+);
+HOOKDEF(BOOL, WINAPI, FindVolumeClose,
+	_In_ HANDLE hFindVolume
 );
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
@@ -4053,6 +4051,9 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 	_Out_opt_ LPWSTR lpDateStr,
 	_In_ int cchDate
 );
+HOOKDEF(UINT, WINAPI, GetDriveTypeW,
+	_In_opt_ LPCWSTR lpRootPathName
+);
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
 );
@@ -4074,9 +4075,6 @@ HOOKDEF(int, WINAPI, GetLocaleInfoW,
 	_In_ LCTYPE LCType,
 	_Out_opt_ LPWSTR lpLCData,
 	_In_ int cchData
-);
-HOOKDEF(DWORD, WINAPI, GetLogicalDrives,
-	void
 );
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
@@ -4135,6 +4133,12 @@ HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation,
 HOOKDEF(int, WINAPI, GetUserDefaultLocaleName,
 	_Out_ LPWSTR lpLocaleName,
 	_In_ int cchLocaleName
+);
+HOOKDEF(BOOL, WINAPI, GetVolumePathNamesForVolumeNameW,
+	_In_ LPCWSTR lpszVolumeName,
+	_Out_ LPWSTR lpszVolumePathNames,
+	_In_ DWORD cchBufferLength,
+	_Out_ PDWORD lpcchReturnLength
 );
 HOOKDEF(LPVOID, WINAPI, HeapAlloc,
 	_In_ HANDLE hHeap,
@@ -4210,11 +4214,6 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection,
 HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
-);
-HOOKDEF(DWORD, WINAPI, QueryDosDeviceA,
-	_In_opt_ LPCSTR lpDeviceName,
-	_Out_ LPSTR lpTargetPath,
-	_In_ DWORD ucchMax
 );
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
@@ -4314,5 +4313,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_2 END <<< */
+/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_3_debug END <<< */
 
