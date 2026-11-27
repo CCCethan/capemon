@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_080_hyperv_driver_checker_rewrites_2_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_082_hyperv_signature_checker_rewrites_10_debug BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4095,6 +4095,12 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW,
 	_In_ LPCWSTR lpSrcStr,
 	_In_ int cchSrc,
 	_Out_ LPWORD lpCharType
+);
+HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
+	_In_ DWORD FirmwareTableProviderSignature,
+	_In_ DWORD FirmwareTableID,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
 );
 HOOKDEF(int, WINAPI, GetTimeFormatEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4292,5 +4298,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_080_hyperv_driver_checker_rewrites_2_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_082_hyperv_signature_checker_rewrites_10_debug END <<< */
 
