@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_9 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker_rewrites_1 BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2181,18 +2181,6 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW, // 呼出規約は WINAPI 仮定(socket/na
 	BOOL ret;
 	ret = Old_GetStringTypeW(dwInfoType, lpSrcStr, cchSrc, lpCharType);
 	LOQ_bool("misc", "iuiI", "dwInfoType", dwInfoType, "lpSrcStr", lpSrcStr, "cchSrc", cchSrc, "lpCharType", lpCharType);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
-// REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(int, WINAPI, GetSystemDefaultLocaleName, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPWSTR lpLocaleName,
-	_In_ int cchLocaleName
-) {
-	int ret;
-	ret = Old_GetSystemDefaultLocaleName(lpLocaleName, cchLocaleName);
-	LOQ_nonzero("misc", "ui", "lpLocaleName", lpLocaleName, "cchLocaleName", cchLocaleName);
 	return ret;
 }
 
@@ -2500,21 +2488,6 @@ HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize, // 呼出規約は WINAPI 仮定
 	return ret;
 }
 
-// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
-// REVIEW: 戻り型 BSTR の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 psz: 型 const OLECHAR* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ const OLECHAR* psz
-) {
-	BSTR ret;
-	ret = Old_SysAllocString(psz);
-	// [7.5] kind=struct-or-opaque は誤分類。型は const OLECHAR* = ワイド文字列で
-	//       description も "The string to copy."。u で内容を記録する(log.c の u は
-	//       NULL/例外を __try で保護)。観測「戻り値」は BSTR のアドレスであり長さではない。
-	LOQ_nonzero("misc", "u", "psz", psz);
-	return ret;
-}
-
 // -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
 // REVIEW: 引数 lpAddress: 入力バッファとして dwSize バイト分を内容ログ('b')。dwSize が実データ長でない/出力用バッファなら 'p'(アドレスのみ)へ戻すこと
 HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2528,5 +2501,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_9 END <<< */
+/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker_rewrites_1 END <<< */
 
