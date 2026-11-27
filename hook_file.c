@@ -1929,7 +1929,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_1 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_2 BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1977,17 +1977,6 @@ HOOKDEF(BOOL, WINAPI, FlushFileBuffers, // 呼出規約は WINAPI 仮定(socket/
 	BOOL ret;
 	ret = Old_FlushFileBuffers(hFile);
 	LOQ_bool("filesystem", "p", "hFile", hFile);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetFileAttributesA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lpFileName
-) {
-	DWORD ret;
-	ret = Old_GetFileAttributesA(lpFileName);
-	LOQ_nonzero("filesystem", "f", "lpFileName", lpFileName);
 	return ret;
 }
 
@@ -2071,5 +2060,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "hFile", hFile, "lpBuffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "nNumberOfBytesToWrite", nNumberOfBytesToWrite, "lpNumberOfBytesWritten", lpNumberOfBytesWritten, "lpOverlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_2 END <<< */
 

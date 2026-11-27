@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_1 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_2 BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -869,8 +869,6 @@ HOOK(kernel32, GetDateFormatW),
 HOOK(kernelbase, GetDateFormatW),
 HOOK(kernel32, GetEnvironmentStringsW),
 HOOK(kernelbase, GetEnvironmentStringsW),
-HOOK(kernel32, GetFileAttributesA),
-HOOK(kernelbase, GetFileAttributesA),
 HOOK(kernel32, GetFileSizeEx),
 HOOK(kernelbase, GetFileSizeEx),
 HOOK(kernel32, GetFileType),
@@ -978,7 +976,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_2 END <<< */
 };
 
 hook_t native_hooks[] = {

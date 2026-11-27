@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_1 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_2 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4041,9 +4041,6 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
-);
-HOOKDEF(DWORD, WINAPI, GetFileAttributesA,
-	_In_ LPCSTR lpFileName
 );
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
@@ -4295,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_2 END <<< */
 
