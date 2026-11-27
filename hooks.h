@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_8_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_9_debug BEGIN <<< */
 HOOKDEF(VOID, WINAPI, AcquireSRWLockExclusive,
 	_Inout_ PSRWLOCK SRWLock
 );
@@ -4307,5 +4307,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_8_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_9_debug END <<< */
 
