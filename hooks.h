@@ -3930,17 +3930,40 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_072_function_hook_checker_rewrites_1 BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, GetModuleFileNameA,
-	_In_opt_ HMODULE hModule,
-	_Out_ LPSTR lpFilename,
-	_In_ DWORD nSize
-);
+/* >>> AUTOHOOK_pa_alk_076_hdd_vendor_id_checker_rewrites_1 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
+);
+HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
+	_In_opt_ LPVOID pvReserved,
+	_In_ DWORD dwCoInit
+);
+HOOKDEF(HRESULT, WINAPI, CoInitializeSecurity,
+	_In_opt_ PSECURITY_DESCRIPTOR pSecDesc,
+	_In_ LONG cAuthSvc,
+	_In_opt_ SOLE_AUTHENTICATION_SERVICE* asAuthSvc,
+	_In_opt_ void* pReserved1,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ void* pAuthList,
+	_In_ DWORD dwCapabilities,
+	_In_opt_ void* pReserved3
+);
+HOOKDEF(HRESULT, WINAPI, CoSetProxyBlanket,
+	_In_ IUnknown* pProxy,
+	_In_ DWORD dwAuthnSvc,
+	_In_ DWORD dwAuthzSvc,
+	_In_opt_ OLECHAR* pServerPrincName,
+	_In_ DWORD dwAuthnLevel,
+	_In_ DWORD dwImpLevel,
+	_In_opt_ RPC_AUTH_IDENTITY_HANDLE pAuthInfo,
+	_In_ DWORD dwCapabilities
+);
+HOOKDEF(void, WINAPI, CoUninitialize,
+	void
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -3960,15 +3983,6 @@ HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ int cchCount1,
 	_In_ LPCWSTR lpString2,
 	_In_ int cchCount2
-);
-HOOKDEF(HANDLE, WINAPI, CreateFileA,
-	_In_ LPCSTR lpFileName,
-	_In_ DWORD dwDesiredAccess,
-	_In_ DWORD dwShareMode,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-	_In_ DWORD dwCreationDisposition,
-	_In_ DWORD dwFlagsAndAttributes,
-	_In_opt_ HANDLE hTemplateFile
 );
 HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ LPCWSTR lpFileName,
@@ -4079,9 +4093,6 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
-);
-HOOKDEF(HMODULE, WINAPI, GetModuleHandleA,
-	_In_opt_ LPCSTR lpModuleName
 );
 HOOKDEF(BOOL, WINAPI, GetModuleHandleExW,
 	_In_ DWORD dwFlags,
@@ -4278,6 +4289,12 @@ HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize,
 	_Out_ PVOID* ppTables,
 	_Out_ PULONG pcTables
 );
+HOOKDEF(BSTR, WINAPI, SysAllocString,
+	_In_opt_ const OLECHAR* psz
+);
+HOOKDEF(UINT, WINAPI, SysStringLen,
+	_In_opt_ BSTR bstr
+);
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
 	_In_ UINT uExitCode
@@ -4295,6 +4312,12 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
+HOOKDEF(HRESULT, WINAPI, VariantClear,
+	_Inout_ VARIANTARG* pvarg
+);
+HOOKDEF(void, WINAPI, VariantInit,
+	_Out_ VARIANTARG* pvarg
+);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
@@ -4309,5 +4332,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_072_function_hook_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_076_hdd_vendor_id_checker_rewrites_1 END <<< */
 
