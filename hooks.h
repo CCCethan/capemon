@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_057_drive_size_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_1_debug BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4039,6 +4039,9 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 	_Out_opt_ LPWSTR lpDateStr,
 	_In_ int cchDate
 );
+HOOKDEF(UINT, WINAPI, GetDriveTypeA,
+	_In_opt_ LPCSTR lpRootPathName
+);
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
 );
@@ -4060,6 +4063,10 @@ HOOKDEF(int, WINAPI, GetLocaleInfoW,
 	_In_ LCTYPE LCType,
 	_Out_opt_ LPWSTR lpLCData,
 	_In_ int cchData
+);
+HOOKDEF(DWORD, WINAPI, GetLogicalDriveStringsA,
+	_In_ DWORD nBufferLength,
+	_Out_ LPSTR lpBuffer
 );
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
@@ -4292,5 +4299,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_057_drive_size_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_1_debug END <<< */
 
