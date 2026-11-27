@@ -178,7 +178,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_031_cpu_hypervisor_checker_rewrites_3_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_031_cpu_hypervisor_checker_rewrites_8 BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(VOID, WINAPI, AcquireSRWLockExclusive, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ PSRWLOCK SRWLock
@@ -268,5 +268,5 @@ HOOKDEF(VOID, WINAPI, WakeAllConditionVariable, // 呼出規約は WINAPI 仮定
 	Old_WakeAllConditionVariable(ConditionVariable);
 	LOQ_void("sync", "P", "ConditionVariable", ConditionVariable);
 }
-/* >>> AUTOHOOK_pa_alk_031_cpu_hypervisor_checker_rewrites_3_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_031_cpu_hypervisor_checker_rewrites_8 END <<< */
 
