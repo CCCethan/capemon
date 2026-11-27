@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_2 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_3 BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -841,8 +841,6 @@ HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
 HOOK(kernel32, FindClose),
 HOOK(kernelbase, FindClose),
-HOOK(kernel32, FindFirstFileA),
-HOOK(kernelbase, FindFirstFileA),
 HOOK(kernel32, FlushFileBuffers),
 HOOK(kernelbase, FlushFileBuffers),
 HOOK(secur32, FreeContextBuffer),
@@ -951,6 +949,8 @@ HOOK(kernel32, RtlPcToFileHeader),
 HOOK(kernelbase, RtlPcToFileHeader),
 HOOK(kernel32, RtlUnwind),
 HOOK(kernelbase, RtlUnwind),
+HOOK(kernel32, SetEndOfFile),
+HOOK(kernelbase, SetEndOfFile),
 HOOK(kernel32, SetEnvironmentVariableW),
 HOOK(kernelbase, SetEnvironmentVariableW),
 HOOK(kernel32, SetFilePointerEx),
@@ -978,7 +978,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_2 END <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_3 END <<< */
 };
 
 hook_t native_hooks[] = {

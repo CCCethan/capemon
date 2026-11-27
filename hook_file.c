@@ -1929,7 +1929,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_2 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_3 BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1967,17 +1967,6 @@ HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/
 	BOOL ret;
 	ret = Old_FindClose(hFindFile);
 	LOQ_bool("filesystem", "p", "hFindFile", hFindFile);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(HANDLE, WINAPI, FindFirstFileA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lpFileName,
-	_Out_ LPWIN32_FIND_DATAA lpFindFileData
-) {
-	HANDLE ret;
-	ret = Old_FindFirstFileA(lpFileName, lpFindFileData);
-	LOQ_handle("filesystem", "fP", "lpFileName", lpFileName, "lpFindFileData", lpFindFileData);
 	return ret;
 }
 
@@ -2045,6 +2034,16 @@ HOOKDEF(PVOID, WINAPI, RtlPcToFileHeader, // 呼出規約は WINAPI 仮定(socke
 }
 
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(BOOL, WINAPI, SetEndOfFile, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hFile
+) {
+	BOOL ret;
+	ret = Old_SetEndOfFile(hFile);
+	LOQ_bool("filesystem", "p", "hFile", hFile);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, SetFilePointerEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hFile,
 	_In_ LARGE_INTEGER liDistanceToMove,
@@ -2071,5 +2070,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "hFile", hFile, "lpBuffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "nNumberOfBytesToWrite", nNumberOfBytesToWrite, "lpNumberOfBytesWritten", lpNumberOfBytesWritten, "lpOverlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_2 END <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_3 END <<< */
 
