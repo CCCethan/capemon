@@ -72,7 +72,20 @@ HOOKDEF(HRESULT, WINAPI, WbemLocator_ConnectServer,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker_rewrites_9 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_1_debug BEGIN <<< */
+// -> hook_com.c に追加 | category="com" | winapi:System Information Functions
+// REVIEW: 引数 NameType: 型 COMPUTER_NAME_FORMAT を i(int32)で仮記録。要確認
+HOOKDEF(BOOL, WINAPI, GetComputerNameExA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ COMPUTER_NAME_FORMAT NameType,
+	_Out_ LPSTR lpBuffer,
+	_Inout_ LPDWORD lpnSize
+) {
+	BOOL ret;
+	ret = Old_GetComputerNameExA(NameType, lpBuffer, lpnSize);
+	LOQ_bool("com", "isI", "NameType", NameType, "lpBuffer", lpBuffer, "lpnSize", lpnSize);
+	return ret;
+}
+
 // -> hook_com.c に追加 | category="com" | winapi:National Language Support (NLS)
 // REVIEW: 戻り型 int の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 // REVIEW: 引数 lpVersionInformation: 型 LPNLSVERSIONINFO は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
@@ -170,5 +183,5 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_bool("com", "ip", "nStdHandle", nStdHandle, "hHandle", hHandle);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker_rewrites_9 END <<< */
+/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_1_debug END <<< */
 
