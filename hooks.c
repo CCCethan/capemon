@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_034_cpu_info_checker_02_rewrites_4 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_034_cpu_info_checker_02_rewrites_6 BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -851,6 +851,8 @@ HOOK(kernel32, FreeLibrary),
 HOOK(kernelbase, FreeLibrary),
 HOOK(kernel32, GetACP),
 HOOK(kernelbase, GetACP),
+HOOK(kernel32, GetActiveProcessorCount),
+HOOK(kernelbase, GetActiveProcessorCount),
 HOOK(kernel32, GetCPInfo),
 HOOK(kernelbase, GetCPInfo),
 HOOK(kernel32, GetConsoleMode),
@@ -877,8 +879,6 @@ HOOK(kernel32, GetLocaleInfoEx),
 HOOK(kernelbase, GetLocaleInfoEx),
 HOOK(kernel32, GetLocaleInfoW),
 HOOK(kernelbase, GetLocaleInfoW),
-HOOK(kernel32, GetLogicalProcessorInformation),
-HOOK(kernelbase, GetLogicalProcessorInformation),
 HOOK(kernel32, GetModuleFileNameW),
 HOOK(kernelbase, GetModuleFileNameW),
 HOOK(kernel32, GetModuleHandleExW),
@@ -978,7 +978,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_034_cpu_info_checker_02_rewrites_4 END <<< */
+/* >>> AUTOHOOK_pa_alk_034_cpu_info_checker_02_rewrites_6 END <<< */
 };
 
 hook_t native_hooks[] = {
