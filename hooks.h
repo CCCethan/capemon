@@ -3930,11 +3930,11 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_1_debug BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, GetComputerNameExA,
-	_In_ COMPUTER_NAME_FORMAT NameType,
-	_Out_ LPSTR lpBuffer,
-	_Inout_ LPDWORD lpnSize
+/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_5_debug BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, NetWkstaGetInfo,
+	_In_ LPWSTR servername,
+	_In_ DWORD level,
+	_Out_ LPBYTE* bufptr
 );
 HOOKDEF(DWORD, WINAPI, NetWkstaUserGetInfo,
 	LPWSTR reserved,
@@ -4305,5 +4305,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_1_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_5_debug END <<< */
 
