@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_1 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_2 BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -851,8 +851,6 @@ HOOK(kernel32, FreeLibrary),
 HOOK(kernelbase, FreeLibrary),
 HOOK(kernel32, GetACP),
 HOOK(kernelbase, GetACP),
-HOOK(kernel32, GetActiveProcessorCount),
-HOOK(kernelbase, GetActiveProcessorCount),
 HOOK(kernel32, GetCPInfo),
 HOOK(kernelbase, GetCPInfo),
 HOOK(kernel32, GetConsoleMode),
@@ -978,7 +976,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_2 END <<< */
 };
 
 hook_t native_hooks[] = {

@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_1 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_2 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4001,9 +4001,6 @@ HOOKDEF(BOOL, WINAPI, FreeLibrary,
 );
 HOOKDEF(UINT, WINAPI, GetACP,
 	void
-);
-HOOKDEF(DWORD, WINAPI, GetActiveProcessorCount,
-	_In_ WORD GroupNumber
 );
 HOOKDEF(BOOL, WINAPI, GetCPInfo,
 	_In_ UINT CodePage,
@@ -4295,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_2 END <<< */
 
