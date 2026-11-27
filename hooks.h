@@ -3930,7 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_5 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_6 BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, GetFileAttributesExA,
+	_In_ LPCSTR lpFileName,
+	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	_Out_ LPVOID lpFileInformation
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4194,9 +4199,6 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
-HOOKDEF(BOOL, WINAPI, PathFileExistsA,
-	_In_ LPCSTR pszPath
-);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4295,5 +4297,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_5 END <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_6 END <<< */
 

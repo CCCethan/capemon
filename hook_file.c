@@ -1929,7 +1929,23 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_5 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_6 BEGIN <<< */
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+// REVIEW: 引数 fInfoLevelId: 型 GET_FILEEX_INFO_LEVELS を i(int32)で仮記録。要確認
+// REVIEW: 引数 lpFileInformation: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, GetFileAttributesExA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCSTR lpFileName,
+	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	_Out_ LPVOID lpFileInformation
+) {
+	BOOL ret;
+	ret = Old_GetFileAttributesExA(lpFileName, fInfoLevelId, lpFileInformation);
+	LOQ_bool("filesystem", "fip", "lpFileName", lpFileName, "fInfoLevelId", fInfoLevelId, "lpFileInformation", lpFileInformation);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -2060,5 +2076,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "hFile", hFile, "lpBuffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "nNumberOfBytesToWrite", nNumberOfBytesToWrite, "lpNumberOfBytesWritten", lpNumberOfBytesWritten, "lpOverlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_5 END <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_6 END <<< */
 
