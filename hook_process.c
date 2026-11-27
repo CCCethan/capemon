@@ -1540,7 +1540,20 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_031_cpu_hypervisor_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_10_debug BEGIN <<< */
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, GetLogicalProcessorInformation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ PSYSTEM_LOGICAL_PROCESSOR_INFORMATION Buffer,
+	_Inout_ PDWORD ReturnLength
+) {
+	BOOL ret;
+	ret = Old_GetLogicalProcessorInformation(Buffer, ReturnLength);
+	LOQ_bool("process", "PI", "Buffer", Buffer, "ReturnLength", ReturnLength);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1742,5 +1755,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "dwTlsIndex", dwTlsIndex, "lpTlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_031_cpu_hypervisor_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_10_debug END <<< */
 

@@ -3930,9 +3930,10 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_031_cpu_hypervisor_checker_rewrites_8 BEGIN <<< */
-HOOKDEF(VOID, WINAPI, AcquireSRWLockExclusive,
-	_Inout_ PSRWLOCK SRWLock
+/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_10_debug BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, GetLogicalProcessorInformation,
+	_Out_ PSYSTEM_LOGICAL_PROCESSOR_INFORMATION Buffer,
+	_Inout_ PDWORD ReturnLength
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
@@ -3958,15 +3959,6 @@ HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ int cchCount1,
 	_In_ LPCWSTR lpString2,
 	_In_ int cchCount2
-);
-HOOKDEF(HANDLE, WINAPI, CreateFileA,
-	_In_ LPCSTR lpFileName,
-	_In_ DWORD dwDesiredAccess,
-	_In_ DWORD dwShareMode,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-	_In_ DWORD dwCreationDisposition,
-	_In_ DWORD dwFlagsAndAttributes,
-	_In_opt_ HANDLE hTemplateFile
 );
 HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ LPCWSTR lpFileName,
@@ -4232,9 +4224,6 @@ HOOKDEF(BOOL, WINAPI, ReadFile,
 	_Out_opt_ LPDWORD lpNumberOfBytesRead,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
-HOOKDEF(VOID, WINAPI, ReleaseSRWLockExclusive,
-	_Inout_ PSRWLOCK SRWLock
-);
 HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
 	_In_ ULONGLONG ControlPc,
 	_Out_ PULONGLONG ImageBase,
@@ -4270,12 +4259,6 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle,
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
 );
-HOOKDEF(BOOL, WINAPI, SleepConditionVariableSRW,
-	_Inout_ PCONDITION_VARIABLE ConditionVariable,
-	_Inout_ PSRWLOCK SRWLock,
-	_In_ DWORD dwMilliseconds,
-	_In_ ULONG Flags
-);
 HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize,
 	_In_ ULONG LsaVersion,
 	_Out_ PULONG PackageVersion,
@@ -4305,9 +4288,6 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
-HOOKDEF(VOID, WINAPI, WakeAllConditionVariable,
-	_Inout_ PCONDITION_VARIABLE ConditionVariable
-);
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
 	_In_ LPCVOID lpBuffer,
@@ -4316,5 +4296,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_031_cpu_hypervisor_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_10_debug END <<< */
 
