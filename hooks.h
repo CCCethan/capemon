@@ -3930,29 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_10 BEGIN <<< */
-HOOKDEF(DWORD, WINAPI, GetCurrentDirectoryW,
-	_In_ DWORD nBufferLength,
-	_Out_ LPWSTR lpBuffer
-);
-HOOKDEF(BOOL, WINAPI, GetFileInformationByHandle,
-	_In_ HANDLE hFile,
-	_Out_ LPBY_HANDLE_FILE_INFORMATION lpFileInformation
-);
-HOOKDEF(DWORD, WINAPI, GetFullPathNameW,
-	_In_ LPCWSTR lpFileName,
-	_In_ DWORD nBufferLength,
-	_Out_ LPWSTR lpBuffer,
-	_Out_ LPWSTR* lpFilePart
-);
-HOOKDEF(BOOL, WINAPI, PeekNamedPipe,
-	_In_ HANDLE hNamedPipe,
-	_Out_opt_ LPVOID lpBuffer,
-	_In_ DWORD nBufferSize,
-	_Out_opt_ LPDWORD lpBytesRead,
-	_Out_opt_ LPDWORD lpTotalBytesAvail,
-	_Out_opt_ LPDWORD lpBytesLeftThisMessage
-);
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_1 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3977,6 +3955,15 @@ HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ int cchCount1,
 	_In_ LPCWSTR lpString2,
 	_In_ int cchCount2
+);
+HOOKDEF(HANDLE, WINAPI, CreateFileA,
+	_In_ LPCSTR lpFileName,
+	_In_ DWORD dwDesiredAccess,
+	_In_ DWORD dwShareMode,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+	_In_ DWORD dwCreationDisposition,
+	_In_ DWORD dwFlagsAndAttributes,
+	_In_opt_ HANDLE hTemplateFile
 );
 HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ LPCWSTR lpFileName,
@@ -4005,10 +3992,6 @@ HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW,
 );
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
-);
-HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime,
-	_In_ const FILETIME* lpFileTime,
-	_Out_ LPSYSTEMTIME lpSystemTime
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
@@ -4064,9 +4047,6 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 	_In_opt_ LPCWSTR lpFormat,
 	_Out_opt_ LPWSTR lpDateStr,
 	_In_ int cchDate
-);
-HOOKDEF(UINT, WINAPI, GetDriveTypeW,
-	_In_opt_ LPCWSTR lpRootPathName
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
@@ -4321,5 +4301,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_10 END <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_1 END <<< */
 

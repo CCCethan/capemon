@@ -2008,35 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_10 BEGIN <<< */
-// -> hook_misc.c に追加 | category="misc" | winapi:Directory Management
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetCurrentDirectoryW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD nBufferLength,
-	_Out_ LPWSTR lpBuffer
-) {
-	DWORD ret;
-	ret = Old_GetCurrentDirectoryW(nBufferLength, lpBuffer);
-	LOQ_nonzero("misc", "iu", "nBufferLength", nBufferLength, "lpBuffer", lpBuffer);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Pipes
-// REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, PeekNamedPipe, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hNamedPipe,
-	_Out_opt_ LPVOID lpBuffer,
-	_In_ DWORD nBufferSize,
-	_Out_opt_ LPDWORD lpBytesRead,
-	_Out_opt_ LPDWORD lpTotalBytesAvail,
-	_Out_opt_ LPDWORD lpBytesLeftThisMessage
-) {
-	BOOL ret;
-	ret = Old_PeekNamedPipe(hNamedPipe, lpBuffer, nBufferSize, lpBytesRead, lpTotalBytesAvail, lpBytesLeftThisMessage);
-	LOQ_bool("misc", "ppiIII", "hNamedPipe", hNamedPipe, "lpBuffer", lpBuffer, "nBufferSize", nBufferSize, "lpBytesRead", lpBytesRead, "lpTotalBytesAvail", lpTotalBytesAvail, "lpBytesLeftThisMessage", lpBytesLeftThisMessage);
-	return ret;
-}
-
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_1 BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2529,5 +2501,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_10 END <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_1 END <<< */
 
