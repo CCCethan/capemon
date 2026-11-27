@@ -3930,12 +3930,31 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_9 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_10 BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, GetCurrentDirectoryW,
+	_In_ DWORD nBufferLength,
+	_Out_ LPWSTR lpBuffer
+);
+HOOKDEF(BOOL, WINAPI, GetFileInformationByHandle,
+	_In_ HANDLE hFile,
+	_Out_ LPBY_HANDLE_FILE_INFORMATION lpFileInformation
+);
+HOOKDEF(DWORD, WINAPI, GetFullPathNameW,
+	_In_ LPCWSTR lpFileName,
+	_In_ DWORD nBufferLength,
+	_Out_ LPWSTR lpBuffer,
+	_Out_ LPWSTR* lpFilePart
+);
+HOOKDEF(BOOL, WINAPI, PeekNamedPipe,
+	_In_ HANDLE hNamedPipe,
+	_Out_opt_ LPVOID lpBuffer,
+	_In_ DWORD nBufferSize,
+	_Out_opt_ LPDWORD lpBytesRead,
+	_Out_opt_ LPDWORD lpTotalBytesAvail,
+	_Out_opt_ LPDWORD lpBytesLeftThisMessage
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
-);
-HOOKDEF(BOOL, WINAPI, CloseEventLog,
-	_Inout_ HANDLE hEventLog
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
@@ -3987,16 +4006,12 @@ HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW,
 HOOKDEF(VOID, WINAPI, ExitProcess,
 	_In_ UINT uExitCode
 );
+HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime,
+	_In_ const FILETIME* lpFileTime,
+	_Out_ LPSYSTEMTIME lpSystemTime
+);
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
-);
-HOOKDEF(HANDLE, WINAPI, FindFirstFileA,
-	_In_ LPCSTR lpFileName,
-	_Out_ LPWIN32_FIND_DATAA lpFindFileData
-);
-HOOKDEF(BOOL, WINAPI, FindNextFileA,
-	_In_ HANDLE hFindFile,
-	_Out_ LPWIN32_FIND_DATAA lpFindFileData
 );
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
@@ -4049,6 +4064,9 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 	_In_opt_ LPCWSTR lpFormat,
 	_Out_opt_ LPWSTR lpDateStr,
 	_In_ int cchDate
+);
+HOOKDEF(UINT, WINAPI, GetDriveTypeW,
+	_In_opt_ LPCWSTR lpRootPathName
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
@@ -4205,10 +4223,6 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
-HOOKDEF(HANDLE, WINAPI, OpenEventLogA,
-	_In_ LPCSTR lpUNCServerName,
-	_In_ LPCSTR lpSourceName
-);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4227,15 +4241,6 @@ HOOKDEF(BOOL, WINAPI, ReadConsoleW,
 	_In_ DWORD nNumberOfCharsToRead,
 	_Out_ LPDWORD lpNumberOfCharsRead,
 	_In_opt_ LPVOID pInputControl
-);
-HOOKDEF(BOOL, WINAPI, ReadEventLogA,
-	_In_ HANDLE hEventLog,
-	_In_ DWORD dwReadFlags,
-	_In_ DWORD dwRecordOffset,
-	_Out_ LPVOID lpBuffer,
-	_In_ DWORD nNumberOfBytesToRead,
-	_Out_ DWORD* pnBytesRead,
-	_Out_ DWORD* pnMinNumberOfBytesNeeded
 );
 HOOKDEF(BOOL, WINAPI, ReadFile,
 	_In_ HANDLE hFile,
@@ -4316,5 +4321,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_9 END <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_10 END <<< */
 

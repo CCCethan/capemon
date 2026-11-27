@@ -1929,7 +1929,34 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_9 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_10 BEGIN <<< */
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+HOOKDEF(BOOL, WINAPI, GetFileInformationByHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hFile,
+	_Out_ LPBY_HANDLE_FILE_INFORMATION lpFileInformation
+) {
+	BOOL ret;
+	ret = Old_GetFileInformationByHandle(hFile, lpFileInformation);
+	LOQ_bool("filesystem", "pP", "hFile", hFile, "lpFileInformation", lpFileInformation);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetFullPathNameW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCWSTR lpFileName,
+	_In_ DWORD nBufferLength,
+	_Out_ LPWSTR lpBuffer,
+	_Out_ LPWSTR* lpFilePart
+) {
+	DWORD ret;
+	ret = Old_GetFullPathNameW(lpFileName, nBufferLength, lpBuffer, lpFilePart);
+	LOQ_nonzero("filesystem", "FiuF", "lpFileName", lpFileName, "nBufferLength", nBufferLength, "lpBuffer", lpBuffer, "lpFilePart", lpFilePart);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1960,6 +1987,23 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW, // 呼出規約は WINAPI 仮定(socket/nat
 	return ret;
 }
 
+// -> hook_file.c に追加 | category="filesystem" | winapi:Time
+// REVIEW: 引数 lpFileTime: 型 const FILETIME* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, FileTimeToSystemTime, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const FILETIME* lpFileTime,
+	_Out_ LPSYSTEMTIME lpSystemTime
+) {
+	BOOL ret;
+	ret = Old_FileTimeToSystemTime(lpFileTime, lpSystemTime);
+	// [7.5] ② 固定サイズ構造体(8バイト): FileTimeToLocalFileTime と同一の扱い。
+	//       FILETIME を PLARGE_INTEGER として 'X' で 64bit 値化する。
+	// [可読性7.5] SystemTime は ②固定サイズ構造体(SYSTEMTIME=16バイト、windows.h 定義済み)。
+	// FileTime を X で出したうえで、その**デコード結果**(年月日時分秒を WORD x8)も残す。
+	// 失敗時は書き戻されないので成功時のみ読む。
+	LOQ_bool("filesystem", "Xb", "lpFileTime", (PLARGE_INTEGER)lpFileTime, "lpSystemTime", (size_t)(ret && lpSystemTime ? sizeof(SYSTEMTIME) : 0), lpSystemTime);
+	return ret;
+}
+
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ HANDLE hFindFile
@@ -1971,34 +2015,23 @@ HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/
 }
 
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(HANDLE, WINAPI, FindFirstFileA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lpFileName,
-	_Out_ LPWIN32_FIND_DATAA lpFindFileData
-) {
-	HANDLE ret;
-	ret = Old_FindFirstFileA(lpFileName, lpFindFileData);
-	LOQ_handle("filesystem", "fP", "lpFileName", lpFileName, "lpFindFileData", lpFindFileData);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-HOOKDEF(BOOL, WINAPI, FindNextFileA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFindFile,
-	_Out_ LPWIN32_FIND_DATAA lpFindFileData
-) {
-	BOOL ret;
-	ret = Old_FindNextFileA(hFindFile, lpFindFileData);
-	LOQ_bool("filesystem", "pP", "hFindFile", hFindFile, "lpFindFileData", lpFindFileData);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hFile
 ) {
 	BOOL ret;
 	ret = Old_FlushFileBuffers(hFile);
 	LOQ_bool("filesystem", "p", "hFile", hFile);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
+// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(UINT, WINAPI, GetDriveTypeW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCWSTR lpRootPathName
+) {
+	UINT ret;
+	ret = Old_GetDriveTypeW(lpRootPathName);
+	LOQ_nonzero("filesystem", "F", "lpRootPathName", lpRootPathName);
 	return ret;
 }
 
@@ -2082,5 +2115,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "hFile", hFile, "lpBuffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "nNumberOfBytesToWrite", nNumberOfBytesToWrite, "lpNumberOfBytesWritten", lpNumberOfBytesWritten, "lpOverlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_9 END <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_10 END <<< */
 
