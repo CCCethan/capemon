@@ -1080,3 +1080,50 @@ HOOKDEF(HRESULT, WINAPI, MkParseDisplayNameEx,
 	LOQ_hresult("network", "u", "Name", szName);
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_5_debug BEGIN <<< */
+// -> hook_network.c に追加 | category="network" | winapi:Network Management
+// REVIEW: 戻り型 NET_API_STATUS の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 bufptr: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(DWORD, WINAPI, NetWkstaGetInfo, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPWSTR servername,
+	_In_ DWORD level,
+	_Out_ LPBYTE* bufptr
+) {
+	DWORD ret;
+	ret = Old_NetWkstaGetInfo(servername, level, bufptr);
+	LOQ_nonzero("network", "uipuu", "servername", servername, "level", level, "bufptr", bufptr,
+		"computername", (ret == 0 && bufptr && *bufptr && (level == 100 || level == 101 || level == 102)) ? ((LPWSTR *)*bufptr)[1] : NULL,
+		"langroup", (ret == 0 && bufptr && *bufptr && (level == 100 || level == 101 || level == 102)) ? ((LPWSTR *)*bufptr)[2] : NULL);
+	return ret;
+}
+
+// -> hook_network.c に追加 | category="network" | winapi:Network Management
+// REVIEW: 戻り型 NET_API_STATUS の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 bufptr: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(DWORD, WINAPI, NetWkstaUserGetInfo, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	LPWSTR reserved,
+	_In_ DWORD level,
+	_Out_ LPBYTE* bufptr
+) {
+	DWORD ret;
+	ret = Old_NetWkstaUserGetInfo(reserved, level, bufptr);
+	LOQ_nonzero("network", "uip", "reserved", reserved, "level", level, "bufptr", bufptr);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+
+// -> hook_network.c に追加 | category="network" | winapi:Network Management
+// REVIEW: 戻り型 NET_API_STATUS の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 Buffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(DWORD, WINAPI, NetApiBufferFree, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPVOID Buffer
+) {
+	DWORD ret;
+	ret = Old_NetApiBufferFree(Buffer);
+	LOQ_nonzero("network", "p", "Buffer", Buffer);
+	return ret;
+}
+/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_5_debug END <<< */
+
