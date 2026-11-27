@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_7_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_8_debug BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4065,9 +4065,6 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
 	_Out_ LPWSTR lpFilename,
 	_In_ DWORD nSize
-);
-HOOKDEF(HMODULE, WINAPI, GetModuleHandleA,
-	_In_opt_ LPCSTR lpModuleName
 );
 HOOKDEF(BOOL, WINAPI, GetModuleHandleExW,
 	_In_ DWORD dwFlags,
@@ -4295,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_7_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_8_debug END <<< */
 
