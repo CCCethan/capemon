@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_6 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_7 BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1752,5 +1752,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "dwTlsIndex", dwTlsIndex, "lpTlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_6 END <<< */
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_7 END <<< */
 
