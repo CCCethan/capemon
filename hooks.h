@@ -3930,12 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_6 BEGIN <<< */
-HOOKDEF(BOOL, WINAPI, GetFileAttributesExA,
-	_In_ LPCSTR lpFileName,
-	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
-	_Out_ LPVOID lpFileInformation
-);
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_7 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4046,6 +4041,11 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
+);
+HOOKDEF(BOOL, WINAPI, GetFileAttributesExW,
+	_In_ LPCWSTR lpFileName,
+	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	_Out_ LPVOID lpFileInformation
 );
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
@@ -4297,5 +4297,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_6 END <<< */
+/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_7 END <<< */
 
