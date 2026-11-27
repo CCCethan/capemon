@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_3 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_4 BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1602,19 +1602,6 @@ HOOKDEF(DWORD, WINAPI, GetCurrentThreadId, // 呼出規約は WINAPI 仮定(sock
 	return ret;
 }
 
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-// REVIEW: 引数 RelationshipType: 型 LOGICAL_PROCESSOR_RELATIONSHIP を i(int32)で仮記録。要確認
-HOOKDEF(BOOL, WINAPI, GetLogicalProcessorInformationEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType,
-	_Out_opt_ PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX Buffer,
-	_Inout_ PDWORD ReturnedLength
-) {
-	BOOL ret;
-	ret = Old_GetLogicalProcessorInformationEx(RelationshipType, Buffer, ReturnedLength);
-	LOQ_bool("process", "iPI", "RelationshipType", RelationshipType, "Buffer", Buffer, "ReturnedLength", ReturnedLength);
-	return ret;
-}
-
 // -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
 // REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -1625,6 +1612,16 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW, // 呼出規約は WINAPI 仮定(sock
 	DWORD ret;
 	ret = Old_GetModuleFileNameW(hModule, lpFilename, nSize);
 	LOQ_nonzero("process", "pFi", "hModule", hModule, "lpFilename", lpFilename, "nSize", nSize);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
+HOOKDEF(HMODULE, WINAPI, GetModuleHandleA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCSTR lpModuleName
+) {
+	HMODULE ret;
+	ret = Old_GetModuleHandleA(lpModuleName);
+	LOQ_nonnull("process", "f", "lpModuleName", lpModuleName);
 	return ret;
 }
 
@@ -1755,5 +1752,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "dwTlsIndex", dwTlsIndex, "lpTlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_3 END <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_4 END <<< */
 
