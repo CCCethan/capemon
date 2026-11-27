@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_6 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_7 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4061,6 +4061,10 @@ HOOKDEF(int, WINAPI, GetLocaleInfoW,
 	_Out_opt_ LPWSTR lpLCData,
 	_In_ int cchData
 );
+HOOKDEF(BOOL, WINAPI, GetLogicalProcessorInformation,
+	_Out_ PSYSTEM_LOGICAL_PROCESSOR_INFORMATION Buffer,
+	_Inout_ PDWORD ReturnLength
+);
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
 	_Out_ LPWSTR lpFilename,
@@ -4080,11 +4084,6 @@ HOOKDEF(UINT, WINAPI, GetOEMCP,
 HOOKDEF(FARPROC, WINAPI, GetProcAddress,
 	_In_ HMODULE hModule,
 	_In_ LPCSTR lpProcName
-);
-HOOKDEF(BOOL, WINAPI, GetProcessAffinityMask,
-	_In_ HANDLE hProcess,
-	_Out_ PDWORD_PTR lpProcessAffinityMask,
-	_Out_ PDWORD_PTR lpSystemAffinityMask
 );
 HOOKDEF(HANDLE, WINAPI, GetProcessHeap,
 	void
@@ -4297,5 +4296,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_6 END <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_7 END <<< */
 
