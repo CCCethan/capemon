@@ -178,7 +178,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_036_cpu_table_base_checker_rewrites_7 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_038_cpu_thread_count_checker_rewrites_8 BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -228,5 +228,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "lpCriticalSection", lpCriticalSection);
 }
-/* >>> AUTOHOOK_pa_alk_036_cpu_table_base_checker_rewrites_7 END <<< */
+/* >>> AUTOHOOK_pa_alk_038_cpu_thread_count_checker_rewrites_8 END <<< */
 

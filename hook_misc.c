@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_036_cpu_table_base_checker_rewrites_7 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_038_cpu_thread_count_checker_rewrites_8 BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2181,24 +2181,6 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW, // 呼出規約は WINAPI 仮定(socket/na
 	BOOL ret;
 	ret = Old_GetStringTypeW(dwInfoType, lpSrcStr, cchSrc, lpCharType);
 	LOQ_bool("misc", "iuiI", "dwInfoType", dwInfoType, "lpSrcStr", lpSrcStr, "cchSrc", cchSrc, "lpCharType", lpCharType);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
-// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 pFirmwareTableBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD FirmwareTableProviderSignature,
-	_In_ DWORD FirmwareTableID,
-	_Out_ PVOID pFirmwareTableBuffer,
-	_In_ DWORD BufferSize
-) {
-	UINT ret;
-	ret = Old_GetSystemFirmwareTable(FirmwareTableProviderSignature, FirmwareTableID, pFirmwareTableBuffer, BufferSize);
-	// [7.5] ⑤/単一出力バッファ: description "a buffer that receives the requested firmware table"。
-	//       本検体の主目的(ACPI テーブル取得)そのものなので内容を必ず残す。
-	//       長さ源は実書込長(戻り値)、容量 BufferSize で上限を締める。
-	LOQ_nonzero("misc", "iibi", "FirmwareTableProviderSignature", FirmwareTableProviderSignature, "FirmwareTableID", FirmwareTableID, "pFirmwareTableBuffer", (size_t)(ret < BufferSize ? ret : BufferSize), pFirmwareTableBuffer, "BufferSize", BufferSize);
 	return ret;
 }
 
@@ -2519,5 +2501,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_036_cpu_table_base_checker_rewrites_7 END <<< */
+/* >>> AUTOHOOK_pa_alk_038_cpu_thread_count_checker_rewrites_8 END <<< */
 
