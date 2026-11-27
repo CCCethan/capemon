@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_10 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_4_debug BEGIN <<< */
 HOOK(kernel32, AcquireSRWLockExclusive),
 HOOK(kernelbase, AcquireSRWLockExclusive),
 HOOK(kernel32, AreFileApisANSI),
@@ -829,8 +829,6 @@ HOOK(kernel32, CompareStringEx),
 HOOK(kernelbase, CompareStringEx),
 HOOK(kernel32, CompareStringW),
 HOOK(kernelbase, CompareStringW),
-HOOK(kernel32, CreateFileA),
-HOOK(kernelbase, CreateFileA),
 HOOK(kernel32, CreateFileW),
 HOOK(kernelbase, CreateFileW),
 HOOK(kernel32, DeleteCriticalSection),
@@ -986,7 +984,7 @@ HOOK(kernel32, WakeAllConditionVariable),
 HOOK(kernelbase, WakeAllConditionVariable),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_10 END <<< */
+/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_4_debug END <<< */
 };
 
 hook_t native_hooks[] = {
