@@ -1540,31 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_6 BEGIN <<< */
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetActiveProcessorCount, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ WORD GroupNumber
-) {
-	DWORD ret;
-	ret = Old_GetActiveProcessorCount(GroupNumber);
-	LOQ_nonzero("process", "i", "GroupNumber", GroupNumber);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-// REVIEW: 戻り型 WORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(WORD, WINAPI, GetActiveProcessorGroupCount, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	WORD ret;
-	ret = Old_GetActiveProcessorGroupCount();
-	LOQ_nonzero("process", "");
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_8_debug BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1766,5 +1742,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "dwTlsIndex", dwTlsIndex, "lpTlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_6 END <<< */
+/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_8_debug END <<< */
 
