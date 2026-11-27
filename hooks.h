@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_079_hyper_v_detection_rewrites_8_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_079_hyper_v_detection_rewrites_9_debug BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4292,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_079_hyper_v_detection_rewrites_8_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_079_hyper_v_detection_rewrites_9_debug END <<< */
 
