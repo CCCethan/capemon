@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_2_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_8 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3965,6 +3965,12 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ DWORD dwFlagsAndAttributes,
 	_In_opt_ HANDLE hTemplateFile
 );
+HOOKDEF(BOOL, WINAPI, CreatePipe,
+	_Out_ PHANDLE hReadPipe,
+	_Out_ PHANDLE hWritePipe,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpPipeAttributes,
+	_In_ DWORD nSize
+);
 HOOKDEF(void, WINAPI, DeleteCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
 );
@@ -3986,14 +3992,6 @@ HOOKDEF(VOID, WINAPI, ExitProcess,
 );
 HOOKDEF(BOOL, WINAPI, FindClose,
 	_Inout_ HANDLE hFindFile
-);
-HOOKDEF(HANDLE, WINAPI, FindFirstFileA,
-	_In_ LPCSTR lpFileName,
-	_Out_ LPWIN32_FIND_DATAA lpFindFileData
-);
-HOOKDEF(BOOL, WINAPI, FindNextFileA,
-	_In_ HANDLE hFindFile,
-	_Out_ LPWIN32_FIND_DATAA lpFindFileData
 );
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
@@ -4049,9 +4047,6 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 );
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
-);
-HOOKDEF(DWORD, WINAPI, GetFileAttributesA,
-	_In_ LPCSTR lpFileName
 );
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
@@ -4256,6 +4251,11 @@ HOOKDEF(BOOL, WINAPI, SetFilePointerEx,
 	_Out_opt_ PLARGE_INTEGER lpNewFilePointer,
 	_In_ DWORD dwMoveMethod
 );
+HOOKDEF(BOOL, WINAPI, SetHandleInformation,
+	_In_ HANDLE hObject,
+	_In_ DWORD dwMask,
+	_In_ DWORD dwFlags
+);
 HOOKDEF(void, WINAPI, SetLastError,
 	_In_ DWORD dwErrCode
 );
@@ -4295,6 +4295,10 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
+HOOKDEF(DWORD, WINAPI, WaitForSingleObject,
+	_In_ HANDLE hHandle,
+	_In_ DWORD dwMilliseconds
+);
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
 	_In_ LPCVOID lpBuffer,
@@ -4303,5 +4307,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_2_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_061_error_report_checker_rewrites_8 END <<< */
 
