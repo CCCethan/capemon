@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_7_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_8 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4209,6 +4209,11 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
+HOOKDEF(DWORD, WINAPI, QueryDosDeviceA,
+	_In_opt_ LPCSTR lpDeviceName,
+	_Out_ LPSTR lpTargetPath,
+	_In_ DWORD ucchMax
+);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4299,11 +4304,6 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
-HOOKDEF(DWORD, WINAPI, WNetGetConnectionA,
-	_In_ LPCSTR lpLocalName,
-	_Out_ LPSTR lpRemoteName,
-	_Inout_ LPDWORD lpnLength
-);
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
 	_In_ LPCVOID lpBuffer,
@@ -4312,5 +4312,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_7_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_8 END <<< */
 

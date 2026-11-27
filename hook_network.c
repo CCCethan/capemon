@@ -1080,19 +1080,3 @@ HOOKDEF(HRESULT, WINAPI, MkParseDisplayNameEx,
 	LOQ_hresult("network", "u", "Name", szName);
 	return ret;
 }
-
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_7_debug BEGIN <<< */
-// -> hook_network.c に追加 | category="network" | winapi:Windows Networking (WNet)
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, WNetGetConnectionA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lpLocalName,
-	_Out_ LPSTR lpRemoteName,
-	_Inout_ LPDWORD lpnLength
-) {
-	DWORD ret;
-	ret = Old_WNetGetConnectionA(lpLocalName, lpRemoteName, lpnLength);
-	LOQ_nonzero("network", "ssI", "lpLocalName", lpLocalName, "lpRemoteName", lpRemoteName, "lpnLength", lpnLength);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_7_debug END <<< */
-
