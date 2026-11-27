@@ -3930,10 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_4_debug BEGIN <<< */
-HOOKDEF(VOID, WINAPI, AcquireSRWLockExclusive,
-	_Inout_ PSRWLOCK SRWLock
-);
+/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_5 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4099,6 +4096,12 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW,
 	_In_ int cchSrc,
 	_Out_ LPWORD lpCharType
 );
+HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
+	_In_ DWORD FirmwareTableProviderSignature,
+	_In_ DWORD FirmwareTableID,
+	_Out_ PVOID pFirmwareTableBuffer,
+	_In_ DWORD BufferSize
+);
 HOOKDEF(int, WINAPI, GetTimeFormatEx,
 	_In_opt_ LPCWSTR lpLocaleName,
 	_In_ DWORD dwFlags,
@@ -4223,9 +4226,6 @@ HOOKDEF(BOOL, WINAPI, ReadFile,
 	_Out_opt_ LPDWORD lpNumberOfBytesRead,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
-HOOKDEF(VOID, WINAPI, ReleaseSRWLockExclusive,
-	_Inout_ PSRWLOCK SRWLock
-);
 HOOKDEF(PVOID, WINAPI, RtlLookupFunctionEntry,
 	_In_ ULONGLONG ControlPc,
 	_Out_ PULONGLONG ImageBase,
@@ -4261,12 +4261,6 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle,
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
 );
-HOOKDEF(BOOL, WINAPI, SleepConditionVariableSRW,
-	_Inout_ PCONDITION_VARIABLE ConditionVariable,
-	_Inout_ PSRWLOCK SRWLock,
-	_In_ DWORD dwMilliseconds,
-	_In_ ULONG Flags
-);
 HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize,
 	_In_ ULONG LsaVersion,
 	_Out_ PULONG PackageVersion,
@@ -4296,9 +4290,6 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
-HOOKDEF(VOID, WINAPI, WakeAllConditionVariable,
-	_Inout_ PCONDITION_VARIABLE ConditionVariable
-);
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
 	_In_ LPCVOID lpBuffer,
@@ -4307,5 +4298,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_4_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_029_cpu_feature_checker_rewrites_5 END <<< */
 
