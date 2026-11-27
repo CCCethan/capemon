@@ -1929,7 +1929,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_3_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_5 BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1970,39 +1970,6 @@ HOOKDEF(BOOL, WINAPI, FindClose, // 呼出規約は WINAPI 仮定(socket/native/
 	return ret;
 }
 
-// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-HOOKDEF(HANDLE, WINAPI, FindFirstVolumeW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ LPWSTR lpszVolumeName,
-	_In_ DWORD cchBufferLength
-) {
-	HANDLE ret;
-	ret = Old_FindFirstVolumeW(lpszVolumeName, cchBufferLength);
-	LOQ_handle("filesystem", "ui", "lpszVolumeName", lpszVolumeName, "cchBufferLength", cchBufferLength);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-HOOKDEF(BOOL, WINAPI, FindNextVolumeW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFindVolume,
-	_Out_ LPWSTR lpszVolumeName,
-	_In_ DWORD cchBufferLength
-) {
-	BOOL ret;
-	ret = Old_FindNextVolumeW(hFindVolume, lpszVolumeName, cchBufferLength);
-	LOQ_bool("filesystem", "pui", "hFindVolume", hFindVolume, "lpszVolumeName", lpszVolumeName, "cchBufferLength", cchBufferLength);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-HOOKDEF(BOOL, WINAPI, FindVolumeClose, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFindVolume
-) {
-	BOOL ret;
-	ret = Old_FindVolumeClose(hFindVolume);
-	LOQ_bool("filesystem", "p", "hFindVolume", hFindVolume);
-	return ret;
-}
-
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hFile
@@ -2015,12 +1982,12 @@ HOOKDEF(BOOL, WINAPI, FlushFileBuffers, // 呼出規約は WINAPI 仮定(socket/
 
 // -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
 // REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(UINT, WINAPI, GetDriveTypeW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCWSTR lpRootPathName
+HOOKDEF(UINT, WINAPI, GetDriveTypeA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCSTR lpRootPathName
 ) {
 	UINT ret;
-	ret = Old_GetDriveTypeW(lpRootPathName);
-	LOQ_nonzero("filesystem", "F", "lpRootPathName", lpRootPathName);
+	ret = Old_GetDriveTypeA(lpRootPathName);
+	LOQ_nonzero("filesystem", "f", "lpRootPathName", lpRootPathName);
 	return ret;
 }
 
@@ -2047,15 +2014,27 @@ HOOKDEF(DWORD, WINAPI, GetFileType, // 呼出規約は WINAPI 仮定(socket/nati
 }
 
 // -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-HOOKDEF(BOOL, WINAPI, GetVolumePathNamesForVolumeNameW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpszVolumeName,
-	_Out_ LPWSTR lpszVolumePathNames,
-	_In_ DWORD cchBufferLength,
-	_Out_ PDWORD lpcchReturnLength
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetLogicalDriveStringsA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD nBufferLength,
+	_Out_ LPSTR lpBuffer
 ) {
-	BOOL ret;
-	ret = Old_GetVolumePathNamesForVolumeNameW(lpszVolumeName, lpszVolumePathNames, cchBufferLength, lpcchReturnLength);
-	LOQ_bool("filesystem", "uFiI", "lpszVolumeName", lpszVolumeName, "lpszVolumePathNames", lpszVolumePathNames, "cchBufferLength", cchBufferLength, "lpcchReturnLength", lpcchReturnLength);
+	DWORD ret;
+	ret = Old_GetLogicalDriveStringsA(nBufferLength, lpBuffer);
+	LOQ_nonzero("filesystem", "is", "nBufferLength", nBufferLength, "lpBuffer", lpBuffer);
+	return ret;
+}
+
+// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, QueryDosDeviceA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPCSTR lpDeviceName,
+	_Out_ LPSTR lpTargetPath,
+	_In_ DWORD ucchMax
+) {
+	DWORD ret;
+	ret = Old_QueryDosDeviceA(lpDeviceName, lpTargetPath, ucchMax);
+	LOQ_nonzero("filesystem", "sfi", "lpDeviceName", lpDeviceName, "lpTargetPath", lpTargetPath, "ucchMax", ucchMax);
 	return ret;
 }
 
@@ -2117,5 +2096,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "hFile", hFile, "lpBuffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "nNumberOfBytesToWrite", nNumberOfBytesToWrite, "lpNumberOfBytesWritten", lpNumberOfBytesWritten, "lpOverlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_3_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_5 END <<< */
 
