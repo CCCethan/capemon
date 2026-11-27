@@ -526,24 +526,60 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_9 BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:Error Handling
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpSource: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-// REVIEW: 引数 Arguments: 型 va_list* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(DWORD, WINAPI, FormatMessageA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwFlags,
-	_In_opt_ LPCVOID lpSource,
-	_In_ DWORD dwMessageId,
-	_In_ DWORD dwLanguageId,
-	_Out_ LPSTR lpBuffer,
-	_In_ DWORD nSize,
-	_In_opt_ va_list* Arguments
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_1 BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
+// REVIEW: 戻り型 LRESULT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpmsg: 型 const MSG* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(LRESULT, WINAPI, DispatchMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const MSG* lpmsg
 ) {
-	DWORD ret;
-	ret = Old_FormatMessageA(dwFlags, lpSource, dwMessageId, dwLanguageId, lpBuffer, nSize, Arguments);
-	LOQ_nonzero("windows", "ipiisip", "dwFlags", dwFlags, "lpSource", lpSource, "dwMessageId", dwMessageId, "dwLanguageId", dwLanguageId, "lpBuffer", lpBuffer, "nSize", nSize, "Arguments", Arguments);
+	LRESULT ret;
+	ret = Old_DispatchMessageW(lpmsg);
+	// [可読性7.5] ② 固定サイズ構造体 MSG(入力)。PeekMessageW/TranslateMessage と同一の扱いで、
+	// どのメッセージをディスパッチしたかを追えるようバイト内容を残す。
+	// NULL は log.c の 'b' が 0 バイト扱いにする。
+	LOQ_nonzero("windows", "b", "lpmsg", (size_t)(lpmsg ? sizeof(MSG) : 0), lpmsg);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_064_file_existence_checker_rewrites_9 END <<< */
+
+// -> hook_window.c に追加 | category="windows" | winapi:Windows
+HOOKDEF(HWND, WINAPI, GetForegroundWindow, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	void
+) {
+	HWND ret;
+	ret = Old_GetForegroundWindow();
+	LOQ_nonnull("windows", "");
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Messages and Message Queues
+HOOKDEF(BOOL, WINAPI, PeekMessageW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPMSG lpMsg,
+	_In_opt_ HWND hWnd,
+	_In_ UINT wMsgFilterMin,
+	_In_ UINT wMsgFilterMax,
+	_In_ UINT wRemoveMsg
+) {
+	BOOL ret;
+	ret = Old_PeekMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
+	// [可読性7.5] Msg は ⑤出力構造体 MSG(windows.h 定義済み)。本検体(window_interaction_monitor)は
+	// **受信したウィンドウメッセージ**で環境を判定するので message/wParam/lParam が核心。
+	// 戻り値が 0 のときはメッセージを取得しておらず中身が無いので成功時のみ読む。
+	LOQ_bool("windows", "bpiii", "lpMsg", (size_t)(ret && lpMsg ? sizeof(MSG) : 0), lpMsg, "hWnd", hWnd, "wMsgFilterMin", wMsgFilterMin, "wMsgFilterMax", wMsgFilterMax, "wRemoveMsg", wRemoveMsg);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Keyboard Input
+// REVIEW: 引数 lpMsg: 型 const MSG* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, TranslateMessage, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ const MSG* lpMsg
+) {
+	BOOL ret;
+	ret = Old_TranslateMessage(lpMsg);
+	// [可読性7.5] ② 固定サイズ構造体 MSG(入力)。PeekMessageW と対で、どのメッセージを
+	// 翻訳したかが分かるようバイト内容を残す。NULL は log.c の b が 0 バイト扱いにする。
+	LOQ_bool("windows", "b", "lpMsg", (size_t)(lpMsg ? sizeof(MSG) : 0), lpMsg);
+	return ret;
+}
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_1 END <<< */
 
