@@ -1929,7 +1929,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_1 BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1937,26 +1937,6 @@ HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/n
 	BOOL ret;
 	ret = Old_AreFileApisANSI();
 	LOQ_bool("filesystem", "");
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 引数 lpSecurityAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HANDLE, WINAPI, CreateFileA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lpFileName,
-	_In_ DWORD dwDesiredAccess,
-	_In_ DWORD dwShareMode,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-	_In_ DWORD dwCreationDisposition,
-	_In_ DWORD dwFlagsAndAttributes,
-	_In_opt_ HANDLE hTemplateFile
-) {
-	HANDLE ret;
-	ret = Old_CreateFileA(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-	// [7.5] ② 固定サイズ構造体: CreateFileW.SecurityAttributes と同一の扱い(ANSI版)。
-	//       SECURITY_ATTRIBUTES は定義済み。bInheritHandle が読めるのが要点。
-	//       本解析では常に NULL(nonnull=0)だが b は NULL 安全。
-	LOQ_handle("filesystem", "fiibiip", "lpFileName", lpFileName, "dwDesiredAccess", dwDesiredAccess, "dwShareMode", dwShareMode, "lpSecurityAttributes", sizeof(SECURITY_ATTRIBUTES), lpSecurityAttributes, "dwCreationDisposition", dwCreationDisposition, "dwFlagsAndAttributes", dwFlagsAndAttributes, "hTemplateFile", hTemplateFile);
 	return ret;
 }
 
@@ -2000,14 +1980,14 @@ HOOKDEF(BOOL, WINAPI, FlushFileBuffers, // 呼出規約は WINAPI 仮定(socket/
 	return ret;
 }
 
-// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(UINT, WINAPI, GetDriveTypeA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCSTR lpRootPathName
+// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, GetFileAttributesA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ LPCSTR lpFileName
 ) {
-	UINT ret;
-	ret = Old_GetDriveTypeA(lpRootPathName);
-	LOQ_nonzero("filesystem", "f", "lpRootPathName", lpRootPathName);
+	DWORD ret;
+	ret = Old_GetFileAttributesA(lpFileName);
+	LOQ_nonzero("filesystem", "f", "lpFileName", lpFileName);
 	return ret;
 }
 
@@ -2030,30 +2010,6 @@ HOOKDEF(DWORD, WINAPI, GetFileType, // 呼出規約は WINAPI 仮定(socket/nati
 	DWORD ret;
 	ret = Old_GetFileType(hFile);
 	LOQ_nonzero("filesystem", "p", "hFile", hFile);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetLogicalDrives, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	DWORD ret;
-	ret = Old_GetLogicalDrives();
-	LOQ_nonzero("filesystem", "");
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, QueryDosDeviceA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCSTR lpDeviceName,
-	_Out_ LPSTR lpTargetPath,
-	_In_ DWORD ucchMax
-) {
-	DWORD ret;
-	ret = Old_QueryDosDeviceA(lpDeviceName, lpTargetPath, ucchMax);
-	LOQ_nonzero("filesystem", "sfi", "lpDeviceName", lpDeviceName, "lpTargetPath", lpTargetPath, "ucchMax", ucchMax);
 	return ret;
 }
 
@@ -2115,5 +2071,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "hFile", hFile, "lpBuffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "nNumberOfBytesToWrite", nNumberOfBytesToWrite, "lpNumberOfBytesWritten", lpNumberOfBytesWritten, "lpOverlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_1 END <<< */
 

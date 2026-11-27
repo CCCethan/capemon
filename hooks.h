@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_1 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3955,15 +3955,6 @@ HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ int cchCount1,
 	_In_ LPCWSTR lpString2,
 	_In_ int cchCount2
-);
-HOOKDEF(HANDLE, WINAPI, CreateFileA,
-	_In_ LPCSTR lpFileName,
-	_In_ DWORD dwDesiredAccess,
-	_In_ DWORD dwShareMode,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-	_In_ DWORD dwCreationDisposition,
-	_In_ DWORD dwFlagsAndAttributes,
-	_In_opt_ HANDLE hTemplateFile
 );
 HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ LPCWSTR lpFileName,
@@ -4048,11 +4039,11 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 	_Out_opt_ LPWSTR lpDateStr,
 	_In_ int cchDate
 );
-HOOKDEF(UINT, WINAPI, GetDriveTypeA,
-	_In_opt_ LPCSTR lpRootPathName
-);
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
+);
+HOOKDEF(DWORD, WINAPI, GetFileAttributesA,
+	_In_ LPCSTR lpFileName
 );
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
@@ -4072,9 +4063,6 @@ HOOKDEF(int, WINAPI, GetLocaleInfoW,
 	_In_ LCTYPE LCType,
 	_Out_opt_ LPWSTR lpLCData,
 	_In_ int cchData
-);
-HOOKDEF(DWORD, WINAPI, GetLogicalDrives,
-	void
 );
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
@@ -4209,11 +4197,6 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
-HOOKDEF(DWORD, WINAPI, QueryDosDeviceA,
-	_In_opt_ LPCSTR lpDeviceName,
-	_Out_ LPSTR lpTargetPath,
-	_In_ DWORD ucchMax
-);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4312,5 +4295,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_058_drive_type_analysis_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_1 END <<< */
 
