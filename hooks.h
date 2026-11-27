@@ -3930,7 +3930,14 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_8_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_027_cpu_cycle_ratio_checker_rewrites_4 BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, GetCurrentThread,
+	void
+);
+HOOKDEF(BOOL, WINAPI, QueryThreadCycleTime,
+	_In_ HANDLE ThreadHandle,
+	_Out_ PULONG64 CycleTime
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4039,9 +4046,6 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 	_Out_opt_ LPWSTR lpDateStr,
 	_In_ int cchDate
 );
-HOOKDEF(UINT, WINAPI, GetDriveTypeA,
-	_In_opt_ LPCSTR lpRootPathName
-);
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
 );
@@ -4063,9 +4067,6 @@ HOOKDEF(int, WINAPI, GetLocaleInfoW,
 	_In_ LCTYPE LCType,
 	_Out_opt_ LPWSTR lpLCData,
 	_In_ int cchData
-);
-HOOKDEF(DWORD, WINAPI, GetLogicalDrives,
-	void
 );
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
@@ -4298,5 +4299,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_8_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_027_cpu_cycle_ratio_checker_rewrites_4 END <<< */
 

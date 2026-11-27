@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_8_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_027_cpu_cycle_ratio_checker_rewrites_4 BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2501,5 +2501,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_8_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_027_cpu_cycle_ratio_checker_rewrites_4 END <<< */
 

@@ -1929,7 +1929,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_8_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_027_cpu_cycle_ratio_checker_rewrites_4 BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1980,17 +1980,6 @@ HOOKDEF(BOOL, WINAPI, FlushFileBuffers, // 呼出規約は WINAPI 仮定(socket/
 	return ret;
 }
 
-// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(UINT, WINAPI, GetDriveTypeA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCSTR lpRootPathName
-) {
-	UINT ret;
-	ret = Old_GetDriveTypeA(lpRootPathName);
-	LOQ_nonzero("filesystem", "f", "lpRootPathName", lpRootPathName);
-	return ret;
-}
-
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hFile,
@@ -2010,17 +1999,6 @@ HOOKDEF(DWORD, WINAPI, GetFileType, // 呼出規約は WINAPI 仮定(socket/nati
 	DWORD ret;
 	ret = Old_GetFileType(hFile);
 	LOQ_nonzero("filesystem", "p", "hFile", hFile);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetLogicalDrives, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	DWORD ret;
-	ret = Old_GetLogicalDrives();
-	LOQ_nonzero("filesystem", "");
 	return ret;
 }
 
@@ -2082,5 +2060,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "hFile", hFile, "lpBuffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "nNumberOfBytesToWrite", nNumberOfBytesToWrite, "lpNumberOfBytesWritten", lpNumberOfBytesWritten, "lpOverlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_021_cpu_and_disk_checker_rewrites_8_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_027_cpu_cycle_ratio_checker_rewrites_4 END <<< */
 
