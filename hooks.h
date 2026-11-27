@@ -3930,7 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker_rewrites_6 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker_rewrites_7 BEGIN <<< */
+HOOKDEF(DWORD, WINAPI, QueryDosDeviceA,
+	_In_opt_ LPCSTR lpDeviceName,
+	_Out_ LPSTR lpTargetPath,
+	_In_ DWORD ucchMax
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4063,9 +4068,6 @@ HOOKDEF(int, WINAPI, GetLocaleInfoW,
 	_In_ LCTYPE LCType,
 	_Out_opt_ LPWSTR lpLCData,
 	_In_ int cchData
-);
-HOOKDEF(DWORD, WINAPI, GetLogicalDrives,
-	void
 );
 HOOKDEF(DWORD, WINAPI, GetModuleFileNameW,
 	_In_opt_ HMODULE hModule,
@@ -4298,5 +4300,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker_rewrites_6 END <<< */
+/* >>> AUTOHOOK_pa_alk_053_disk_size_based_environment_checker_rewrites_7 END <<< */
 
