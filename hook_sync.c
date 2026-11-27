@@ -178,7 +178,47 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_1 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_3 BEGIN <<< */
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+HOOKDEF(BOOL, WINAPI, CancelWaitableTimer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hTimer
+) {
+	BOOL ret;
+	ret = Old_CancelWaitableTimer(hTimer);
+	LOQ_bool("sync", "p", "hTimer", hTimer);
+	return ret;
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+// REVIEW: 引数 lpTimerAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(HANDLE, WINAPI, CreateWaitableTimerA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ LPSECURITY_ATTRIBUTES lpTimerAttributes,
+	_In_ BOOL bManualReset,
+	_In_opt_ LPCSTR lpTimerName
+) {
+	HANDLE ret;
+	ret = Old_CreateWaitableTimerA(lpTimerAttributes, bManualReset, lpTimerName);
+	LOQ_handle("sync", "pis", "lpTimerAttributes", lpTimerAttributes, "bManualReset", bManualReset, "lpTimerName", lpTimerName);
+	return ret;
+}
+
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+// REVIEW: 引数 pfnCompletionRoutine: 型 PTIMERAPCROUTINE は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+// REVIEW: 引数 lpArgToCompletionRoutine: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+HOOKDEF(BOOL, WINAPI, SetWaitableTimer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hTimer,
+	_In_ const LARGE_INTEGER* pDueTime,
+	_In_ LONG lPeriod,
+	_In_opt_ PTIMERAPCROUTINE pfnCompletionRoutine,
+	_In_opt_ LPVOID lpArgToCompletionRoutine,
+	_In_ BOOL fResume
+) {
+	BOOL ret;
+	ret = Old_SetWaitableTimer(hTimer, pDueTime, lPeriod, pfnCompletionRoutine, lpArgToCompletionRoutine, fResume);
+	LOQ_bool("sync", "pXippi", "hTimer", hTimer, "pDueTime", pDueTime, "lPeriod", lPeriod, "pfnCompletionRoutine", pfnCompletionRoutine, "lpArgToCompletionRoutine", lpArgToCompletionRoutine, "fResume", fResume);
+	return ret;
+}
+
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -229,33 +269,16 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	LOQ_void("sync", "P", "lpCriticalSection", lpCriticalSection);
 }
 
-// -> hook_sync.c に追加 | category="sync" | winapi:Client
-// REVIEW: 戻り型 HWINEVENTHOOK の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 lpfnWinEventProc: 型 WINEVENTPROC を i(int32)で仮記録。要確認
-HOOKDEF(HWINEVENTHOOK, WINAPI, SetWinEventHook, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ UINT eventMin,
-	_In_ UINT eventMax,
-	_In_ HMODULE hmodWinEventProc,
-	_In_ WINEVENTPROC lpfnWinEventProc,
-	_In_ DWORD idProcess,
-	_In_ DWORD idThread,
-	_In_ UINT dwflags
+// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+HOOKDEF(DWORD, WINAPI, WaitForSingleObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hHandle,
+	_In_ DWORD dwMilliseconds
 ) {
-	HWINEVENTHOOK ret;
-	ret = Old_SetWinEventHook(eventMin, eventMax, hmodWinEventProc, lpfnWinEventProc, idProcess, idThread, dwflags);
-	LOQ_nonzero("sync", "iipiiii", "eventMin", eventMin, "eventMax", eventMax, "hmodWinEventProc", hmodWinEventProc, "lpfnWinEventProc", lpfnWinEventProc, "idProcess", idProcess, "idThread", idThread, "dwflags", dwflags);
+	DWORD ret;
+	ret = Old_WaitForSingleObject(hHandle, dwMilliseconds);
+	LOQ_nonzero("sync", "pi", "hHandle", hHandle, "dwMilliseconds", dwMilliseconds);
 	return ret;
 }
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Client
-// REVIEW: 引数 hWinEventHook: 型 HWINEVENTHOOK は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, UnhookWinEvent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HWINEVENTHOOK hWinEventHook
-) {
-	BOOL ret;
-	ret = Old_UnhookWinEvent(hWinEventHook);
-	LOQ_bool("sync", "p", "hWinEventHook", hWinEventHook);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_3 END <<< */
 

@@ -3930,7 +3930,30 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_1 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_3 BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, CancelWaitableTimer,
+	_In_ HANDLE hTimer
+);
+HOOKDEF(HANDLE, WINAPI, CreateWaitableTimerA,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpTimerAttributes,
+	_In_ BOOL bManualReset,
+	_In_opt_ LPCSTR lpTimerName
+);
+HOOKDEF(HWND, WINAPI, GetWindow,
+	_In_ HWND hWnd,
+	_In_ UINT uCmd
+);
+HOOKDEF(BOOL, WINAPI, IsWindowVisible,
+	_In_ HWND hWnd
+);
+HOOKDEF(BOOL, WINAPI, SetWaitableTimer,
+	_In_ HANDLE hTimer,
+	_In_ const LARGE_INTEGER* pDueTime,
+	_In_ LONG lPeriod,
+	_In_opt_ PTIMERAPCROUTINE pfnCompletionRoutine,
+	_In_opt_ LPVOID lpArgToCompletionRoutine,
+	_In_ BOOL fResume
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3967,9 +3990,6 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 );
 HOOKDEF(void, WINAPI, DeleteCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
-);
-HOOKDEF(LRESULT, WINAPI, DispatchMessageW,
-	_In_ const MSG* lpmsg
 );
 HOOKDEF(void, WINAPI, EnterCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -4200,13 +4220,6 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
-HOOKDEF(BOOL, WINAPI, PeekMessageW,
-	_Out_ LPMSG lpMsg,
-	_In_opt_ HWND hWnd,
-	_In_ UINT wMsgFilterMin,
-	_In_ UINT wMsgFilterMax,
-	_In_ UINT wRemoveMsg
-);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4265,15 +4278,6 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle,
 	_In_ DWORD nStdHandle,
 	_In_ HANDLE hHandle
 );
-HOOKDEF(HWINEVENTHOOK, WINAPI, SetWinEventHook,
-	_In_ UINT eventMin,
-	_In_ UINT eventMax,
-	_In_ HMODULE hmodWinEventProc,
-	_In_ WINEVENTPROC lpfnWinEventProc,
-	_In_ DWORD idProcess,
-	_In_ DWORD idThread,
-	_In_ UINT dwflags
-);
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
 );
@@ -4300,17 +4304,15 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue,
 	_In_ DWORD dwTlsIndex,
 	_In_opt_ LPVOID lpTlsValue
 );
-HOOKDEF(BOOL, WINAPI, TranslateMessage,
-	_In_ const MSG* lpMsg
-);
-HOOKDEF(BOOL, WINAPI, UnhookWinEvent,
-	_In_ HWINEVENTHOOK hWinEventHook
-);
 HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ LPVOID lpAddress,
 	_In_ SIZE_T dwSize,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
+);
+HOOKDEF(DWORD, WINAPI, WaitForSingleObject,
+	_In_ HANDLE hHandle,
+	_In_ DWORD dwMilliseconds
 );
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
@@ -4320,5 +4322,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_071_foreground_window_checker_rewrites_3 END <<< */
 
