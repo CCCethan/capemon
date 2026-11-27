@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_4 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_5 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4074,17 +4074,15 @@ HOOKDEF(BOOL, WINAPI, GetModuleHandleExW,
 HOOKDEF(HMODULE, WINAPI, GetModuleHandleW,
 	_In_opt_ LPCWSTR lpModuleName
 );
+HOOKDEF(void, WINAPI, GetNativeSystemInfo,
+	_Out_ LPSYSTEM_INFO lpSystemInfo
+);
 HOOKDEF(UINT, WINAPI, GetOEMCP,
 	void
 );
 HOOKDEF(FARPROC, WINAPI, GetProcAddress,
 	_In_ HMODULE hModule,
 	_In_ LPCSTR lpProcName
-);
-HOOKDEF(BOOL, WINAPI, GetProcessAffinityMask,
-	_In_ HANDLE hProcess,
-	_Out_ PDWORD_PTR lpProcessAffinityMask,
-	_Out_ PDWORD_PTR lpSystemAffinityMask
 );
 HOOKDEF(HANDLE, WINAPI, GetProcessHeap,
 	void
@@ -4297,5 +4295,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_4 END <<< */
+/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_5 END <<< */
 

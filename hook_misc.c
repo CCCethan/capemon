@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_4 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_5 BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2158,6 +2158,15 @@ HOOKDEF(int, WINAPI, GetLocaleInfoW, // 呼出規約は WINAPI 仮定(socket/nat
 	ret = Old_GetLocaleInfoW(Locale, LCType, lpLCData, cchData);
 	LOQ_nonzero("misc", "iiui", "Locale", Locale, "LCType", LCType, "lpLCData", lpLCData, "cchData", cchData);
 	return ret;
+}
+
+// -> hook_misc.c に追加 | category="misc" | winapi:System Information Functions
+HOOKDEF(void, WINAPI, GetNativeSystemInfo, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_Out_ LPSYSTEM_INFO lpSystemInfo
+) {
+	ULONG_PTR ret = 0; (void)ret;  // void 関数: LOQ 用ダミー
+	Old_GetNativeSystemInfo(lpSystemInfo);
+	LOQ_void("misc", "P", "lpSystemInfo", lpSystemInfo);
 }
 
 // -> hook_misc.c に追加 | category="misc" | winapi:National Language Support (NLS)
@@ -2501,5 +2510,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_4 END <<< */
+/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_5 END <<< */
 

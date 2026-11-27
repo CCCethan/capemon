@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_4 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_5 BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1648,18 +1648,6 @@ HOOKDEF(FARPROC, WINAPI, GetProcAddress, // 呼出規約は WINAPI 仮定(socket
 	return ret;
 }
 
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, GetProcessAffinityMask, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hProcess,
-	_Out_ PDWORD_PTR lpProcessAffinityMask,
-	_Out_ PDWORD_PTR lpSystemAffinityMask
-) {
-	BOOL ret;
-	ret = Old_GetProcessAffinityMask(hProcess, lpProcessAffinityMask, lpSystemAffinityMask);
-	LOQ_bool("process", "pII", "hProcess", hProcess, "lpProcessAffinityMask", lpProcessAffinityMask, "lpSystemAffinityMask", lpSystemAffinityMask);
-	return ret;
-}
-
 // -> hook_process.c に追加 | category="process" | winapi:Memory Management
 HOOKDEF(HANDLE, WINAPI, GetProcessHeap, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -1754,5 +1742,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "dwTlsIndex", dwTlsIndex, "lpTlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_4 END <<< */
+/* >>> AUTOHOOK_pa_alk_033_cpu_info_checker_01_rewrites_5 END <<< */
 
