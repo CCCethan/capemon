@@ -1540,30 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_6 BEGIN <<< */
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, AvRevertMmThreadCharacteristics, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE AvrtHandle
-) {
-	BOOL ret;
-	ret = Old_AvRevertMmThreadCharacteristics(AvrtHandle);
-	LOQ_bool("process", "p", "AvrtHandle", AvrtHandle);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(HANDLE, WINAPI, AvSetMmThreadCharacteristicsW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR TaskName,
-	_Inout_ LPDWORD TaskIndex
-) {
-	HANDLE ret;
-	ret = Old_AvSetMmThreadCharacteristicsW(TaskName, TaskIndex);
-	LOQ_handle("process", "uI", "TaskName", TaskName, "TaskIndex", TaskIndex);
-	return ret;
-}
-
-/* >>> restored from hookdb <<< */
-
+/* >>> AUTOHOOK_pa_alk_051_disk_enum_registry_checker_rewrites_10_debug BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1765,5 +1742,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "dwTlsIndex", dwTlsIndex, "lpTlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_6 END <<< */
+/* >>> AUTOHOOK_pa_alk_051_disk_enum_registry_checker_rewrites_10_debug END <<< */
 
