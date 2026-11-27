@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_4 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_6 BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1616,16 +1616,6 @@ HOOKDEF(DWORD, WINAPI, GetModuleFileNameW, // 呼出規約は WINAPI 仮定(sock
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
-HOOKDEF(HMODULE, WINAPI, GetModuleHandleA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCSTR lpModuleName
-) {
-	HMODULE ret;
-	ret = Old_GetModuleHandleA(lpModuleName);
-	LOQ_nonnull("process", "f", "lpModuleName", lpModuleName);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Dynamic-Link Libraries (DLLs)
 HOOKDEF(BOOL, WINAPI, GetModuleHandleExW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwFlags,
 	_In_opt_ LPCWSTR lpModuleName,
@@ -1655,6 +1645,18 @@ HOOKDEF(FARPROC, WINAPI, GetProcAddress, // 呼出規約は WINAPI 仮定(socket
 	FARPROC ret;
 	ret = Old_GetProcAddress(hModule, lpProcName);
 	LOQ_nonnull("process", "ps", "hModule", hModule, "lpProcName", lpProcName);
+	return ret;
+}
+
+// -> hook_process.c に追加 | category="process" | winapi:Processes
+HOOKDEF(BOOL, WINAPI, GetProcessAffinityMask, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hProcess,
+	_Out_ PDWORD_PTR lpProcessAffinityMask,
+	_Out_ PDWORD_PTR lpSystemAffinityMask
+) {
+	BOOL ret;
+	ret = Old_GetProcessAffinityMask(hProcess, lpProcessAffinityMask, lpSystemAffinityMask);
+	LOQ_bool("process", "pII", "hProcess", hProcess, "lpProcessAffinityMask", lpProcessAffinityMask, "lpSystemAffinityMask", lpSystemAffinityMask);
 	return ret;
 }
 
@@ -1752,5 +1754,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "dwTlsIndex", dwTlsIndex, "lpTlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_4 END <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_6 END <<< */
 
