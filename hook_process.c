@@ -1540,7 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_7 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_8 BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1599,17 +1599,6 @@ HOOKDEF(DWORD, WINAPI, GetCurrentThreadId, // 呼出規約は WINAPI 仮定(sock
 	DWORD ret;
 	ret = Old_GetCurrentThreadId();
 	LOQ_nonzero("process", "");
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, GetLogicalProcessorInformation, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ PSYSTEM_LOGICAL_PROCESSOR_INFORMATION Buffer,
-	_Inout_ PDWORD ReturnLength
-) {
-	BOOL ret;
-	ret = Old_GetLogicalProcessorInformation(Buffer, ReturnLength);
-	LOQ_bool("process", "PI", "Buffer", Buffer, "ReturnLength", ReturnLength);
 	return ret;
 }
 
@@ -1753,5 +1742,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "dwTlsIndex", dwTlsIndex, "lpTlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_7 END <<< */
+/* >>> AUTOHOOK_pa_alk_035_cpu_processor_count_checker_rewrites_8 END <<< */
 
