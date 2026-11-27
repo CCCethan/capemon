@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_079_hyper_v_detection_rewrites_9_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_080_hyperv_driver_checker_rewrites_2_debug BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -976,7 +976,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_079_hyper_v_detection_rewrites_9_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_080_hyperv_driver_checker_rewrites_2_debug END <<< */
 };
 
 hook_t native_hooks[] = {
