@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_4 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_5 BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -841,6 +841,10 @@ HOOK(kernel32, ExitProcess),
 HOOK(kernelbase, ExitProcess),
 HOOK(kernel32, FindClose),
 HOOK(kernelbase, FindClose),
+HOOK(kernel32, FindFirstFileA),
+HOOK(kernelbase, FindFirstFileA),
+HOOK(kernel32, FindNextFileA),
+HOOK(kernelbase, FindNextFileA),
 HOOK(kernel32, FlushFileBuffers),
 HOOK(kernelbase, FlushFileBuffers),
 HOOK(secur32, FreeContextBuffer),
@@ -869,6 +873,8 @@ HOOK(kernel32, GetDateFormatW),
 HOOK(kernelbase, GetDateFormatW),
 HOOK(kernel32, GetEnvironmentStringsW),
 HOOK(kernelbase, GetEnvironmentStringsW),
+HOOK(kernel32, GetFileAttributesA),
+HOOK(kernelbase, GetFileAttributesA),
 HOOK(kernel32, GetFileSizeEx),
 HOOK(kernelbase, GetFileSizeEx),
 HOOK(kernel32, GetFileType),
@@ -949,6 +955,9 @@ HOOK(kernel32, RtlPcToFileHeader),
 HOOK(kernelbase, RtlPcToFileHeader),
 HOOK(kernel32, RtlUnwind),
 HOOK(kernelbase, RtlUnwind),
+HOOK(kernel32, SHGetFolderPathA),
+HOOK(kernelbase, SHGetFolderPathA),
+HOOK(shell32, SHGetFolderPathA),
 HOOK(kernel32, SetEnvironmentVariableW),
 HOOK(kernelbase, SetEnvironmentVariableW),
 HOOK(kernel32, SetFilePointerEx),
@@ -976,7 +985,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_4 END <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_5 END <<< */
 };
 
 hook_t native_hooks[] = {
