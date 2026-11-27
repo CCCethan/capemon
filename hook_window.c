@@ -526,15 +526,31 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_4_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_6_debug BEGIN <<< */
 // -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
-HOOKDEF(BOOL, WINAPI, PathFileExistsA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR pszPath
+HOOKDEF(PSTR, WINAPI, PathFindExtensionA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ PSTR pszPath
 ) {
-	BOOL ret;
-	ret = Old_PathFileExistsA(pszPath);
-	LOQ_bool("windows", "f", "pszPath", pszPath);
+	PSTR ret;
+	ret = Old_PathFindExtensionA(pszPath);
+	LOQ_nonnull("windows", "f", "pszPath", pszPath);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_4_debug END <<< */
+
+/* >>> restored from hookdb <<< */
+
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
+HOOKDEF(HRESULT, WINAPI, SHGetFolderPathA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HWND hwndOwner,
+	_In_ int nFolder,
+	_In_ HANDLE hToken,
+	_In_ DWORD dwFlags,
+	_Out_ LPSTR pszPath
+) {
+	HRESULT ret;
+	ret = Old_SHGetFolderPathA(hwndOwner, nFolder, hToken, dwFlags, pszPath);
+	LOQ_hresult("windows", "pipif", "hwndOwner", hwndOwner, "nFolder", nFolder, "hToken", hToken, "dwFlags", dwFlags, "pszPath", pszPath);
+	return ret;
+}
+/* >>> AUTOHOOK_pa_alk_017_compression_tool_checker_rewrites_6_debug END <<< */
 
