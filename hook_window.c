@@ -525,3 +525,34 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_2 BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Multilingual User Interface (MUI)
+HOOKDEF(BOOL, WINAPI, GetThreadPreferredUILanguages, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwFlags,
+	_Out_ PULONG pulNumLanguages,
+	_Out_opt_ PZZWSTR pwszLanguagesBuffer,
+	_Inout_ PULONG pcchLanguagesBuffer
+) {
+	BOOL ret;
+	ret = Old_GetThreadPreferredUILanguages(dwFlags, pulNumLanguages, pwszLanguagesBuffer, pcchLanguagesBuffer);
+	LOQ_bool("windows", "iIPI", "dwFlags", dwFlags, "pulNumLanguages", pulNumLanguages, "pwszLanguagesBuffer", pwszLanguagesBuffer, "pcchLanguagesBuffer", pcchLanguagesBuffer);
+	return ret;
+}
+
+// -> hook_window.c に追加 | category="windows" | winapi:Multilingual User Interface (MUI)
+// REVIEW: 引数 pwszLanguagesBuffer: 型 PCZZWSTR は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BOOL, WINAPI, SetThreadPreferredUILanguages, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD dwFlags,
+	_In_opt_ PCZZWSTR pwszLanguagesBuffer,
+	_Out_opt_ PULONG pulNumLanguages
+) {
+	BOOL ret;
+	ret = Old_SetThreadPreferredUILanguages(dwFlags, pwszLanguagesBuffer, pulNumLanguages);
+	LOQ_bool("windows", "ipI", "dwFlags", dwFlags, "pwszLanguagesBuffer", pwszLanguagesBuffer, "pulNumLanguages", pulNumLanguages);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_pa_alk_052_disk_identifier_checker_rewrites_2 END <<< */
+
