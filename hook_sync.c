@@ -178,58 +178,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_3 BEGIN <<< */
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(HANDLE, WINAPI, CreateTimerQueue, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	void
-) {
-	HANDLE ret;
-	ret = Old_CreateTimerQueue();
-	LOQ_handle("sync", "");
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(BOOL, WINAPI, DeleteTimerQueueEx, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE TimerQueue,
-	_In_opt_ HANDLE CompletionEvent
-) {
-	BOOL ret;
-	ret = Old_DeleteTimerQueueEx(TimerQueue, CompletionEvent);
-	LOQ_bool("sync", "pp", "TimerQueue", TimerQueue, "CompletionEvent", CompletionEvent);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(BOOL, WINAPI, DeleteTimerQueueTimer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ HANDLE TimerQueue,
-	_In_ HANDLE Timer,
-	_In_opt_ HANDLE CompletionEvent
-) {
-	BOOL ret;
-	ret = Old_DeleteTimerQueueTimer(TimerQueue, Timer, CompletionEvent);
-	LOQ_bool("sync", "ppp", "TimerQueue", TimerQueue, "Timer", Timer, "CompletionEvent", CompletionEvent);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-// REVIEW: 引数 lpEventAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HANDLE, WINAPI, CreateEventA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
-	_In_ BOOL bManualReset,
-	_In_ BOOL bInitialState,
-	_In_opt_ LPCSTR lpName
-) {
-	HANDLE ret;
-	ret = Old_CreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName);
-	// [可読性7.5] EventAttributes は ② 固定サイズ構造体(LPSECURITY_ATTRIBUTES)。
-	// 同ファイルの CreateFileW が既に sizeof(SECURITY_ATTRIBUTES) を長さに 'b' で記録しており
-	// (ビルド実績あり=型は定義済み)、同一イディオムに揃える。_In_opt_ で NULL のことが多いが、
-	// log.c の 'b' は NULL/例外を __try で保護し 0 バイト扱いにするため安全。
-	LOQ_handle("sync", "biis", "lpEventAttributes", sizeof(SECURITY_ATTRIBUTES), lpEventAttributes, "bManualReset", bManualReset, "bInitialState", bInitialState, "lpName", lpName);
-	return ret;
-}
-
+/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_6 BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -279,27 +228,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "lpCriticalSection", lpCriticalSection);
 }
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(BOOL, WINAPI, SetEvent, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hEvent
-) {
-	BOOL ret;
-	ret = Old_SetEvent(hEvent);
-	LOQ_bool("sync", "p", "hEvent", hEvent);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, WaitForSingleObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hHandle,
-	_In_ DWORD dwMilliseconds
-) {
-	DWORD ret;
-	ret = Old_WaitForSingleObject(hHandle, dwMilliseconds);
-	LOQ_nonzero("sync", "pi", "hHandle", hHandle, "dwMilliseconds", dwMilliseconds);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_3 END <<< */
+/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_6 END <<< */
 

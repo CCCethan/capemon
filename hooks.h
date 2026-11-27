@@ -3930,28 +3930,48 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_3 BEGIN <<< */
-HOOKDEF(HANDLE, WINAPI, CreateTimerQueue,
-	void
+/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_6 BEGIN <<< */
+HOOKDEF(BOOL, WINAPI, AvRevertMmThreadCharacteristics,
+	_In_ HANDLE AvrtHandle
 );
-HOOKDEF(BOOL, WINAPI, DeleteTimerQueueEx,
-	_In_ HANDLE TimerQueue,
-	_In_opt_ HANDLE CompletionEvent
-);
-HOOKDEF(BOOL, WINAPI, DeleteTimerQueueTimer,
-	_In_opt_ HANDLE TimerQueue,
-	_In_ HANDLE Timer,
-	_In_opt_ HANDLE CompletionEvent
-);
-HOOKDEF(BOOL, WINAPI, sndPlaySoundA,
-	LPCSTR lpszSound,
-	UINT fuSound
+HOOKDEF(HANDLE, WINAPI, AvSetMmThreadCharacteristicsW,
+	_In_ LPCWSTR TaskName,
+	_Inout_ LPDWORD TaskIndex
 );
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
+);
+HOOKDEF(HRESULT, WINAPI, CoInitializeEx,
+	_In_opt_ LPVOID pvReserved,
+	_In_ DWORD dwCoInit
+);
+HOOKDEF(HRESULT, WINAPI, CoMarshalInterface,
+	_In_ LPSTREAM pStm,
+	_In_ REFIID riid,
+	_In_ LPUNKNOWN pUnk,
+	_In_ DWORD dwDestContext,
+	_In_opt_ LPVOID pvDestContext,
+	_In_ DWORD mshlflags
+);
+HOOKDEF(HRESULT, WINAPI, CoReleaseMarshalData,
+	_In_ LPSTREAM pStm
+);
+HOOKDEF(LPVOID, WINAPI, CoTaskMemAlloc,
+	_In_ SIZE_T cb
+);
+HOOKDEF(void, WINAPI, CoTaskMemFree,
+	_In_opt_ LPVOID pv
+);
+HOOKDEF(void, WINAPI, CoUninitialize,
+	void
+);
+HOOKDEF(HRESULT, WINAPI, CoUnmarshalInterface,
+	_In_ LPSTREAM pStm,
+	_In_ REFIID riid,
+	_Out_ LPVOID* ppv
 );
 HOOKDEF(int, WINAPI, CompareStringEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -3971,12 +3991,6 @@ HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ int cchCount1,
 	_In_ LPCWSTR lpString2,
 	_In_ int cchCount2
-);
-HOOKDEF(HANDLE, WINAPI, CreateEventA,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
-	_In_ BOOL bManualReset,
-	_In_ BOOL bInitialState,
-	_In_opt_ LPCSTR lpName
 );
 HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ LPCWSTR lpFileName,
@@ -4011,6 +4025,9 @@ HOOKDEF(BOOL, WINAPI, FindClose,
 );
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
+);
+HOOKDEF(SECURITY_STATUS, WINAPI, FreeContextBuffer,
+	_In_ PVOID pvContextBuffer
 );
 HOOKDEF(BOOL, WINAPI, FreeEnvironmentStringsW,
 	_In_ LPWSTR lpszEnvironmentBlock
@@ -4258,9 +4275,6 @@ HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
 	_In_opt_ LPCWSTR lpValue
 );
-HOOKDEF(BOOL, WINAPI, SetEvent,
-	_In_ HANDLE hEvent
-);
 HOOKDEF(BOOL, WINAPI, SetFilePointerEx,
 	_In_ HANDLE hFile,
 	_In_ LARGE_INTEGER liDistanceToMove,
@@ -4276,6 +4290,16 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle,
 );
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
+);
+HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize,
+	_In_ ULONG LsaVersion,
+	_Out_ PULONG PackageVersion,
+	_Out_ PVOID* ppTables,
+	_Out_ PULONG pcTables
+);
+HOOKDEF(HRESULT, WINAPI, StringFromIID,
+	_In_ REFIID rclsid,
+	_Out_ LPOLESTR* lplpsz
 );
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
@@ -4300,10 +4324,6 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
-HOOKDEF(DWORD, WINAPI, WaitForSingleObject,
-	_In_ HANDLE hHandle,
-	_In_ DWORD dwMilliseconds
-);
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
 	_In_ LPCVOID lpBuffer,
@@ -4312,5 +4332,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_3 END <<< */
+/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_6 END <<< */
 
