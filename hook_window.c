@@ -525,3 +525,19 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_3 BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Multimedia
+HOOKDEF(BOOL, WINAPI, sndPlaySoundA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	LPCSTR lpszSound,
+	UINT fuSound
+) {
+	BOOL ret;
+	ret = Old_sndPlaySoundA(lpszSound, fuSound);
+	LOQ_bool("windows", "si", "lpszSound", lpszSound, "fuSound", fuSound);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_3 END <<< */
+

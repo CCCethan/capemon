@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_038_cpu_thread_count_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_3 BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2044,18 +2044,6 @@ HOOKDEF(BOOL, WINAPI, EnumSystemLocalesW, // 呼出規約は WINAPI 仮定(socke
 	BOOL ret;
 	ret = Old_EnumSystemLocalesW(lpLocaleEnumProc, dwFlags);
 	LOQ_bool("misc", "ii", "lpLocaleEnumProc", lpLocaleEnumProc, "dwFlags", dwFlags);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-// REVIEW: 戻り型 SECURITY_STATUS の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-// REVIEW: 引数 pvContextBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(SECURITY_STATUS, WINAPI, FreeContextBuffer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ PVOID pvContextBuffer
-) {
-	SECURITY_STATUS ret;
-	ret = Old_FreeContextBuffer(pvContextBuffer);
-	LOQ_nonzero("misc", "p", "pvContextBuffer", pvContextBuffer);
 	return ret;
 }
 
@@ -2475,19 +2463,6 @@ HOOKDEF(void, WINAPI, SetLastError, // 呼出規約は WINAPI 仮定(socket/nati
 	LOQ_void("misc", "i", "dwErrCode", dwErrCode);
 }
 
-// -> hook_misc.c に追加 | category="misc" | winapi:Authentication
-HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ ULONG LsaVersion,
-	_Out_ PULONG PackageVersion,
-	_Out_ PVOID* ppTables,
-	_Out_ PULONG pcTables
-) {
-	NTSTATUS ret;
-	ret = Old_SpUserModeInitialize(LsaVersion, PackageVersion, ppTables, pcTables);
-	LOQ_ntstatus("misc", "iIPI", "LsaVersion", LsaVersion, "PackageVersion", PackageVersion, "ppTables", ppTables, "pcTables", pcTables);
-	return ret;
-}
-
 // -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
 // REVIEW: 引数 lpAddress: 入力バッファとして dwSize バイト分を内容ログ('b')。dwSize が実データ長でない/出力用バッファなら 'p'(アドレスのみ)へ戻すこと
 HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2501,5 +2476,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_038_cpu_thread_count_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_3 END <<< */
 

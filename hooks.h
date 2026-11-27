@@ -3930,7 +3930,23 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_038_cpu_thread_count_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_3 BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, CreateTimerQueue,
+	void
+);
+HOOKDEF(BOOL, WINAPI, DeleteTimerQueueEx,
+	_In_ HANDLE TimerQueue,
+	_In_opt_ HANDLE CompletionEvent
+);
+HOOKDEF(BOOL, WINAPI, DeleteTimerQueueTimer,
+	_In_opt_ HANDLE TimerQueue,
+	_In_ HANDLE Timer,
+	_In_opt_ HANDLE CompletionEvent
+);
+HOOKDEF(BOOL, WINAPI, sndPlaySoundA,
+	LPCSTR lpszSound,
+	UINT fuSound
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3955,6 +3971,12 @@ HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ int cchCount1,
 	_In_ LPCWSTR lpString2,
 	_In_ int cchCount2
+);
+HOOKDEF(HANDLE, WINAPI, CreateEventA,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
+	_In_ BOOL bManualReset,
+	_In_ BOOL bInitialState,
+	_In_opt_ LPCSTR lpName
 );
 HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ LPCWSTR lpFileName,
@@ -3989,9 +4011,6 @@ HOOKDEF(BOOL, WINAPI, FindClose,
 );
 HOOKDEF(BOOL, WINAPI, FlushFileBuffers,
 	_In_ HANDLE hFile
-);
-HOOKDEF(SECURITY_STATUS, WINAPI, FreeContextBuffer,
-	_In_ PVOID pvContextBuffer
 );
 HOOKDEF(BOOL, WINAPI, FreeEnvironmentStringsW,
 	_In_ LPWSTR lpszEnvironmentBlock
@@ -4239,6 +4258,9 @@ HOOKDEF(BOOL, WINAPI, SetEnvironmentVariableW,
 	_In_ LPCWSTR lpName,
 	_In_opt_ LPCWSTR lpValue
 );
+HOOKDEF(BOOL, WINAPI, SetEvent,
+	_In_ HANDLE hEvent
+);
 HOOKDEF(BOOL, WINAPI, SetFilePointerEx,
 	_In_ HANDLE hFile,
 	_In_ LARGE_INTEGER liDistanceToMove,
@@ -4254,12 +4276,6 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle,
 );
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
-);
-HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize,
-	_In_ ULONG LsaVersion,
-	_Out_ PULONG PackageVersion,
-	_Out_ PVOID* ppTables,
-	_Out_ PULONG pcTables
 );
 HOOKDEF(BOOL, WINAPI, TerminateProcess,
 	_In_ HANDLE hProcess,
@@ -4284,6 +4300,10 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
+HOOKDEF(DWORD, WINAPI, WaitForSingleObject,
+	_In_ HANDLE hHandle,
+	_In_ DWORD dwMilliseconds
+);
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
 	_In_ LPCVOID lpBuffer,
@@ -4292,5 +4312,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_038_cpu_thread_count_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_048_delay_and_sound_behavior_checker_rewrites_3 END <<< */
 
