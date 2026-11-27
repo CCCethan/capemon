@@ -526,19 +526,24 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_5 BEGIN <<< */
-// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
-HOOKDEF(HRESULT, WINAPI, SHGetFolderPathA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HWND hwndOwner,
-	_In_ int nFolder,
-	_In_ HANDLE hToken,
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_9_debug BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Error Handling
+// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 lpSource: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
+// REVIEW: 引数 Arguments: 型 va_list* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(DWORD, WINAPI, FormatMessageA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ DWORD dwFlags,
-	_Out_ LPSTR pszPath
+	_In_opt_ LPCVOID lpSource,
+	_In_ DWORD dwMessageId,
+	_In_ DWORD dwLanguageId,
+	_Out_ LPSTR lpBuffer,
+	_In_ DWORD nSize,
+	_In_opt_ va_list* Arguments
 ) {
-	HRESULT ret;
-	ret = Old_SHGetFolderPathA(hwndOwner, nFolder, hToken, dwFlags, pszPath);
-	LOQ_hresult("windows", "pipif", "hwndOwner", hwndOwner, "nFolder", nFolder, "hToken", hToken, "dwFlags", dwFlags, "pszPath", pszPath);
+	DWORD ret;
+	ret = Old_FormatMessageA(dwFlags, lpSource, dwMessageId, dwLanguageId, lpBuffer, nSize, Arguments);
+	LOQ_nonzero("windows", "ipiisip", "dwFlags", dwFlags, "lpSource", lpSource, "dwMessageId", dwMessageId, "dwLanguageId", dwLanguageId, "lpBuffer", lpBuffer, "nSize", nSize, "Arguments", Arguments);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_5 END <<< */
+/* >>> AUTOHOOK_pa_alk_059_email_client_config_checker_rewrites_9_debug END <<< */
 
