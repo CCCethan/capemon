@@ -178,7 +178,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_051_disk_enum_registry_checker_rewrites_10_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_051_disk_enum_registry_checker_rewrites_1 BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -228,17 +228,5 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 	Old_LeaveCriticalSection(lpCriticalSection);
 	LOQ_void("sync", "P", "lpCriticalSection", lpCriticalSection);
 }
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, WaitForSingleObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hHandle,
-	_In_ DWORD dwMilliseconds
-) {
-	DWORD ret;
-	ret = Old_WaitForSingleObject(hHandle, dwMilliseconds);
-	LOQ_nonzero("sync", "pi", "hHandle", hHandle, "dwMilliseconds", dwMilliseconds);
-	return ret;
-}
-/* >>> AUTOHOOK_pa_alk_051_disk_enum_registry_checker_rewrites_10_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_051_disk_enum_registry_checker_rewrites_1 END <<< */
 
