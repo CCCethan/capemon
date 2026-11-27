@@ -818,9 +818,9 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_5_debug BEGIN <<< */
-HOOK(netapi32, NetWkstaGetInfo),
-HOOK(wkscli, NetWkstaGetInfo),
+/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_1_debug BEGIN <<< */
+HOOK(kernel32, GetComputerNameExA),
+HOOK(kernelbase, GetComputerNameExA),
 HOOK(netapi32, NetWkstaUserGetInfo),
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
@@ -980,7 +980,7 @@ HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_5_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_056_domain_comparison_checker_rewrites_1_debug END <<< */
 };
 
 hook_t native_hooks[] = {
