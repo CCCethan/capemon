@@ -818,7 +818,7 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker_rewrites_8_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_101_memory_array_checker_rewrites_4 BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
 HOOK(kernel32, CloseHandle),
@@ -987,14 +987,11 @@ HOOK(kernel32, TlsGetValue),
 HOOK(kernelbase, TlsGetValue),
 HOOK(kernel32, TlsSetValue),
 HOOK(kernelbase, TlsSetValue),
-HOOK(combase, VariantClear),
-HOOK(ole32, VariantClear),
-HOOK(oleaut32, VariantClear),
 HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker_rewrites_8_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_101_memory_array_checker_rewrites_4 END <<< */
 };
 
 hook_t native_hooks[] = {
