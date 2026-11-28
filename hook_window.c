@@ -525,3 +525,18 @@ HOOKDEF(int, WINAPI, MessageBoxTimeoutW,
 		LOQ_zero("windows", "uui", "Text", lpszText, "Caption", lpszCaption, "Timeout", dwTimeout);
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_104_memory_pattern_checker_rewrites_8_debug BEGIN <<< */
+// -> hook_window.c に追加 | category="windows" | winapi:Windows Shell
+HOOKDEF(HRSRC, WINAPI, FindResourceA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ HMODULE hModule,
+	_In_ LPCSTR lpName,
+	_In_ LPCSTR lpType
+) {
+	HRSRC ret;
+	ret = Old_FindResourceA(hModule, lpName, lpType);
+	LOQ_nonnull("windows", "pss", "hModule", hModule, "lpName", lpName, "lpType", lpType);
+	return ret;
+}
+/* >>> AUTOHOOK_pa_alk_104_memory_pattern_checker_rewrites_8_debug END <<< */
+

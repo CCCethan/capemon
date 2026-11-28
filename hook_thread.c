@@ -1039,3 +1039,31 @@ HOOKDEF(NTSTATUS, WINAPI, SetThreadDescription,
 	LOQ_ntstatus("threading", "pu", "ThreadHandle", hThread, "ThreadDescription", lpThreadDescription);
 	return ret;
 }
+
+/* >>> AUTOHOOK_pa_alk_104_memory_pattern_checker_rewrites_8_debug BEGIN <<< */
+// -> hook_thread.c に追加 | category="threading" | winapi:Debugging
+HOOKDEF(BOOL, WINAPI, GetThreadContext, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hThread,
+	_Inout_ LPCONTEXT lpContext
+) {
+	BOOL ret;
+	ret = Old_GetThreadContext(hThread, lpContext);
+	LOQ_bool("threading", "pP", "hThread", hThread, "lpContext", lpContext);
+	return ret;
+}
+
+// -> hook_thread.c に追加 | category="threading" | winapi:Debugging
+HOOKDEF(BOOL, WINAPI, GetThreadSelectorEntry, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ HANDLE hThread,
+	_In_ DWORD dwSelector,
+	_Out_ LPLDT_ENTRY lpSelectorEntry
+) {
+	BOOL ret;
+	ret = Old_GetThreadSelectorEntry(hThread, dwSelector, lpSelectorEntry);
+	LOQ_bool("threading", "piP", "hThread", hThread, "dwSelector", dwSelector, "lpSelectorEntry", lpSelectorEntry);
+	return ret;
+}
+
+/* >>> restored from hookdb <<< */
+/* >>> AUTOHOOK_pa_alk_104_memory_pattern_checker_rewrites_8_debug END <<< */
+

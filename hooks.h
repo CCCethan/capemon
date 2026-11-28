@@ -3930,7 +3930,115 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_103_memory_instance_checker_rewrites_6_debug BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_104_memory_pattern_checker_rewrites_8_debug BEGIN <<< */
+HOOKDEF(HANDLE, WINAPI, CreateFileMappingA,
+	_In_ HANDLE hFile,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpAttributes,
+	_In_ DWORD flProtect,
+	_In_ DWORD dwMaximumSizeHigh,
+	_In_ DWORD dwMaximumSizeLow,
+	_In_opt_ LPCSTR lpName
+);
+HOOKDEF(BOOL, WINAPI, EnumProcessModules,
+	_In_ HANDLE hProcess,
+	_Out_ HMODULE* lphModule,
+	_In_ DWORD cb,
+	_Out_ LPDWORD lpcbNeeded
+);
+HOOKDEF(HRSRC, WINAPI, FindResourceA,
+	_In_opt_ HMODULE hModule,
+	_In_ LPCSTR lpName,
+	_In_ LPCSTR lpType
+);
+HOOKDEF(BOOL, WINAPI, GetFileVersionInfoA,
+	_In_ LPCSTR lptstrFilename,
+	(n/a) DWORD dwHandle,
+	_In_ DWORD dwLen,
+	_Out_ LPVOID lpData*/
+);
+HOOKDEF(DWORD, WINAPI, GetFileVersionInfoSizeA,
+	_In_ LPCSTR lptstrFilename,
+	_Out_opt_ LPDWORD lpdwHandle
+);
+HOOKDEF(DWORD, WINAPI, GetLongPathNameA,
+	_In_ LPCSTR lpszShortPath,
+	_Out_ LPSTR lpszLongPath,
+	_In_ DWORD cchBuffer
+);
+HOOKDEF(DWORD, WINAPI, GetLongPathNameW,
+	_In_ LPCWSTR lpszShortPath,
+	_Out_ LPWSTR lpszLongPath,
+	_In_ DWORD cchBuffer
+);
+HOOKDEF(DWORD, WINAPI, GetModuleFileNameExW,
+	_In_ HANDLE hProcess,
+	_In_opt_ HMODULE hModule,
+	_Out_ LPWSTR lpFilename,
+	_In_ DWORD nSize
+);
+HOOKDEF(BOOL, WINAPI, GetProcessMemoryInfo,
+	_In_ HANDLE Process,
+	_Out_ PPROCESS_MEMORY_COUNTERS ppsmemCounters,
+	_In_ DWORD cb
+);
+HOOKDEF(UINT, WINAPI, GetTempFileNameA,
+	_In_ LPCSTR lpPathName,
+	_In_ LPCSTR lpPrefixString,
+	_In_ UINT uUnique,
+	_Out_ LPSTR lpTempFileName
+);
+HOOKDEF(BOOL, WINAPI, GetThreadContext,
+	_In_ HANDLE hThread,
+	_Inout_ LPCONTEXT lpContext
+);
+HOOKDEF(BOOL, WINAPI, GetThreadSelectorEntry,
+	_In_ HANDLE hThread,
+	_In_ DWORD dwSelector,
+	_Out_ LPLDT_ENTRY lpSelectorEntry
+);
+HOOKDEF(BOOL, WINAPI, GetThreadTimes,
+	_In_ HANDLE hThread,
+	_Out_ LPFILETIME lpCreationTime,
+	_Out_ LPFILETIME lpExitTime,
+	_Out_ LPFILETIME lpKernelTime,
+	_Out_ LPFILETIME lpUserTime
+);
+HOOKDEF(LPVOID, WINAPI, MapViewOfFile,
+	_In_ HANDLE hFileMappingObject,
+	_In_ DWORD dwDesiredAccess,
+	_In_ DWORD dwFileOffsetHigh,
+	_In_ DWORD dwFileOffsetLow,
+	_In_ SIZE_T dwNumberOfBytesToMap
+);
+HOOKDEF(BOOL, WINAPI, Module32First,
+	_In_ HANDLE hSnapshot,
+	_Inout_ LPMODULEENTRY32 lpme
+);
+HOOKDEF(BOOL, WINAPI, Module32Next,
+	_In_ HANDLE hSnapshot,
+	_Out_ LPMODULEENTRY32 lpme
+);
+HOOKDEF(HANDLE, WINAPI, OpenThread,
+	_In_ DWORD dwDesiredAccess,
+	_In_ BOOL bInheritHandle,
+	_In_ DWORD dwThreadId
+);
+HOOKDEF(DWORD, WINAPI, QueryDosDeviceW,
+	_In_opt_ LPCWSTR lpDeviceName,
+	_Out_ LPWSTR lpTargetPath,
+	_In_ DWORD ucchMax
+);
+HOOKDEF(BOOL, WINAPI, Thread32First,
+	_In_ HANDLE hSnapshot,
+	_Inout_ LPTHREADENTRY32 lpteCopyright
+);
+HOOKDEF(BOOL, WINAPI, Thread32Next,
+	_In_ HANDLE hSnapshot,
+	_Out_ LPTHREADENTRY32 lpteCopyright
+);
+HOOKDEF(BOOL, WINAPI, UnmapViewOfFile,
+	_In_ LPCVOID lpBaseAddress
+);
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3955,6 +4063,15 @@ HOOKDEF(int, WINAPI, CompareStringW,
 	_In_ int cchCount1,
 	_In_ LPCWSTR lpString2,
 	_In_ int cchCount2
+);
+HOOKDEF(HANDLE, WINAPI, CreateFileA,
+	_In_ LPCSTR lpFileName,
+	_In_ DWORD dwDesiredAccess,
+	_In_ DWORD dwShareMode,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+	_In_ DWORD dwCreationDisposition,
+	_In_ DWORD dwFlagsAndAttributes,
+	_In_opt_ HANDLE hTemplateFile
 );
 HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ LPCWSTR lpFileName,
@@ -4084,6 +4201,20 @@ HOOKDEF(FARPROC, WINAPI, GetProcAddress,
 HOOKDEF(HANDLE, WINAPI, GetProcessHeap,
 	void
 );
+HOOKDEF(BOOL, WINAPI, GetProcessTimes,
+	_In_ HANDLE hProcess,
+	_Out_ LPFILETIME lpCreationTime,
+	_Out_ LPFILETIME lpExitTime,
+	_Out_ LPFILETIME lpKernelTime,
+	_Out_ LPFILETIME lpUserTime
+);
+HOOKDEF(PDWORD, WINAPI, GetSidSubAuthority,
+	_In_ PSID pSid,
+	_In_ DWORD nSubAuthority
+);
+HOOKDEF(PUCHAR, WINAPI, GetSidSubAuthorityCount,
+	_In_ PSID pSid
+);
 HOOKDEF(VOID, WINAPI, GetStartupInfoW,
 	_Out_ LPSTARTUPINFOW lpStartupInfo
 );
@@ -4096,11 +4227,9 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW,
 	_In_ int cchSrc,
 	_Out_ LPWORD lpCharType
 );
-HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
-	_In_ DWORD FirmwareTableProviderSignature,
-	_In_ DWORD FirmwareTableID,
-	_Out_ PVOID pFirmwareTableBuffer,
-	_In_ DWORD BufferSize
+HOOKDEF(DWORD, WINAPI, GetTempPathA,
+	_In_ DWORD nBufferLength,
+	_Out_ LPSTR lpBuffer
 );
 HOOKDEF(int, WINAPI, GetTimeFormatEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4120,6 +4249,13 @@ HOOKDEF(int, WINAPI, GetTimeFormatW,
 );
 HOOKDEF(DWORD, WINAPI, GetTimeZoneInformation,
 	_Out_ LPTIME_ZONE_INFORMATION lpTimeZoneInformation
+);
+HOOKDEF(BOOL, WINAPI, GetTokenInformation,
+	_In_ HANDLE TokenHandle,
+	_In_ TOKEN_INFORMATION_CLASS TokenInformationClass,
+	_Out_opt_ LPVOID TokenInformation,
+	_In_ DWORD TokenInformationLength,
+	_Out_ PDWORD ReturnLength
 );
 HOOKDEF(int, WINAPI, GetUserDefaultLocaleName,
 	_Out_ LPWSTR lpLocaleName,
@@ -4199,6 +4335,11 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection,
 HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
+);
+HOOKDEF(BOOL, WINAPI, OpenProcessToken,
+	_In_ HANDLE ProcessHandle,
+	_In_ DWORD DesiredAccess,
+	_Out_ PHANDLE TokenHandle
 );
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
@@ -4298,5 +4439,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_103_memory_instance_checker_rewrites_6_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_104_memory_pattern_checker_rewrites_8_debug END <<< */
 
