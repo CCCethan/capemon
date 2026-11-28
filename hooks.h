@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_086_hypervisor_presence_checker_01_rewrites_3 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_086_hypervisor_presence_checker_01_rewrites_8 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4329,5 +4329,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_086_hypervisor_presence_checker_01_rewrites_3 END <<< */
+/* >>> AUTOHOOK_pa_alk_086_hypervisor_presence_checker_01_rewrites_8 END <<< */
 
