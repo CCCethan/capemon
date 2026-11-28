@@ -818,9 +818,11 @@ hook_t full_hooks[] = {
 	HOOK_SPECIAL(vbscript, VbsRound),
 	HOOK_SPECIAL(vbscript, VbsPrint),
 
-/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_10 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_1 BEGIN <<< */
 HOOK(kernel32, AreFileApisANSI),
 HOOK(kernelbase, AreFileApisANSI),
+HOOK(kernel32, CancelWaitableTimer),
+HOOK(kernelbase, CancelWaitableTimer),
 HOOK(kernel32, CloseHandle),
 HOOK(kernelbase, CloseHandle),
 HOOK(kernel32, CompareStringEx),
@@ -829,6 +831,8 @@ HOOK(kernel32, CompareStringW),
 HOOK(kernelbase, CompareStringW),
 HOOK(kernel32, CreateFileW),
 HOOK(kernelbase, CreateFileW),
+HOOK(kernel32, CreateWaitableTimerA),
+HOOK(kernelbase, CreateWaitableTimerA),
 HOOK(kernel32, DeleteCriticalSection),
 HOOK(kernelbase, DeleteCriticalSection),
 HOOK(kernel32, EnterCriticalSection),
@@ -957,6 +961,8 @@ HOOK(kernel32, SetLastError),
 HOOK(kernelbase, SetLastError),
 HOOK(kernel32, SetStdHandle),
 HOOK(kernelbase, SetStdHandle),
+HOOK(kernel32, SetWaitableTimer),
+HOOK(kernelbase, SetWaitableTimer),
 HOOK(kernel32, Sleep),
 HOOK(kernelbase, Sleep),
 HOOK(kernel32, SpUserModeInitialize),
@@ -974,9 +980,11 @@ HOOK(kernel32, TlsSetValue),
 HOOK(kernelbase, TlsSetValue),
 HOOK(kernel32, VirtualProtect),
 HOOK(kernelbase, VirtualProtect),
+HOOK(kernel32, WaitForSingleObject),
+HOOK(kernelbase, WaitForSingleObject),
 HOOK(kernel32, WriteFile),
 HOOK(kernelbase, WriteFile),
-/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_10 END <<< */
+/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_1 END <<< */
 };
 
 hook_t native_hooks[] = {

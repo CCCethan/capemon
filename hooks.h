@@ -3930,9 +3930,12 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_10 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_1 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
+);
+HOOKDEF(BOOL, WINAPI, CancelWaitableTimer,
+	_In_ HANDLE hTimer
 );
 HOOKDEF(BOOL, WINAPI, CloseHandle,
 	_In_ HANDLE hObject
@@ -3964,6 +3967,11 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ DWORD dwCreationDisposition,
 	_In_ DWORD dwFlagsAndAttributes,
 	_In_opt_ HANDLE hTemplateFile
+);
+HOOKDEF(HANDLE, WINAPI, CreateWaitableTimerA,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpTimerAttributes,
+	_In_ BOOL bManualReset,
+	_In_opt_ LPCSTR lpTimerName
 );
 HOOKDEF(void, WINAPI, DeleteCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -4252,6 +4260,14 @@ HOOKDEF(BOOL, WINAPI, SetStdHandle,
 	_In_ DWORD nStdHandle,
 	_In_ HANDLE hHandle
 );
+HOOKDEF(BOOL, WINAPI, SetWaitableTimer,
+	_In_ HANDLE hTimer,
+	_In_ const LARGE_INTEGER* pDueTime,
+	_In_ LONG lPeriod,
+	_In_opt_ PTIMERAPCROUTINE pfnCompletionRoutine,
+	_In_opt_ LPVOID lpArgToCompletionRoutine,
+	_In_ BOOL fResume
+);
 HOOKDEF(VOID, WINAPI, Sleep,
 	_In_ DWORD dwMilliseconds
 );
@@ -4284,6 +4300,10 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
+HOOKDEF(DWORD, WINAPI, WaitForSingleObject,
+	_In_ HANDLE hHandle,
+	_In_ DWORD dwMilliseconds
+);
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
 	_In_ LPCVOID lpBuffer,
@@ -4292,5 +4312,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_10 END <<< */
+/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_1 END <<< */
 
