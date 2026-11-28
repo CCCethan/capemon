@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_085_hypervisor_presence_checker_rewrites_3 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_085_hypervisor_presence_checker_rewrites_6 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4095,12 +4095,6 @@ HOOKDEF(BOOL, WINAPI, GetStringTypeW,
 	_In_ LPCWSTR lpSrcStr,
 	_In_ int cchSrc,
 	_Out_ LPWORD lpCharType
-);
-HOOKDEF(UINT, WINAPI, GetSystemFirmwareTable,
-	_In_ DWORD FirmwareTableProviderSignature,
-	_In_ DWORD FirmwareTableID,
-	_Out_ PVOID pFirmwareTableBuffer,
-	_In_ DWORD BufferSize
 );
 HOOKDEF(int, WINAPI, GetTimeFormatEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4298,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_085_hypervisor_presence_checker_rewrites_3 END <<< */
+/* >>> AUTOHOOK_pa_alk_085_hypervisor_presence_checker_rewrites_6 END <<< */
 
