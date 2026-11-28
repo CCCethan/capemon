@@ -1540,116 +1540,7 @@ HOOKDEF(BOOL, WINAPI, UpdateProcThreadAttribute,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_104_memory_pattern_checker_rewrites_8_debug BEGIN <<< */
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, EnumProcessModules, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hProcess,
-	_Out_ HMODULE* lphModule,
-	_In_ DWORD cb,
-	_Out_ LPDWORD lpcbNeeded
-) {
-	BOOL ret;
-	ret = Old_EnumProcessModules(hProcess, lphModule, cb, lpcbNeeded);
-	LOQ_bool("process", "ppiI", "hProcess", hProcess, "lphModule", lphModule, "cb", cb, "lpcbNeeded", lpcbNeeded);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Process Status (PSAPI)
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetModuleFileNameExW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hProcess,
-	_In_opt_ HMODULE hModule,
-	_Out_ LPWSTR lpFilename,
-	_In_ DWORD nSize
-) {
-	DWORD ret;
-	ret = Old_GetModuleFileNameExW(hProcess, hModule, lpFilename, nSize);
-	LOQ_nonzero("process", "ppFi", "hProcess", hProcess, "hModule", hModule, "lpFilename", lpFilename, "nSize", nSize);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Process Status (PSAPI)
-HOOKDEF(BOOL, WINAPI, GetProcessMemoryInfo, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE Process,
-	_Out_ PPROCESS_MEMORY_COUNTERS ppsmemCounters,
-	_In_ DWORD cb
-) {
-	BOOL ret;
-	ret = Old_GetProcessMemoryInfo(Process, ppsmemCounters, cb);
-	LOQ_bool("process", "pPi", "Process", Process, "ppsmemCounters", ppsmemCounters, "cb", cb);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, GetThreadTimes, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hThread,
-	_Out_ LPFILETIME lpCreationTime,
-	_Out_ LPFILETIME lpExitTime,
-	_Out_ LPFILETIME lpKernelTime,
-	_Out_ LPFILETIME lpUserTime
-) {
-	BOOL ret;
-	ret = Old_GetThreadTimes(hThread, lpCreationTime, lpExitTime, lpKernelTime, lpUserTime);
-	LOQ_bool("process", "pPPPP", "hThread", hThread, "lpCreationTime", lpCreationTime, "lpExitTime", lpExitTime, "lpKernelTime", lpKernelTime, "lpUserTime", lpUserTime);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, Module32First, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hSnapshot,
-	_Inout_ LPMODULEENTRY32 lpme
-) {
-	BOOL ret;
-	ret = Old_Module32First(hSnapshot, lpme);
-	LOQ_bool("process", "pP", "hSnapshot", hSnapshot, "lpme", lpme);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, Module32Next, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hSnapshot,
-	_Out_ LPMODULEENTRY32 lpme
-) {
-	BOOL ret;
-	ret = Old_Module32Next(hSnapshot, lpme);
-	LOQ_bool("process", "pP", "hSnapshot", hSnapshot, "lpme", lpme);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(HANDLE, WINAPI, OpenThread, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD dwDesiredAccess,
-	_In_ BOOL bInheritHandle,
-	_In_ DWORD dwThreadId
-) {
-	HANDLE ret;
-	ret = Old_OpenThread(dwDesiredAccess, bInheritHandle, dwThreadId);
-	LOQ_handle("process", "iii", "dwDesiredAccess", dwDesiredAccess, "bInheritHandle", bInheritHandle, "dwThreadId", dwThreadId);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, Thread32First, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hSnapshot,
-	_Inout_ LPTHREADENTRY32 lpteCopyright
-) {
-	BOOL ret;
-	ret = Old_Thread32First(hSnapshot, lpteCopyright);
-	LOQ_bool("process", "pP", "hSnapshot", hSnapshot, "lpteCopyright", lpteCopyright);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, Thread32Next, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hSnapshot,
-	_Out_ LPTHREADENTRY32 lpteCopyright
-) {
-	BOOL ret;
-	ret = Old_Thread32Next(hSnapshot, lpteCopyright);
-	LOQ_bool("process", "pP", "hSnapshot", hSnapshot, "lpteCopyright", lpteCopyright);
-	return ret;
-}
-
+/* >>> AUTOHOOK_pa_alk_105_memory_size_checker_rewrites_10_debug BEGIN <<< */
 // -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, ExitProcess, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ UINT uExitCode
@@ -1768,20 +1659,6 @@ HOOKDEF(HANDLE, WINAPI, GetProcessHeap, // 呼出規約は WINAPI 仮定(socket/
 }
 
 // -> hook_process.c に追加 | category="process" | winapi:Processes
-HOOKDEF(BOOL, WINAPI, GetProcessTimes, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hProcess,
-	_Out_ LPFILETIME lpCreationTime,
-	_Out_ LPFILETIME lpExitTime,
-	_Out_ LPFILETIME lpKernelTime,
-	_Out_ LPFILETIME lpUserTime
-) {
-	BOOL ret;
-	ret = Old_GetProcessTimes(hProcess, lpCreationTime, lpExitTime, lpKernelTime, lpUserTime);
-	LOQ_bool("process", "pPPPP", "hProcess", hProcess, "lpCreationTime", lpCreationTime, "lpExitTime", lpExitTime, "lpKernelTime", lpKernelTime, "lpUserTime", lpUserTime);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Processes
 HOOKDEF(VOID, WINAPI, GetStartupInfoW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Out_ LPSTARTUPINFOW lpStartupInfo
 ) {
@@ -1800,18 +1677,6 @@ HOOKDEF(BOOL, WINAPI, IsProcessorFeaturePresent, // 呼出規約は WINAPI 仮�
 	BOOL ret;
 	ret = Old_IsProcessorFeaturePresent(ProcessorFeature);
 	LOQ_bool("process", "i", "ProcessorFeature", ProcessorFeature);
-	return ret;
-}
-
-// -> hook_process.c に追加 | category="process" | winapi:Authorization
-HOOKDEF(BOOL, WINAPI, OpenProcessToken, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE ProcessHandle,
-	_In_ DWORD DesiredAccess,
-	_Out_ PHANDLE TokenHandle
-) {
-	BOOL ret;
-	ret = Old_OpenProcessToken(ProcessHandle, DesiredAccess, TokenHandle);
-	LOQ_bool("process", "piP", "ProcessHandle", ProcessHandle, "DesiredAccess", DesiredAccess, "TokenHandle", TokenHandle);
 	return ret;
 }
 
@@ -1877,5 +1742,5 @@ HOOKDEF(BOOL, WINAPI, TlsSetValue, // 呼出規約は WINAPI 仮定(socket/nativ
 	LOQ_bool("process", "ip", "dwTlsIndex", dwTlsIndex, "lpTlsValue", lpTlsValue);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_104_memory_pattern_checker_rewrites_8_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_105_memory_size_checker_rewrites_10_debug END <<< */
 

@@ -1929,128 +1929,7 @@ HOOKDEF(DWORD, WINAPI, RmStartSession,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_104_memory_pattern_checker_rewrites_8_debug BEGIN <<< */
-// -> hook_file.c に追加 | category="filesystem" | winapi:Memory Management
-// REVIEW: 引数 lpAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HANDLE, WINAPI, CreateFileMappingA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFile,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpAttributes,
-	_In_ DWORD flProtect,
-	_In_ DWORD dwMaximumSizeHigh,
-	_In_ DWORD dwMaximumSizeLow,
-	_In_opt_ LPCSTR lpName
-) {
-	HANDLE ret;
-	ret = Old_CreateFileMappingA(hFile, lpAttributes, flProtect, dwMaximumSizeHigh, dwMaximumSizeLow, lpName);
-	LOQ_handle("filesystem", "ppiiis", "hFile", hFile, "lpAttributes", lpAttributes, "flProtect", flProtect, "dwMaximumSizeHigh", dwMaximumSizeHigh, "dwMaximumSizeLow", dwMaximumSizeLow, "lpName", lpName);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 引数 dwHandle: 型 (n/a) DWORD を i(int32)で仮記録。要確認
-// REVIEW: 引数 lpData*/: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, GetFileVersionInfoA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lptstrFilename,
-	(n/a) DWORD dwHandle,
-	_In_ DWORD dwLen,
-	_Out_ LPVOID lpData*/
-) {
-	BOOL ret;
-	ret = Old_GetFileVersionInfoA(lptstrFilename, dwHandle, dwLen, lpData*/);
-	LOQ_bool("filesystem", "fiip", "lptstrFilename", lptstrFilename, "dwHandle", dwHandle, "dwLen", dwLen, "lpData*/", lpData*/);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetFileVersionInfoSizeA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lptstrFilename,
-	_Out_opt_ LPDWORD lpdwHandle
-) {
-	DWORD ret;
-	ret = Old_GetFileVersionInfoSizeA(lptstrFilename, lpdwHandle);
-	LOQ_nonzero("filesystem", "fI", "lptstrFilename", lptstrFilename, "lpdwHandle", lpdwHandle);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetLongPathNameA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lpszShortPath,
-	_Out_ LPSTR lpszLongPath,
-	_In_ DWORD cchBuffer
-) {
-	DWORD ret;
-	ret = Old_GetLongPathNameA(lpszShortPath, lpszLongPath, cchBuffer);
-	LOQ_nonzero("filesystem", "ffi", "lpszShortPath", lpszShortPath, "lpszLongPath", lpszLongPath, "cchBuffer", cchBuffer);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetLongPathNameW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCWSTR lpszShortPath,
-	_Out_ LPWSTR lpszLongPath,
-	_In_ DWORD cchBuffer
-) {
-	DWORD ret;
-	ret = Old_GetLongPathNameW(lpszShortPath, lpszLongPath, cchBuffer);
-	LOQ_nonzero("filesystem", "FFi", "lpszShortPath", lpszShortPath, "lpszLongPath", lpszLongPath, "cchBuffer", cchBuffer);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 戻り型 UINT の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(UINT, WINAPI, GetTempFileNameA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lpPathName,
-	_In_ LPCSTR lpPrefixString,
-	_In_ UINT uUnique,
-	_Out_ LPSTR lpTempFileName
-) {
-	UINT ret;
-	ret = Old_GetTempFileNameA(lpPathName, lpPrefixString, uUnique, lpTempFileName);
-	LOQ_nonzero("filesystem", "fsif", "lpPathName", lpPathName, "lpPrefixString", lpPrefixString, "uUnique", uUnique, "lpTempFileName", lpTempFileName);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Memory Management
-HOOKDEF(LPVOID, WINAPI, MapViewOfFile, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hFileMappingObject,
-	_In_ DWORD dwDesiredAccess,
-	_In_ DWORD dwFileOffsetHigh,
-	_In_ DWORD dwFileOffsetLow,
-	_In_ SIZE_T dwNumberOfBytesToMap
-) {
-	LPVOID ret;
-	ret = Old_MapViewOfFile(hFileMappingObject, dwDesiredAccess, dwFileOffsetHigh, dwFileOffsetLow, dwNumberOfBytesToMap);
-	LOQ_nonnull("filesystem", "piiii", "hFileMappingObject", hFileMappingObject, "dwDesiredAccess", dwDesiredAccess, "dwFileOffsetHigh", dwFileOffsetHigh, "dwFileOffsetLow", dwFileOffsetLow, "dwNumberOfBytesToMap", dwNumberOfBytesToMap);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Volume Management
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, QueryDosDeviceW, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPCWSTR lpDeviceName,
-	_Out_ LPWSTR lpTargetPath,
-	_In_ DWORD ucchMax
-) {
-	DWORD ret;
-	ret = Old_QueryDosDeviceW(lpDeviceName, lpTargetPath, ucchMax);
-	LOQ_nonzero("filesystem", "uFi", "lpDeviceName", lpDeviceName, "lpTargetPath", lpTargetPath, "ucchMax", ucchMax);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Memory Management
-// REVIEW: 引数 lpBaseAddress: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, UnmapViewOfFile, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCVOID lpBaseAddress
-) {
-	BOOL ret;
-	ret = Old_UnmapViewOfFile(lpBaseAddress);
-	LOQ_bool("filesystem", "p", "lpBaseAddress", lpBaseAddress);
-	return ret;
-}
-
+/* >>> AUTOHOOK_pa_alk_105_memory_size_checker_rewrites_10_debug BEGIN <<< */
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	void
@@ -2058,26 +1937,6 @@ HOOKDEF(BOOL, WINAPI, AreFileApisANSI, // 呼出規約は WINAPI 仮定(socket/n
 	BOOL ret;
 	ret = Old_AreFileApisANSI();
 	LOQ_bool("filesystem", "");
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 引数 lpSecurityAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HANDLE, WINAPI, CreateFileA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ LPCSTR lpFileName,
-	_In_ DWORD dwDesiredAccess,
-	_In_ DWORD dwShareMode,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-	_In_ DWORD dwCreationDisposition,
-	_In_ DWORD dwFlagsAndAttributes,
-	_In_opt_ HANDLE hTemplateFile
-) {
-	HANDLE ret;
-	ret = Old_CreateFileA(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-	// [7.5] ② 固定サイズ構造体: CreateFileW.SecurityAttributes と同一の扱い(ANSI版)。
-	//       SECURITY_ATTRIBUTES は定義済み。bInheritHandle が読めるのが要点。
-	//       本解析では常に NULL(nonnull=0)だが b は NULL 安全。
-	LOQ_handle("filesystem", "fiibiip", "lpFileName", lpFileName, "dwDesiredAccess", dwDesiredAccess, "dwShareMode", dwShareMode, "lpSecurityAttributes", sizeof(SECURITY_ATTRIBUTES), lpSecurityAttributes, "dwCreationDisposition", dwCreationDisposition, "dwFlagsAndAttributes", dwFlagsAndAttributes, "hTemplateFile", hTemplateFile);
 	return ret;
 }
 
@@ -2144,18 +2003,6 @@ HOOKDEF(DWORD, WINAPI, GetFileType, // 呼出規約は WINAPI 仮定(socket/nati
 }
 
 // -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
-// REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, GetTempPathA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ DWORD nBufferLength,
-	_Out_ LPSTR lpBuffer
-) {
-	DWORD ret;
-	ret = Old_GetTempPathA(nBufferLength, lpBuffer);
-	LOQ_nonzero("filesystem", "is", "nBufferLength", nBufferLength, "lpBuffer", lpBuffer);
-	return ret;
-}
-
-// -> hook_file.c に追加 | category="filesystem" | winapi:Files and I/O (Local file system)
 // REVIEW: 引数 lpBuffer: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
 HOOKDEF(BOOL, WINAPI, ReadFile, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hFile,
@@ -2213,5 +2060,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile, // 呼出規約は WINAPI 仮定(socket/native/
 	LOQ_bool("filesystem", "pbiIP", "hFile", hFile, "lpBuffer", (size_t)nNumberOfBytesToWrite, lpBuffer, "nNumberOfBytesToWrite", nNumberOfBytesToWrite, "lpNumberOfBytesWritten", lpNumberOfBytesWritten, "lpOverlapped", lpOverlapped);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_104_memory_pattern_checker_rewrites_8_debug END <<< */
+/* >>> AUTOHOOK_pa_alk_105_memory_size_checker_rewrites_10_debug END <<< */
 
