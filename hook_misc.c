@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker_rewrites_6 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker_rewrites_8_debug BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2016,39 +2016,6 @@ HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/nativ
 	BOOL ret;
 	ret = Old_CloseHandle(hObject);
 	LOQ_bool("misc", "p", "hObject", hObject);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Pipes
-// REVIEW: 引数 lpPipeAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(BOOL, WINAPI, CreatePipe, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_Out_ PHANDLE hReadPipe,
-	_Out_ PHANDLE hWritePipe,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpPipeAttributes,
-	_In_ DWORD nSize
-) {
-	BOOL ret;
-	ret = Old_CreatePipe(hReadPipe, hWritePipe, lpPipeAttributes, nSize);
-	// [7.5] ② 固定サイズ構造体: desc どおり SECURITY_ATTRIBUTES。引数型が通っている=定義済み。
-	//       bInheritHandle(子プロセスへ継承するか)が読めるのが要点。
-	//       ※ 容量候補として出た Size(=1024) はパイプのバッファサイズで構造体長ではない。
-	LOQ_bool("misc", "PPbi", "hReadPipe", hReadPipe, "hWritePipe", hWritePipe, "lpPipeAttributes", sizeof(SECURITY_ATTRIBUTES), lpPipeAttributes, "nSize", nSize);
-	return ret;
-}
-
-// -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
-HOOKDEF(BOOL, WINAPI, DuplicateHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hSourceProcessHandle,
-	_In_ HANDLE hSourceHandle,
-	_In_ HANDLE hTargetProcessHandle,
-	_Out_ LPHANDLE lpTargetHandle,
-	_In_ DWORD dwDesiredAccess,
-	_In_ BOOL bInheritHandle,
-	_In_ DWORD dwOptions
-) {
-	BOOL ret;
-	ret = Old_DuplicateHandle(hSourceProcessHandle, hSourceHandle, hTargetProcessHandle, lpTargetHandle, dwDesiredAccess, bInheritHandle, dwOptions);
-	LOQ_bool("misc", "pppPiii", "hSourceProcessHandle", hSourceProcessHandle, "hSourceHandle", hSourceHandle, "hTargetProcessHandle", hTargetProcessHandle, "lpTargetHandle", lpTargetHandle, "dwDesiredAccess", dwDesiredAccess, "bInheritHandle", bInheritHandle, "dwOptions", dwOptions);
 	return ret;
 }
 
@@ -2521,6 +2488,21 @@ HOOKDEF(NTSTATUS, WINAPI, SpUserModeInitialize, // 呼出規約は WINAPI 仮定
 	return ret;
 }
 
+// -> hook_misc.c に追加 | category="misc" | winapi:Conversion and Manipulation
+// REVIEW: 戻り型 BSTR の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
+// REVIEW: 引数 psz: 型 const OLECHAR* は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
+HOOKDEF(BSTR, WINAPI, SysAllocString, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_opt_ const OLECHAR* psz
+) {
+	BSTR ret;
+	ret = Old_SysAllocString(psz);
+	// [7.5] kind=struct-or-opaque は誤分類。型は const OLECHAR* = ワイド文字列で
+	//       description も "The string to copy."。u で内容を記録する(log.c の u は
+	//       NULL/例外を __try で保護)。観測「戻り値」は BSTR のアドレスであり長さではない。
+	LOQ_nonzero("misc", "u", "psz", psz);
+	return ret;
+}
+
 // -> hook_misc.c に追加 | category="misc" | winapi:Memory Management
 // REVIEW: 引数 lpAddress: 入力バッファとして dwSize バイト分を内容ログ('b')。dwSize が実データ長でない/出力用バッファなら 'p'(アドレスのみ)へ戻すこと
 HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
@@ -2534,5 +2516,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker_rewrites_6 END <<< */
+/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker_rewrites_8_debug END <<< */
 
