@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_105_memory_size_checker_rewrites_2 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_105_memory_size_checker_rewrites_3 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4326,5 +4326,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_105_memory_size_checker_rewrites_2 END <<< */
+/* >>> AUTOHOOK_pa_alk_105_memory_size_checker_rewrites_3 END <<< */
 
