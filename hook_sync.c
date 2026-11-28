@@ -178,30 +178,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtQueryInformationAtom,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_1 BEGIN <<< */
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-HOOKDEF(BOOL, WINAPI, CancelWaitableTimer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hTimer
-) {
-	BOOL ret;
-	ret = Old_CancelWaitableTimer(hTimer);
-	LOQ_bool("sync", "p", "hTimer", hTimer);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-// REVIEW: 引数 lpTimerAttributes: 型 LPSECURITY_ATTRIBUTES は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-HOOKDEF(HANDLE, WINAPI, CreateWaitableTimerA, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_opt_ LPSECURITY_ATTRIBUTES lpTimerAttributes,
-	_In_ BOOL bManualReset,
-	_In_opt_ LPCSTR lpTimerName
-) {
-	HANDLE ret;
-	ret = Old_CreateWaitableTimerA(lpTimerAttributes, bManualReset, lpTimerName);
-	LOQ_handle("sync", "pis", "lpTimerAttributes", lpTimerAttributes, "bManualReset", bManualReset, "lpTimerName", lpTimerName);
-	return ret;
-}
-
+/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_2 BEGIN <<< */
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 HOOKDEF(void, WINAPI, DeleteCriticalSection, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -253,32 +230,18 @@ HOOKDEF(void, WINAPI, LeaveCriticalSection, // 呼出規約は WINAPI 仮定(soc
 }
 
 // -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
-// REVIEW: 引数 pfnCompletionRoutine: 型 PTIMERAPCROUTINE は自動解釈不可(構造体等)。アドレスのみ記録。内容が重要なら該当メンバを手動でログ
-// REVIEW: 引数 lpArgToCompletionRoutine: 生バッファ(void*)。アドレスのみ記録。長さ引数と対にして 'b'(size_t,buf)/'S'(int,buf) 指定にすれば内容を人間可読で記録できる
-HOOKDEF(BOOL, WINAPI, SetWaitableTimer, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hTimer,
-	_In_ const LARGE_INTEGER* pDueTime,
-	_In_ LONG lPeriod,
-	_In_opt_ PTIMERAPCROUTINE pfnCompletionRoutine,
-	_In_opt_ LPVOID lpArgToCompletionRoutine,
-	_In_ BOOL fResume
-) {
-	BOOL ret;
-	ret = Old_SetWaitableTimer(hTimer, pDueTime, lPeriod, pfnCompletionRoutine, lpArgToCompletionRoutine, fResume);
-	LOQ_bool("sync", "pXippi", "hTimer", hTimer, "pDueTime", pDueTime, "lPeriod", lPeriod, "pfnCompletionRoutine", pfnCompletionRoutine, "lpArgToCompletionRoutine", lpArgToCompletionRoutine, "fResume", fResume);
-	return ret;
-}
-
-// -> hook_sync.c に追加 | category="sync" | winapi:Synchronization
 // REVIEW: 戻り型 DWORD の成功判定が曖昧 -> LOQ_nonzero を仮採用。0=成功のAPIなら LOQ_zero 等へ変更
-HOOKDEF(DWORD, WINAPI, WaitForSingleObject, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
-	_In_ HANDLE hHandle,
-	_In_ DWORD dwMilliseconds
+HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
+	_In_ DWORD nCount,
+	_In_ const HANDLE* pHandles,
+	_In_ BOOL bWaitAll,
+	_In_ DWORD dwMilliseconds,
+	_In_ DWORD dwWakeMask
 ) {
 	DWORD ret;
-	ret = Old_WaitForSingleObject(hHandle, dwMilliseconds);
-	LOQ_nonzero("sync", "pi", "hHandle", hHandle, "dwMilliseconds", dwMilliseconds);
+	ret = Old_MsgWaitForMultipleObjects(nCount, pHandles, bWaitAll, dwMilliseconds, dwWakeMask);
+	LOQ_nonzero("sync", "ipiii", "nCount", nCount, "pHandles", pHandles, "bWaitAll", bWaitAll, "dwMilliseconds", dwMilliseconds, "dwWakeMask", dwWakeMask);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_1 END <<< */
+/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_2 END <<< */
 
