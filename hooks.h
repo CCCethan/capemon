@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker_rewrites_3 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker_rewrites_6 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -3965,8 +3965,23 @@ HOOKDEF(HANDLE, WINAPI, CreateFileW,
 	_In_ DWORD dwFlagsAndAttributes,
 	_In_opt_ HANDLE hTemplateFile
 );
+HOOKDEF(BOOL, WINAPI, CreatePipe,
+	_Out_ PHANDLE hReadPipe,
+	_Out_ PHANDLE hWritePipe,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpPipeAttributes,
+	_In_ DWORD nSize
+);
 HOOKDEF(void, WINAPI, DeleteCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
+);
+HOOKDEF(BOOL, WINAPI, DuplicateHandle,
+	_In_ HANDLE hSourceProcessHandle,
+	_In_ HANDLE hSourceHandle,
+	_In_ HANDLE hTargetProcessHandle,
+	_Out_ LPHANDLE lpTargetHandle,
+	_In_ DWORD dwDesiredAccess,
+	_In_ BOOL bInheritHandle,
+	_In_ DWORD dwOptions
 );
 HOOKDEF(void, WINAPI, EnterCriticalSection,
 	_Inout_ LPCRITICAL_SECTION lpCriticalSection
@@ -4042,17 +4057,21 @@ HOOKDEF(int, WINAPI, GetDateFormatW,
 HOOKDEF(LPWSTR, WINAPI, GetEnvironmentStringsW,
 	void
 );
+HOOKDEF(BOOL, WINAPI, GetExitCodeProcess,
+	_In_ HANDLE hProcess,
+	_Out_ LPDWORD lpExitCode
+);
+HOOKDEF(BOOL, WINAPI, GetFileAttributesExW,
+	_In_ LPCWSTR lpFileName,
+	_In_ GET_FILEEX_INFO_LEVELS fInfoLevelId,
+	_Out_ LPVOID lpFileInformation
+);
 HOOKDEF(BOOL, WINAPI, GetFileSizeEx,
 	_In_ HANDLE hFile,
 	_Out_ PLARGE_INTEGER lpFileSize
 );
 HOOKDEF(DWORD, WINAPI, GetFileType,
 	_In_ HANDLE hFile
-);
-HOOKDEF(DWORD, WINAPI, GetIfTable,
-	_Out_ PMIB_IFTABLE pIfTable,
-	_Inout_ PULONG pdwSize,
-	_In_ BOOL bOrder
 );
 HOOKDEF(int, WINAPI, GetLocaleInfoEx,
 	_In_opt_ LPCWSTR lpLocaleName,
@@ -4289,6 +4308,10 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect,
 	_In_ DWORD flNewProtect,
 	_Out_ PDWORD lpflOldProtect
 );
+HOOKDEF(DWORD, WINAPI, WaitForSingleObject,
+	_In_ HANDLE hHandle,
+	_In_ DWORD dwMilliseconds
+);
 HOOKDEF(BOOL, WINAPI, WriteFile,
 	_In_ HANDLE hFile,
 	_In_ LPCVOID lpBuffer,
@@ -4297,5 +4320,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker_rewrites_3 END <<< */
+/* >>> AUTOHOOK_pa_alk_098_mac_address_prefix_checker_rewrites_6 END <<< */
 
