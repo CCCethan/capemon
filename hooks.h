@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_106_monitor_count_checker_rewrites_8 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_10 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4292,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_106_monitor_count_checker_rewrites_8 END <<< */
+/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_10 END <<< */
 
