@@ -2008,7 +2008,7 @@ HOOKDEF(NTSTATUS, WINAPI, NtPowerInformation,
 	return ret;
 }
 
-/* >>> AUTOHOOK_pa_alk_101_memory_array_checker_rewrites_4 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_102_memory_device_checker_rewrites_1 BEGIN <<< */
 // -> hook_misc.c に追加 | category="misc" | winapi:Handle and Objects
 HOOKDEF(BOOL, WINAPI, CloseHandle, // 呼出規約は WINAPI 仮定(socket/native/CRT系は要確認)
 	_In_ HANDLE hObject
@@ -2516,5 +2516,5 @@ HOOKDEF(BOOL, WINAPI, VirtualProtect, // 呼出規約は WINAPI 仮定(socket/na
 	LOQ_bool("misc", "biiI", "lpAddress", (size_t)dwSize, lpAddress, "dwSize", dwSize, "flNewProtect", flNewProtect, "lpflOldProtect", lpflOldProtect);
 	return ret;
 }
-/* >>> AUTOHOOK_pa_alk_101_memory_array_checker_rewrites_4 END <<< */
+/* >>> AUTOHOOK_pa_alk_102_memory_device_checker_rewrites_1 END <<< */
 
