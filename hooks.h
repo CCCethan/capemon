@@ -3930,7 +3930,7 @@ HOOKDEF(DWORD, WINAPI, MapFileAndCheckSumA,
 
 #include "hook_vbscript.h"
 
-/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_2 BEGIN <<< */
+/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_3 BEGIN <<< */
 HOOKDEF(BOOL, WINAPI, AreFileApisANSI,
 	void
 );
@@ -4194,13 +4194,6 @@ HOOKDEF(LCID, WINAPI, LocaleNameToLCID,
 	_In_ LPCWSTR lpName,
 	_In_ DWORD dwFlags
 );
-HOOKDEF(DWORD, WINAPI, MsgWaitForMultipleObjects,
-	_In_ DWORD nCount,
-	_In_ const HANDLE* pHandles,
-	_In_ BOOL bWaitAll,
-	_In_ DWORD dwMilliseconds,
-	_In_ DWORD dwWakeMask
-);
 HOOKDEF(BOOL, WINAPI, QueryPerformanceCounter,
 	_Out_ LARGE_INTEGER* lpPerformanceCount
 );
@@ -4299,5 +4292,5 @@ HOOKDEF(BOOL, WINAPI, WriteFile,
 	_Inout_opt_ LPOVERLAPPED lpOverlapped
 );
 
-/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_2 END <<< */
+/* >>> AUTOHOOK_pa_alk_107_mouse_activity_checker_rewrites_3 END <<< */
 
